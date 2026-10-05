@@ -332,6 +332,17 @@ async fn once_props_are_skipped_when_the_client_has_them() {
 }
 
 #[tokio::test]
+async fn once_props_with_huge_ttls_saturate() {
+    let page = resolve(visit(&[]).render(
+        "Users",
+        props! { "plans" => inertia::once(|| async { 1 }).until(Duration::MAX) },
+    ))
+    .await;
+
+    assert_eq!(page.metadata.once_props["plans"].expires_at, Some(u64::MAX));
+}
+
+#[tokio::test]
 async fn scroll_props_carry_pagination_metadata() {
     let props = || {
         props! {

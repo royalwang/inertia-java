@@ -363,11 +363,12 @@ impl<'a> PropsResolver<'a> {
             return;
         }
 
-        // Second precision, like the Laravel adapter.
+        // Second precision, like the Laravel adapter. Saturating, so a TTL
+        // meaning "forever" (`Duration::MAX`) can't overflow.
         let expires_at = once.ttl.map(|ttl| {
             let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default();
 
-            (now.as_secs() + ttl.as_secs()) * 1000
+            now.as_secs().saturating_add(ttl.as_secs()).saturating_mul(1000)
         });
 
         metadata.once_props.insert(
