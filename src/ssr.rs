@@ -105,11 +105,12 @@ impl HttpGateway {
         self
     }
 
-    /// Set whether the hot file and the bundle are checked on every render.
+    /// Set whether the hot file and the bundle are checked again while running.
     ///
     /// On by default, so starting the dev server or building the bundle takes
-    /// effect without a restart. Turn it off in production, where neither
-    /// changes without a deploy, to check each once.
+    /// effect without a restart: each is checked at most once a second. Turn
+    /// it off in production, where neither changes without a deploy, to check
+    /// each once.
     pub fn watch(mut self, watch: bool) -> Self {
         self.watch = watch;
         self
