@@ -555,6 +555,20 @@ async fn first_visits_render_the_root_view() {
     AssertablePage::from_body(body).equals("html", "</script><b>&");
 }
 
+#[tokio::test]
+async fn root_ids_are_escaped() {
+    let inertia = Inertia::new(config().root_id(r#"app" onload="alert(1)"#), request(Method::GET, &[]));
+
+    let response = inertia.render("Users", ()).into_http().await;
+    let body = response.body();
+
+    assert!(!body.contains(r#"" onload=""#), "{body}");
+    assert!(
+        body.contains(r#"<div id="app&quot; onload=&quot;alert(1)"></div>"#),
+        "{body}"
+    );
+}
+
 #[cfg(feature = "validator")]
 #[test]
 fn converts_validator_errors() {

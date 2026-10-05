@@ -8,7 +8,7 @@ use crate::HttpResponse;
 use crate::errors::ErrorBags;
 use crate::header as inertia_header;
 use crate::inertia::Inertia;
-use crate::json::{encode_big_integers, html_safe_json};
+use crate::json::{encode_big_integers, escape_attribute, html_safe_json};
 use crate::page::Page;
 use crate::props::{self, IntoProp, PropError, Props, PropsResolver};
 use crate::session::{SharedSession, key};
@@ -292,7 +292,7 @@ async fn document(inertia: &Inertia, page: &Page, data: &Map<String, Value>, ssr
         head: String::new(),
         body: format!(
             r#"<script data-page="{id}" type="application/json">{json}</script><div id="{id}"></div>"#,
-            id = config.root_id,
+            id = escape_attribute(&config.root_id),
             json = html_safe_json(page),
         ),
     });
