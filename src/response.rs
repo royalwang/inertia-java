@@ -291,8 +291,9 @@ async fn document(inertia: &Inertia, page: &Page, data: &Map<String, Value>, ssr
     let ssr = rendered.is_some();
     let Rendered { head, body } = match rendered {
         Some(rendered) => rendered,
-        // Fail like the JSON response does, rather than boot the client
-        // with `null` page data.
+        // Defensive: `Page` holds only strings and JSON values today, so it
+        // can't fail to serialize. Should that change, fail like the JSON
+        // response does, rather than boot the client with `null` page data.
         None => match try_html_safe_json(page) {
             Ok(json) => Rendered {
                 head: String::new(),
