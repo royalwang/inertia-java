@@ -186,11 +186,14 @@ impl<'a> PropsResolver<'a> {
 
                 self.collect_metadata(&options, &path);
 
+                // Like the Laravel adapter, which adds always props back after
+                // filtering, an always prop is sent whole: its children are as
+                // exempt from partial filtering as a resolved value's.
+                let is_whole = parent_was_resolved || options.always;
+
                 let value = match value {
-                    Resolved::Nested(nested) => {
-                        Value::Object(self.resolve_props(nested, path, parent_was_resolved).await?)
-                    }
-                    Resolved::Literal(value) => self.filter_literal(value, &path, parent_was_resolved),
+                    Resolved::Nested(nested) => Value::Object(self.resolve_props(nested, path, is_whole).await?),
+                    Resolved::Literal(value) => self.filter_literal(value, &path, is_whole),
                     Resolved::Computed(value) => value,
                     Resolved::Pending(_) => unreachable!("pending values are computed above"),
                 };

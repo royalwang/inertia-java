@@ -126,14 +126,58 @@ async fn partial_reloads_only_include_the_requested_props() {
 
 #[tokio::test]
 async fn partial_reloads_exclude_the_excepted_props() {
-    let page =
-        resolve(reload(&[("x-inertia-partial-except", "auth,literal.x,errors")]).render("Users", users_props())).await;
+    let inertia = reload(&[("x-inertia-partial-except", "auth,literal.x,errors")]);
+    inertia.with_errors(ValidationErrors::new().with("name", "Required."));
+
+    let page = resolve(inertia.render("Users", users_props())).await;
     let page = AssertablePage::from_body(&serde_json::to_string(&page).unwrap());
 
     page.missing("auth")
-        .has("errors")
+        .equals("errors", json!({ "name": "Required." }))
         .equals("literal", json!({ "y": { "z": 2 } }))
         .equals("optional", "optional");
+}
+
+#[tokio::test]
+async fn partial_reloads_send_always_props_whole() {
+    let props = || {
+        props! {
+            "users" => ["Taylor"],
+            "object" => inertia::always(json!({ "name": "Taylor", "nested": { "x": 1 } })),
+            "nestedProps" => inertia::always(props! { "a" => 1, "b" => props! { "c" => 2 } }),
+        }
+    };
+
+    for header in [
+        ("x-inertia-partial-data", "users"),
+        ("x-inertia-partial-except", "users,object.name,nestedProps.b"),
+    ] {
+        let inertia = reload(&[header]);
+        inertia.with_errors(ValidationErrors::new().with("name", "Required."));
+
+        let page = resolve(inertia.render("Users", props())).await;
+
+        assert_eq!(page.props["errors"], json!({ "name": "Required." }), "{header:?}");
+        assert_eq!(
+            page.props["object"],
+            json!({ "name": "Taylor", "nested": { "x": 1 } }),
+            "{header:?}"
+        );
+        assert_eq!(
+            page.props["nestedProps"],
+            json!({ "a": 1, "b": { "c": 2 } }),
+            "{header:?}"
+        );
+    }
+
+    let inertia = reload(&[
+        ("x-inertia-partial-data", "users"),
+        ("x-inertia-error-bag", "createUser"),
+    ]);
+    inertia.with_errors(ValidationErrors::new().with("name", "Required."));
+
+    let page = resolve(inertia.render("Users", props())).await;
+    assert_eq!(page.props["errors"], json!({ "createUser": { "name": "Required." } }));
 }
 
 #[tokio::test]
