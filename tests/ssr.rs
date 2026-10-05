@@ -2,18 +2,21 @@
 
 #![cfg(feature = "ssr")]
 
-use std::sync::{Mutex, Once};
+use std::io;
+use std::net::SocketAddr;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex, Once};
 
 use axum::Router;
-use axum::http::StatusCode;
+use axum::http::{HeaderValue, StatusCode, header};
+use axum::response::Response;
 use axum::routing::post;
 use http::{HeaderMap, Method};
 use inertia::ssr::HttpGateway;
 use inertia::testing::AssertablePage;
 use inertia::{Config, Inertia, Request, props};
 use serde_json::json;
-use tokio::net::TcpListener;
-use tokio::sync::oneshot;
+use tokio::net::{TcpListener, TcpStream};
 
 /// Serve `router` on a free port, returning its URL.
 async fn serve(router: Router) -> String {
@@ -23,6 +26,59 @@ async fn serve(router: Router) -> String {
     tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
 
     url
+}
+
+/// Serve `router` on a free port that starts out unreachable, returning its
+/// URL and the switch that brings it up.
+///
+/// While it's down, connections are accepted and dropped at once. Freeing the
+/// port instead, and binding it again to come up, would race with other tests
+/// binding port 0.
+async fn serve_switchable(router: Router) -> (String, Arc<AtomicBool>) {
+    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}", listener.local_addr().unwrap());
+    let up = Arc::new(AtomicBool::new(false));
+
+    // Without keep-alive, so a connection made while it's up can't reach it
+    // once it's down.
+    let router = router.layer(axum::middleware::map_response(|mut response: Response| async {
+        response
+            .headers_mut()
+            .insert(header::CONNECTION, HeaderValue::from_static("close"));
+        response
+    }));
+    let listener = Switchable {
+        listener,
+        up: up.clone(),
+    };
+    tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+
+    (url, up)
+}
+
+/// A listener that drops the connections it accepts while it's down.
+struct Switchable {
+    listener: TcpListener,
+    up: Arc<AtomicBool>,
+}
+
+impl axum::serve::Listener for Switchable {
+    type Io = TcpStream;
+    type Addr = SocketAddr;
+
+    async fn accept(&mut self) -> (TcpStream, SocketAddr) {
+        loop {
+            let accepted = axum::serve::Listener::accept(&mut self.listener).await;
+
+            if self.up.load(Ordering::SeqCst) {
+                return accepted;
+            }
+        }
+    }
+
+    fn local_addr(&self) -> io::Result<SocketAddr> {
+        self.listener.local_addr()
+    }
 }
 
 /// The body of a first visit, rendered through the SSR server at `url`.
@@ -68,10 +124,7 @@ async fn failed_renders_fall_back_to_the_client() {
 
 #[tokio::test]
 async fn unreachable_servers_fall_back_to_the_client() {
-    // A port that was free a moment ago, so nothing is listening on it.
-    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let url = format!("http://{}", listener.local_addr().unwrap());
-    drop(listener);
+    let (url, _up) = serve_switchable(Router::new()).await;
 
     let body = first_visit(&url).await;
 
@@ -83,10 +136,8 @@ async fn unreachable_servers_fall_back_to_the_client() {
 
 #[tokio::test]
 async fn unreachable_servers_are_warned_about_again_after_coming_back() {
-    let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    let url = format!("http://{address}");
-    drop(listener);
+    let router = Router::new().route("/render", post(|| async { axum::Json(json!({ "body": "Taylor" })) }));
+    let (url, up) = serve_switchable(router).await;
 
     let warnings = unreachable_warnings(format!("{url}/render"));
 
@@ -94,22 +145,10 @@ async fn unreachable_servers_are_warned_about_again_after_coming_back() {
     first_visit(&url).await;
     assert_eq!(warnings(), 1, "warned once while down");
 
-    // The server comes up at the same address.
-    let listener = TcpListener::bind(address).await.unwrap();
-    let router = Router::new().route("/render", post(|| async { axum::Json(json!({ "body": "Taylor" })) }));
-    let (stop, stopped) = oneshot::channel::<()>();
-    let server = tokio::spawn(async move {
-        axum::serve(listener, router)
-            .with_graceful_shutdown(async move { stopped.await.unwrap_or_default() })
-            .await
-            .unwrap();
-    });
-
+    up.store(true, Ordering::SeqCst);
     assert!(first_visit(&url).await.contains("Taylor"));
 
-    stop.send(()).unwrap();
-    server.await.unwrap();
-
+    up.store(false, Ordering::SeqCst);
     first_visit(&url).await;
     assert_eq!(warnings(), 2, "warned again once down again");
 }
