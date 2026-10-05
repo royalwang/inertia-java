@@ -75,6 +75,23 @@ pub struct Metadata {
     pub once_props: IndexMap<String, OnceState>,
 }
 
+impl Metadata {
+    /// Append the metadata collected after this one.
+    pub(crate) fn extend(&mut self, other: Metadata) {
+        self.shared_props.extend(other.shared_props);
+        self.merge_props.extend(other.merge_props);
+        self.prepend_props.extend(other.prepend_props);
+        self.deep_merge_props.extend(other.deep_merge_props);
+        self.match_props_on.extend(other.match_props_on);
+        for (group, props) in other.deferred_props {
+            self.deferred_props.entry(group).or_default().extend(props);
+        }
+        self.rescued_props.extend(other.rescued_props);
+        self.scroll_props.extend(other.scroll_props);
+        self.once_props.extend(other.once_props);
+    }
+}
+
 /// The pagination state of an infinite scroll prop.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ScrollState {

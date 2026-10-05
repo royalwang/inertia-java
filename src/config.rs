@@ -24,6 +24,7 @@ type ResolveUrl = dyn Fn(&Request) -> String + Send + Sync;
 ///     });
 /// ```
 #[derive(Clone)]
+#[must_use]
 pub struct Config {
     version: Version,
     root_view: Arc<dyn RootView>,
@@ -156,7 +157,13 @@ impl Default for Config {
 impl fmt::Debug for Config {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Config")
-            .field("version", &self.current_version())
+            .field(
+                "version",
+                &match &self.version {
+                    Version::Fixed(version) => version.as_str(),
+                    Version::Computed(_) => "<computed>",
+                },
+            )
             .field("root_id", &self.root_id)
             .field("ssr", &self.gateway.is_some())
             .field("encrypt_history", &self.encrypt_history)

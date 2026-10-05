@@ -34,6 +34,12 @@ pub(crate) enum Source {
     Props(Props),
     /// A callback that only runs when the prop is part of the response.
     Callback(Callback),
+    /// A callback whose object output gains nested props, set with dot
+    /// notation keys (`"auth.user"` under a lazy `"auth"`), once it runs.
+    Extended {
+        base: Callback,
+        overlay: Vec<(Vec<String>, Prop)>,
+    },
     /// A value that failed to serialize.
     Failed(PropError),
 }
@@ -259,6 +265,10 @@ impl fmt::Debug for Source {
             Self::Value(value) => f.debug_tuple("Value").field(value).finish(),
             Self::Props(props) => f.debug_tuple("Props").field(props).finish(),
             Self::Callback(_) => f.write_str("Callback"),
+            Self::Extended { overlay, .. } => f
+                .debug_struct("Extended")
+                .field("overlay", overlay)
+                .finish_non_exhaustive(),
             Self::Failed(error) => f.debug_tuple("Failed").field(error).finish(),
         }
     }

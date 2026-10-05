@@ -1,6 +1,6 @@
 //! The framework-agnostic core, exercised without a web framework.
 
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use http::{HeaderMap, HeaderName, Method};
 use inertia::session::ArraySession;
@@ -8,6 +8,7 @@ use inertia::testing::AssertablePage;
 use inertia::{Config, Inertia, Page, Paginator, Props, Request, ValidationErrors, props};
 use serde::Serialize;
 use serde_json::json;
+use tokio::time::Instant;
 
 fn config() -> Config {
     Config::new()
@@ -266,24 +267,86 @@ async fn scroll_props_carry_pagination_metadata() {
     assert_eq!(page.metadata.scroll_props["later"].metadata.next_page, None);
 }
 
-#[tokio::test]
-async fn sibling_callbacks_resolve_concurrently() {
-    let slow = |value: u8| {
-        inertia::lazy(move || async move {
-            tokio::time::sleep(Duration::from_millis(200)).await;
-            value
-        })
-    };
+fn slow(value: u8) -> inertia::Prop {
+    inertia::lazy(move || async move {
+        tokio::time::sleep(Duration::from_millis(200)).await;
+        value
+    })
+}
 
+#[tokio::test(start_paused = true)]
+async fn sibling_callbacks_resolve_concurrently() {
     let started = Instant::now();
     let page = resolve(visit(&[]).render("Users", props! { "a" => slow(1), "b" => slow(2), "c" => slow(3) })).await;
 
     assert_eq!(page.props["c"], 3);
-    assert!(
-        started.elapsed() < Duration::from_millis(350),
-        "took {:?}",
-        started.elapsed()
-    );
+    assert_eq!(started.elapsed(), Duration::from_millis(200));
+}
+
+#[tokio::test(start_paused = true)]
+async fn callbacks_in_nested_props_resolve_concurrently() {
+    let started = Instant::now();
+    let page = resolve(visit(&[]).render(
+        "Users",
+        props! {
+            "a" => props! { "x" => slow(1) },
+            "b" => props! { "y" => props! { "z" => slow(2) } },
+            "c" => slow(3),
+        },
+    ))
+    .await;
+
+    assert_eq!(page.props["b"], json!({ "y": { "z": 2 } }));
+    assert_eq!(started.elapsed(), Duration::from_millis(200));
+}
+
+#[tokio::test(start_paused = true)]
+async fn dot_keys_keep_their_parent_callback_lazy() {
+    let props = || {
+        props! {
+            "user" => inertia::lazy(|| async {
+                tokio::time::sleep(Duration::from_millis(200)).await;
+                json!({ "name": "Taylor" })
+            }),
+            "user.role" => "admin",
+            "other" => 1,
+        }
+    };
+
+    let started = Instant::now();
+    let page = resolve(reload(&[("x-inertia-partial-data", "other")]).render("Users", props())).await;
+
+    assert_eq!(started.elapsed(), Duration::ZERO, "the callback ran");
+    assert!(page.props.get("user").is_none());
+
+    let page = resolve(visit(&[]).render("Users", props())).await;
+    assert_eq!(page.props["user"], json!({ "name": "Taylor", "role": "admin" }));
+}
+
+#[tokio::test]
+async fn once_props_with_huge_ttls_saturate() {
+    let page = resolve(visit(&[]).render(
+        "Users",
+        props! { "plans" => inertia::once(|| async { 1 }).until(Duration::MAX) },
+    ))
+    .await;
+
+    assert_eq!(page.metadata.once_props["plans"].expires_at, Some(u64::MAX));
+}
+
+#[test]
+fn paginators_treat_page_zero_as_the_first_page() {
+    let page = Paginator::new(vec![1, 2], 10, 5, 0);
+
+    assert_eq!((page.current_page, page.from, page.to), (1, Some(1), Some(2)));
+}
+
+#[test]
+fn prop_errors_are_transparent() {
+    let error = inertia::PropError::new(std::io::Error::other("database down"));
+
+    assert_eq!(error.to_string(), "database down");
+    assert!(std::error::Error::source(&error).is_none());
 }
 
 #[tokio::test]

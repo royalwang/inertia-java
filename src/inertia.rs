@@ -1,7 +1,7 @@
 //! The per-request Inertia handle.
 
 use std::fmt;
-use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
+use std::sync::{Arc, Mutex, MutexGuard, OnceLock, PoisonError};
 
 use serde::Serialize;
 use serde_json::{Map, Value};
@@ -40,6 +40,7 @@ struct Context {
     config: Arc<Config>,
     request: Request,
     session: Option<SharedSession>,
+    version: OnceLock<String>,
     pending: Mutex<Pending>,
 }
 
@@ -72,6 +73,7 @@ impl Inertia {
                 config,
                 request,
                 session,
+                version: OnceLock::new(),
                 pending: Mutex::default(),
             }),
         }
@@ -85,6 +87,11 @@ impl Inertia {
     /// The request.
     pub fn request(&self) -> &Request {
         &self.context.request
+    }
+
+    /// The current asset version, computed once per request.
+    pub fn version(&self) -> &str {
+        self.context.version.get_or_init(|| self.config().current_version())
     }
 
     /// Render a page component.

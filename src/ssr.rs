@@ -54,6 +54,7 @@ impl<G: Gateway> DynGateway for G {
 /// started with `node bootstrap/ssr/app.js`.
 #[cfg(feature = "ssr")]
 #[derive(Debug, Clone)]
+#[must_use]
 pub struct HttpGateway {
     url: String,
     hot_file: Option<PathBuf>,
@@ -105,10 +106,10 @@ impl HttpGateway {
         self
     }
 
-    /// Set whether the hot file and the bundle are checked on every render.
+    /// Set whether the hot file and the bundle are checked again while running.
     ///
     /// On by default, so starting the dev server or building the bundle takes
-    /// effect without a restart. Turn it off in production, where neither
+    /// effect within a second, without a restart. Turn it off in production, where neither
     /// changes without a deploy, to check each once.
     pub fn watch(mut self, watch: bool) -> Self {
         self.watch = watch;
@@ -207,6 +208,11 @@ impl Gateway for HttpGateway {
                 return None;
             }
         };
+
+        // Warn again if the server goes down after coming back.
+        if WARNED_UNREACHABLE.load(Ordering::Relaxed) {
+            WARNED_UNREACHABLE.store(false, Ordering::Relaxed);
+        }
 
         if !response.status().is_success() {
             let status = response.status();

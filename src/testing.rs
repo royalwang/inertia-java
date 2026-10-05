@@ -166,8 +166,10 @@ impl AssertablePage {
 /// The contents of the page data `<script>` of an HTML document.
 #[track_caller]
 fn page_script(html: &str) -> &str {
+    // The script with `data-page`, not just any JSON script before it.
     let Some((json, _)) = html
-        .split_once(r#"type="application/json">"#)
+        .split_once("<script data-page=")
+        .and_then(|(_, rest)| rest.split_once('>'))
         .and_then(|(_, rest)| rest.split_once("</script>"))
     else {
         // Not in a closure, which `#[track_caller]` doesn't reach.

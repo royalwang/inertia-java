@@ -59,6 +59,7 @@ impl ProvidesScrollMetadata for ScrollMetadata {
 
 /// A page of items, serialized like Laravel's length-aware paginator.
 #[derive(Debug, Clone, Serialize)]
+#[must_use]
 pub struct Paginator<T> {
     /// The items on the current page.
     pub data: Vec<T>,
@@ -82,6 +83,7 @@ impl<T> Paginator<T> {
     /// Create a paginator for a page of items.
     pub fn new(data: Vec<T>, total: u64, per_page: u64, current_page: u64) -> Self {
         let per_page = per_page.max(1);
+        let current_page = current_page.max(1);
         let last_page = total.div_ceil(per_page).max(1);
         let count = data.len() as u64;
         let from = (count > 0).then(|| (current_page - 1) * per_page + 1);

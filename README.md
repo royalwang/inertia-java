@@ -255,7 +255,7 @@ The [`laravel-omega-vite`](../laravel-omega-vite) crate's `Vite` renders asset t
 - **In development** the Vite dev server writes its URL to a hot file (`public/hot`), and tags point at the dev server, including React Fast Refresh.
 - **In production** tags come from the build manifest, and its hash makes a good asset version.
 
-The manifest is parsed once and cached. Each render checks for the hot file and the manifest's modified time, so starting the dev server or a new build is picked up without a restart. In production, where neither changes without a deploy, `Vite::new().watch(false)` checks each once instead, and so does `HttpGateway::watch(false)` for its hot file and bundle.
+The manifest is parsed once and cached. Each render checks for the hot file and the manifest's modified time, so starting the dev server or a new build is picked up without a restart. In production, where neither changes without a deploy, `Vite::new().watch(false)` checks each once instead, and so does `HttpGateway::watch(false)` for its hot file and bundle, which it otherwise checks at most once a second.
 
 ```rust
 let vite = Vite::new();

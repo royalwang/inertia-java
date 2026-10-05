@@ -8,7 +8,7 @@ use crate::HttpResponse;
 use crate::errors::ErrorBags;
 use crate::header as inertia_header;
 use crate::inertia::Inertia;
-use crate::json::{encode_big_integers, html_safe_json};
+use crate::json::{encode_big_integers, escape_attribute, try_html_safe_json};
 use crate::page::Page;
 use crate::props::{self, IntoProp, PropError, Props, PropsResolver};
 use crate::session::{SharedSession, key};
@@ -184,7 +184,7 @@ impl Response {
                 .url_resolver
                 .as_ref()
                 .map_or_else(|| request.url().to_owned(), |resolve| resolve(request)),
-            version: config.current_version(),
+            version: inertia.version().to_owned(),
             metadata,
             preserve_big_integers,
             clear_history: clear_history || pending.clear_history || stored.clear_history,
@@ -258,14 +258,22 @@ async fn document(inertia: &Inertia, page: &Page, data: &Map<String, Value>, ssr
     };
 
     let ssr = rendered.is_some();
-    let Rendered { head, body } = rendered.unwrap_or_else(|| Rendered {
-        head: String::new(),
-        body: format!(
-            r#"<script data-page="{id}" type="application/json">{json}</script><div id="{id}"></div>"#,
-            id = config.root_id,
-            json = html_safe_json(page),
-        ),
-    });
+    let Rendered { head, body } = match rendered {
+        Some(rendered) => rendered,
+        None => match try_html_safe_json(page) {
+            Ok(json) => Rendered {
+                head: String::new(),
+                body: format!(
+                    r#"<script data-page="{id}" type="application/json">{json}</script><div id="{id}"></div>"#,
+                    id = escape_attribute(&config.root_id),
+                ),
+            },
+            Err(error) => {
+                tracing::error!(%error, "failed to serialize the Inertia page");
+                return text(StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error");
+            }
+        },
+    };
 
     let html = config.render_root_view(&View {
         page,
