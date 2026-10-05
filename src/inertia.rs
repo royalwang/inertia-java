@@ -225,7 +225,10 @@ impl Inertia {
         std::mem::take(&mut *self.pending())
     }
 
-    /// Put back what a failed page render took, ahead of anything queued since.
+    /// Put back the flash data, errors and history flags a failed page render
+    /// took, ahead of anything queued since. Props shared with
+    /// [`share`](Self::share) aren't among them: the render moved them into
+    /// the props it resolved, so they're gone.
     pub(crate) fn restore_pending(&self, taken: Pending) {
         let mut pending = self.pending();
         let queued = std::mem::replace(&mut *pending, taken);

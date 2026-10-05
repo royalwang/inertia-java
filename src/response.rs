@@ -163,7 +163,8 @@ impl Response {
 
         // A failed render shows an error page instead of this one, so the
         // flash data, errors and history flags it would have delivered are
-        // kept for the next render.
+        // kept for the next render. Props shared with `Inertia::share` were
+        // moved into the resolver above, so they aren't.
         let (props, metadata) = match resolved {
             Ok(resolved) => resolved,
             Err(error) => {
