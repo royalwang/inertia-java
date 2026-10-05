@@ -197,7 +197,7 @@ impl Response {
                 .url_resolver
                 .as_ref()
                 .map_or_else(|| request.url().to_owned(), |resolve| resolve(request)),
-            version: config.current_version(),
+            version: inertia.version().to_owned(),
             metadata,
             preserve_big_integers,
             clear_history: clear_history || pending.clear_history || stored.clear_history,

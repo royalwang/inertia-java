@@ -1,5 +1,8 @@
 //! The Axum adapter.
 
+use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
+
 use axum::body::Body;
 use axum::extract::Request;
 use axum::middleware::{self, Next};
@@ -158,6 +161,23 @@ async fn outdated_clients_reload_the_page() {
 
     assert_eq!(response.status, StatusCode::CONFLICT);
     assert_eq!(response.header("x-inertia-location"), Some("http://localhost/?a=1"));
+}
+
+#[tokio::test]
+async fn computed_versions_are_computed_once_per_request() {
+    let computed = Arc::new(AtomicUsize::new(0));
+    let config = Config::new().version_with({
+        let computed = Arc::clone(&computed);
+        move || {
+            computed.fetch_add(1, Ordering::Relaxed);
+            "1".to_owned()
+        }
+    });
+
+    let response = send(&app(config), visit("GET", "/").body(Body::empty()).unwrap()).await;
+
+    response.page().version("1");
+    assert_eq!(computed.load(Ordering::Relaxed), 1);
 }
 
 #[tokio::test]
