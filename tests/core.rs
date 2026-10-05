@@ -1,5 +1,7 @@
 //! The framework-agnostic core, exercised without a web framework.
 
+use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
 use http::{HeaderMap, HeaderName, Method};
@@ -186,6 +188,54 @@ async fn partial_reloads_of_another_component_are_full_visits() {
 
     assert_eq!(page.props["appName"], "Demo");
     assert!(page.props.get("optional").is_none());
+}
+
+#[tokio::test]
+async fn dot_keys_set_inside_callbacks_without_running_them_early() {
+    let loaded = Arc::new(AtomicBool::new(false));
+    let props = || {
+        let loaded = Arc::clone(&loaded);
+
+        props! {
+            "users" => ["Taylor"],
+            "auth" => inertia::lazy(move || async move {
+                loaded.store(true, Ordering::SeqCst);
+                json!({ "user": { "name": "Taylor" } })
+            }),
+            "auth.user.id" => 1,
+            "auth.permissions" => inertia::lazy(|| async { ["edit"] }),
+        }
+    };
+
+    for header in [
+        ("x-inertia-partial-data", "users"),
+        ("x-inertia-partial-except", "auth"),
+    ] {
+        let page = resolve(reload(&[header]).render("Users", props())).await;
+
+        assert!(page.props.get("auth").is_none(), "{header:?}");
+        assert!(!loaded.load(Ordering::SeqCst), "{header:?}");
+    }
+
+    let page = resolve(visit(&[]).render("Users", props())).await;
+    assert_eq!(
+        page.props["auth"],
+        json!({ "user": { "name": "Taylor", "id": 1 }, "check": true, "permissions": ["edit"] })
+    );
+}
+
+#[tokio::test]
+async fn dot_keys_replace_rescued_callbacks() {
+    let page = resolve(visit(&[]).render(
+        "Users",
+        props! {
+            "stats" => inertia::try_lazy(|| async { Err::<u8, _>("boom") }).rescue(),
+            "stats.total" => 1,
+        },
+    ))
+    .await;
+
+    assert_eq!(page.props["stats"], json!({ "total": 1 }));
 }
 
 #[tokio::test]

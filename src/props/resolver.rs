@@ -41,6 +41,8 @@ enum Resolved {
     Nested(Props),
     /// A callback running concurrently with its siblings, by index.
     Pending(usize),
+    /// A pending callback whose output gains the props set inside it.
+    Extended(usize, Vec<(Vec<String>, Prop)>),
     /// A callback's output; its children bypass partial filtering.
     Computed(Value),
 }
@@ -75,7 +77,7 @@ impl<'a> PropsResolver<'a> {
         let mut all = shared;
         all.0.extend(props.0);
 
-        let all = unpack_dot_keys(all).await?;
+        let all = unpack_dot_keys(all)?;
         let resolved = self.resolve_props(all, String::new(), false).await?;
 
         Ok((resolved, self.metadata))
@@ -131,6 +133,10 @@ impl<'a> PropsResolver<'a> {
                         callbacks.push(callback());
                         Ok(Resolved::Pending(callbacks.len() - 1))
                     }
+                    Source::Extended(callback, inserted) => {
+                        callbacks.push(callback());
+                        Ok(Resolved::Extended(callbacks.len() - 1, inserted))
+                    }
                 };
 
                 plans.push(Plan::Included {
@@ -171,6 +177,16 @@ impl<'a> PropsResolver<'a> {
 
                         Ok(Resolved::Computed(value))
                     }
+                    Resolved::Extended(index, inserted) => {
+                        let Computed { value, .. } = computed[index].take().expect("each callback is taken once")?;
+                        let mut props = object_props(value);
+
+                        for (segments, prop) in inserted {
+                            set_nested(&mut props, &segments, prop)?;
+                        }
+
+                        Ok(Resolved::Nested(props))
+                    }
                     value => Ok(value),
                 });
 
@@ -195,7 +211,7 @@ impl<'a> PropsResolver<'a> {
                     Resolved::Nested(nested) => Value::Object(self.resolve_props(nested, path, is_whole).await?),
                     Resolved::Literal(value) => self.filter_literal(value, &path, is_whole),
                     Resolved::Computed(value) => value,
-                    Resolved::Pending(_) => unreachable!("pending values are computed above"),
+                    Resolved::Pending(_) | Resolved::Extended(..) => unreachable!("pending values are computed above"),
                 };
 
                 resolved.insert(key, value);
@@ -375,7 +391,7 @@ fn is_within(path: &str, ancestor: &str) -> bool {
 }
 
 /// Unpack top-level dot-notation keys (`"auth.user"`) into nested props.
-async fn unpack_dot_keys(mut props: Props) -> Result<Props, PropError> {
+fn unpack_dot_keys(mut props: Props) -> Result<Props, PropError> {
     let dotted: Vec<String> = props
         .keys()
         .filter(|key| key.contains('.'))
@@ -384,64 +400,70 @@ async fn unpack_dot_keys(mut props: Props) -> Result<Props, PropError> {
 
     for key in dotted {
         if let Some(prop) = props.remove(&key) {
-            let segments: Vec<&str> = key.split('.').collect();
-            set_nested(&mut props, &segments, prop).await?;
+            let segments: Vec<String> = key.split('.').map(str::to_owned).collect();
+            set_nested(&mut props, &segments, prop)?;
         }
     }
 
     Ok(props)
 }
 
-fn set_nested<'a>(props: &'a mut Props, segments: &'a [&'a str], prop: Prop) -> BoxFuture<'a, Result<(), PropError>> {
-    Box::pin(async move {
-        let Some((first, rest)) = segments.split_first() else {
-            return Ok(());
-        };
+fn set_nested(props: &mut Props, segments: &[String], prop: Prop) -> Result<(), PropError> {
+    let Some((first, rest)) = segments.split_first() else {
+        return Ok(());
+    };
 
-        if rest.is_empty() {
-            props.0.insert((*first).to_owned(), prop);
-            return Ok(());
-        }
+    if rest.is_empty() {
+        props.0.insert(first.clone(), prop);
+        return Ok(());
+    }
 
-        let mut nested = match props.0.get_mut(*first) {
-            Some(Prop {
-                source: Source::Props(nested),
-                ..
-            }) => return set_nested(nested, rest, prop).await,
-            // A plain value or callback is resolved so the key can be set inside it.
-            Some(existing) if is_plain(&existing.options) => {
-                let source = std::mem::replace(&mut existing.source, Source::Value(Value::Null));
-                into_props(source).await?.unwrap_or_default()
+    let mut nested = match props.0.get_mut(first) {
+        Some(Prop {
+            source: Source::Props(nested),
+            ..
+        }) => return set_nested(nested, rest, prop),
+        // A plain value is unpacked so the key can be set inside it. A plain
+        // callback keeps the key until it runs, so it still runs only when
+        // the prop is part of the response, concurrently with its siblings.
+        Some(existing) if is_plain(&existing.options) => {
+            match std::mem::replace(&mut existing.source, Source::Value(Value::Null)) {
+                Source::Callback(callback) => {
+                    existing.source = Source::Extended(callback, vec![(rest.to_vec(), prop)]);
+                    return Ok(());
+                }
+                Source::Extended(callback, mut inserted) => {
+                    inserted.push((rest.to_vec(), prop));
+                    existing.source = Source::Extended(callback, inserted);
+                    return Ok(());
+                }
+                Source::Value(value) => object_props(value),
+                Source::Failed(error) => return Err(error),
+                Source::Props(_) => unreachable!("nested props are matched above"),
             }
-            _ => Props::new(),
-        };
+        }
+        _ => Props::new(),
+    };
 
-        set_nested(&mut nested, rest, prop).await?;
-        props.insert(*first, nested);
+    set_nested(&mut nested, rest, prop)?;
+    props.insert(first.clone(), nested);
 
-        Ok(())
-    })
+    Ok(())
 }
 
 fn is_plain(options: &Options) -> bool {
     options.loading == Loading::Eager
         && !options.always
+        && !options.rescue
         && options.merge.is_none()
         && options.once.is_none()
         && options.scroll.is_none()
 }
 
-/// Resolve a prop into nested props, or `None` when it isn't an object.
-async fn into_props(source: Source) -> Result<Option<Props>, PropError> {
-    let value = match source {
-        Source::Props(props) => return Ok(Some(props)),
-        Source::Value(value) => value,
-        Source::Callback(callback) => callback().await?.value,
-        Source::Failed(error) => return Err(error),
-    };
-
-    Ok(match value {
-        Value::Object(object) => Some(object.into_iter().collect()),
-        _ => None,
-    })
+/// An object's entries as props, or no props when the value isn't an object.
+fn object_props(value: Value) -> Props {
+    match value {
+        Value::Object(object) => object.into_iter().collect(),
+        _ => Props::new(),
+    }
 }
