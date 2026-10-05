@@ -153,7 +153,7 @@ props! {
 }
 ```
 
-Callbacks are `FnOnce` async closures, so they can move in owned data such as a database pool. **Sibling callbacks run concurrently**, so two deferred props that each take a second load in a second, not two.
+Callbacks are `FnOnce` async closures, so they can move in owned data such as a database pool. **Callbacks run concurrently**, nested ones included, so two deferred props that each take a second load in a second, not two.
 
 For infinite scroll, `Paginator` paginates a collection and describes its pages; implement `ProvidesScrollMetadata` for your own paginated types:
 

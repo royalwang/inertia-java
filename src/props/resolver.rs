@@ -2,7 +2,7 @@
 //! (`deferredProps`, `mergeProps`, `onceProps`, ...) along the way.
 //!
 //! A port of the Laravel adapter's `PropsResolver`, with one difference:
-//! sibling callbacks run concurrently.
+//! callbacks run concurrently, nested ones included.
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -17,20 +17,16 @@ use crate::request::Request;
 pub(crate) struct PropsResolver<'a> {
     request: &'a Request,
     is_partial: bool,
-    metadata: Metadata,
 }
 
-/// What to do with a prop once all of its siblings have been planned.
-enum Plan {
-    /// Left out of the response, though it may still announce metadata.
-    Excluded { path: String, options: Options },
-    /// Part of the response.
-    Included {
-        key: String,
-        path: String,
-        options: Options,
-        value: Result<Resolved, PropError>,
-    },
+/// A level of the props tree, resolved.
+type Level = (Map<String, Value>, Metadata);
+
+/// A prop, resolved: its entry in the response, if any, and the metadata
+/// it and its children announce.
+struct Outcome {
+    entry: Option<(String, Value)>,
+    metadata: Metadata,
 }
 
 /// A prop value on its way into the response.
@@ -39,10 +35,6 @@ enum Resolved {
     Literal(Value),
     /// Nested props.
     Nested(Props),
-    /// A callback running concurrently with its siblings, by index.
-    Pending(usize),
-    /// A pending callback whose output gains the props set inside it.
-    Extended(usize, Vec<(Vec<String>, Prop)>),
     /// A callback's output; its children bypass partial filtering.
     Computed(Value),
 }
@@ -52,24 +44,25 @@ impl<'a> PropsResolver<'a> {
         Self {
             request,
             is_partial: request.is_partial_reload_of(component),
-            metadata: Metadata::default(),
         }
     }
 
     /// Resolve the shared props and page props, returning the resolved props
     /// and their metadata. Page props take precedence over shared props.
     pub(crate) async fn resolve(
-        mut self,
+        self,
         shared: Props,
         props: Props,
         expose_shared_keys: bool,
-    ) -> Result<(Map<String, Value>, Metadata), PropError> {
+    ) -> Result<Level, PropError> {
+        let mut shared_props: Vec<String> = Vec::new();
+
         if expose_shared_keys {
             for key in shared.keys() {
                 let key = key.split('.').next().unwrap_or(key);
 
-                if !self.metadata.shared_props.iter().any(|shared| shared == key) {
-                    self.metadata.shared_props.push(key.to_owned());
+                if !shared_props.iter().any(|shared| shared == key) {
+                    shared_props.push(key.to_owned());
                 }
             }
         }
@@ -78,24 +71,28 @@ impl<'a> PropsResolver<'a> {
         all.0.extend(props.0);
 
         let all = unpack_dot_keys(all)?;
-        let resolved = self.resolve_props(all, String::new(), false).await?;
+        let (resolved, mut metadata) = self.resolve_props(all, String::new(), false).await?;
+        metadata.shared_props = shared_props;
 
-        Ok((resolved, self.metadata))
+        Ok((resolved, metadata))
     }
 
     /// Recursively resolve a level of the props tree.
     ///
-    /// Sibling callbacks run concurrently, while metadata is still collected
-    /// in prop order so the page object matches the Laravel adapter's.
+    /// Every prop of the level resolves concurrently, nested levels
+    /// included, while metadata is still collected in prop order so the
+    /// page object matches the Laravel adapter's.
     fn resolve_props(
-        &mut self,
+        &self,
         props: Props,
         prefix: String,
         parent_was_resolved: bool,
-    ) -> BoxFuture<'_, Result<Map<String, Value>, PropError>> {
+    ) -> BoxFuture<'_, Result<Level, PropError>> {
         Box::pin(async move {
-            let mut plans = Vec::with_capacity(props.len());
-            let mut callbacks = Vec::new();
+            // The outcomes of excluded props, which are known up front, and
+            // `None` for each included prop, whose future is in `futures`.
+            let mut outcomes = Vec::with_capacity(props.len());
+            let mut futures = Vec::with_capacity(props.len());
 
             for (key, Prop { source, mut options }) in props {
                 let path = if prefix.is_empty() {
@@ -113,7 +110,9 @@ impl<'a> PropsResolver<'a> {
                 // Optional, deferred and already loaded once props are left out
                 // of full visits, without running their callbacks.
                 if !self.is_partial && self.is_excluded_from_full_visit(&options, &path) {
-                    plans.push(Plan::Excluded { path, options });
+                    let mut metadata = Metadata::default();
+                    self.collect_excluded_metadata(&mut metadata, &options, &path);
+                    outcomes.push(Some(Outcome { entry: None, metadata }));
                     continue;
                 }
 
@@ -125,99 +124,94 @@ impl<'a> PropsResolver<'a> {
                     }
                 }
 
-                let value = match source {
-                    Source::Value(value) => Ok(Resolved::Literal(value)),
-                    Source::Props(props) => Ok(Resolved::Nested(props)),
-                    Source::Failed(error) => Err(error),
-                    Source::Callback(callback) => {
-                        callbacks.push(callback());
-                        Ok(Resolved::Pending(callbacks.len() - 1))
-                    }
-                    Source::Extended(callback, inserted) => {
-                        callbacks.push(callback());
-                        Ok(Resolved::Extended(callbacks.len() - 1, inserted))
-                    }
-                };
-
-                plans.push(Plan::Included {
-                    key,
-                    path,
-                    options,
-                    value,
-                });
+                outcomes.push(None);
+                futures.push(self.resolve_prop(key, path, source, options, parent_was_resolved));
             }
 
-            let mut computed: Vec<Option<Result<Computed, PropError>>> =
-                join_all(callbacks).await.into_iter().map(Some).collect();
-
+            let mut resolved_outcomes = join_all(futures).await.into_iter();
             let mut resolved = Map::new();
+            let mut metadata = Metadata::default();
 
-            for plan in plans {
-                let (key, path, mut options, value) = match plan {
-                    Plan::Excluded { path, options } => {
-                        self.collect_excluded_metadata(&options, &path);
-                        continue;
-                    }
-                    Plan::Included {
-                        key,
-                        path,
-                        options,
-                        value,
-                    } => (key, path, options, value),
+            for outcome in outcomes {
+                let outcome = match outcome {
+                    Some(outcome) => outcome,
+                    None => resolved_outcomes.next().expect("each included prop has an outcome")?,
                 };
 
-                let value = value.and_then(|value| match value {
-                    Resolved::Pending(index) => {
-                        let Computed { value, scroll } =
-                            computed[index].take().expect("each callback is taken once")?;
+                metadata.extend(outcome.metadata);
 
-                        if let (Some(options), Some(metadata)) = (&mut options.scroll, scroll) {
-                            options.metadata = Some(metadata);
-                        }
-
-                        Ok(Resolved::Computed(value))
-                    }
-                    Resolved::Extended(index, inserted) => {
-                        let Computed { value, .. } = computed[index].take().expect("each callback is taken once")?;
-                        let mut props = object_props(value);
-
-                        for (segments, prop) in inserted {
-                            set_nested(&mut props, &segments, prop)?;
-                        }
-
-                        Ok(Resolved::Nested(props))
-                    }
-                    value => Ok(value),
-                });
-
-                let value = match value {
-                    Ok(value) => value,
-                    Err(error) if options.rescue => {
-                        tracing::error!(prop = path, %error, "rescued an Inertia prop that failed to resolve");
-                        self.metadata.rescued_props.push(path);
-                        continue;
-                    }
-                    Err(error) => return Err(error),
-                };
-
-                self.collect_metadata(&options, &path);
-
-                // Like the Laravel adapter, which adds always props back after
-                // filtering, an always prop is sent whole: its children are as
-                // exempt from partial filtering as a resolved value's.
-                let is_whole = parent_was_resolved || options.always;
-
-                let value = match value {
-                    Resolved::Nested(nested) => Value::Object(self.resolve_props(nested, path, is_whole).await?),
-                    Resolved::Literal(value) => self.filter_literal(value, &path, is_whole),
-                    Resolved::Computed(value) => value,
-                    Resolved::Pending(_) | Resolved::Extended(..) => unreachable!("pending values are computed above"),
-                };
-
-                resolved.insert(key, value);
+                if let Some((key, value)) = outcome.entry {
+                    resolved.insert(key, value);
+                }
             }
 
-            Ok(resolved)
+            Ok((resolved, metadata))
+        })
+    }
+
+    /// Resolve a prop that is part of the response.
+    async fn resolve_prop(
+        &self,
+        key: String,
+        path: String,
+        source: Source,
+        mut options: Options,
+        parent_was_resolved: bool,
+    ) -> Result<Outcome, PropError> {
+        let mut metadata = Metadata::default();
+
+        let value = match source {
+            Source::Value(value) => Ok(Resolved::Literal(value)),
+            Source::Props(props) => Ok(Resolved::Nested(props)),
+            Source::Failed(error) => Err(error),
+            Source::Callback(callback) => callback().await.map(|Computed { value, scroll }| {
+                if let (Some(options), Some(metadata)) = (&mut options.scroll, scroll) {
+                    options.metadata = Some(metadata);
+                }
+
+                Resolved::Computed(value)
+            }),
+            Source::Extended(callback, inserted) => callback().await.and_then(|Computed { value, .. }| {
+                let mut props = object_props(value);
+
+                for (segments, prop) in inserted {
+                    set_nested(&mut props, &segments, prop)?;
+                }
+
+                Ok(Resolved::Nested(props))
+            }),
+        };
+
+        let value = match value {
+            Ok(value) => value,
+            Err(error) if options.rescue => {
+                tracing::error!(prop = path, %error, "rescued an Inertia prop that failed to resolve");
+                metadata.rescued_props.push(path);
+                return Ok(Outcome { entry: None, metadata });
+            }
+            Err(error) => return Err(error),
+        };
+
+        self.collect_metadata(&mut metadata, &options, &path);
+
+        // Like the Laravel adapter, which adds always props back after
+        // filtering, an always prop is sent whole: its children are as
+        // exempt from partial filtering as a resolved value's.
+        let is_whole = parent_was_resolved || options.always;
+
+        let value = match value {
+            Resolved::Nested(nested) => {
+                let (nested, children) = self.resolve_props(nested, path, is_whole).await?;
+                metadata.extend(children);
+                Value::Object(nested)
+            }
+            Resolved::Literal(value) => self.filter_literal(value, &path, is_whole),
+            Resolved::Computed(value) => value,
+        };
+
+        Ok(Outcome {
+            entry: Some((key, value)),
+            metadata,
         })
     }
 
@@ -292,11 +286,11 @@ impl<'a> PropsResolver<'a> {
     }
 
     /// Collect the metadata a prop announces while being left out.
-    fn collect_excluded_metadata(&mut self, options: &Options, path: &str) {
+    fn collect_excluded_metadata(&self, metadata: &mut Metadata, options: &Options, path: &str) {
         if let Loading::Deferred { group } = &options.loading
             && !self.was_already_loaded(options, path)
         {
-            self.metadata
+            metadata
                 .deferred_props
                 .entry(group.clone())
                 .or_default()
@@ -306,41 +300,43 @@ impl<'a> PropsResolver<'a> {
         if options.loading != Loading::Eager
             && let Some(merge) = &options.merge
         {
-            self.collect_merge_metadata(merge, path);
+            self.collect_merge_metadata(metadata, merge, path);
         }
 
         if let Some(once) = &options.once {
-            self.collect_once_metadata(once, path);
+            self.collect_once_metadata(metadata, once, path);
         }
     }
 
     /// Collect the metadata of a prop that is part of the response.
-    fn collect_metadata(&mut self, options: &Options, path: &str) {
+    fn collect_metadata(&self, metadata: &mut Metadata, options: &Options, path: &str) {
         if let Some(merge) = &options.merge {
-            self.collect_merge_metadata(merge, path);
+            self.collect_merge_metadata(metadata, merge, path);
         }
 
-        if let Some(metadata) = options.scroll.as_ref().and_then(|scroll| scroll.metadata.clone()) {
+        if let Some(scroll) = options.scroll.as_ref().and_then(|scroll| scroll.metadata.clone()) {
             let reset = self.request.reset().iter().any(|reset| reset == path);
 
-            self.metadata
-                .scroll_props
-                .insert(path.to_owned(), ScrollState { metadata, reset });
+            metadata.scroll_props.insert(
+                path.to_owned(),
+                ScrollState {
+                    metadata: scroll,
+                    reset,
+                },
+            );
         }
 
         if let Some(once) = &options.once {
-            self.collect_once_metadata(once, path);
+            self.collect_once_metadata(metadata, once, path);
         }
     }
 
-    fn collect_merge_metadata(&mut self, merge: &Merge, path: &str) {
+    fn collect_merge_metadata(&self, metadata: &mut Metadata, merge: &Merge, path: &str) {
         if self.request.reset().iter().any(|reset| reset == path)
             || (self.is_partial && !self.contributes_partial_metadata(path))
         {
             return;
         }
-
-        let metadata = &mut self.metadata;
 
         if merge.deep {
             metadata.deep_merge_props.push(path.to_owned());
@@ -362,7 +358,7 @@ impl<'a> PropsResolver<'a> {
             .extend(merge.match_on.iter().map(|key| format!("{path}.{key}")));
     }
 
-    fn collect_once_metadata(&mut self, once: &Once, path: &str) {
+    fn collect_once_metadata(&self, metadata: &mut Metadata, once: &Once, path: &str) {
         if self.is_partial && !self.contributes_partial_metadata(path) {
             return;
         }
@@ -374,7 +370,7 @@ impl<'a> PropsResolver<'a> {
             (now.as_secs() + ttl.as_secs()) * 1000
         });
 
-        self.metadata.once_props.insert(
+        metadata.once_props.insert(
             once.key.clone().unwrap_or_else(|| path.to_owned()),
             OnceState {
                 prop: path.to_owned(),

@@ -10,6 +10,7 @@ use inertia::testing::AssertablePage;
 use inertia::{Config, Inertia, Page, Paginator, Props, Request, ValidationErrors, props};
 use serde::Serialize;
 use serde_json::json;
+use tokio::sync::Barrier;
 
 fn config() -> Config {
     Config::new()
@@ -378,6 +379,55 @@ async fn sibling_callbacks_resolve_concurrently() {
         "took {:?}",
         started.elapsed()
     );
+}
+
+#[tokio::test]
+async fn nested_callbacks_resolve_concurrently() {
+    // Each callback waits for the others, so resolving them one after
+    // another would never finish.
+    let barrier = Arc::new(Barrier::new(3));
+    let waiting = |value: u8| {
+        let barrier = Arc::clone(&barrier);
+
+        inertia::lazy(move || async move {
+            barrier.wait().await;
+            value
+        })
+    };
+
+    let render = visit(&[]).render(
+        "Users",
+        props! {
+            "auth.user" => waiting(1),
+            "stats" => waiting(2),
+            "nested" => props! { "deeper" => props! { "total" => waiting(3) } },
+        },
+    );
+    let page = tokio::time::timeout(Duration::from_secs(5), resolve(render))
+        .await
+        .expect("the callbacks should run concurrently");
+
+    assert_eq!(page.props["auth"]["user"], 1);
+    assert_eq!(page.props["stats"], 2);
+    assert_eq!(page.props["nested"], json!({ "deeper": { "total": 3 } }));
+}
+
+#[tokio::test]
+async fn nested_metadata_is_collected_in_prop_order() {
+    let props = props! {
+        "a" => inertia::merge([1]),
+        "nested" => props! {
+            "b" => inertia::merge([2]),
+            "deeper" => props! { "c" => inertia::defer(|| async { 3 }).merge() },
+        },
+        "d" => inertia::defer(|| async { 4 }).merge(),
+        "e.f" => inertia::merge([5]),
+    };
+
+    let metadata = resolve(visit(&[]).render("Users", props)).await.metadata;
+
+    assert_eq!(metadata.merge_props, ["a", "nested.b", "nested.deeper.c", "d", "e.f"]);
+    assert_eq!(metadata.deferred_props["default"], ["nested.deeper.c", "d"]);
 }
 
 #[tokio::test]
