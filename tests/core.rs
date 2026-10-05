@@ -342,6 +342,17 @@ async fn once_props_with_huge_ttls_saturate() {
     assert_eq!(page.metadata.once_props["plans"].expires_at, Some(u64::MAX));
 }
 
+#[test]
+fn prop_errors_are_transparent() {
+    let error = inertia::PropError::new(std::io::Error::other("database down"));
+
+    assert_eq!(error.to_string(), "database down");
+    assert!(
+        std::error::Error::source(&error).is_none(),
+        "the message would appear twice"
+    );
+}
+
 #[tokio::test]
 async fn scroll_props_carry_pagination_metadata() {
     let props = || {

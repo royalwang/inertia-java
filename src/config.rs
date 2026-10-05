@@ -24,6 +24,7 @@ type ResolveUrl = dyn Fn(&Request) -> String + Send + Sync;
 ///     });
 /// ```
 #[derive(Clone)]
+#[must_use]
 pub struct Config {
     version: Version,
     root_view: Arc<dyn RootView>,

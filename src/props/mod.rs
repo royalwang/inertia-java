@@ -21,6 +21,9 @@ pub use self::scroll::{Paginator, ProvidesScrollMetadata, ScrollMetadata};
 pub type BoxError = Box<dyn std::error::Error + Send + Sync>;
 
 /// An error raised while resolving a prop.
+///
+/// Transparent: it displays as the error it wraps, and reports that error's
+/// source as its own.
 #[derive(Debug)]
 pub struct PropError(BoxError);
 
@@ -39,7 +42,9 @@ impl fmt::Display for PropError {
 
 impl std::error::Error for PropError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        Some(&*self.0)
+        // `Display` already shows the wrapped error, so reporting it as the
+        // source too would print its message twice in an error chain.
+        self.0.source()
     }
 }
 

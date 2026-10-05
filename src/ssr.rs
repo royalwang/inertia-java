@@ -54,6 +54,7 @@ impl<G: Gateway> DynGateway for G {
 /// started with `node bootstrap/ssr/app.js`.
 #[cfg(feature = "ssr")]
 #[derive(Debug, Clone)]
+#[must_use]
 pub struct HttpGateway {
     url: String,
     hot_file: Option<PathBuf>,
