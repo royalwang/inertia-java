@@ -311,3 +311,45 @@ async fn the_extractor_requires_the_layer() {
 
     assert_eq!(send(&app, get_("/")).await.status, StatusCode::INTERNAL_SERVER_ERROR);
 }
+
+#[tokio::test]
+async fn renders_returned_without_the_layer_are_logged() {
+    let errors = Arc::new(AtomicUsize::new(0));
+    let _guard = tracing::subscriber::set_default(CountErrors(Arc::clone(&errors)));
+
+    send(&app(config()), get_("/")).await;
+    assert_eq!(errors.load(Ordering::Relaxed), 0, "the layer rendered it");
+
+    let request = inertia::Request::new(http::Method::GET, &"/".parse().unwrap(), HeaderMap::new());
+    drop(Inertia::new(config(), request).render("Home", ()).into_response());
+    assert_eq!(errors.load(Ordering::Relaxed), 1);
+}
+
+/// Counts the `error` events Inertia logs.
+struct CountErrors(Arc<AtomicUsize>);
+
+impl tracing::Subscriber for CountErrors {
+    fn enabled(&self, _: &tracing::Metadata<'_>) -> bool {
+        true
+    }
+
+    fn new_span(&self, _: &tracing::span::Attributes<'_>) -> tracing::span::Id {
+        tracing::span::Id::from_u64(1)
+    }
+
+    fn record(&self, _: &tracing::span::Id, _: &tracing::span::Record<'_>) {}
+
+    fn record_follows_from(&self, _: &tracing::span::Id, _: &tracing::span::Id) {}
+
+    fn event(&self, event: &tracing::Event<'_>) {
+        let metadata = event.metadata();
+
+        if *metadata.level() == tracing::Level::ERROR && metadata.target().starts_with("inertia") {
+            self.0.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    fn enter(&self, _: &tracing::span::Id) {}
+
+    fn exit(&self, _: &tracing::span::Id) {}
+}
