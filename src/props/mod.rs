@@ -23,7 +23,21 @@ pub type BoxError = Box<dyn std::error::Error + Send + Sync>;
 /// An error raised while resolving a prop.
 ///
 /// Transparent: it displays as the error it wraps, and reports that error's
-/// source as its own.
+/// source as its own. Reach the wrapped error itself with
+/// [`get_ref`](Self::get_ref) or [`into_inner`](Self::into_inner), for
+/// example to turn a missing database row into a `404`:
+///
+/// ```
+/// # #[derive(Debug)] struct RowNotFound;
+/// # impl std::fmt::Display for RowNotFound {
+/// #     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result { f.write_str("row not found") }
+/// # }
+/// # impl std::error::Error for RowNotFound {}
+/// let error = inertia::PropError::new(RowNotFound);
+///
+/// let status = if error.get_ref().is::<RowNotFound>() { 404 } else { 500 };
+/// assert_eq!(status, 404);
+/// ```
 #[derive(Debug)]
 pub struct PropError(BoxError);
 
@@ -31,6 +45,16 @@ impl PropError {
     /// Wrap an error.
     pub fn new(error: impl Into<BoxError>) -> Self {
         Self(error.into())
+    }
+
+    /// The wrapped error, to inspect or downcast.
+    pub fn get_ref(&self) -> &(dyn std::error::Error + Send + Sync + 'static) {
+        &*self.0
+    }
+
+    /// Unwrap the error, to downcast it by value.
+    pub fn into_inner(self) -> BoxError {
+        self.0
     }
 }
 

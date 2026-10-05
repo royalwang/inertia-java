@@ -354,6 +354,30 @@ fn prop_errors_are_transparent() {
     );
 }
 
+#[test]
+fn prop_errors_give_access_to_the_wrapped_error() {
+    let error = inertia::PropError::new(std::io::Error::new(std::io::ErrorKind::NotFound, "no such user"));
+
+    let wrapped = error.get_ref().downcast_ref::<std::io::Error>().unwrap();
+    assert_eq!(wrapped.kind(), std::io::ErrorKind::NotFound);
+
+    let wrapped = error.into_inner().downcast::<std::io::Error>().unwrap();
+    assert_eq!(wrapped.kind(), std::io::ErrorKind::NotFound);
+}
+
+#[tokio::test]
+async fn failed_props_keep_their_error() {
+    let props = props! {
+        "user" => inertia::try_lazy(|| async {
+            Err::<(), _>(std::io::Error::new(std::io::ErrorKind::NotFound, "no such user"))
+        }),
+    };
+
+    let error = visit(&[]).render("Users", props).into_page().await.unwrap_err();
+
+    assert!(error.get_ref().is::<std::io::Error>());
+}
+
 #[tokio::test]
 async fn scroll_props_carry_pagination_metadata() {
     let props = || {

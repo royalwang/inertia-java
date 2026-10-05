@@ -141,7 +141,7 @@ The functions at the crate root create props with special behavior, which builde
 | `inertia::deep_merge(value)` | Deep merged with its client-side value. |
 | `inertia::once(..)` | Resolved once and remembered by the client. `.once_as("key")`, `.until(duration)`, `.fresh()`. |
 | `inertia::scroll(paginator)` | An infinite scroll page, for `<InfiniteScroll>`. `inertia::scroll_with(\|\| async { .. })` loads it lazily. |
-| `inertia::try_lazy(..)` | A fallible callback. Errors fail the response, unless the prop is `.rescue()`d. |
+| `inertia::try_lazy(..)` | A fallible callback. Errors fail the response, unless the prop is `.rescue()`d. `Response::into_page` returns the error as a `PropError`, whose `get_ref()` and `into_inner()` give back the callback's own error. |
 
 The behaviors compose:
 
