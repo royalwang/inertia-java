@@ -5,7 +5,7 @@ use axum::extract::Request;
 use axum::middleware::{self, Next};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post, put};
-use axum::{Json, Router};
+use axum::{Extension, Json, Router};
 use http::{HeaderMap, StatusCode, header};
 use http_body_util::BodyExt;
 use inertia::axum::InertiaLayer;
@@ -43,6 +43,12 @@ fn app(config: Config) -> Router {
             get(|inertia: Inertia| async move { inertia.location("https://inertiajs.com") }),
         )
         .route("/json", get(|| async { Json(serde_json::json!({ "plain": true })) }))
+        .route(
+            "/login",
+            get(|Extension(session): Extension<tower_sessions::Session>| async move {
+                session.insert("user", 1).await.unwrap();
+            }),
+        )
         .route_layer(middleware::from_fn(share_user))
         .layer(InertiaLayer::new(config))
         .layer(SessionManagerLayer::new(MemoryStore::default()).with_secure(false))
@@ -232,6 +238,27 @@ async fn flash_data_and_errors_survive_a_redirect() {
     .await;
     response.page().equals("errors", serde_json::json!({}));
     assert!(response.page().page().flash.is_empty());
+}
+
+#[tokio::test]
+async fn renders_without_flash_data_leave_the_session_alone() {
+    let app = app(config());
+    let cookie = send(&app, get_("/login")).await.session_cookie();
+
+    // The session layer only saves a modified session, and sets a cookie
+    // when it does, so a read-only render can't overwrite another
+    // request's changes.
+    let response = send(
+        &app,
+        visit("GET", "/")
+            .header(header::COOKIE, &cookie)
+            .body(Body::empty())
+            .unwrap(),
+    )
+    .await;
+
+    assert_eq!(response.status, StatusCode::OK);
+    assert_eq!(response.header("set-cookie"), None);
 }
 
 #[tokio::test]
