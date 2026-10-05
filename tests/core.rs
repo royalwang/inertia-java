@@ -378,6 +378,40 @@ async fn flash_data_and_errors_are_delivered_to_the_next_render() {
 }
 
 #[tokio::test]
+async fn a_failed_render_keeps_flash_data_and_errors_for_the_next() {
+    let session = ArraySession::new();
+    let inertia = || {
+        Inertia::with_session(
+            config(),
+            request(Method::GET, &[("x-inertia", "true")]),
+            session.clone(),
+        )
+    };
+    let broken = || props! { "broken" => inertia::try_lazy(|| async { Err::<u8, _>("boom") }) };
+
+    let post = inertia();
+    post.flash("stored", 1)
+        .with_errors(ValidationErrors::new().with("name", "Required."));
+    post.commit().await;
+
+    // Pending state queued in the failing request, as by a middleware.
+    let get = inertia();
+    get.flash("pending", 2)
+        .with_errors_in("other", ValidationErrors::new().with("email", "Invalid."));
+    get.clear_history();
+    assert!(get.render("Users", broken()).into_page().await.is_err());
+    get.commit().await;
+
+    let page = resolve(inertia().render("Users", ())).await;
+    assert_eq!(
+        serde_json::to_value(&page.flash).unwrap(),
+        json!({ "stored": 1, "pending": 2 })
+    );
+    assert_eq!(page.props["errors"], json!({ "name": "Required." }));
+    assert!(page.clear_history);
+}
+
+#[tokio::test]
 async fn flash_data_reaches_a_render_in_the_same_request() {
     let inertia = visit(&[]);
     inertia.flash("toast", "Hi").encrypt_history(true);

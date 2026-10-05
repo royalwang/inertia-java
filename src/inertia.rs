@@ -215,6 +215,19 @@ impl Inertia {
         std::mem::take(&mut *self.pending())
     }
 
+    /// Put back what a failed page render took, ahead of anything queued since.
+    pub(crate) fn restore_pending(&self, taken: Pending) {
+        let mut pending = self.pending();
+        let queued = std::mem::replace(&mut *pending, taken);
+
+        pending.shared.extend(queued.shared);
+        pending.flash.extend(queued.flash);
+        pending.errors.merge(queued.errors);
+        pending.clear_history |= queued.clear_history;
+        pending.preserve_fragment |= queued.preserve_fragment;
+        pending.encrypt_history = queued.encrypt_history.or(pending.encrypt_history);
+    }
+
     fn pending(&self) -> MutexGuard<'_, Pending> {
         self.context.pending.lock().unwrap_or_else(PoisonError::into_inner)
     }
