@@ -2,7 +2,7 @@
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use http::{HeaderMap, HeaderName, Method};
 use inertia::session::ArraySession;
@@ -11,6 +11,7 @@ use inertia::{Config, Inertia, Page, Paginator, Props, Request, ValidationErrors
 use serde::Serialize;
 use serde_json::json;
 use tokio::sync::Barrier;
+use tokio::time::Instant;
 
 fn config() -> Config {
     Config::new()
@@ -383,7 +384,9 @@ async fn scroll_props_carry_pagination_metadata() {
     assert_eq!(page.metadata.scroll_props["later"].metadata.next_page, None);
 }
 
-#[tokio::test]
+// Paused, so the clock only moves when every task is waiting on it, and the
+// elapsed time is exact rather than subject to the machine's load.
+#[tokio::test(start_paused = true)]
 async fn sibling_callbacks_resolve_concurrently() {
     let slow = |value: u8| {
         inertia::lazy(move || async move {
@@ -396,11 +399,7 @@ async fn sibling_callbacks_resolve_concurrently() {
     let page = resolve(visit(&[]).render("Users", props! { "a" => slow(1), "b" => slow(2), "c" => slow(3) })).await;
 
     assert_eq!(page.props["c"], 3);
-    assert!(
-        started.elapsed() < Duration::from_millis(350),
-        "took {:?}",
-        started.elapsed()
-    );
+    assert_eq!(started.elapsed(), Duration::from_millis(200));
 }
 
 #[tokio::test]
