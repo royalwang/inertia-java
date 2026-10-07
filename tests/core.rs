@@ -11,7 +11,6 @@ use inertia::{Config, Inertia, Page, Paginator, Props, Request, ValidationErrors
 use serde::Serialize;
 use serde_json::json;
 use tokio::sync::Barrier;
-use tokio::time::Instant;
 
 fn config() -> Config {
     Config::new()
@@ -126,6 +125,53 @@ async fn partial_reloads_only_include_the_requested_props() {
             "always": "always",
         })
     );
+}
+
+#[tokio::test]
+async fn always_props_keep_their_children_on_partial_reloads() {
+    let inertia = reload(&[("x-inertia-partial-data", "users")]);
+    inertia.with_errors(ValidationErrors::new().with("name", "A name is required."));
+    let page = resolve(inertia.render(
+        "Users",
+        props! {
+            "users" => ["Taylor"],
+            "profile" => inertia::always(json!({ "user": { "id": 1 } })),
+            "settings" => inertia::always(props! { "theme" => "dark" }),
+        },
+    ))
+    .await;
+
+    assert_eq!(page.props["errors"], json!({ "name": "A name is required." }));
+    assert_eq!(page.props["profile"], json!({ "user": { "id": 1 } }));
+    assert_eq!(page.props["settings"], json!({ "theme": "dark" }));
+}
+
+#[test]
+fn serializing_a_shared_prop_can_share_another_prop() {
+    struct User(Inertia);
+
+    impl Serialize for User {
+        fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+            self.0.share("signed_in", true);
+            serializer.serialize_str("Taylor")
+        }
+    }
+
+    let (sender, receiver) = std::sync::mpsc::channel();
+    let thread = std::thread::spawn(move || {
+        let inertia = visit(&[]);
+        inertia.share("user", User(inertia.clone()));
+        sender.send(inertia).unwrap();
+    });
+    let inertia = receiver
+        .recv_timeout(Duration::from_secs(5))
+        .expect("sharing must not hold the pending-data lock while serializing");
+    thread.join().unwrap();
+
+    let runtime = tokio::runtime::Builder::new_current_thread().build().unwrap();
+    let page = runtime.block_on(resolve(inertia.render("Users", props! {})));
+    assert_eq!(page.props["user"], json!("Taylor"));
+    assert_eq!(page.props["signed_in"], json!(true));
 }
 
 #[tokio::test]
@@ -408,22 +454,36 @@ async fn scroll_props_carry_pagination_metadata() {
     assert_eq!(page.metadata.scroll_props["later"].metadata.next_page, None);
 }
 
-// Paused, so the clock only moves when every task is waiting on it, and the
-// elapsed time is exact rather than subject to the machine's load.
-#[tokio::test(start_paused = true)]
+#[test]
+fn paginator_normalizes_a_zero_page() {
+    let paginator = Paginator::new(vec!["Taylor"], 1, 15, 0);
+
+    assert_eq!(paginator.current_page, 1);
+    assert_eq!(paginator.from, Some(1));
+    assert_eq!(paginator.to, Some(1));
+}
+
+#[tokio::test]
 async fn sibling_callbacks_resolve_concurrently() {
-    let slow = |value: u8| {
+    let barrier = Arc::new(Barrier::new(3));
+    let wait = |value: u8| {
+        let barrier = Arc::clone(&barrier);
         inertia::lazy(move || async move {
-            tokio::time::sleep(Duration::from_millis(200)).await;
+            barrier.wait().await;
             value
         })
     };
 
-    let started = Instant::now();
-    let page = resolve(visit(&[]).render("Users", props! { "a" => slow(1), "b" => slow(2), "c" => slow(3) })).await;
+    let page = tokio::time::timeout(
+        Duration::from_secs(5),
+        resolve(visit(&[]).render("Users", props! { "a" => wait(1), "b" => wait(2), "c" => wait(3) })),
+    )
+    .await
+    .expect("all sibling callbacks must run before any waits for the others");
 
+    assert_eq!(page.props["a"], 1);
+    assert_eq!(page.props["b"], 2);
     assert_eq!(page.props["c"], 3);
-    assert_eq!(started.elapsed(), Duration::from_millis(200));
 }
 
 #[tokio::test]
@@ -571,6 +631,37 @@ async fn flash_data_reaches_a_render_in_the_same_request() {
 }
 
 #[tokio::test]
+async fn flash_data_from_prop_callbacks_reaches_the_current_page() {
+    let session = ArraySession::new();
+    let inertia = Inertia::with_session(config(), request(Method::GET, &[]), session.clone());
+    inertia.flash("before", "Queued before rendering");
+    let callback = inertia.clone();
+
+    let page = resolve(
+        inertia
+            .render(
+                "Users",
+                props! {
+                    "user" => inertia::lazy(move || async move {
+                        callback.flash("toast", "Profile refreshed").flash("priority", "Callback");
+                        "Taylor"
+                    }),
+                },
+            )
+            .flash("priority", "Response"),
+    )
+    .await;
+
+    assert_eq!(page.flash["toast"], "Profile refreshed");
+    assert_eq!(page.flash["before"], "Queued before rendering");
+    assert_eq!(page.flash["priority"], "Response");
+
+    inertia.commit().await;
+    let next = Inertia::with_session(config(), request(Method::GET, &[]), session);
+    assert!(resolve(next.render("Users", ())).await.flash.is_empty());
+}
+
+#[tokio::test]
 async fn first_visits_render_the_root_view() {
     let config =
         config().root_view(|view: &inertia::View<'_>| format!("<title>{}</title>{}", view.page.component, view.body));
@@ -613,19 +704,48 @@ fn converts_validator_errors() {
         #[validate(length(min = 3, message = "The name must be at least 3 characters."))]
         name: String,
         #[validate(email)]
-        email: String,
+        email_address: String,
+        #[validate(nested)]
+        address: Address,
+        #[validate(nested)]
+        phones: Vec<Phone>,
+    }
+
+    #[derive(Validate)]
+    struct Address {
+        #[validate(length(min = 1, message = "The city field is required."))]
+        city: String,
+    }
+
+    #[derive(Validate)]
+    struct Phone {
+        #[validate(length(min = 7, message = "The number is too short."))]
+        number: String,
     }
 
     let errors: ValidationErrors = NewUser {
         name: "Al".into(),
-        email: "nope".into(),
+        email_address: "nope".into(),
+        address: Address { city: String::new() },
+        phones: vec![
+            Phone {
+                number: "5551234".into(),
+            },
+            Phone { number: "1".into() },
+        ],
     }
     .validate()
     .unwrap_err()
     .into();
 
     assert_eq!(errors.first("name"), Some("The name must be at least 3 characters."));
-    assert_eq!(errors.first("email"), Some("email"));
+    assert_eq!(
+        errors.first("email_address"),
+        Some("The email address field is invalid.")
+    );
+    assert_eq!(errors.first("address.city"), Some("The city field is required."));
+    assert_eq!(errors.first("phones.1.number"), Some("The number is too short."));
+    assert!(!errors.has("phones.0.number"));
 }
 
 #[cfg(feature = "garde")]
@@ -637,9 +757,53 @@ fn converts_garde_reports() {
     struct NewUser {
         #[garde(length(min = 3))]
         name: String,
+        #[garde(dive)]
+        phones: Vec<Phone>,
     }
 
-    let errors: ValidationErrors = NewUser { name: "Al".into() }.validate().unwrap_err().into();
+    #[derive(Validate)]
+    struct Phone {
+        #[garde(length(min = 7))]
+        number: String,
+    }
+
+    let errors: ValidationErrors = NewUser {
+        name: "Al".into(),
+        phones: vec![
+            Phone {
+                number: "5551234".into(),
+            },
+            Phone { number: "1".into() },
+        ],
+    }
+    .validate()
+    .unwrap_err()
+    .into();
 
     assert!(errors.has("name"));
+    assert!(errors.has("phones.1.number"));
+    assert!(!errors.has("phones[1].number"));
+}
+
+#[tokio::test]
+async fn pages_carry_their_headers_as_json_and_as_documents() {
+    let json = visit(&[])
+        .render("Users", props! {})
+        .with_header("x-page", "users")
+        .with_header("x-page", "list")
+        .try_into_http()
+        .await
+        .unwrap();
+    assert_eq!(json.headers()["x-page"], "list");
+    assert_eq!(json.headers().get_all("x-page").iter().count(), 1);
+
+    let document = Inertia::new(config(), request(Method::GET, &[]))
+        .render("Users", props! {})
+        .with_headers([("x-page", "users"), ("cache-control", "no-store")])
+        .encrypt_history(true)
+        .try_into_http()
+        .await
+        .unwrap();
+    assert_eq!(document.headers()["x-page"], "users");
+    assert_eq!(document.headers()["cache-control"], "no-store");
 }

@@ -56,8 +56,8 @@ pub(crate) struct Pending {
 }
 
 impl Inertia {
-    /// Create a handle for a request that has no session. Flash data,
-    /// validation errors and history flags need one.
+    /// Create a handle without a session. Queued data can reach this request's
+    /// page, but can't carry over to later requests.
     pub fn new(config: impl Into<Arc<Config>>, request: Request) -> Self {
         Self::build(config.into(), request, None)
     }
@@ -107,6 +107,9 @@ impl Inertia {
 
     /// Share a prop with this request's page.
     pub fn share(&self, key: impl Into<String>, value: impl IntoProp) -> &Self {
+        let key = key.into();
+        // Prop conversion may serialize application code that shares more data.
+        let value = value.into_prop();
         self.pending().shared.insert(key, value);
         self
     }
@@ -114,9 +117,10 @@ impl Inertia {
     /// Flash data to the next page, in its `flash` field. Unlike props, flash
     /// data isn't kept in the browser history, which suits notifications.
     pub fn flash(&self, key: impl Into<String>, value: impl Serialize) -> &Self {
+        let key = key.into();
         match serde_json::to_value(value) {
             Ok(value) => {
-                self.pending().flash.insert(key.into(), value);
+                self.pending().flash.insert(key, value);
             }
             Err(error) => tracing::error!(%error, "failed to serialize Inertia flash data"),
         }
@@ -130,7 +134,9 @@ impl Inertia {
 
     /// Share validation errors with the next page, in the given error bag.
     pub fn with_errors_in(&self, bag: impl Into<String>, errors: impl Into<ValidationErrors>) -> &Self {
-        self.pending().errors.add(bag, errors.into());
+        let bag = bag.into();
+        let errors = errors.into();
+        self.pending().errors.add(bag, errors);
         self
     }
 
@@ -239,6 +245,11 @@ impl Inertia {
         pending.clear_history |= queued.clear_history;
         pending.preserve_fragment |= queued.preserve_fragment;
         pending.encrypt_history = queued.encrypt_history.or(pending.encrypt_history);
+    }
+
+    /// Take flash data queued while resolving props.
+    pub(crate) fn take_flash(&self) -> Map<String, Value> {
+        std::mem::take(&mut self.pending().flash)
     }
 
     fn pending(&self) -> MutexGuard<'_, Pending> {

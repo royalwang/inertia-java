@@ -1,8 +1,5 @@
-//! Resolves a page's props for a request, collecting the page metadata
-//! (`deferredProps`, `mergeProps`, `onceProps`, ...) along the way.
-//!
-//! A port of the Laravel adapter's `PropsResolver`, with one difference:
-//! callbacks run concurrently, nested ones included.
+//! Resolves props and page metadata. Callbacks run concurrently, nested
+//! ones included; metadata keeps prop order for protocol compatibility.
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
