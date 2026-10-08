@@ -1,1 +1,7 @@
 /target
+
+# Java and frontend build outputs
+**/target/
+**/node_modules/
+inertia-java/examples/spring-react/frontend/dist/
+inertia-java/examples/spring-react/frontend/.inertia/

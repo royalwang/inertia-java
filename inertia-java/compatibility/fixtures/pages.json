@@ -1,0 +1,157 @@
+{
+  "rustBaseline": "6667d8d1be314067af989eb049ba419a07fcd412",
+  "cases": [
+    {
+      "name": "full-basic",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "user",
+          "kind": "literal",
+          "value": {
+            "name": "Ada",
+            "role": "reader"
+          }
+        },
+        {
+          "key": "stats",
+          "kind": "deferred",
+          "value": 7
+        },
+        {
+          "key": "billing",
+          "kind": "optional",
+          "value": 9
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "user": {
+            "name": "Ada",
+            "role": "reader"
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "deferredProps": {
+          "default": [
+            "stats"
+          ]
+        }
+      }
+    },
+    {
+      "name": "partial-nested",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "user.name"
+      },
+      "definitions": [
+        {
+          "key": "user",
+          "kind": "literal",
+          "value": {
+            "name": "Ada",
+            "role": "reader"
+          }
+        },
+        {
+          "key": "stats",
+          "kind": "lazy",
+          "value": 7
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "user": {
+            "name": "Ada"
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "partial-deferred",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "stats"
+      },
+      "definitions": [
+        {
+          "key": "user",
+          "kind": "literal",
+          "value": {
+            "name": "Ada"
+          }
+        },
+        {
+          "key": "stats",
+          "kind": "deferred",
+          "value": 7
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "stats": 7
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "different-component",
+      "headers": {
+        "x-inertia-partial-component": "Other",
+        "x-inertia-partial-data": "nothing"
+      },
+      "definitions": [
+        {
+          "key": "user.name",
+          "kind": "literal",
+          "value": "Ada"
+        },
+        {
+          "key": "stats",
+          "kind": "lazy",
+          "value": 7
+        },
+        {
+          "key": "optional",
+          "kind": "optional",
+          "value": 9
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "stats": 7,
+          "user": {
+            "name": "Ada"
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    }
+  ]
+}

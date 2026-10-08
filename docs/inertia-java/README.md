@@ -1,8 +1,8 @@
 # Inertia Java 服务端适配与 SSR 项目设计
 
-日期：2026-10-08。状态：设计完成，Java 代码尚未实施。
+日期：2026-10-08。状态：设计完成，Java 工程实施中。
 
-目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。第一阶段交付的是本文档集，不表示已有可运行 Java 项目。
+目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已有可运行 Java + React/Node 示例，完成范围见实施记录。
 
 ## 阅读顺序
 
@@ -10,6 +10,7 @@
 2. [Java 架构规划](02-java-architecture.md)：模块、职责、API、运行与部署边界。
 3. [实施细节设计](03-implementation-design.md)：请求生命周期、props、会话、Spring、SSR 与资源。
 4. [实施计划与验收](04-delivery-plan.md)：工作包、依赖、验收用例、发布门槛。
+5. [实施状态与验证](05-implementation-status.md)：当前代码、测试证据与未完成项。
 
 ## 主要决策
 
@@ -30,4 +31,4 @@ Rust 分析基线：`6667d8d1be314067af989eb049ba419a07fcd412`。依据为本仓
 - [Inertia SSR](https://inertiajs.com/docs/v3/advanced/server-side-rendering)：作为 JavaScript 渲染运行方式依据。
 - [Spring MVC 返回值](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/return-types.html)：作为适配扩展点依据。
 
-Java 类名、配置名、目录和代码片段均为拟定接口。协议之外的设计取舍在各章明确说明。当前范围不含 Java 项目初始化、编译、发布、提交或推送。
+Java 类名、配置名、目录和代码片段均为拟定接口。协议之外的设计取舍在各章明确说明。上述四篇为初始设计快照；实际实现与仍待完成的范围见第五篇实施记录。

@@ -1,0 +1,2 @@
+import { Head, Link } from '@inertiajs/react'
+export default function About() { return <main><Head title="About" /><h1>About this app</h1><p>Inertia navigation uses the same Java routes.</p><Link href="/users">Back to users</Link><p><Link href="/feed">Explore feed</Link></p></main> }

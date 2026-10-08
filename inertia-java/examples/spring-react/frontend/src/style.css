@@ -1,0 +1,4 @@
+:root { font-family: system-ui, sans-serif; color: #203047; background: #f3f5f8; }
+main { max-width: 720px; margin: 8vh auto; padding: 40px; background: white; border: 1px solid #d9e0e8; border-radius: 16px; }
+h1 { font-size: 2.4rem; letter-spacing: -.04em; } a { color: #1461b8; } li { padding: 8px; }
+form { margin: 24px 0; display: grid; gap: 8px; } input, button { font: inherit; padding: 10px; border: 1px solid #becbd9; border-radius: 6px; } button { background: #1461b8; color: white; cursor: pointer; } [role=alert] { color: #a02b2b; }
