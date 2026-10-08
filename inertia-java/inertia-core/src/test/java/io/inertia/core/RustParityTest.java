@@ -17,12 +17,13 @@ class RustParityTest {
         var executor = Executors.newFixedThreadPool(4)) {
       assertNotNull(input);
       var fixtures = codec.read(new String(input.readAllBytes(), StandardCharsets.UTF_8));
-      var renderer =
-          new ResponseRenderer(
-              InertiaConfig.basic("v1", Set.of("Home")),
-              codec,
-              new PropsResolver(codec, executor, Duration.ofSeconds(1), 4));
       for (var fixture : fixtures.path("cases")) {
+        var renderer =
+            new ResponseRenderer(
+                InertiaConfig.basic("v1", Set.of("Home"))
+                    .withAllErrors(fixture.path("allErrors").asBoolean()),
+                codec,
+                new PropsResolver(codec, executor, Duration.ofSeconds(1), 4));
         var headers = new LinkedHashMap<String, String>();
         headers.put("x-inertia", "true");
         headers.put("x-inertia-version", "v1");
@@ -44,9 +45,11 @@ class RustParityTest {
         }
         var request =
             new InertiaRequest("GET", URI.create("https://app.test/users?page=2"), headers);
+        var context = new InertiaContext(request, null, codec);
+        for (var batch : fixture.path("errors")) context.withErrors(ErrorBags.fromJson(batch));
         var response =
             renderer
-                .render(request, new InertiaResponse("Home", props.build()))
+                .render(context, new InertiaResponse("Home", props.build()))
                 .toCompletableFuture()
                 .get();
         assertEquals(

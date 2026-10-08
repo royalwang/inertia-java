@@ -11,7 +11,8 @@ public record InertiaConfig(
     SsrGateway gateway,
     Function<InertiaRequest, Props> shared,
     boolean preserveBigIntegers,
-    boolean encryptHistory) {
+    boolean encryptHistory,
+    boolean allErrors) {
   public InertiaConfig {
     Objects.requireNonNull(version);
     Objects.requireNonNull(rootView);
@@ -21,6 +22,40 @@ public record InertiaConfig(
     components = Set.copyOf(components);
     if (components.isEmpty())
       throw new IllegalArgumentException("Register at least one page component");
+  }
+
+  public InertiaConfig(
+      Supplier<String> version,
+      String rootId,
+      Set<String> components,
+      RootView rootView,
+      SsrGateway gateway,
+      Function<InertiaRequest, Props> shared,
+      boolean preserveBigIntegers,
+      boolean encryptHistory) {
+    this(
+        version,
+        rootId,
+        components,
+        rootView,
+        gateway,
+        shared,
+        preserveBigIntegers,
+        encryptHistory,
+        false);
+  }
+
+  public InertiaConfig withAllErrors(boolean all) {
+    return new InertiaConfig(
+        version,
+        rootId,
+        components,
+        rootView,
+        gateway,
+        shared,
+        preserveBigIntegers,
+        encryptHistory,
+        all);
   }
 
   public static InertiaConfig basic(String version, Set<String> components) {

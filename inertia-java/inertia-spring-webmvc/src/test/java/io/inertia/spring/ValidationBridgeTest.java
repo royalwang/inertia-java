@@ -16,9 +16,14 @@ class ValidationBridgeTest {
         new FieldError(
             "form", "password", "secret-rejected-value", false, null, null, "Too short"));
     result.addError(new FieldError("form", "password", "Use a symbol"));
+    result.addError(new FieldError("form", "items[1].name", "Required nested name"));
     result.addError(new ObjectError("form", "Invalid form"));
     var first = ValidationBridge.firstErrors(result);
     assertEquals("Too short", first.get("password"));
+    assertEquals("Required nested name", first.get("items.1.name"));
+    assertEquals(
+        List.of("Too short", "Use a symbol"),
+        ValidationBridge.errors(result).messages().get("password"));
     assertEquals("Invalid form", first.get("_form"));
     assertFalse(first.toString().contains("secret-rejected-value"));
     var all = ValidationBridge.allErrors(result);

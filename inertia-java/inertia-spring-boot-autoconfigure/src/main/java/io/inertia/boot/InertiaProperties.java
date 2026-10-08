@@ -4,7 +4,7 @@ import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
-/** Validated execution budgets, independent of application page/asset configuration. */
+/** Validated execution budgets and optional validation presentation override. */
 @ConfigurationProperties("inertia")
 public record InertiaProperties(
     @DefaultValue("3s") Duration propsTimeout,
@@ -12,8 +12,11 @@ public record InertiaProperties(
     @DefaultValue("8") int propsConcurrency,
     @DefaultValue("8") int executorCoreSize,
     @DefaultValue("32") int executorMaxSize,
-    @DefaultValue("256") int executorQueueCapacity) {
+    @DefaultValue("256") int executorQueueCapacity,
+    Boolean allErrors,
+    @DefaultValue("default") String sessionNamespace) {
   public InertiaProperties {
+    io.inertia.core.SessionStore.requireNamespace(sessionNamespace);
     if (propsTimeout == null
         || propsTimeout.isNegative()
         || propsTimeout.isZero()

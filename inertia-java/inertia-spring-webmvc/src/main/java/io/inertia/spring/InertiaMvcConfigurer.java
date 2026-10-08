@@ -8,8 +8,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.*;
@@ -24,11 +22,32 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
   private final InertiaConfig config;
   private final ResponseRenderer renderer;
   private final Duration deadline;
+  private final InertiaErrorPage errorPage;
+  private final String sessionNamespace;
 
   public InertiaMvcConfigurer(InertiaConfig config, ResponseRenderer renderer, Duration deadline) {
+    this(config, renderer, deadline, null);
+  }
+
+  public InertiaMvcConfigurer(
+      InertiaConfig config,
+      ResponseRenderer renderer,
+      Duration deadline,
+      InertiaErrorPage errorPage) {
+    this(config, renderer, deadline, errorPage, SessionStore.DEFAULT_NAMESPACE);
+  }
+
+  public InertiaMvcConfigurer(
+      InertiaConfig config,
+      ResponseRenderer renderer,
+      Duration deadline,
+      InertiaErrorPage errorPage,
+      String sessionNamespace) {
     this.config = config;
     this.renderer = renderer;
     this.deadline = deadline;
+    this.errorPage = errorPage;
+    this.sessionNamespace = SessionStore.requireNamespace(sessionNamespace);
   }
 
   @Override
@@ -40,26 +59,20 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               throws Exception {
             if (!(handler instanceof HandlerMethod method) || !supports(method.getReturnType()))
               return true;
-            if (method.hasMethodAnnotation(ResponseBody.class)
-                || AnnotatedElementUtils.hasAnnotation(method.getBeanType(), ResponseBody.class))
-              throw new IllegalStateException(
-                  "InertiaResponse requires @Controller without @ResponseBody");
-            var headers = new LinkedHashMap<String, String>();
-            Collections.list(request.getHeaderNames())
-                .forEach(name -> headers.put(name, request.getHeader(name)));
-            String url =
-                request.getRequestURL()
-                    + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
-            var snapshot = new InertiaRequest(request.getMethod(), URI.create(url), headers);
-            request.setAttribute(REQUEST, snapshot);
+            InertiaHandlerValidator.validate(method);
+            var snapshot = snapshot(request);
             var early = ProtocolPolicy.before(snapshot, config.version().get());
             if (early.isPresent()) {
               write(response, early.get());
               return false;
             }
-            request.setAttribute(
-                CONTEXT,
-                new InertiaContext(snapshot, new HttpSessionStore(request.getSession()), codec));
+            if (request.getAttribute(CONTEXT) == null)
+              request.setAttribute(
+                  CONTEXT,
+                  new InertiaContext(
+                      snapshot,
+                      new HttpSessionStore(request.getSession(), sessionNamespace),
+                      codec));
             return true;
           }
 
@@ -69,10 +82,37 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               HttpServletResponse response,
               Object handler,
               Exception error) {
-            if (error != null && request.getAttribute(CONTEXT) instanceof InertiaContext context)
-              context.abort();
+            if (error != null) abort(request);
           }
         });
+  }
+
+  static void abort(HttpServletRequest request) {
+    if (request.getAttribute(CONTEXT) instanceof InertiaContext context) context.abort();
+  }
+
+  static InertiaRequest snapshot(HttpServletRequest request) {
+    if (request.getAttribute(REQUEST) instanceof InertiaRequest snapshot) return snapshot;
+    var headers = new LinkedHashMap<String, String>();
+    Collections.list(request.getHeaderNames())
+        .forEach(name -> headers.put(name, request.getHeader(name)));
+    String url =
+        request.getRequestURL()
+            + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
+    var snapshot = new InertiaRequest(request.getMethod(), URI.create(url), headers);
+    request.setAttribute(REQUEST, snapshot);
+    return snapshot;
+  }
+
+  @Override
+  public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
+    int position = 0;
+    for (int i = 0; i < resolvers.size(); i++)
+      if (resolvers.get(i)
+          instanceof
+          org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver)
+        position = i + 1;
+    resolvers.add(position, new InertiaExceptionResolver(renderer, deadline, errorPage));
   }
 
   private static boolean supports(MethodParameter parameter) {
@@ -132,7 +172,11 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               try {
                 outcome = pending.get(deadline.toMillis(), TimeUnit.MILLISECONDS);
               } catch (TimeoutException | InterruptedException error) {
-                context.abort();
+                try {
+                  context.abort();
+                } catch (RuntimeException cleanup) {
+                  error.addSuppressed(cleanup);
+                }
                 pending.cancel(true);
                 if (error instanceof InterruptedException) Thread.currentThread().interrupt();
                 throw error;
@@ -147,7 +191,7 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
         });
   }
 
-  private static void write(HttpServletResponse response, HttpOutcome outcome) throws Exception {
+  static void write(HttpServletResponse response, HttpOutcome outcome) throws Exception {
     response.setStatus(outcome.status());
     response.setCharacterEncoding("UTF-8");
     outcome

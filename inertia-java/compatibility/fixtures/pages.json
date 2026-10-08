@@ -152,6 +152,168 @@
           "errors"
         ]
       }
+    },
+    {
+      "name": "errors-default-scoped-and-mixed",
+      "headers": {
+        "x-inertia-error-bag": "createUser"
+      },
+      "definitions": [],
+      "errors": [
+        {
+          "default": {
+            "name": [
+              "Required",
+              "Too short"
+            ]
+          },
+          "login": {
+            "email": [
+              "Invalid"
+            ]
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {
+            "createUser": {
+              "name": "Required"
+            }
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "errors-default-all",
+      "headers": {},
+      "definitions": [],
+      "allErrors": true,
+      "errors": [
+        {
+          "default": {
+            "name": [
+              "Required",
+              "Too short"
+            ],
+            "empty": []
+          },
+          "login": {
+            "email": [
+              "Invalid"
+            ]
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {
+            "name": [
+              "Required",
+              "Too short"
+            ],
+            "empty": []
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "errors-named-first",
+      "headers": {
+        "x-inertia-error-bag": "ignored"
+      },
+      "definitions": [],
+      "errors": [
+        {
+          "login": {
+            "email": [
+              "Required",
+              "Invalid"
+            ]
+          },
+          "register": {
+            "name": [
+              "Too short"
+            ]
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {
+            "login": {
+              "email": "Required"
+            },
+            "register": {
+              "name": "Too short"
+            }
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "errors-named-all-merge",
+      "headers": {},
+      "definitions": [],
+      "allErrors": true,
+      "errors": [
+        {
+          "login": {
+            "email": [
+              "Required"
+            ]
+          }
+        },
+        {
+          "login": {
+            "email": [
+              "Invalid"
+            ],
+            "password": [
+              "Use a symbol"
+            ]
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {
+            "login": {
+              "email": [
+                "Required",
+                "Invalid"
+              ],
+              "password": [
+                "Use a symbol"
+              ]
+            }
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
     }
   ]
 }

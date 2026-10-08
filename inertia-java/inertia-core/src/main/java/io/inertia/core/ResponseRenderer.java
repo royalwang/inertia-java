@@ -27,26 +27,11 @@ public final class ResponseRenderer {
     try {
       var stored = context.begin();
       var initial = context.pending();
-      var errors = codec.object();
-      if (stored.path(InertiaContext.ERRORS).isObject())
-        errors.setAll(
-            (com.fasterxml.jackson.databind.node.ObjectNode) stored.path(InertiaContext.ERRORS));
-      if (initial.path(InertiaContext.ERRORS).isObject())
-        errors.setAll(
-            (com.fasterxml.jackson.databind.node.ObjectNode) initial.path(InertiaContext.ERRORS));
-      String bag = request.header("x-inertia-error-bag");
-      com.fasterxml.jackson.databind.JsonNode defaultErrors = errors.path("default");
-      var deliveredErrors = codec.object();
-      if (bag != null && !bag.isBlank() && defaultErrors.isObject())
-        deliveredErrors.set(bag, defaultErrors);
-      else if (defaultErrors.isObject())
-        deliveredErrors.setAll((com.fasterxml.jackson.databind.node.ObjectNode) defaultErrors);
-      errors
-          .fields()
-          .forEachRemaining(
-              e -> {
-                if (!e.getKey().equals("default")) deliveredErrors.set(e.getKey(), e.getValue());
-              });
+      var errors =
+          ErrorBags.fromJson(stored.get(InertiaContext.ERRORS))
+              .merge(ErrorBags.fromJson(initial.get(InertiaContext.ERRORS)));
+      var deliveredErrors =
+          errors.toProp(request.header("x-inertia-error-bag"), config.allErrors());
       Props shared =
           Props.overlay(
               Props.builder().put("errors", Prop.always(deliveredErrors)).build(),
@@ -133,11 +118,11 @@ public final class ResponseRenderer {
           .thenApply(outcome -> ProtocolPolicy.after(request, outcome))
           .whenComplete(
               (outcome, error) -> {
-                if (error != null) context.failed();
+                if (error != null) context.fail(error);
                 else context.complete();
               });
     } catch (Throwable error) {
-      context.failed();
+      context.fail(error);
       return CompletableFuture.failedFuture(error);
     }
   }

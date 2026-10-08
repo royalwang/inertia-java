@@ -18,15 +18,19 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、session 6、advanced props 4、Rust parity 1、SSR 2、自动装配 4、MVC 4、MVC timeout 1、Validation bridge 1，共 35 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 2、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 1，共 78 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
-| Rust → Java Page parity | 四组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件 |
+| Rust → Java Page parity | 八组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件、default/named/scoped/first/all/重复字段 errors |
 | npm typecheck | 通过 | 当前示例 TypeScript |
 | npm client + SSR build | 通过 | 生产双 bundle |
 | 实际 Node `/render` | 返回 head/body、一个 Page script 和一个 app root；含 server-rendered 标记 | 默认 root、Page 裸请求体、bigint 精确呈现 |
 | Chrome SSR flow，1280×900 | 通过 | HTML 首屏内容、hydrate、JSON 导航、deferred、空表单错误、有效表单 flash、无应用控制台错误 |
 | Chrome CSR fallback，18081 | 通过 | 不可达 renderer，空 app mount、deferred、导航、无 pageerror |
 | Chrome Vite SSR flow，18082 | hydration/导航/表单流程通过 | 开发 endpoint、hot assets、精确 bigint |
+| Chrome 错误页 SSR，18084 | 3 passed / 2 skipped | 500 首屏/hydrate/恢复导航、403 JSON；正常 SSR/Feed 回归 |
+| Chrome 错误页 CSR，18085 | 2 passed / 3 skipped | Node 不可达，500 页面 mount/恢复导航及正常 CSR 回归 |
+| Chrome namespaced session，18086 | 3 passed / 2 skipped | portal namespace 下表单/flash、真实会话失效→500→恢复导航、SSR/Feed 回归 |
+| Chrome all-errors 模式，18083 | 3 passed / 1 skipped | 双消息错误列表、成功提交清除错误、SSR 与 Feed 回归 |
 | 手机 390×844 截图 | 已采集 | 当前示例视觉快照，未做全浏览器/全设备认证 |
 
 浏览器运行使用 frontend-testing-debugging 技能；Browser 插件不可用，使用本机 Chrome + Playwright。Java 源码经 Spotless/Google Java Format 格式化；Maven Wrapper verify 已实际运行通过。每种模式跳过另一模式用例，最新生产 SSR 为 2 passed / 1 skipped，CSR 为 1 passed / 2 skipped；合起来验证两条链路。第一次发现 favicon 404 后修复模板并重跑通过。
@@ -37,8 +41,8 @@
 |---|---|
 | J0 | 更多跨语言 fixtures、非默认 root、客户端版本完整兼容清单 |
 | J1 | 共享/页面冲突诊断、完整配置与错误策略、边界审查 |
-| J2 | @ResponseBody 的完整组合注解启动诊断、错误页策略、更多自动装配覆盖测试 |
-| J3 | 完整 Jakarta ConstraintViolation bridge、Page all-errors 模式、响应显式 flash 已实现但还需专门优先级用例、session 失效/写失败策略、认证策略与 CSRF 过期恢复 |
+| J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
+| J3 | namespace 与 fail-closed 失效/写失败策略已落地；示例身份策略与 CSRF 过期恢复的进一步验收仍待处理 |
 | J4 | 更全面并发/取消/过载用例和观察；当前任一层超出并发额度拒绝而非排队，需压测评估 |
 | J5 | watch/health、except 与 hot/bundle 的专项合同、非 2xx/慢节点/超长响应浏览器验收、SSR 与 manifest build-id 对齐检查 |
 | J6 | 扩展边界组合、响应级 history/SSR override 的完整合同及浏览器验收；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
@@ -65,6 +69,42 @@
 
 ## 提交前验证与安全集成
 
-本次增量新增 Jakarta Bean Validation 的 DTO 约束和 BindingResult message bridge；first/all messages 返回不可变集合，不包含 rejected value 或 target。示例使用 Spring Security 的 cookie/header CSRF 策略，公共演示路由不要求登录，但缺失或错误 token 的 POST 返回 403；starter 不替应用配置安全策略。MockMvc 验证真实 GET cookie → POST header 路径，Chrome 表单验收检查自动发送 X-XSRF-TOKEN。Page all-errors 模式、认证策略、CSRF token 过期恢复仍未完成。
+本次增量新增 Jakarta Bean Validation 的 DTO 约束和 BindingResult message bridge；first/all messages 返回不可变集合，不包含 rejected value 或 target。示例使用 Spring Security 的 cookie/header CSRF 策略，公共演示路由不要求登录，但缺失或错误 token 的 POST 返回 403；starter 不替应用配置安全策略。MockMvc 验证真实 GET cookie → POST header 路径，Chrome 表单验收检查自动发送 X-XSRF-TOKEN。该阶段 Page all-errors 尚未接通；下述增量已完成。认证策略、CSRF token 过期恢复仍未完成。
 
 提交前重新执行 Java reactor verify（35 项通过）、Rust all-features（69 项通过）、前端 typecheck/build 和生产 SSR 浏览器用例（2 passed / 1 skipped，含 CSRF header、validation/flash 与 Feed），最新 CSR fallback 亦通过（1 passed / 2 skipped）。此增量可运行并继续开发，整个 J0–J7 目标仍在进行中。
+
+## ErrorBags / all-errors 与验证桥接增量
+
+新增不可变 `ValidationErrors`、`ErrorBags`；从入站验证到 session、失败恢复再到 Page 的链路保留所有消息，重复字段按追加合并。仅在最终渲染时选择首消息或全消息。core `withAllErrors` 与 Spring `inertia.all-errors` 都可配置，后者仅在显式设置时覆盖 Config。保留原 Config 构造器及字符串 map 入参，并能读取先前单字符串 session。
+
+核对 Rust `src/errors.rs` 后修复混合包投递：存在 default 时只投递 default，客户端 header 可将它包在指定 bag 中；无 default 时才返回全部命名 bag。不是把 named bag 附带到 default 上。错误始终作为 always prop，partial reload 也能领取；成功后消费一次，失败后恢复并合并期间新追加的消息。补充响应 flash > 请求 flash > stored flash 的优先级合同。
+
+`ValidationBridge.errors(BindingResult)` 返回全部消息，indexed field 转为 dotted field；直接 Jakarta bridge 不依赖 Path.toString，基于节点索引/键处理 nested、list、map、container element。真实 Hibernate Validator 验证了 `items.0.name`、`tags.0`、`byKey.primary.name`、password 只传消息。ConstraintViolation 的 Set 通过 path/message 排序稳定首消息，BindingResult 保持其原顺序。原始错误 target/rejected value 不序列化，但业务自定义消息仍应避免插入敏感值。
+
+本轮 Maven Wrapper `spotless:apply verify` 通过：42 项。Rust exporter 扩展到 8 组 Page fixtures，完整 JSON parity 通过。前端 typecheck 与双 bundle build 通过。生产 SSR + all-errors 运行于 `18083`：3 passed / 1 skipped，包含首屏/hydration、deferred、CSRF、Feed、双消息表单、成功 flash 和错误清除。首次新增浏览器断言错误假设 Playwright 的 redirect request headers 完整，实际页面已展示两条消息；改为识别 POST 的 JSON redirect chain 后整套重跑通过。
+
+整个 J0–J7 目标仍在进行中；下一步优先处理 MVC 启动诊断、安全错误页与 SSR/资源故障及发布门槛。
+
+## MVC 启动诊断与安全错误页增量
+
+启动后映射初始化阶段，`InertiaHandlerValidator` 验证 direct typed return 与上下文参数组合。9 项启动合同覆盖直接 method ResponseBody、组合 method annotation、RestController、组合 type annotation、interface annotation、Callable wrapper、ResponseEntity wrapper、错误 context 参数，以及正常 Inertia + REST 共存。请求时保留诊断守卫，snapshot/context 重入复用且禁止二次 render/commit；这不表示支持异步 MVC/ASYNC redispatch。
+
+`InertiaErrorPage` 由应用配置，starter 将 resolver 放在应用 ExceptionHandler 之后、Spring 默认 status resolver 之前。原请求 abort 恢复 reservation 后，最多一次使用 sessionless error context 渲染；强制失败状态与 private/no-store，不传原异常给页面。ErrorResponse/ResponseStatus/400 conversion 与 unreadable body 保留安全状态。无 factory 时使用固定纯文本；error factory、props、模板或等待超时失败时固定纯文本 500，不递归。已经提交的响应和普通 REST 不改写，安全 headers 在 fallback 中保留。请求级日志仅写 exception class/status，不写 message。
+
+本轮实际发现 TypeMismatchException 不实现 ErrorResponse，最初被误判 500；按 Spring 默认 resolver 的状态映射补齐 ConversionNotSupported 与 TypeMismatch 的区分，完整合同重跑通过。Context 在 session cleanup 前先进入 FAILED，避免清理失败时继续接受 late effects；后端 session 写失败/失效的完整策略仍在 J3。每个 page attempt 有独立等待预算，主页面失败再尝试错误页最多使用两次 response budget。
+
+本轮 Maven Wrapper `spotless:apply verify` 通过，共 60 项。新增 MockMvc 验证 500 controller/props failure、403 supplier denial、404/410 annotated status、400 参数错误、安全 JSON/HTML、flash 恢复、应用 advice 和 REST 独立行为、一次错误页失败后 plaintext。resolver 合同验证 committed response、重复进入、模板失败、错误页 SSR timeout 与 late completion；request lifecycle 合同证明重入保留 snapshot/share。
+
+新增 opt-in `inertia.demo-failures=true` 演示路由，默认禁用。Chrome 生产 SSR 模式 18084 为 3 passed / 2 skipped：500 Error 首屏/hydration、Back to Users 后正常 deferred、403 JSON 不含内部原因，正常 SSR 和 Feed 也通过。Node 不可达的 18085 为 2 passed / 3 skipped：500 Error CSR mount/恢复导航与正常 CSR 都通过。前端 typecheck 通过；前端运行源码本轮未改动，只扩展 e2e。整个 J0–J7 仍未完成。
+
+## Session namespace、失效和写失败增量
+
+`inertia.session-namespace` 绑定到实际 MVC HttpSessionStore，默认 namespace 保留原有 attribute key，其他应用 scope 独立保存 canonical flash/errors/history keys；启动校验 safe identifier。单会话里的不同 namespace 不重复领取或覆盖彼此状态，应用应使用可信配置值，不从任意请求头选 namespace。
+
+HttpSessionStore 在 session mutex 内，对每个读写/领取/完成/恢复操作做前后 attached 检查。失效、移除或替换 attribute 后的旧 adapter 不能继续写 detached memory，不迁移到新会话。Servlet container 的任意并发 invalidation 无法与网络投递原子化，这里的保证是发现失效即失败、不复活私有状态，不是跨进程 exactly-once。
+
+Context 的 begin/redirect merge/complete 失败不返回成功；先关闭状态再尝试一次恢复，原错误因果保留，cleanup error 作为 suppressed diagnostic。不对未知写入结果自动重放。Delivery data 防御复制；Memory merge 与 abort restoration 先计算完整新状态，再替换 values/remove reservation，错误 payload 不会造成半写。明确 SessionStore SPI 的原子和 token 生命周期要求。
+
+新增 6 项 core failure 合同、5 项 HttpSessionStore 合同、1 项 namespace 启动拒绝、5 项实际 MockMvc 会话验收和 1 项并发 principal 隔离合同。覆盖 begin/merge/complete/abort 失败、callback 零调用、失败恢复一次、late effects 拒绝、原因与 cleanup 同时保留、memory 半写防止、快照复制、namespace 隔离、失效/替换/初始化写失败、MVC properties 接线、真实渲染中失效和重定向失败，且私有 reserved flash 不出现在失败响应。并发 principal 是合成 Servlet 测试数据，证明 DTO/props/session request isolation，不代表实现了真实账号登录系统。
+
+本轮 Maven Wrapper `spotless:apply verify` 78 项通过，前端 typecheck 通过。opt-in failure demo 新增 session scenario。实际 Tomcat + Node SSR + Chrome 在 18086、namespace=portal 下为 3 passed / 2 skipped：普通 SSR/hydration、CSRF 表单与 flash、Feed、数据源错误页、403 JSON、真实会话 invalidation → 500 Error → Back to Users 和 deferred 都通过。前端运行源码未改变，扩展了 e2e；Rust 库未修改。整体 J0–J7 目标保持进行中。

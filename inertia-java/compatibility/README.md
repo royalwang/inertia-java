@@ -6,4 +6,4 @@
 cargo run --quiet --no-default-features --example java_contract_fixtures > inertia-java/compatibility/fixtures/pages.json
 ```
 
-Java `RustParityTest` consumes these same definitions and compares complete Page JSON trees, including array order, field omissions and nulls. These four fixtures cover basic full/partial/deferred and different-component behavior, not the entire Inertia v3 specification. Extend the exporter and parity test together when expanding the matrix. Intentionally different session delivery and conflicting dot-path policies remain documented separately.
+Java `RustParityTest` consumes these same definitions and compares complete Page JSON trees, including array order, field omissions and nulls. These eight fixtures cover basic full/partial/deferred, different-component behavior, and validation error bags (default precedence, requested bag, first/all messages, and repeated-field merging), not the entire Inertia v3 specification. Extend the exporter and parity test together when expanding the matrix. Intentionally different session delivery and conflicting dot-path policies remain documented separately.

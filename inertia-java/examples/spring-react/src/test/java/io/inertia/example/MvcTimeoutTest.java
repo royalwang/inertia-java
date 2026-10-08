@@ -71,11 +71,9 @@ class MvcTimeoutTest {
     var session = new MockHttpSession();
     new HttpSessionStore(session)
         .put(InertiaContext.FLASH, new PageCodec().value(Map.of("toast", "keep")));
-    var thrown =
-        assertThrows(
-            jakarta.servlet.ServletException.class,
-            () -> mvc.perform(get("/slow").session(session)));
-    assertInstanceOf(TimeoutException.class, thrown.getCause());
+    mvc.perform(get("/slow").session(session))
+        .andExpect(status().isInternalServerError())
+        .andExpect(content().string("Internal Server Error"));
     assertThrows(IllegalStateException.class, () -> current.get().flash("late", "discard"));
     slow.complete("late");
     mvc.perform(

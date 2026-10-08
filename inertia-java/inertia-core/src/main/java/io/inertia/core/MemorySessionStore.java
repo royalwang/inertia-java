@@ -29,7 +29,7 @@ public final class MemorySessionStore implements SessionStore, Serializable {
     var snapshot = values;
     values = JsonNodeFactory.instance.objectNode();
     reserved.put(token, snapshot);
-    return new Delivery(token, snapshot.deepCopy());
+    return new Delivery(token, snapshot);
   }
 
   public synchronized void completePageDelivery(Delivery delivery) {
@@ -38,21 +38,30 @@ public final class MemorySessionStore implements SessionStore, Serializable {
   }
 
   public synchronized void abortPageDelivery(Delivery delivery) {
-    var snapshot = reserved.remove(delivery.token());
+    var snapshot = reserved.get(delivery.token());
     if (snapshot == null) throw new IllegalStateException("Delivery already completed");
-    ObjectNode newer = values;
-    values = snapshot;
-    merge(newer);
+    var restored = merged(snapshot, values);
+    values = restored;
+    reserved.remove(delivery.token());
   }
 
   public synchronized void merge(ObjectNode pending) {
+    values = merged(values, pending);
+  }
+
+  private static ObjectNode merged(ObjectNode original, ObjectNode pending) {
+    var values = original.deepCopy();
     pending
         .fields()
         .forEachRemaining(
             entry -> {
               JsonNode previous = values.get(entry.getKey());
               JsonNode next = entry.getValue();
-              if (previous != null && previous.isObject() && next.isObject()) {
+              if (entry.getKey().equals(InertiaContext.ERRORS)) {
+                values.set(
+                    entry.getKey(),
+                    ErrorBags.fromJson(previous).merge(ErrorBags.fromJson(next)).toJson());
+              } else if (previous != null && previous.isObject() && next.isObject()) {
                 var merged = ((ObjectNode) previous).deepCopy();
                 merged.setAll((ObjectNode) next);
                 values.set(entry.getKey(), merged);
@@ -60,5 +69,6 @@ public final class MemorySessionStore implements SessionStore, Serializable {
                 values.put(entry.getKey(), previous.asBoolean() || next.asBoolean());
               else values.set(entry.getKey(), next.deepCopy());
             });
+    return values;
   }
 }

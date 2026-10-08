@@ -57,14 +57,22 @@ public final class InertiaContext {
     return this;
   }
 
-  public synchronized InertiaContext withErrors(Map<String, String> errors) {
+  public synchronized InertiaContext withErrors(Map<String, ?> errors) {
     return withErrors("default", errors);
   }
 
-  public synchronized InertiaContext withErrors(String bag, Map<String, String> errors) {
+  public synchronized InertiaContext withErrors(String bag, Map<String, ?> errors) {
+    return withErrors(ErrorBags.empty().with(bag, ValidationErrors.from(errors)));
+  }
+
+  public synchronized InertiaContext withErrors(ValidationErrors errors) {
+    return withErrors(ErrorBags.empty().with("default", errors));
+  }
+
+  public synchronized InertiaContext withErrors(ErrorBags errors) {
     if (state != State.CREATED)
       throw new IllegalStateException("Validation errors must be queued before rendering");
-    pending.withObject("/" + ERRORS).set(bag, codec.value(errors));
+    pending.set(ERRORS, ErrorBags.fromJson(pending.get(ERRORS)).merge(errors).toJson());
     return this;
   }
 
@@ -84,7 +92,12 @@ public final class InertiaContext {
     return ProtocolPolicy.redirect(request.safeBack());
   }
 
-  public HttpOutcome backWithErrors(Map<String, String> errors) {
+  public HttpOutcome backWithErrors(Map<String, ?> errors) {
+    withErrors(errors);
+    return back();
+  }
+
+  public HttpOutcome backWithErrors(ValidationErrors errors) {
     withErrors(errors);
     return back();
   }
@@ -96,8 +109,11 @@ public final class InertiaContext {
   synchronized ObjectNode begin() {
     if (state != State.CREATED) throw new IllegalStateException("Context already used");
     state = State.RESOLVING;
-    delivery = session == null ? null : session.beginPageDelivery();
-    return delivery == null ? codec.object() : delivery.data().deepCopy();
+    delivery =
+        session == null
+            ? null
+            : Objects.requireNonNull(session.beginPageDelivery(), "Missing session delivery");
+    return delivery == null ? codec.object() : delivery.data();
   }
 
   synchronized Props shared() {
@@ -115,7 +131,12 @@ public final class InertiaContext {
 
   synchronized void complete() {
     if (state != State.PREPARED) throw new IllegalStateException("Invalid completion state");
-    if (delivery != null) session.completePageDelivery(delivery);
+    try {
+      if (delivery != null) session.completePageDelivery(delivery);
+    } catch (RuntimeException | Error failure) {
+      fail(failure);
+      throw failure;
+    }
     pending.removeAll();
     state = State.COMMITTED;
   }
@@ -127,15 +148,35 @@ public final class InertiaContext {
 
   synchronized void failed() {
     if (state == State.COMMITTED || state == State.FAILED) return;
-    if (delivery != null) session.abortPageDelivery(delivery);
     state = State.FAILED;
+    if (delivery != null) session.abortPageDelivery(delivery);
+  }
+
+  synchronized void fail(Throwable failure) {
+    try {
+      failed();
+    } catch (Throwable cleanup) {
+      Throwable primary = failure;
+      var visited = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
+      while ((primary instanceof java.util.concurrent.CompletionException
+              || primary instanceof java.util.concurrent.ExecutionException)
+          && visited.add(primary)
+          && primary.getCause() != null
+          && primary.getCause() != primary) primary = primary.getCause();
+      if (cleanup != primary) primary.addSuppressed(cleanup);
+    }
   }
 
   public synchronized void commitRedirect() {
     if (state != State.CREATED) throw new IllegalStateException("Context already used");
-    if (session == null && !pending.isEmpty())
-      throw new IllegalStateException("Flash/errors across redirects require a session");
-    if (session != null) session.merge(pending);
+    try {
+      if (session == null && !pending.isEmpty())
+        throw new IllegalStateException("Flash/errors across redirects require a session");
+      if (session != null) session.merge(pending);
+    } catch (RuntimeException | Error failure) {
+      fail(failure);
+      throw failure;
+    }
     pending.removeAll();
     state = State.COMMITTED;
   }

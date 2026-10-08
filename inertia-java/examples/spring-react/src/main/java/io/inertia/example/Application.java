@@ -24,6 +24,12 @@ public class Application {
   }
 
   @Bean
+  io.inertia.spring.InertiaErrorPage errorPage() {
+    return (request, status) ->
+        new InertiaResponse("Error", Props.builder().put("status", status).build());
+  }
+
+  @Bean
   InertiaConfig config(PageCodec codec) throws Exception {
     Path frontend = Path.of(System.getProperty("inertia.frontend", "frontend")).toAbsolutePath();
     boolean development = Boolean.getBoolean("inertia.development");
@@ -108,6 +114,9 @@ public class Application {
             @jakarta.validation.constraints.Size(
                 max = 100,
                 message = "Name must be at most 100 characters.")
+            @jakarta.validation.constraints.Pattern(
+                regexp = "[^<>]*",
+                message = "Name must not contain angle brackets.")
             String name) {}
 
     @PostMapping("/users")
@@ -116,7 +125,7 @@ public class Application {
         @jakarta.validation.Valid @RequestBody UserForm form,
         org.springframework.validation.BindingResult errors) {
       if (errors.hasErrors())
-        return inertia.backWithErrors(io.inertia.spring.ValidationBridge.firstErrors(errors));
+        return inertia.backWithErrors(io.inertia.spring.ValidationBridge.errors(errors));
       String name = form.name().trim();
       inertia.flash("toast", "Saved " + name + " (demo only)");
       return ProtocolPolicy.redirect("/users");

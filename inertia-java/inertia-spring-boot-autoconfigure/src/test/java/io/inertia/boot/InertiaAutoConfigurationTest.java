@@ -24,12 +24,14 @@ class InertiaAutoConfigurationTest {
             "inertia.executor-core-size=2",
             "inertia.executor-max-size=4",
             "inertia.executor-queue-capacity=7",
-            "inertia.props-concurrency=3")
+            "inertia.props-concurrency=3",
+            "inertia.session-namespace=portal")
         .run(
             context -> {
               assertThat(context).hasNotFailed().hasSingleBean(ResponseRenderer.class);
               var properties = context.getBean(InertiaProperties.class);
               assertThat(properties.propsTimeout().toMillis()).isEqualTo(500);
+              assertThat(properties.sessionNamespace()).isEqualTo("portal");
               var executor = (ThreadPoolExecutor) context.getBean("inertiaPropsExecutor");
               assertThat(executor.getCorePoolSize()).isEqualTo(2);
               assertThat(executor.getMaximumPoolSize()).isEqualTo(4);
@@ -63,6 +65,52 @@ class InertiaAutoConfigurationTest {
         .run(context -> assertThat(context).hasFailed());
     runner
         .withPropertyValues("inertia.props-timeout=5s", "inertia.response-timeout=1s")
+        .run(context -> assertThat(context).hasFailed());
+  }
+
+  @Test
+  void allErrorsPropertyOverridesConfigOnlyWhenExplicitlySet() {
+    var configured =
+        new WebApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(InertiaAutoConfiguration.class))
+            .withBean(
+                InertiaConfig.class,
+                () -> InertiaConfig.basic("v1", Set.of("Home")).withAllErrors(true));
+    configured.run(context -> assertRenderedErrors(context.getBean(ResponseRenderer.class), true));
+    configured
+        .withPropertyValues("inertia.all-errors=false")
+        .run(context -> assertRenderedErrors(context.getBean(ResponseRenderer.class), false));
+    runner
+        .withPropertyValues("inertia.all-errors=true")
+        .run(context -> assertRenderedErrors(context.getBean(ResponseRenderer.class), true));
+  }
+
+  private void assertRenderedErrors(ResponseRenderer renderer, boolean all) {
+    var codec = new PageCodec();
+    var context =
+        new InertiaContext(
+            new InertiaRequest(
+                "GET",
+                java.net.URI.create("https://app.test/"),
+                java.util.Map.of("x-inertia", "true")),
+            null,
+            codec);
+    context.withErrors(java.util.Map.of("name", java.util.List.of("Required", "Too short")));
+    var outcome =
+        renderer
+            .render(context, new InertiaResponse("Home", Props.empty()))
+            .toCompletableFuture()
+            .join();
+    assertThat(codec.read(outcome.body()).at("/props/errors/name").isArray()).isEqualTo(all);
+  }
+
+  @Test
+  void invalidNamespaceFailsAtStartup() {
+    runner
+        .withPropertyValues("inertia.session-namespace=../portal")
+        .run(context -> assertThat(context).hasFailed());
+    runner
+        .withPropertyValues("inertia.session-namespace=")
         .run(context -> assertThat(context).hasFailed());
   }
 

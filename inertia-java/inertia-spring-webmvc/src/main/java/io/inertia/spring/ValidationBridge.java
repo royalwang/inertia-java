@@ -9,6 +9,14 @@ import org.springframework.validation.BindingResult;
 public final class ValidationBridge {
   private ValidationBridge() {}
 
+  private static String dotted(String field) {
+    return field.replace("[", ".").replace("]", "");
+  }
+
+  public static io.inertia.core.ValidationErrors errors(BindingResult result) {
+    return io.inertia.core.ValidationErrors.from(allErrors(result));
+  }
+
   public static Map<String, String> firstErrors(BindingResult result) {
     var errors = new LinkedHashMap<String, String>();
     result
@@ -16,7 +24,7 @@ public final class ValidationBridge {
         .forEach(
             error ->
                 errors.putIfAbsent(
-                    error.getField(),
+                    dotted(error.getField()),
                     Objects.requireNonNullElse(error.getDefaultMessage(), "Invalid value")));
     result
         .getGlobalErrors()
@@ -35,7 +43,7 @@ public final class ValidationBridge {
         .forEach(
             error ->
                 errors
-                    .computeIfAbsent(error.getField(), key -> new ArrayList<>())
+                    .computeIfAbsent(dotted(error.getField()), key -> new ArrayList<>())
                     .add(Objects.requireNonNullElse(error.getDefaultMessage(), "Invalid value")));
     result
         .getGlobalErrors()
