@@ -7,9 +7,18 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr src/ssr.tsx",
+    "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
-    "ssr": "node dist/ssr/ssr.js"
+    "ssr": "node dist/ssr/ssr.js",
+    "test:ssr-failures": "node scripts/verify-ssr-failures.mjs",
+    "ssr:watch": "node --watch dist/ssr/ssr.js",
+    "test:ssr-health": "node scripts/verify-ssr-health.mjs",
+    "test:build-integrity": "node scripts/verify-build.mjs",
+    "test:csp": "node scripts/verify-csp.mjs",
+    "publish:assets": "node scripts/release-assets.mjs",
+    "test:release-switch": "node scripts/verify-release-switch.mjs",
+    "test:assets": "node --test scripts/release-assets.test.mjs",
+    "test:custom-root": "node scripts/verify-custom-root.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "3.8.0",

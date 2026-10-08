@@ -81,4 +81,20 @@ class InertiaRequestLifecycleTest {
       assertThrows(IllegalStateException.class, () -> second.share("late", 1));
     }
   }
+
+  @Test
+  void nonceComesOnlyFromServerAttributeAndSnapshotIsImmutable() {
+    var request = new MockHttpServletRequest("GET", "/");
+    request.addHeader("X-CSP-Nonce", "client_supplied_0123456789");
+    assertNull(InertiaMvcConfigurer.snapshot(request).nonce());
+    var trusted = new MockHttpServletRequest("GET", "/");
+    trusted.setAttribute(InertiaMvcConfigurer.CSP_NONCE_ATTRIBUTE, "server_nonce_0123456789");
+    var snapshot = InertiaMvcConfigurer.snapshot(trusted);
+    trusted.setAttribute(InertiaMvcConfigurer.CSP_NONCE_ATTRIBUTE, "changed_nonce_0123456789");
+    assertEquals("server_nonce_0123456789", InertiaMvcConfigurer.snapshot(trusted).nonce());
+    assertSame(snapshot, InertiaMvcConfigurer.snapshot(trusted));
+    var bad = new MockHttpServletRequest("GET", "/");
+    bad.setAttribute(InertiaMvcConfigurer.CSP_NONCE_ATTRIBUTE, "\" injection");
+    assertThrows(IllegalArgumentException.class, () -> InertiaMvcConfigurer.snapshot(bad));
+  }
 }

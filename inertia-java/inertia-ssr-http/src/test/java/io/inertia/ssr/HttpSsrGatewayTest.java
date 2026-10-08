@@ -62,12 +62,149 @@ class HttpSsrGatewayTest {
         .get(2, TimeUnit.SECONDS);
   }
 
+  Page page() {
+    var node =
+        codec.object().put("component", "Users/Index").put("url", "/users").put("version", "v1");
+    node.set("props", codec.object());
+    return new Page(node);
+  }
+
   @Test
   void postsBarePageAndReturnsHeadBody() throws Exception {
     var result = assertInstanceOf(SsrGateway.Rendered.class, render(1024));
     assertEquals("<title>Users</title>", result.head());
     assertEquals("Users/Index", codec.read(request.get()).path("component").asText());
     assertFalse(codec.read(request.get()).has("page"));
+  }
+
+  @Test
+  void nonSuccessAndRedirectFallbackWithoutForwardingCredentials() throws Exception {
+    var headers = new AtomicReference<com.sun.net.httpserver.Headers>();
+    var targetCalls = new java.util.concurrent.atomic.AtomicInteger();
+    server.createContext(
+        "/target",
+        exchange -> {
+          targetCalls.incrementAndGet();
+          exchange.sendResponseHeaders(500, -1);
+          exchange.close();
+        });
+    server.removeContext("/render");
+    server.createContext(
+        "/render",
+        exchange -> {
+          headers.set(exchange.getRequestHeaders());
+          exchange.getRequestBody().readAllBytes();
+          exchange.getResponseHeaders().set("Location", "/target");
+          exchange.sendResponseHeaders(302, -1);
+          exchange.close();
+        });
+    var gateway =
+        new HttpSsrGateway(
+            URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/render"),
+            Duration.ofSeconds(1),
+            Duration.ofSeconds(1),
+            1024,
+            1,
+            codec);
+    var result =
+        gateway
+            .render(
+                page(),
+                new InertiaRequest(
+                    "GET",
+                    URI.create("https://app.test/users"),
+                    Map.of("Cookie", "private=secret", "Authorization", "Bearer secret")))
+            .toCompletableFuture()
+            .get(2, TimeUnit.SECONDS);
+    assertEquals("http-status", assertInstanceOf(SsrGateway.Fallback.class, result).reason());
+    assertNull(headers.get().getFirst("Cookie"));
+    assertNull(headers.get().getFirst("Authorization"));
+    assertEquals(0, targetCalls.get());
+  }
+
+  @Test
+  void excludedRoutesNeverReachRenderer() throws Exception {
+    var resolver =
+        new SsrEndpointResolver(
+            URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/render"),
+            null,
+            null,
+            false,
+            java.util.List.of("users"));
+    var gateway =
+        new HttpSsrGateway(resolver, Duration.ofSeconds(1), Duration.ofSeconds(1), 1024, 1, codec);
+    var result =
+        gateway
+            .render(
+                page(), new InertiaRequest("GET", URI.create("https://app.test/users"), Map.of()))
+            .toCompletableFuture()
+            .get(2, TimeUnit.SECONDS);
+    assertEquals(
+        "excluded-or-unavailable", assertInstanceOf(SsrGateway.Fallback.class, result).reason());
+    assertNull(request.get());
+  }
+
+  @Test
+  void buildVerificationRequiresMatchingTextIdAndRetainsLegacyOptOut() throws Exception {
+    var gateway =
+        new HttpSsrGateway(
+            URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/render"),
+            Duration.ofSeconds(1),
+            Duration.ofSeconds(1),
+            1024,
+            1,
+            codec,
+            true);
+    var incoming = new InertiaRequest("GET", URI.create("https://app.test/users"), Map.of());
+    for (String id : new String[] {"\"other\"", "null", "42"}) {
+      body.set("{\"head\":[],\"body\":\"<div>wrong build</div>\",\"buildId\":" + id + "}");
+      assertEquals(
+          "build-mismatch",
+          assertInstanceOf(
+                  SsrGateway.Fallback.class,
+                  gateway.render(page(), incoming).toCompletableFuture().get(2, TimeUnit.SECONDS))
+              .reason());
+    }
+    body.set("{\"head\":[],\"body\":\"<div>legacy</div>\"}");
+    assertEquals(
+        "build-mismatch",
+        assertInstanceOf(
+                SsrGateway.Fallback.class,
+                gateway.render(page(), incoming).toCompletableFuture().get(2, TimeUnit.SECONDS))
+            .reason());
+    assertInstanceOf(SsrGateway.Rendered.class, render(1024));
+    body.set("{\"head\":[],\"body\":\"<div>current</div>\",\"buildId\":\"v1\"}");
+    assertInstanceOf(
+        SsrGateway.Rendered.class,
+        gateway.render(page(), incoming).toCompletableFuture().get(2, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void configuredRootRequiresMatchingRendererMetadata() throws Exception {
+    var gateway =
+        new HttpSsrGateway(
+            URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/render"),
+            Duration.ofSeconds(1),
+            Duration.ofSeconds(1),
+            1024,
+            1,
+            codec,
+            true,
+            "portal");
+    var incoming = new InertiaRequest("GET", URI.create("https://app.test/users"), Map.of());
+    for (String root : new String[] {"\"app\"", "null", "42"}) {
+      body.set("{\"head\":[],\"body\":\"wrong\",\"buildId\":\"v1\",\"rootId\":" + root + "}");
+      assertEquals(
+          "root-mismatch",
+          assertInstanceOf(
+                  SsrGateway.Fallback.class,
+                  gateway.render(page(), incoming).toCompletableFuture().get(2, TimeUnit.SECONDS))
+              .reason());
+    }
+    body.set("{\"head\":[],\"body\":\"current\",\"buildId\":\"v1\",\"rootId\":\"portal\"}");
+    assertInstanceOf(
+        SsrGateway.Rendered.class,
+        gateway.render(page(), incoming).toCompletableFuture().get(2, TimeUnit.SECONDS));
   }
 
   @Test

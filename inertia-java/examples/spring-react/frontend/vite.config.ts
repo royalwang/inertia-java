@@ -19,7 +19,7 @@ function hotFile(): Plugin {
 }
 export default defineConfig(({ isSsrBuild, command }) => ({
   plugins: [react(), inertia({ ssr: { entry: 'src/ssr.tsx', host: '127.0.0.1' } }), hotFile()],
-  base: command === 'serve' ? '/' : '/build/',
+  base: command === 'serve' ? '/' : './',
   server: { host: '127.0.0.1', port: 15173, strictPort: true, cors: { origin: ['http://127.0.0.1:18082', 'http://127.0.0.1:18080'] } },
   build: {
     outDir: isSsrBuild ? 'dist/ssr' : 'dist/client',

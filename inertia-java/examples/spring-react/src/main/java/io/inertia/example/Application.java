@@ -3,7 +3,9 @@ package io.inertia.example;
 import io.inertia.core.*;
 import io.inertia.ssr.HttpSsrGateway;
 import io.inertia.ssr.SsrEndpointResolver;
+import io.inertia.ssr.SsrHealthMonitor;
 import io.inertia.vite.ViteAssets;
+import io.inertia.vite.ViteBuild;
 import java.net.URI;
 import java.nio.file.*;
 import java.time.Duration;
@@ -29,16 +31,34 @@ public class Application {
         new InertiaResponse("Error", Props.builder().put("status", status).build());
   }
 
+  @Bean(destroyMethod = "close")
+  @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+      name = "inertia.ssr-health-enabled",
+      havingValue = "true")
+  SsrHealthMonitor ssrHealthMonitor(PageCodec codec) {
+    URI renderer = URI.create(System.getProperty("inertia.ssr", "http://127.0.0.1:13714/render"));
+    URI health =
+        URI.create(
+            System.getProperty("inertia.ssr-health", renderer.resolve("/health").toString()));
+    return new SsrHealthMonitor(
+            health, Duration.ofMillis(200), Duration.ofSeconds(1), Duration.ofSeconds(5), codec)
+        .start();
+  }
+
   @Bean
   InertiaConfig config(PageCodec codec) throws Exception {
     Path frontend = Path.of(System.getProperty("inertia.frontend", "frontend")).toAbsolutePath();
     boolean development = Boolean.getBoolean("inertia.development");
+    String rootId = InertiaConfig.requireRootId(System.getProperty("inertia.root-id", "app"));
+    ViteBuild build = development ? null : new ViteBuild(frontend.resolve("dist"), codec);
+    if (build != null) build.verifyClientAssets(assetStore(frontend).resolve(build.buildId()));
     var assets =
         new ViteAssets(
             frontend.resolve("dist/client/.vite/manifest.json"),
             frontend.resolve(".inertia/hot"),
             development,
-            codec);
+            codec,
+            development ? "/build/" : "/build/" + build.buildId() + "/");
     var endpoints =
         new SsrEndpointResolver(
             URI.create(System.getProperty("inertia.ssr", "http://127.0.0.1:13714/render")),
@@ -48,16 +68,28 @@ public class Application {
             List.of());
     var gateway =
         new HttpSsrGateway(
-            endpoints, Duration.ofMillis(200), Duration.ofSeconds(1), 2 * 1024 * 1024, 16, codec);
+            endpoints,
+            Duration.ofMillis(200),
+            Duration.ofSeconds(1),
+            2 * 1024 * 1024,
+            16,
+            codec,
+            !development,
+            rootId);
     var catalogLoads = new java.util.concurrent.atomic.AtomicInteger();
     return new InertiaConfig(
-        assets::version,
-        "app",
+        development ? assets::version : build::buildId,
+        rootId,
         Set.of("Users/Index", "About", "Feed", "Error"),
         view ->
             "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-                + "<link rel=\"icon\" href=\"data:,\">"
-                + assets.tags("src/app.tsx")
+                + "<link rel=\"icon\" href=\"data:,\"><meta name=\"inertia-root\" content=\""
+                + rootId
+                + "\">"
+                + (view.nonce() == null
+                    ? ""
+                    : "<meta name=\"csp-nonce\" content=\"" + view.nonce() + "\">")
+                + assets.tags("src/app.tsx", view.nonce())
                 + view.head()
                 + "</head><body>"
                 + view.body()
@@ -76,6 +108,13 @@ public class Application {
         false);
   }
 
+  static Path assetStore(Path frontend) {
+    return Path.of(
+            System.getProperty(
+                "inertia.asset-store", frontend.resolve(".inertia/assets").toString()))
+        .toAbsolutePath();
+  }
+
   @Bean
   org.springframework.web.servlet.config.annotation.WebMvcConfigurer staticAssets() {
     return new org.springframework.web.servlet.config.annotation.WebMvcConfigurer() {
@@ -84,9 +123,11 @@ public class Application {
         registry
             .addResourceHandler("/build/**")
             .addResourceLocations(
-                Path.of(System.getProperty("inertia.frontend", "frontend"))
-                    .toAbsolutePath()
-                    .resolve("dist/client")
+                (Boolean.getBoolean("inertia.development")
+                        ? Path.of(System.getProperty("inertia.frontend", "frontend"))
+                            .toAbsolutePath()
+                            .resolve("dist/client")
+                        : assetStore(Path.of(System.getProperty("inertia.frontend", "frontend"))))
                     .toUri()
                     .toString());
       }
@@ -159,6 +200,24 @@ public class Application {
 
   @RestController
   static class Health {
+    private final org.springframework.beans.factory.ObjectProvider<SsrHealthMonitor> ssr;
+
+    Health(org.springframework.beans.factory.ObjectProvider<SsrHealthMonitor> ssr) {
+      this.ssr = ssr;
+    }
+
+    @GetMapping("/api/ssr-health")
+    Map<String, Object> ssrHealth() {
+      var monitor = ssr.getIfAvailable();
+      if (monitor == null) return Map.of("state", "DISABLED");
+      var snapshot = monitor.snapshot();
+      var result = new LinkedHashMap<String, Object>();
+      result.put("state", snapshot.state());
+      result.put("reason", snapshot.reason());
+      result.put("checkedAt", snapshot.checkedAt());
+      return result;
+    }
+
     @GetMapping("/api/health")
     Map<String, String> health() {
       return Map.of("status", "ok");

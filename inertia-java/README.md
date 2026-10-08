@@ -32,7 +32,7 @@ Terminal 2, from `inertia-java/examples/spring-react`:
 java -jar target/spring-react-0.1.0-SNAPSHOT.jar --server.address=127.0.0.1 --server.port=18080
 ```
 
-Open [the user page](http://127.0.0.1:18080/users). The form demonstrates redirect validation and flash; it does not persist users. The SSR service binds to loopback port 13714. Stopping it exercises CSR fallback. Static assets are served at `/build/`.
+Open [the user page](http://127.0.0.1:18080/users). The form demonstrates redirect validation and flash; it does not persist users. The SSR service binds to loopback port 13714. Stopping it exercises CSR fallback. Production static assets are served at `/build/<build-id>/` from an immutable release asset store.
 
 If running the jar elsewhere, pass `-Dinertia.frontend=/absolute/path/to/frontend` before `-jar`. The SSR endpoint may be configured with `-Dinertia.ssr=http://127.0.0.1:13714/render`.
 
@@ -101,7 +101,7 @@ A response wait timeout aborts the request context and restores its reserved fla
 
 ## Current boundaries
 
-Production build SSR is verified for the default `app` root. Custom SSR roots, structured observations, deployment gates and distributed sessions remain open. The Feed example exercises append/prepend/reset and once reuse: once props used across different pages must be declared on both pages, such as shared props; a page-local once prop is not an application-wide cache. The demo routes are public, with Spring Security cookie/header CSRF protection on unsafe requests. Authentication policy and production deployment remain application responsibilities. Session delivery promises atomic reservation on one node, not exactly-once delivery to a browser. Future cancellation does not guarantee JDBC or external work has stopped.
+Production SSR and CSR are verified for both the default `app` root and a custom `portal` root. Structured observations, deployment gates and distributed sessions remain open. The Feed example exercises append/prepend/reset and once reuse: once props used across different pages must be declared on both pages, such as shared props; a page-local once prop is not an application-wide cache. The demo routes are public, with Spring Security cookie/header CSRF protection on unsafe requests. Authentication policy and production deployment remain application responsibilities. Session delivery promises atomic reservation on one node, not exactly-once delivery to a browser. Future cancellation does not guarantee JDBC or external work has stopped.
 
 ## Validation and CSRF
 
@@ -171,3 +171,89 @@ Session failures use a fixed fail-closed policy. A failed begin does not run cal
 Custom SessionStore implementations must provide atomic begin/merge and at-most-once complete/abort token transitions in their own storage domain. Delivery snapshots are defensive copies. MemorySessionStore prepares a whole merged state before replacement, including reservation restoration, so malformed data cannot partially update flash. Unknown storage outcomes require backend-specific reconciliation; silently dropping errors/flash and reporting success is unsupported. Clustered Spring Session/Redis storage still needs a separate implementation.
 
 MockMvc verifies namespace binding, initialization-write failure, invalidation before rendering, invalidation during a supplier, and invalidation before redirect commit. The concurrent-principal contract captures public DTOs on request threads before asynchronous resolution and verifies that props and flash do not cross requests. Its principals are synthetic; applications own real login/authorization and must pass explicit DTOs to callbacks instead of relying on security ThreadLocals.
+
+## Vite and SSR endpoint contracts
+
+Manifest loading validates every record's `file`, optional `css` / `imports` arrays, and referenced static imports before serving HTML. Output paths must be relative paths with nonempty segments; absolute paths, traversal, dot segments and unsafe tag characters fail configuration. Recursive imports deduplicate CSS/preloads, including cycles; the entry itself is never preloaded as an import. These fields follow [Vite's backend integration manifest](https://vite.dev/guide/backend-integration). Dynamic imports remain managed by the client bundle rather than eagerly preloaded.
+
+Production retains its startup manifest/hash snapshot and ignores hot files. Development refreshes the manifest using the full filesystem modification timestamp when no hot file exists. Hot values must be HTTP(S) origins, with no credentials, path, query or fragment and a valid port. A single trailing slash is accepted. Assets fail on an invalid hot value; the SSR resolver returns an unavailable fallback rather than contacting the production renderer through a malformed development URL.
+
+SSR route exclusions apply to the request path without query parameters: an optional leading slash is ignored, exact rules match exactly, and a trailing `*` matches a prefix. Production ignores hot files; a configured missing bundle disables rendering. HTTP renderer redirects are not followed and request Cookie/Authorization headers are not forwarded. Target URLs remain trusted application configuration; syntactic validation is not an internal-network allowlist.
+
+## Renderer failure acceptance
+
+The SSR budget covers headers and the entire response body. A separate deadline future requests cancellation of the underlying HTTP exchange on timeout; caller cancellation of the returned future also requests transport cancellation. Both paths release the logical concurrency permit exactly once. Overload returns a fallback without dispatching HTTP work. Synchronous request preparation failure also releases the permit. JDK cancellation is best effort: [HttpClient cancellation](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#sendAsync(java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler)) can close HTTP/1.1 connections asynchronously and cannot undo renderer work already started.
+
+After Maven `verify` and frontend `npm run build`, run from the frontend directory:
+
+```sh
+npm run test:ssr-failures
+```
+
+This harness starts one Java example and a loopback renderer peer on ephemeral ports. Chrome exercises HTTP 503, a response body stalled after headers, and a response exceeding the example's 2 MiB limit. Each scenario verifies HTTP 200 CSR HTML, client mount, deferred data, navigation, validation, successful CSRF-protected submission and flash. It checks that the peer was actually called and did not receive credentials. Logs default to `/tmp/inertia-java-ssr-failures`; `INERTIA_FAILURE_OUTPUT` overrides this location. Only processes created by the harness are stopped on exit. Socket-level Java contracts separately prove cancellation/overflow close the peer connection and allow the next request, and overload never dispatches.
+
+## Background renderer health and watch
+
+`SsrHealthMonitor` is an optional, independently managed background sampler. Supply a trusted `/health` URI, connect/whole-response budgets, a delay between completed probes, and `PageCodec`; call `start()` once and `close()` on shutdown. The monitor owns its pooled HttpClient and daemon scheduler. Probes do not overlap, follow redirects or forward credentials, and response bodies are limited to 4 KiB. A 200 JSON object with `status: "OK"` is healthy, matching the locked Inertia server. Timeout, unavailable transport, bad status/schema or oversized health bodies publish DOWN with a fixed reason. Snapshot reads send no HTTP request. Lifecycle states are UNKNOWN before checking, UP/DOWN after a check, and STOPPED after close; late completion cannot overwrite STOPPED.
+
+The example leaves monitoring disabled by default. For a standalone Node renderer, start Java with `--inertia.ssr-health-enabled=true`. The health target defaults to `/health` on the configured renderer origin; `-Dinertia.ssr-health=http://internal-renderer:13714/health` overrides it. Probe connect/render budgets are 200 ms / 1 s, with a 5 s delay after each check. `/api/ssr-health` exposes only the cached state/reason/check timestamp; it contains no endpoint, props or renderer response. `/api/health` remains Java liveness and does not depend on SSR. A healthy endpoint proves the peer answered its health protocol, not that every component can render; snapshot state may be stale until the next check. Applications decide whether SSR is required for readiness. The Vite development plugin does not provide this standalone health protocol automatically.
+
+For development against built bundles, `npm run ssr:watch` uses [Node's native watch mode](https://nodejs.org/api/cli.html#--watch). It restarts Node when the built SSR bundle changes; it does not compile TypeScript. Use Vite `npm run dev` for source development or rebuild the bundle in a separate terminal. Use a container/process manager for production supervision.
+
+After Maven verify and the frontend build, `npm run test:ssr-health` creates its own loopback Node watch process and Java instance. It copies the SSR bundle under an ignored temporary dist directory, verifies a bundle change really restarts the renderer, observes UP→DOWN→UP, checks Java liveness and CSR fallback while Node is stopped, then verifies restored SSR without restarting Java. Owned process groups and the temporary copy are cleaned on exit. Logs are written to `/tmp/inertia-java-ssr-health` (`INERTIA_HEALTH_OUTPUT` overrides it). This smoke command currently targets macOS/Linux; the Windows child-tree termination path needs separate qualification.
+
+## Release build integrity
+
+`npm run build` runs both locked Vite builds and then writes `dist/build.json`. The receipt inventories every client/SSR output, including manifest and source maps, with SHA-256 digests. Its build id is the SHA-256 of canonical sorted file hashes. The previous receipt is removed before building; a failed build cannot leave an old success receipt in place. Vite's output directories still need an isolated release workspace; this command is not an atomic in-place deployment tool.
+
+`ViteBuild` verifies receipt format/id, required outputs, content digests, manifest asset references and the complete client/SSR file inventory. Traversal and links escaping the release root fail. The example requires this receipt at production startup and uses its build id as Page version, so an SSR-only output change also changes the protocol version. Development hot mode keeps its separate development version. General `ViteAssets` remains usable without adopting this sample release layout.
+
+Run `npm run test:build-integrity` after the frontend build and Maven verify. It copies owned release fixtures to temporary directories, starts the actual Java jar, checks the valid Page version and proves startup rejects mixed SSR, missing client assets and unrecorded extra client files. Logs default to `/tmp/inertia-java-build-integrity` (`INERTIA_BUILD_OUTPUT` overrides it). It does not mutate the real release.
+
+Treat a verified release directory as immutable after startup. SHA-256 integrity does not establish artifact authenticity or verify which build a remote Node service is running. Renderer verification and release asset switching are described below; production orchestration and storage retention still require application deployment policy. Old resources should be retained in a separate release/CDN arrangement; appending them to a verified client directory is rejected as an unrecorded mutation.
+
+## Renderer release verification
+
+Both HttpSsrGateway constructor families accept a final `boolean verifyBuild` option. It defaults to false for existing integrations. With verification enabled, a successful renderer response must carry a textual `buildId` equal to the outgoing Page version. Missing, wrong-type or mismatched ids return `build-mismatch` and never inject the returned HTML. Normal response schema and size checks still apply. The production example enables this option; Vite development keeps it disabled because its module graph has a different lifecycle.
+
+The production React SSR entry reads the adjacent build receipt, verifies its canonical build id and the SHA-256 of the executing SSR entry file before opening the listener. It does not validate external node_modules contents or artifact signatures; deploy locked dependencies and trusted immutable releases. Before component resolution, it compares the Page version with its verified id. A mismatched Page produces an empty body plus its actual id, allowing Java to classify the mismatch. Successful responses include that same id with the normal head/body. This binds Java's verified client/manifest to the renderer's verified entry instead of relying only on a healthy TCP endpoint.
+
+`test:ssr-failures` now includes a wrong-build renderer scenario verified through Chrome CSR mount/navigation/form/flash. `test:ssr-health` checks that the real Node rejects a wrong-version Page before resolving an intentionally unregistered component. Its watch test rewrites the exact same verified bytes and observes two startup markers; changing bytes without producing a matching receipt correctly prevents restart. `test:build-integrity` also proves a changed Node entry fails before listening. Node watch does not make rolling upgrades atomic: switch verified release instances together and retain old client assets through the serving layer.
+
+## Request CSP nonces
+
+Applications may attach a trusted nonce to the immutable `InertiaRequest` using its four-argument constructor; existing three-argument calls retain null nonce. Spring MVC reads only `InertiaMvcConfigurer.CSP_NONCE_ATTRIBUTE` from server request attributes. Incoming nonce headers are not promoted to this metadata. Nonces are validated as bounded base64/base64url tokens, never placed in Page props/history or JSON visits, and remain fixed in a request snapshot.
+
+`RootView.View.nonce()` exposes the value to the root template. `ViteAssets.tags(entry, nonce)` / `ViteManifest.tags(entry, nonce)` apply it to asset tags and the development React refresh preamble. CSR's nonexecutable Page script also receives it. The adapter does not rewrite trusted SSR fragments or automatically grant arbitrary SSR component scripts permission. The sample SSR Page script is nonexecutable JSON; any application-provided executable head/body script must follow that application's template policy.
+
+The opt-in example filter (`--inertia.csp.enabled=true`) generates 32 random bytes per request, applies a nonce + strict-dynamic script policy, and adds a root nonce meta value. The React bootstrap passes that value to the locked official client's `nonce` option. JSON navigation does not replace the active document policy or nonce. The demo allows inline styles and the documented Vite connection origin in development; it is a script nonce integration example, not a universally strict policy preset. Applications own their CSP and source lists. See the [W3C CSP3 working draft](https://www.w3.org/TR/CSP3/#strict-dynamic-usage) for policy semantics.
+
+After the normal builds, run `npm run test:csp`. It runs real Node + Java + Chrome in production SSR and disconnected CSR modes, checking matching header/meta/module nonces, deferred data, navigation, CSRF form/flash, fresh values on full requests and no application policy violations. A separate parser fixture using the real policy permits a correctly nonced inline script and blocks an untrusted inline script. This fixture avoids DevTools script injection and synthetic-response loopback module restrictions.
+
+For development, start Vite normally, then Java with both `-Dinertia.development=true` and `--inertia.csp.enabled=true` on port 18082. From the frontend directory:
+
+```sh
+INERTIA_BASE_URL=http://127.0.0.1:18082 INERTIA_EXPECT_CSP=true npx playwright test --grep 'content security policy'
+```
+
+The development check includes all three Vite/refresh/app module nonce attributes. Current evidence is Chrome on macOS; additional browser/platform qualification remains a release check.
+
+## Versioned assets and release switching
+
+The example uses `/build/<build-id>/` for production resources. Vite builds use a relative base so bundle-relative assets resolve inside that release. Generic ViteAssets/ViteManifest constructors retain `/build/`; an additional asset-base parameter accepts a safe origin-relative directory prefix. Development hot origins keep their own behavior; when no hot file exists, the sample retains its direct `/build/` mapping to the built client directory for CSR fallback.
+
+`npm run build` also publishes the verified client files into `.inertia/assets/<build-id>/`. Each release is staged, checked and renamed into place on the same filesystem. Repeated publication verifies an existing release rather than overwriting it; malformed source/receipts or a corrupted archive fail. Old releases are preserved. Java verifies its own release's archived client files before startup and serves the asset store at `/build/**`. It never modifies earlier releases or mixes extra assets into its verified dist/client inventory.
+
+Use `-Dinertia.asset-store=/absolute/shared/asset-store` to serve a separately managed store. Publish the built release to that store with `npm run publish:assets -- /absolute/shared/asset-store`, before starting the matching Java/Node pair. The local publisher requires trusted storage and same-filesystem rename semantics; it is not a remote CDN uploader or a signature verifier. Retention is explicit: no automatic deletion is performed. Keep every release still reachable by active clients, cached documents or rollback policy. CDN/object storage needs its own immutable upload and retention implementation.
+
+`npm run test:assets` verifies two-release preservation, idempotent publication and rejection without overwrite. `npm run test:release-switch` creates isolated real Node/Java A and B releases, a shared store and a loopback test router. B is a controlled changed-client-byte fixture with a recomputed complete receipt, not a second source revision. Chrome loads A, switches the router to B, reads A's old asset byte-for-byte through B, then follows an official Inertia link: B returns 409/new version/location, the client performs a full refresh, and new resources, SSR/hydration/navigation/CSRF/flash work. Owned processes/temporary releases are removed; logs remain in `/tmp/inertia-java-release-switch` (`INERTIA_SWITCH_OUTPUT` overrides it).
+
+For production, prepare/publish assets before readiness, start Java and Node from the same immutable receipt, then change ingress routing to the ready pair. Rolling sessions remain application-owned: this public sample does not prove authenticated session continuity between instances or clustered session semantics. The loopback router is an acceptance fixture, not an operational deployment control plane. Migrating an existing unversioned `/build/` deployment also requires preserving its legacy resource URLs explicitly during transition.
+
+## Custom mount root
+
+Set Java `-Dinertia.root-id=portal` before `-jar`, and set `SSR_ROOT_ID=portal` when starting Node. The server template publishes the configured id through the `inertia-root` meta element; the React client reads it for the official `createInertiaApp` id option. The Node renderer uses the official automatic SSR factory with that same id. Root ids must match `[A-Za-z][A-Za-z0-9_-]*`.
+
+The sample gateway verifies renderer `rootId` metadata as well as production `buildId`; missing or mismatched root metadata causes CSR fallback. Existing gateway constructors retain their opt-in compatibility behavior. This is configuration consistency checking, not authentication of a renderer.
+
+`npm run test:custom-root` starts its own Java/Node pair with `portal` and CSP enabled, checks SSR hydration and CSR after Node disconnect, navigation, deferred data, CSRF/flash, nonce enforcement, watch restart and recovery.

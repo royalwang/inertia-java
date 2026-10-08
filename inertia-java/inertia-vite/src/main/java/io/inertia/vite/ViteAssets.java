@@ -1,10 +1,12 @@
 package io.inertia.vite;
 
+import io.inertia.core.ConfiguredHttpUrl;
+import io.inertia.core.CspNonce;
 import io.inertia.core.PageCodec;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
-import java.util.Set;
+import java.nio.file.attribute.FileTime;
 
 /** Development hot-file behavior is opt-in; production never reads it. */
 public final class ViteAssets {
@@ -13,15 +15,23 @@ public final class ViteAssets {
   private final boolean development;
   private final PageCodec codec;
   private ViteManifest manifest;
-  private long modified = Long.MIN_VALUE;
+  private final String assetBase;
+  private FileTime modified;
 
   public ViteAssets(Path manifestFile, Path hotFile, boolean development, PageCodec codec)
       throws IOException {
+    this(manifestFile, hotFile, development, codec, "/build/");
+  }
+
+  public ViteAssets(
+      Path manifestFile, Path hotFile, boolean development, PageCodec codec, String assetBase)
+      throws IOException {
+    this.assetBase = ViteManifest.base(assetBase);
     this.manifestFile = manifestFile;
     this.hotFile = hotFile;
     this.development = development;
     this.codec = codec;
-    if (!development) manifest = new ViteManifest(manifestFile, codec);
+    if (!development) manifest = new ViteManifest(manifestFile, codec, assetBase);
   }
 
   public String version() {
@@ -30,18 +40,28 @@ public final class ViteAssets {
   }
 
   public String tags(String entry) {
+    return tags(entry, null);
+  }
+
+  public String tags(String entry, String nonce) {
+    String nonceAttribute = CspNonce.attribute(nonce);
     URI hot = hot();
-    if (hot == null) return manifest().tags(entry);
-    if (!entry.matches("[A-Za-z0-9_./-]+") || entry.contains("..") || entry.startsWith("/"))
-      throw new IllegalArgumentException("Invalid dev entry");
+    if (hot == null) return manifest().tags(entry, nonce);
+    ViteManifest.safe(entry);
     String url = attribute(hot.toString());
-    return "<script type=\"module\" src=\""
+    return "<script"
+        + nonceAttribute
+        + " type=\"module\" src=\""
         + url
-        + "/@vite/client\"></script><script type=\"module\">"
+        + "/@vite/client\"></script><script"
+        + nonceAttribute
+        + " type=\"module\">"
         + "import RefreshRuntime from '"
         + url
         + "/@react-refresh';RefreshRuntime.injectIntoGlobalHook(window);window.$RefreshReg$=()=>{};window.$RefreshSig$=()=>type=>type;window.__vite_plugin_react_preamble_installed__=true;"
-        + "</script><script type=\"module\" src=\""
+        + "</script><script"
+        + nonceAttribute
+        + " type=\"module\" src=\""
         + url
         + "/"
         + entry
@@ -51,9 +71,9 @@ public final class ViteAssets {
   private synchronized ViteManifest manifest() {
     if (!development && manifest != null) return manifest;
     try {
-      long timestamp = Files.getLastModifiedTime(manifestFile).toMillis();
-      if (manifest == null || timestamp != modified) {
-        manifest = new ViteManifest(manifestFile, codec);
+      FileTime timestamp = Files.getLastModifiedTime(manifestFile);
+      if (manifest == null || !timestamp.equals(modified)) {
+        manifest = new ViteManifest(manifestFile, codec, assetBase);
         modified = timestamp;
       }
       return manifest;
@@ -65,15 +85,7 @@ public final class ViteAssets {
   public URI hot() {
     if (!development || hotFile == null || !Files.isRegularFile(hotFile)) return null;
     try {
-      URI hot = URI.create(Files.readString(hotFile).trim().replaceAll("/+$", ""));
-      if (!Set.of("http", "https").contains(hot.getScheme())
-          || hot.getHost() == null
-          || hot.getUserInfo() != null
-          || hot.getQuery() != null
-          || hot.getFragment() != null
-          || !(hot.getRawPath().isEmpty() || hot.getRawPath().equals("/")))
-        throw new IllegalArgumentException("Invalid hot URL");
-      return hot;
+      return ConfiguredHttpUrl.origin(Files.readString(hotFile));
     } catch (IOException error) {
       throw new IllegalStateException("Cannot read Vite hot file", error);
     }

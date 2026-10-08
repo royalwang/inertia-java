@@ -99,7 +99,9 @@ public final class ResponseRenderer {
                         body = rendered.body();
                       } else
                         body =
-                            "<script data-page=\""
+                            "<script"
+                                + CspNonce.attribute(request.nonce())
+                                + " data-page=\""
                                 + config.rootId()
                                 + "\" type=\"application/json\">"
                                 + codec.htmlJson(page)
@@ -111,7 +113,8 @@ public final class ResponseRenderer {
                           config
                               .rootView()
                               .render(
-                                  new RootView.View(page, head, body, ssr, response.viewData())),
+                                  new RootView.View(
+                                      page, head, body, ssr, response.viewData(), request.nonce())),
                           "text/html; charset=utf-8");
                     });
               })

@@ -1,5 +1,6 @@
 package io.inertia.ssr;
 
+import io.inertia.core.ConfiguredHttpUrl;
 import io.inertia.core.InertiaRequest;
 import java.io.IOException;
 import java.net.URI;
@@ -33,8 +34,8 @@ public final class SsrEndpointResolver {
     }
     if (development && hotFile != null && Files.isRegularFile(hotFile)) {
       try {
-        String hot = Files.readString(hotFile).trim().replaceAll("/+$", "");
-        return validate(URI.create(hot + "/__inertia_ssr"));
+        URI hot = ConfiguredHttpUrl.origin(Files.readString(hotFile));
+        return hot.resolve("/__inertia_ssr");
       } catch (IOException | IllegalArgumentException error) {
         return null;
       }
@@ -44,11 +45,6 @@ public final class SsrEndpointResolver {
   }
 
   static URI validate(URI uri) {
-    if (!Set.of("http", "https").contains(uri.getScheme())
-        || uri.getHost() == null
-        || uri.getUserInfo() != null
-        || uri.getFragment() != null)
-      throw new IllegalArgumentException("Invalid configured SSR URL");
-    return uri;
+    return ConfiguredHttpUrl.endpoint(uri);
   }
 }

@@ -17,8 +17,7 @@ public record InertiaConfig(
     Objects.requireNonNull(version);
     Objects.requireNonNull(rootView);
     Objects.requireNonNull(shared);
-    if (!rootId.matches("[A-Za-z][A-Za-z0-9_-]*"))
-      throw new IllegalArgumentException("Unsafe root id");
+    rootId = requireRootId(rootId);
     components = Set.copyOf(components);
     if (components.isEmpty())
       throw new IllegalArgumentException("Register at least one page component");
@@ -56,6 +55,12 @@ public record InertiaConfig(
         preserveBigIntegers,
         encryptHistory,
         all);
+  }
+
+  public static String requireRootId(String value) {
+    if (value == null || !value.matches("[A-Za-z][A-Za-z0-9_-]*"))
+      throw new IllegalArgumentException("Unsafe root id");
+    return value;
   }
 
   public static InertiaConfig basic(String version, Set<String> components) {

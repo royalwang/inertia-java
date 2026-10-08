@@ -6,7 +6,16 @@ import java.util.Map;
 public interface RootView {
   String render(View view);
 
-  record View(Page page, String head, String body, boolean ssr, Map<String, Object> data) {}
+  record View(
+      Page page, String head, String body, boolean ssr, Map<String, Object> data, String nonce) {
+    public View {
+      nonce = CspNonce.require(nonce);
+    }
+
+    public View(Page page, String head, String body, boolean ssr, Map<String, Object> data) {
+      this(page, head, body, ssr, data, null);
+    }
+  }
 
   static RootView minimal() {
     return view ->

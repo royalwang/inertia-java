@@ -4,8 +4,14 @@ import java.net.URI;
 import java.util.*;
 
 /** Immutable HTTP snapshot. Proxy reconstruction belongs to the framework adapter. */
-public record InertiaRequest(String method, URI fullUrl, Map<String, String> headers) {
+public record InertiaRequest(
+    String method, URI fullUrl, Map<String, String> headers, String nonce) {
+  public InertiaRequest(String method, URI fullUrl, Map<String, String> headers) {
+    this(method, fullUrl, headers, null);
+  }
+
   public InertiaRequest {
+    nonce = CspNonce.require(nonce);
     method = Objects.requireNonNull(method).toUpperCase(Locale.ROOT);
     Objects.requireNonNull(fullUrl);
     if (!fullUrl.isAbsolute() || fullUrl.getHost() == null)

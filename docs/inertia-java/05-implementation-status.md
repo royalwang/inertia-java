@@ -18,12 +18,12 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 2、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 1，共 78 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，共 113 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
 | Rust → Java Page parity | 八组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件、default/named/scoped/first/all/重复字段 errors |
 | npm typecheck | 通过 | 当前示例 TypeScript |
 | npm client + SSR build | 通过 | 生产双 bundle |
-| 实际 Node `/render` | 返回 head/body、一个 Page script 和一个 app root；含 server-rendered 标记 | 默认 root、Page 裸请求体、bigint 精确呈现 |
+| 实际 Node `/render` | 返回 head/body、一个 Page script 和一个 app root；含 server-rendered 标记 | 默认/custom root、Page 裸请求体、bigint 精确呈现 |
 | Chrome SSR flow，1280×900 | 通过 | HTML 首屏内容、hydrate、JSON 导航、deferred、空表单错误、有效表单 flash、无应用控制台错误 |
 | Chrome CSR fallback，18081 | 通过 | 不可达 renderer，空 app mount、deferred、导航、无 pageerror |
 | Chrome Vite SSR flow，18082 | hydration/导航/表单流程通过 | 开发 endpoint、hot assets、精确 bigint |
@@ -39,12 +39,12 @@
 
 | 工作包 | 尚需完成 |
 |---|---|
-| J0 | 更多跨语言 fixtures、非默认 root、客户端版本完整兼容清单 |
+| J0 | 更多跨语言 fixtures、客户端版本完整兼容清单 |
 | J1 | 共享/页面冲突诊断、完整配置与错误策略、边界审查 |
 | J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
 | J3 | namespace 与 fail-closed 失效/写失败策略已落地；示例身份策略与 CSRF 过期恢复的进一步验收仍待处理 |
 | J4 | 更全面并发/取消/过载用例和观察；当前任一层超出并发额度拒绝而非排队，需压测评估 |
-| J5 | watch/health、except 与 hot/bundle 的专项合同、非 2xx/慢节点/超长响应浏览器验收、SSR 与 manifest build-id 对齐检查 |
+| J5 | 基础 SSR/Vite 与本地两版切换已验收；真实部署存储/路由资格并入 J7 |
 | J6 | 扩展边界组合、响应级 history/SSR override 的完整合同及浏览器验收；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
 | J7 | CI、可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、资源版本滚动演练和性能基线 |
 
@@ -108,3 +108,95 @@ Context 的 begin/redirect merge/complete 失败不返回成功；先关闭状�
 新增 6 项 core failure 合同、5 项 HttpSessionStore 合同、1 项 namespace 启动拒绝、5 项实际 MockMvc 会话验收和 1 项并发 principal 隔离合同。覆盖 begin/merge/complete/abort 失败、callback 零调用、失败恢复一次、late effects 拒绝、原因与 cleanup 同时保留、memory 半写防止、快照复制、namespace 隔离、失效/替换/初始化写失败、MVC properties 接线、真实渲染中失效和重定向失败，且私有 reserved flash 不出现在失败响应。并发 principal 是合成 Servlet 测试数据，证明 DTO/props/session request isolation，不代表实现了真实账号登录系统。
 
 本轮 Maven Wrapper `spotless:apply verify` 78 项通过，前端 typecheck 通过。opt-in failure demo 新增 session scenario。实际 Tomcat + Node SSR + Chrome 在 18086、namespace=portal 下为 3 passed / 2 skipped：普通 SSR/hydration、CSRF 表单与 flash、Feed、数据源错误页、403 JSON、真实会话 invalidation → 500 Error → Back to Users 和 deferred 都通过。前端运行源码未改变，扩展了 e2e；Rust 库未修改。整体 J0–J7 目标保持进行中。
+
+## Vite manifest 与 SSR endpoint 边界增量
+
+统一可信 HTTP endpoint / hot origin 校验。hot 文件只接受无凭据、无 path/query/fragment 的 HTTP(S) origin，端口必须有效；SSR 对无效开发 hot 返回 unavailable，不错误拼接路径或意外转向生产 endpoint。生产始终忽略 hot，缺失配置 bundle 时禁用 SSR。except 以不含 query 的请求 path 做 exact 或尾部星号 prefix 匹配。
+
+manifest 在加载时校验所有记录的 file、可选 css/imports 数组类型与静态 import 引用，而不是直到某个 entry 输出 HTML 才发现坏配置。输出路径拒绝 absolute、traversal、空/dot 段与不安全字符；循环 imports 去重且不 preload entry 自身。生产保留启动快照；开发 mtime 刷新使用完整 FileTime，避免同一毫秒内更新被截断。与 [Vite 官方后端集成](https://vite.dev/guide/backend-integration) 的静态 imports/CSS 字段规则核对；dynamic imports 仍由 bundle 按需加载。
+
+新增 5 项 Vite、4 项 endpoint resolver、2 项 HTTP gateway 合同。覆盖循环 imports/CSS 去重、缺 entry、坏 schema/path、不可达坏记录、生产快照/忽略 hot、亚毫秒 mtime 刷新、hot 移除、IPv6 origin、except query/相邻路径、bundle 存在/移除、302 不跟随与 Cookie/Authorization 不转发。最初两个 gateway 用例的 Page fixture 缺必填字段，已修正后完整 reactor 重跑；Maven Wrapper spotless/verify 共 89 项通过，0 failure/error/skipped。
+
+实际生产 manifest 下 Tomcat 18087 + Node SSR + Chrome 回归为 2 passed / 3 skipped（其他运行模式），涵盖首屏 SSR/hydration、导航/deferred、CSRF/validation/flash、Feed/once；Spotless check 和 git diff check 通过。
+
+本轮未修改前端 runtime 或 Rust 库。J5 的 watch/health、CSP nonce、慢节点/超长响应浏览器、build-id 对齐和发布切换仍未完成；目标保持进行中。
+
+## SSR deadline、取消与真实故障浏览器增量
+
+修复 gateway deadline 直接完成 transport future 后无法再明确请求取消底层 HTTP exchange 的问题。独立 bounded future 管理全响应期限，超时或调用方取消时对原 transport 调用 cancel(true)，并发额度只释放一次；request 构建/提交同步失败也恢复额度。保留 transport-or-timeout fallback、无重试策略。预算按纳秒计，避免正的亚毫秒值被截断为零。取消不能撤销已发送的 Node 业务工作；JDK 资源释放仍是异步 best effort。
+
+5 项新增 Java 合同使用真实 HTTP/1.1 ServerSocket peer：先写 headers/部分 body 后停滞，观察超时或取消后的客户端 EOF/connection reset，而非只看 future 完成；再使用同一 gateway 成功请求，证明额度可恢复。超长 body 在 stream 完成前关闭连接；concurrency=1 的过载请求没有发到 peer；503、无效预算/limit，以及同步准备失败后不漏额度合同通过。Maven Wrapper spotless/verify 共 94 项，0 failures/errors/skips。
+
+新增可重复 `npm run test:ssr-failures` harness，创建并清理自己的 loopback renderer + Java 进程，使用随机端口，保留诊断日志。实际 Chrome 三模式全部通过（各 1 passed）：503、headers 后 body 停滞、超过 2 MiB 响应。各模式确认 peer 被调用且无凭据转发；验证空 root 的 HTTP 200 CSR mount、deferred、导航、验证错误、CSRF 表单成功与 flash。前端 typecheck 与 git diff check 通过。这个 peer 是故障注入服务，不宣称真实 Node 性能/负载认证。
+
+J5 的故障浏览器基础验收已落地；watch/health、CSP nonce、build-id 对齐/发布切换，及 J4 更全面的请求取消传播、观察和压测仍待完成。目标保持进行中。
+
+## SSR 后台 health 与 Node watch 增量
+
+新增可关闭 `SsrHealthMonitor`，构造显式 trusted endpoint、connect/全响应期限和探测间隔，独立 pooled client/daemon scheduler；探测完成后再延迟下一次，不重叠、不跟随 redirect、不携带凭据，health body 限 4KiB。UNKNOWN→UP/DOWN，关闭后 STOPPED，late completion 不覆盖停止状态。只认可 locked 官方 renderer 的 HTTP 200 + status=OK 协议，不把异常正文或 endpoint 写到快照。请求读取 snapshot 不发额外 HTTP，不将 health 前置于 render，不改变 SSR fallback。
+
+示例显式 `--inertia.ssr-health-enabled=true` 才开启；默认指向配置 renderer origin 的 /health，可通过 inertia.ssr-health JVM property 覆盖。cached `/api/ssr-health` 与 Java `/api/health` liveness 分开，Node 故障不使 Java liveness 失败。生产是否把 SSR 作为 readiness 必需条件由应用决定；快照可能在下一次探测前陈旧，health 成功也不能代表所有组件可渲染。官方 Vite plugin 开发 endpoint 不自动提供该 standalone health 协议。
+
+4 项新合同覆盖启动前 unknown、重复 start、snapshot 零 HTTP、无凭据、302 不跟随、坏 schema/oversize、恢复、deadline、单个未完成探测和关闭/late completion。Maven Wrapper spotless/verify 共 98 项，0 failures/errors/skips；前端 typecheck 通过。
+
+新增 `npm run ssr:watch` 复用 Node native --watch，监听构建产物，不在 Java 请求中启动 npm/Node。可重复 `npm run test:ssr-health` 在真实 Node + Tomcat 上通过：SSR UP、复制 bundle 改写→Node watch 重启→SSR 恢复、停止 Node→DOWN + Java liveness/空 root CSR、启动 Node→UP + SSR（不重启 Java）。probe/script 只创建和清理自有进程和 dist 临时副本，日志保留；macOS 实际执行通过，Windows tree termination 未认证。
+
+J5 剩余 CSP nonce、build-id/滚动发布一致性，及 J4 观察/整体取消传播/压测仍未完成。目标保持进行中。
+
+## 构建 receipt 与 Java release 完整性增量
+
+`npm run build` 统一执行 client + SSR 构建，只在两者成功后写 dist/build.json；开始前移除旧 receipt，失败不保留旧的成功标记。记录 client/SSR 全输出文件（含 manifest/source map）的 SHA-256，按 canonical sorted inventory 计算 build id。实际运行通过；上游 Inertia sourcemap transform 警告仍在，不把 warning 当作 source map 正确性证明。
+
+新增 `ViteBuild` 对 receipt schema/id、完整清单、逐文件内容、required manifest/SSR entry、manifest 引用资源与目录边界做验证；生产示例启动必须通过，Page version 从仅 manifest hash 改为 build id，使 SSR-only 变化也能更新版本。普通 ViteAssets 不强制这个示例 release 约定；开发 hot 模式独立。产物启动后必须保持 immutable；本轮没有把构建当作原地原子部署。
+
+4 项 ViteBuild 合同覆盖稳定身份、SSR 改动、混搭、missing/extra 文件、坏 receipt/id、缺 manifest 资源、traversal 和 external symlink。Maven Wrapper spotless/verify 共 102 项，0 failures/errors/skips。前端 typecheck 和双 build 通过。实际 `npm run test:build-integrity` 四场景通过：valid release 启动且 Page version=receipt id；mixed SSR、missing client、extra client 均在真实 Java 启动时失败。验证脚本只改临时拷贝，清理自有 Java process/目录，日志保留；git diff check 通过。
+
+这里只证明 Java 本地 release 的内容一致性，不证明 provenance/authenticity 或远端 Node 正在运行同一 release。Node build-id 握手、CSP nonce、滚动切换与旧 hash 资源保留仍待完成；旧资源不能直接追加进已验证目录，应通过独立 release/static/CDN 策略保留。目标继续进行中。
+
+## 远端 Node release 校验增量
+
+HttpSsrGateway 新增显式 verifyBuild 构造选项（既有调用默认关闭）。生产示例打开，开发 Vite 保持关闭；返回 buildId 必须为字符串且等于实际 outgoing Page version，缺失/错误类型/不一致均为 build-mismatch fallback，不注入 Node HTML。新增匹配、不匹配、缺失、错误类型与 legacy opt-out 合同；Maven Wrapper spotless/verify 共 103 项，0 failure/error/skipped。
+
+生产 SSR entry 在 listen 前读取同 release receipt，核对 canonical build id 和实际执行 entry 字节 hash。Page version 不一致时在组件解析前返回空 body + 本节点 verified buildId，Java 可分类 mismatch；成功 body/head 附带同一 id。检查没有覆盖外部 node_modules 内容或签名，不宣称 artifact authenticity；仍需可信锁定依赖和 immutable release。
+
+前端 typecheck、双 bundle/build receipt 通过。三个真实 harness 通过：test:ssr-health 的 real Node mismatch Page（故意未注册组件）被 gate 拦截，正常 SSR / watch exact-byte rewrite / DOWN→UP 恢复通过；test:build-integrity 的 Java valid/mixed/missing/extra 四场景与新增 Node 改写 entry→启动失败均通过；test:ssr-failures 四模式 Chrome 全通过（503、slow body、oversize、wrong build 各 1 passed），wrong-build body 未注入，CSR mount、deferred、导航、验证/CSRF/flash 正常。watch fixture 现在改写相同 verified bytes，通过重复启动 marker 证明真实 restart；不再对 production copy 任意追加未记录内容。
+
+J5 仍需 CSP nonce 与发布切换/旧资源保留演练。总体目标继续进行中；git diff check 通过，本轮尚未提交。
+
+## CSP nonce 请求链路增量
+
+新增 trusted request nonce（保留旧构造器）、RootView.View.nonce 与 asset tags nonce 重载。Spring 只读 server request attribute，不从客户端 header 取；严格 token 格式/长度校验，snapshot 重入不改变，Page JSON/props/history 不携带。生产 asset 与开发 Vite client/React refresh/app modules 都有同 nonce；CSR Page 数据 script 也加属性，可信 SSR fragments 不自动改写或 blanket grant 执行权限。
+
+示例 opt-in filter 生成每请求 32 随机 bytes，策略使用 nonce + strict-dynamic，root meta 提供给官方 React 客户端 nonce 选项。style-src 仍允许 unsafe-inline，开发 connect 允许文档中的本机 Vite；这是脚本 nonce 集成示例，不宣称通用严格 CSP。应用 owns policy，starter 不自设安全链。
+
+新增 3 core、1 Vite、1 MVC snapshot、1 filter 合同；Maven Wrapper spotless/verify 109 项，0 failure/error/skipped。前端 typecheck 与双 build/receipt 通过。实际 production SSR 和 CSR 的 Chrome nonce/交互验收通过；实际 Vite 15173 + Java 18082 的开发验收也通过：header/meta/modules 同值、fresh full request、deferred/nav/CSRF/flash、正常流程无 policy violation。
+
+首次 DevTools 动态 script injection 没触发期望的 parser CSP 行为，改为独立 parser fixture。开发版本第一次复用整个应用的 synthetic route response 又遇到 Chrome loopback address-space 权限，网络诊断确认并非 CSP nonce 配置错误。现在先验证真实应用交互，再用无外部依赖的 parser fixture 保留真实响应 CSP：正确 nonce 的脚本执行，无 nonce 的脚本被拒绝且产生 violation，避免把工具特权/合成网络属性当作产品证据。新增 npm run test:csp 可重复执行生产两模式；开发 command 写入 README。全浏览器平台资格仍未证明。
+
+J5 的基础 CSP 链路已落地；发布切换/旧资源保留、J4 cancellation/observations/压测及剩余整体门槛仍继续。该增量尚未提交，目标保持进行中。
+
+最终 CSP fixture 的三模式均实际通过：production SSR 1 passed、disconnected CSR 1 passed、Vite development 1 passed。自有开发 Java/Vite 进程已停止并清理 hot 文件；默认示例 Java 18080 / Node 13714 已更新到当前 verified release。普通模式 Chrome 回归 2 passed / 4 skipped（其他模式），含 hydration/deferred/CSRF/validation/flash 与 Feed/once，未留下旧进程混搭新 hash 资源。
+
+## Versioned asset store 与两版切换增量
+
+ViteAssets/Manifest 支持安全 origin-relative asset base，旧构造默认 /build/ 不变；示例 production base=/build/<receipt-id>/，Vite output 使用 relative base，让 bundle-relative 资源保持在该 release。构建成功后 publisher 将 client 清单按 id 分目录发布到独立 .inertia/assets store：同 FS staging + 内容/清单核对 + rename，已有 release 只校验不覆盖，旧目录不自动删除。Java production 启动验证当前 published client archive，公开静态 handler 从共享 store 服务 old/current 版本。
+
+新增 2 Java 合同（base URL/traversal/unsafe-origin、published archive 内容/extra/missing）和 3 Node publisher 合同（两版保留/idempotency、坏 archive 不覆盖、坏 source/receipt 不发布）。Java spotless/verify 111 项，0 failure/error/skipped；Node test:assets 3 项通过，typecheck/build/receipt/publication 通过。
+
+真实 npm run test:release-switch 通过：两组 verified Node/Java A/B、独立 shared asset store、loopback router 和 Chrome。B 是改变 client bytes 的受控产物 fixture 并重新计算完整 receipt，不冒充独立源代码版本。A 首屏 SSR/hydration/deferred → route切换B → A旧asset URL经B返回200且字节一致 → 官方 Link 触发409/new version/location → full refresh读取B prefix → About/Users/deferred/CSRF/flash 正常，无 pageerror。没有手工 fetch 替代客户端版本刷新；fetch只检查旧资产字节。脚本清理自有进程和 fixture目录、保留日志。
+
+软件层的基础 SSR/Vite、构建内容/build-id 对齐、nonce、old asset retention/版本切换已具体验收。不能据此宣称生产 CDN/ingress、跨实例身份会话连续性或集群 exactly-once；这些依部署拓扑/应用 session 策略，仍属后续发布资格。历史未版本化 /build/ URLs 的迁移保留需显式处理。无需删除 asset store 旧release，保留期限由 active clients/cached documents/rollback 约束。总体 J0–J7 仍在进行中，该批改动尚未提交。
+
+本轮最终回归：build-integrity 的 Java valid/mixed/missing/extra 与 Node mixed-entry 全通过；production CSP SSR/CSR 各 1 passed。开发 asset handler 保留无 hot 的 /build/ manifest fallback，Vite未运行 + renderer不可达 + CSP 的 Chrome 为 2 passed，含 deferred/nav/validation/CSRF/flash 和 parser nonce enforcement；默认 production 18080 Chrome 为 2 passed / 4 skipped（其他模式），含 SSR/hydration 和 Feed/once。自有开发 Java 已停止，默认 Java已更新到 versioned asset store 的当前 jar，Node保持同一 verified receipt。最新 Java verify仍为111项通过；git diff check通过。
+
+## 自定义 root 与本批提交前验证
+
+示例 Java 通过 inertia.root-id、Node 通过 SSR_ROOT_ID 配置一致的安全 root token，模板 meta 将 id 提供给官方 React client。SSR 使用官方 automatic factory，以避免 locked API 的显式 SSR overload 不接受自定义 id 的类型限制；未通过类型强转跳过检查。Gateway 增加可选 root metadata 对齐校验；示例启用，旧构造器保持兼容。缺失/错误类型/不匹配按 root-mismatch CSR fallback，不注入异构 root。
+
+新增 root token 校验和 gateway matching/mismatch 合同，并扩展 core nonce 的 custom root CSR 断言。Maven spotless/verify 113 项，0 failure/error/skipped；前端 typecheck、client/SSR build 和 Node publisher 3 项通过。构建输出已检查包含 Node receipt/self-hash、Page version gate、root metadata。
+
+真实 npm run test:custom-root 在 portal + CSP 下通过：SSR hydration/deferred/nav/CSRF/flash、正确/错误 nonce parser enforcement、Node watch restart、DOWN 后 portal CSR mount 与交互、恢复 UP，Java 未重启。默认 root test:csp SSR/CSR 各 1 passed；test:build-integrity valid/mixed/missing/extra Java 与 mixed Node 均通过；test:release-switch A→B 浏览器通过；test:ssr-failures 503/slow-body/oversize/build-mismatch 各 1 passed。基础自定义 root 门槛已关闭，更全面跨客户端/部署矩阵继续保留。
+
+本批提交包含前述 SSR/Vite endpoint 边界、HTTP deadline/cancel、后台 health/watch、receipt/build-id、CSP、versioned assets 与 custom root 增量；整体 J0–J7 仍未完成。默认 Java 18080 / Node 13714 已更新到本批同一 verified release。
+
+提交前默认 production Chrome 回归为 2 passed / 4 skipped（其他配置模式），含基础 SSR/hydration/deferred/validation/CSRF/flash 与 Feed/once；git diff check 通过。

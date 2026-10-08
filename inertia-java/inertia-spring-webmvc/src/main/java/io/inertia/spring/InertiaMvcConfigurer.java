@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.*;
 
 /** Only explicitly typed Inertia handlers participate in protocol processing. */
 public final class InertiaMvcConfigurer implements WebMvcConfigurer {
+  public static final String CSP_NONCE_ATTRIBUTE = InertiaMvcConfigurer.class.getName() + ".nonce";
   private static final String CONTEXT = InertiaMvcConfigurer.class.getName() + ".context";
   private final PageCodec codec = new PageCodec();
   private static final String REQUEST = InertiaMvcConfigurer.class.getName() + ".request";
@@ -99,7 +100,11 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     String url =
         request.getRequestURL()
             + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
-    var snapshot = new InertiaRequest(request.getMethod(), URI.create(url), headers);
+    Object nonce = request.getAttribute(CSP_NONCE_ATTRIBUTE);
+    if (nonce != null && !(nonce instanceof String))
+      throw new IllegalArgumentException("Invalid server CSP nonce attribute");
+    var snapshot =
+        new InertiaRequest(request.getMethod(), URI.create(url), headers, (String) nonce);
     request.setAttribute(REQUEST, snapshot);
     return snapshot;
   }
