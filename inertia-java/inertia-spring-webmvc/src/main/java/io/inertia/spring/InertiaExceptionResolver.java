@@ -56,10 +56,15 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
       var pending = renderer.render(context, page).toCompletableFuture();
       HttpOutcome outcome;
       try {
-        outcome = pending.get(deadline.toMillis(), TimeUnit.MILLISECONDS);
+        outcome = pending.get(deadline.toNanos(), TimeUnit.NANOSECONDS);
       } catch (TimeoutException | InterruptedException error) {
-        context.abort();
-        pending.cancel(true);
+        try {
+          context.abort();
+        } catch (RuntimeException | Error cleanup) {
+          error.addSuppressed(cleanup);
+        } finally {
+          pending.cancel(true);
+        }
         if (error instanceof InterruptedException) Thread.currentThread().interrupt();
         throw error;
       }

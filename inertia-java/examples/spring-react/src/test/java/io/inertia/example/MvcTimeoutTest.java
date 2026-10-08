@@ -48,7 +48,7 @@ class MvcTimeoutTest {
 
     @Bean
     InertiaMvcConfigurer mvcConfigurer(InertiaConfig config, ResponseRenderer renderer) {
-      return new InertiaMvcConfigurer(config, renderer, Duration.ofMillis(30));
+      return new InertiaMvcConfigurer(config, renderer, Duration.ofSeconds(1));
     }
   }
 
@@ -75,7 +75,8 @@ class MvcTimeoutTest {
         .andExpect(status().isInternalServerError())
         .andExpect(content().string("Internal Server Error"));
     assertThrows(IllegalStateException.class, () -> current.get().flash("late", "discard"));
-    slow.complete("late");
+    assertTrue(slow.isCancelled(), "MVC deadline must cancel the original async prop source");
+    assertFalse(slow.complete("late"));
     mvc.perform(
             get("/ok")
                 .session(session)

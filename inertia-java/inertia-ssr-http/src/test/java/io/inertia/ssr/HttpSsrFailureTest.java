@@ -70,6 +70,58 @@ class HttpSsrFailureTest {
   }
 
   @Test
+  void outerRenderCancellationClosesHttpRestoresSessionAndRecoversGateway() throws Exception {
+    try (var server = new Renderer();
+        var executor = Executors.newSingleThreadExecutor()) {
+      var gateway = gateway(server, Duration.ofSeconds(10), 1024);
+      var captured = new AtomicReference<Page>();
+      var config =
+          new InertiaConfig(
+              () -> "v1",
+              "app",
+              Set.of("Users"),
+              view -> {
+                captured.set(view.page());
+                return view.body();
+              },
+              gateway,
+              incoming -> Props.empty(),
+              false,
+              false);
+      var renderer =
+          new ResponseRenderer(
+              config, codec, new PropsResolver(codec, executor, Duration.ofSeconds(2), 1));
+      var session = new MemorySessionStore();
+      session.put(InertiaContext.FLASH, codec.value(Map.of("toast", "keep")));
+      var pending =
+          renderer
+              .render(
+                  new InertiaContext(request, session, codec),
+                  new InertiaResponse("Users", Props.empty()))
+              .toCompletableFuture();
+      assertTrue(server.entered.await(2, TimeUnit.SECONDS));
+      assertTrue(pending.cancel(true));
+      assertTrue(
+          server.closed.await(2, TimeUnit.SECONDS),
+          "Outer future must cancel the real HTTP exchange");
+      assertNull(captured.get(), "Cancelled response must not render its root");
+      assertEquals("keep", session.get(InertiaContext.FLASH).path("toast").asText());
+      server.mode.set("valid");
+      var recovered =
+          renderer
+              .render(
+                  new InertiaContext(request, session, codec),
+                  new InertiaResponse("Users", Props.empty()))
+              .toCompletableFuture()
+              .get(2, TimeUnit.SECONDS);
+      assertEquals("<div id='app'>OK</div>", recovered.body());
+      assertEquals("keep", captured.get().data().at("/flash/toast").asText());
+      assertNull(session.get(InertiaContext.FLASH));
+      assertEquals(2, server.calls.get(), "No cancellation retry or leaked permit");
+    }
+  }
+
+  @Test
   void oversizeBeforeEndOfBodyClosesExchangeAndRestoresCapacity() throws Exception {
     try (var server = new Renderer()) {
       server.mode.set("oversize");

@@ -2,6 +2,12 @@
 
 Framework-independent Inertia v3 server adapter with Spring MVC integration, a pooled Node SSR gateway, and a React example. Implementation is in progress; see the [implementation ledger](../docs/inertia-java/05-implementation-status.md) for verified capabilities and remaining work.
 
+## Observation SPI
+
+Core provides an opt-in `InertiaObserver` for props, render, SSR success/fallback, and session begin/complete/abort/merge. Pass it to both the `PropsResolver` and `ResponseRenderer` constructors; standalone redirect contexts accept it in their constructor. Existing constructors use a no-op observer. `LoggingInertiaObserver` emits JSON through `System.Logger`; `InertiaObserver.combine` composes observers. Observers run inline and must be fast and nonblocking. Runtime exceptions from an observer are isolated from the business result; fatal JVM errors are not swallowed.
+
+Events correlate with a server-generated request ID and contain operation/outcome/reason enums, elapsed nanoseconds, response status/kind, component and a configured endpoint ID. They do not contain URL, headers, props, flash, exception text, or renderer response bodies. Treat component and endpoint IDs as trusted application configuration. Do not use request IDs or component names as metric tags. Render success describes producing an outcome, not delivery to a browser. The remaining operation enum values reserve adapter integration points; automatic Boot registration, Micrometer metrics, MVC response/version-conflict observations, and detailed HTTP transport classification remain pending.
+
 ## Build
 
 Requires Java 21, Node >=22.12, and npm. Maven Wrapper pins Maven 3.9.16; frontend dependencies are pinned in `package-lock.json`.
@@ -48,7 +54,7 @@ Java uses Vite's `/__inertia_ssr` endpoint and hot asset URLs in this mode. A st
 
 ## Browser verification
 
-The current Playwright setup uses an installed Google Chrome through `channel: 'chrome'`; alternatively install a compatible Playwright browser and change the channel. From the frontend directory, with Java and SSR running:
+The Playwright setup defaults to installed Google Chrome. To use the browser shipped for the locked Playwright version, run `npx --no-install playwright install --no-shell chromium` and set `INERTIA_BROWSER_CHANNEL=chromium`. On a Linux CI host, add `--with-deps` to install its runtime dependencies. From the frontend directory, with Java and SSR running:
 
 ```sh
 npx playwright test
@@ -257,3 +263,41 @@ Set Java `-Dinertia.root-id=portal` before `-jar`, and set `SSR_ROOT_ID=portal` 
 The sample gateway verifies renderer `rootId` metadata as well as production `buildId`; missing or mismatched root metadata causes CSR fallback. Existing gateway constructors retain their opt-in compatibility behavior. This is configuration consistency checking, not authentication of a renderer.
 
 `npm run test:custom-root` starts its own Java/Node pair with `portal` and CSP enabled, checks SSR hydration and CSR after Node disconnect, navigation, deferred data, CSRF/flash, nonce enforcement, watch restart and recovery.
+
+## Browser history and per-page SSR
+
+`InertiaContext.encryptHistory(boolean)` applies to the current request. Encryption precedence is response override, request override, then the global `InertiaConfig.encryptHistory` default. Explicit false suppresses the optional Page field. A props callback can set the request override before preparation; late writes fail. Encryption overrides are not persisted across redirects: configure the target route as needed. `clearHistory` combines response/request/reserved-session flags with OR; redirect-delivered clear flags retain the session reservation lifecycle.
+
+`InertiaResponse.withoutSsr()` disables the renderer for that HTML response and emits the normal CSR shell. Inertia JSON navigation never calls SSR, regardless of this flag. It does not disable props resolution or error handling.
+
+The opt-in `--inertia.demo-history-enabled=true` example exposes `/demo-history/encrypted`, `/plain`, `/clear`, and `/csr`. It displays only a demo marker and session visit counter. `npm run test:history` owns its Java/Node processes and verifies actual encrypted History API state, response opt-out, Back/Forward reuse, key clearing followed by fresh server retrieval, and a page that opts out of SSR. These routes demonstrate history settings, not logout or authorization.
+
+History encryption uses the client's Web Crypto and session-storage keys; production requires a secure browser context. Clearing keys affects encrypted entries and does not make plaintext history entries unreadable. Applications must re-authorize every fresh request. See the [official history encryption documentation](https://inertiajs.com/docs/v3/security/history-encryption).
+
+## Aggregate verification and CI
+
+From the repository root, run:
+
+```sh
+node inertia-java/scripts/verify.mjs
+```
+
+This POSIX-host entrypoint runs a clean Maven reactor build with formatting checks, a fresh `npm ci`, TypeScript checking, both frontend builds and publication, publisher contracts, an owned browser matrix, build-integrity failures, SSR faults, CSP, custom-root/history and A→B release switching. It fails at the first failed stage. It starts its own Java/Node peers on ephemeral loopback ports; no existing app process is required. The aggregate runner does not format or commit sources. A full run rebuilds the example frontend and adds its immutable client archive. If you separately run the example while rebuilding, align its Java/Node release afterwards.
+
+The browser matrix covers normal SSR/Feed, all-errors validation, safe error pages/session invalidation, namespaced sessions, and disconnected-renderer CSR/error recovery. Individual `npm run test:browser-matrix` requires the Maven jar and frontend build already present.
+
+Evidence goes to a unique temporary directory by default. Set `INERTIA_VERIFY_OUTPUT=/absolute/path` to choose one. `summary.json` records source HEAD/dirty state, Node/browser channel, per-stage exit status/timing and the overall result; logs, browser diagnostics and a copy of the successful build receipt are retained. A receipt is referenced only after it was copied successfully in that run; a pre-existing file is not attested after an earlier-stage failure. This is validation evidence, not signed build provenance. Scenario flags are reset in the aggregate environment; opt-in wrappers set their own modes.
+
+`.github/workflows/inertia-java.yml` runs the same command on Ubuntu 24.04, Java 21/Temurin and Node 22.22.2, with Playwright's paired Chromium. Action references are pinned to verified commit ids; Maven and npm caches are dependency-keyed. Push/PR triggers are limited to Java/design/workflow paths, with manual dispatch available. It uploads logs/receipt/Surefire reports even on failure and has read-only repository permission. No library publishing or deployment happens in this workflow.
+
+Local validation of the command and workflow linting does not prove the remote GitHub job has passed. That remains a separate release gate until this workflow is committed and actually runs. The aggregate command is qualified on macOS/POSIX; Windows process-tree cleanup and a full Windows run remain unverified. Browser install/configuration follows the [Playwright browser documentation](https://playwright.dev/docs/browsers).
+
+## Cancellation and worker ownership
+
+Cancel the direct Future returned by `ResponseRenderer.render(...).toCompletableFuture()` to abort the request's render. It propagates to the current props operation and original SSR future, restores the reserved session snapshot, and prevents a late result from consuming that reservation. Finalization and cancellation have one winner; cancellation cannot undo a completion that already began its session commit. Spring MVC cancels this same handle on deadline/interruption for both normal and error-page renders.
+
+Selected computed callbacks and async factories run on the configured props executor through interruptible `FutureTask` handles. The resolver tracks the async factory's original `CompletionStage.toCompletableFuture()` as well as its own result. Deadline/caller cancellation removes queued tasks from a supplied `ThreadPoolExecutor`, requests interruption of running work when requested, cancels late-registered stages, and stops late value serialization/Page publication. Cancellation cleanup failures are attached to the primary failure, while the remaining handles still receive cancellation. Budgets use nanoseconds so positive sub-millisecond durations are not truncated to zero.
+
+Async factories now use the same worker budget as computed callbacks; in the default bounded worker setup they no longer execute inline on the request thread. Capture immutable request identity/data before scheduling. Thread-local/request-scoped context is not an automatic propagation contract; applications own context propagation in their chosen executor. Async stages must be owned by the request. For intentionally shared work, supply an isolated stage and define whether/how cancelling it affects its provider.
+
+Cancellation requests are best effort. Ignoring interrupts, an uncancellable provider, synchronous template/controller work, or blocking cancellation/session hooks can outlive a deadline. A plain dependent CompletableFuture does not automatically propagate cancellation to its parent, so retain and cancel the direct operation handle. The Java adapter does not claim that cancellation rolls back JDBC/remote effects or that a client disconnect is automatically detected by blocking Servlet MVC. See the JDK [CompletableFuture](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html) and [FutureTask](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/FutureTask.html) contracts.

@@ -80,7 +80,7 @@ public class Application {
     return new InertiaConfig(
         development ? assets::version : build::buildId,
         rootId,
-        Set.of("Users/Index", "About", "Feed", "Error"),
+        Set.of("Users/Index", "About", "Feed", "Error", "History"),
         view ->
             "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
                 + "<link rel=\"icon\" href=\"data:,\"><meta name=\"inertia-root\" content=\""

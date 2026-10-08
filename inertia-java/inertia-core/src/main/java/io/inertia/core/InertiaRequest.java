@@ -5,12 +5,18 @@ import java.util.*;
 
 /** Immutable HTTP snapshot. Proxy reconstruction belongs to the framework adapter. */
 public record InertiaRequest(
-    String method, URI fullUrl, Map<String, String> headers, String nonce) {
+    String method, URI fullUrl, Map<String, String> headers, String nonce, String requestId) {
   public InertiaRequest(String method, URI fullUrl, Map<String, String> headers) {
     this(method, fullUrl, headers, null);
   }
 
+  public InertiaRequest(String method, URI fullUrl, Map<String, String> headers, String nonce) {
+    this(method, fullUrl, headers, nonce, UUID.randomUUID().toString());
+  }
+
   public InertiaRequest {
+    if (requestId == null || !requestId.matches("[A-Za-z0-9][A-Za-z0-9_.-]{0,63}"))
+      throw new IllegalArgumentException("Unsafe server request id");
     nonce = CspNonce.require(nonce);
     method = Objects.requireNonNull(method).toUpperCase(Locale.ROOT);
     Objects.requireNonNull(fullUrl);

@@ -84,7 +84,7 @@ try {
   })
   await new Promise(done => proxy.listen(0, '127.0.0.1', done))
   const base = `http://127.0.0.1:${proxy.address().port}`
-  browser = await chromium.launch({ channel: 'chrome' })
+  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome' })
   const page = await browser.newPage()
   const errors = []
   page.on('pageerror', error => errors.push(error.message))

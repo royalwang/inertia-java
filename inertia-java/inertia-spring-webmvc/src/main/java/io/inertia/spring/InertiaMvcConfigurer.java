@@ -73,7 +73,8 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
                   new InertiaContext(
                       snapshot,
                       new HttpSessionStore(request.getSession(), sessionNamespace),
-                      codec));
+                      codec,
+                      renderer.observer()));
             return true;
           }
 
@@ -175,14 +176,15 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               var context = (InertiaContext) request.getAttribute(CONTEXT);
               var pending = renderer.render(context, response).toCompletableFuture();
               try {
-                outcome = pending.get(deadline.toMillis(), TimeUnit.MILLISECONDS);
+                outcome = pending.get(deadline.toNanos(), TimeUnit.NANOSECONDS);
               } catch (TimeoutException | InterruptedException error) {
                 try {
                   context.abort();
-                } catch (RuntimeException cleanup) {
+                } catch (RuntimeException | Error cleanup) {
                   error.addSuppressed(cleanup);
+                } finally {
+                  pending.cancel(true);
                 }
-                pending.cancel(true);
                 if (error instanceof InterruptedException) Thread.currentThread().interrupt();
                 throw error;
               }

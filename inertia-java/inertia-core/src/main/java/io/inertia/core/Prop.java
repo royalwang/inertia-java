@@ -78,6 +78,10 @@ public record Prop(
         new Computed(Objects.requireNonNull(task)), Loading.EAGER, "default", false, false);
   }
 
+  /**
+   * The factory runs on the configured props executor. Capture request data before scheduling;
+   * return a request-owned stage whose cancellation can signal its underlying work.
+   */
   public static Prop async(java.util.function.Supplier<CompletionStage<?>> task) {
     return new Prop(new Async(task), Loading.EAGER, "default", false, false);
   }

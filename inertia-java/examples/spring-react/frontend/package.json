@@ -18,7 +18,9 @@
     "publish:assets": "node scripts/release-assets.mjs",
     "test:release-switch": "node scripts/verify-release-switch.mjs",
     "test:assets": "node --test scripts/release-assets.test.mjs",
-    "test:custom-root": "node scripts/verify-custom-root.mjs"
+    "test:custom-root": "node scripts/verify-custom-root.mjs",
+    "test:history": "node scripts/verify-history.mjs",
+    "test:browser-matrix": "node scripts/verify-browser-matrix.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "3.8.0",

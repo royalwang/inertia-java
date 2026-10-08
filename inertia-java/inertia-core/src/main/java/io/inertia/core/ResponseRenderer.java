@@ -7,11 +7,28 @@ public final class ResponseRenderer {
   private final InertiaConfig config;
   private final PageCodec codec;
   private final PropsResolver resolver;
+  private final InertiaObserver observer;
+  private final String endpointId;
 
   public ResponseRenderer(InertiaConfig config, PageCodec codec, PropsResolver resolver) {
+    this(config, codec, resolver, InertiaObserver.NOOP, "renderer");
+  }
+
+  public ResponseRenderer(
+      InertiaConfig config,
+      PageCodec codec,
+      PropsResolver resolver,
+      InertiaObserver observer,
+      String endpointId) {
+    this.observer = Objects.requireNonNull(observer);
+    this.endpointId = Observations.endpointId(endpointId);
     this.config = config;
     this.codec = codec;
     this.resolver = resolver;
+  }
+
+  public InertiaObserver observer() {
+    return observer;
   }
 
   public CompletionStage<HttpOutcome> render(InertiaRequest request, InertiaResponse response) {
@@ -20,10 +37,39 @@ public final class ResponseRenderer {
 
   public CompletionStage<HttpOutcome> render(InertiaContext context, InertiaResponse response) {
     InertiaRequest request = context.request();
-    response.claim();
-    if (!config.components().contains(response.component()))
-      return CompletableFuture.failedFuture(
-          new IllegalArgumentException("Unregistered page component"));
+    var span =
+        Observations.start(
+            observer,
+            InertiaObserver.Operation.RENDER,
+            request,
+            config.components().contains(response.component())
+                ? response.component()
+                : "unregistered",
+            "none");
+    try {
+      response.claim();
+    } catch (RuntimeException error) {
+      span.failure(error);
+      throw error;
+    }
+    if (!config.components().contains(response.component())) {
+      var error = new IllegalArgumentException("Unregistered page component");
+      span.failure(error);
+      return CompletableFuture.failedFuture(error);
+    }
+    try {
+      context.observer(observer, response.component());
+    } catch (RuntimeException error) {
+      span.failure(error);
+      throw error;
+    }
+    var scope = new CancellationScope();
+    var result = new OperationFuture<HttpOutcome>(scope, context::complete, context::fail);
+    result.whenComplete(
+        (outcome, error) -> {
+          if (error == null) span.success(outcome);
+          else span.failure(error);
+        });
     try {
       var stored = context.begin();
       var initial = context.pending();
@@ -37,17 +83,25 @@ public final class ResponseRenderer {
               Props.builder().put("errors", Prop.always(deliveredErrors)).build(),
               config.shared().apply(request),
               context.shared());
-      return resolver
-          .resolve(request, response.component(), shared, response.props())
+      var resolving =
+          scope.track(
+              resolver
+                  .resolve(request, response.component(), shared, response.props())
+                  .toCompletableFuture());
+      resolving
           .thenCompose(
               resolved -> {
+                if (result.settled())
+                  return CompletableFuture.failedFuture(new CancellationException());
                 boolean preserveBigIntegers =
                     response.preserveBigIntegers() == null
                         ? config.preserveBigIntegers()
                         : response.preserveBigIntegers();
                 boolean encryptHistory =
                     response.encryptHistory() == null
-                        ? config.encryptHistory()
+                        ? (context.encryptHistory() == null
+                            ? config.encryptHistory()
+                            : context.encryptHistory())
                         : response.encryptHistory();
                 var json = codec.object();
                 json.put("component", response.component());
@@ -85,16 +139,40 @@ public final class ResponseRenderer {
                   return CompletableFuture.completedFuture(
                       outcome(response, codec.json(page), "application/json")
                           .withHeader("X-Inertia", "true"));
-                CompletionStage<SsrGateway.Result> rendering =
-                    config.gateway() != null && response.ssr()
-                        ? config.gateway().render(page, request)
-                        : CompletableFuture.completedFuture(new SsrGateway.Fallback("disabled"));
+                var ssrSpan =
+                    Observations.start(
+                        observer,
+                        InertiaObserver.Operation.SSR,
+                        request,
+                        response.component(),
+                        endpointId);
+                CompletionStage<SsrGateway.Result> rendering;
+                try {
+                  rendering =
+                      config.gateway() != null && response.ssr()
+                          ? config.gateway().render(page, request)
+                          : CompletableFuture.completedFuture(new SsrGateway.Fallback("disabled"));
+                } catch (Throwable error) {
+                  ssrSpan.failure(error);
+                  throw error;
+                }
+                rendering.whenComplete(
+                    (value, error) -> {
+                      if (error != null) ssrSpan.failure(error);
+                      else if (value instanceof SsrGateway.Fallback fallback)
+                        ssrSpan.fallback(fallback.reason());
+                      else ssrSpan.success();
+                    });
+                scope.track(rendering.toCompletableFuture());
+                if (result.settled())
+                  return CompletableFuture.failedFuture(new CancellationException());
                 return rendering.thenApply(
-                    result -> {
+                    renderedResult -> {
+                      if (result.settled()) throw new CancellationException();
                       String head = "";
                       String body;
-                      boolean ssr = result instanceof SsrGateway.Rendered;
-                      if (result instanceof SsrGateway.Rendered rendered) {
+                      boolean ssr = renderedResult instanceof SsrGateway.Rendered;
+                      if (renderedResult instanceof SsrGateway.Rendered rendered) {
                         head = rendered.head();
                         body = rendered.body();
                       } else
@@ -121,13 +199,13 @@ public final class ResponseRenderer {
           .thenApply(outcome -> ProtocolPolicy.after(request, outcome))
           .whenComplete(
               (outcome, error) -> {
-                if (error != null) context.fail(error);
-                else context.complete();
+                if (error != null) result.completeExceptionally(error);
+                else result.complete(outcome);
               });
     } catch (Throwable error) {
-      context.fail(error);
-      return CompletableFuture.failedFuture(error);
+      result.completeExceptionally(error);
     }
+    return result;
   }
 
   private static HttpOutcome outcome(InertiaResponse response, String body, String type) {

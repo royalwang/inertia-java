@@ -19,6 +19,7 @@ await new Promise(done => reserve.close(done))
 const processes = []
 const csp = process.env.INERTIA_VERIFY_CSP === 'true'
 const rootId = process.env.INERTIA_ROOT_ID ?? 'app'
+const history = process.env.INERTIA_VERIFY_HISTORY === 'true'
 function start(command, args, options, name) {
   const log = createWriteStream(resolve(output, name + '.log'))
   const child = spawn(command, args, { ...options, detached: process.platform !== 'win32', stdio: ['ignore', 'pipe', 'pipe'] })
@@ -66,6 +67,17 @@ async function browserCsp(port, csr) {
     child.on('exit', code => code === 0 ? done() : reject(new Error('CSP browser failed')))
   })
 }
+async function browserHistory(port) {
+  if (!history) return
+  await new Promise((done, reject) => {
+    const child = spawn(process.execPath, ['node_modules/@playwright/test/cli.js', 'test', '--grep', 'history encryption,'], {
+      cwd: frontend, env: { ...process.env, INERTIA_BASE_URL: `http://127.0.0.1:${port}`,
+        INERTIA_EXPECT_HISTORY: 'true' }, stdio: 'inherit',
+    })
+    child.on('error', reject)
+    child.on('exit', code => code === 0 ? done() : reject(new Error('History browser failed')))
+  })
+}
 let renderer
 let java
 try {
@@ -73,7 +85,7 @@ try {
   await wait('initial Node health', async () => (await fetch(`http://127.0.0.1:${rendererPort}/health`)).ok)
   java = start('java', [`-Dinertia.ssr=http://127.0.0.1:${rendererPort}/render`, `-Dinertia.root-id=${rootId}`, '-jar',
     'target/spring-react-0.1.0-SNAPSHOT.jar', '--server.address=127.0.0.1', '--server.port=0',
-    '--inertia.ssr-health-enabled=true', `--inertia.csp.enabled=${csp}`], { cwd: resolve(frontend, '..') }, 'java')
+    '--inertia.ssr-health-enabled=true', `--inertia.csp.enabled=${csp}`, `--inertia.demo-history-enabled=${history}`], { cwd: resolve(frontend, '..') }, 'java')
   let port
   await wait('Java startup', () => { port = java.transcript.match(/Tomcat started on port (\d+)/)?.[1]; return Boolean(port) })
   const base = `http://127.0.0.1:${port}`
@@ -82,6 +94,7 @@ try {
   if (!(await (await fetch(base + '/users')).text()).includes('data-server-rendered')) throw new Error('Initial SSR missing')
   console.log('Verified UP with real SSR')
   await browserCsp(port, false)
+  await browserHistory(port)
   const mismatched = await fetch(`http://127.0.0.1:${rendererPort}/render`, {
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ component: 'NotRegistered', props: {}, url: '/', version: 'different-release' }),

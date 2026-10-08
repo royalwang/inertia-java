@@ -24,9 +24,9 @@ test('SSR hydration, navigation, deferred data, validation and flash', async ({ 
   await page.getByLabel('Name', { exact: true }).fill('Grace')
   await page.getByRole('button', { name: 'Save demo name' }).click()
   await expect(page.getByRole('status')).toHaveText('Saved Grace (demo only)')
-  await page.screenshot({ path: '/tmp/inertia-java-desktop.png', fullPage: true })
+  await page.screenshot({ path: `${process.env.INERTIA_E2E_OUTPUT ?? '/tmp/inertia-java-e2e'}/desktop.png`, fullPage: true })
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.screenshot({ path: '/tmp/inertia-java-mobile.png', fullPage: true })
+  await page.screenshot({ path: `${process.env.INERTIA_E2E_OUTPUT ?? '/tmp/inertia-java-e2e'}/mobile.png`, fullPage: true })
   expect(errors).toEqual([])
 })
 

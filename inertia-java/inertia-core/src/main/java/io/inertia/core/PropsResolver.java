@@ -19,6 +19,7 @@ public final class PropsResolver {
   private final Duration deadline;
   private final int maxConcurrency;
   private final Clock clock;
+  private final InertiaObserver observer;
 
   public PropsResolver(PageCodec codec, Executor executor, Duration deadline, int maxConcurrency) {
     this(codec, executor, deadline, maxConcurrency, Clock.systemUTC());
@@ -26,6 +27,17 @@ public final class PropsResolver {
 
   public PropsResolver(
       PageCodec codec, Executor executor, Duration deadline, int maxConcurrency, Clock clock) {
+    this(codec, executor, deadline, maxConcurrency, clock, InertiaObserver.NOOP);
+  }
+
+  public PropsResolver(
+      PageCodec codec,
+      Executor executor,
+      Duration deadline,
+      int maxConcurrency,
+      Clock clock,
+      InertiaObserver observer) {
+    this.observer = Objects.requireNonNull(observer);
     this.codec = Objects.requireNonNull(codec);
     this.executor = Objects.requireNonNull(executor);
     this.clock = Objects.requireNonNull(clock);
@@ -37,26 +49,32 @@ public final class PropsResolver {
 
   public CompletionStage<Resolved> resolve(
       InertiaRequest request, String component, Props shared, Props props) {
+    var span =
+        Observations.start(observer, InertiaObserver.Operation.PROPS, request, component, "none");
     var state = new State(request, request.isPartial(component));
-    CompletableFuture<Resolved> result;
+    var result = new OperationFuture<Resolved>(state.scope, () -> {}, error -> {});
+    result.whenComplete(
+        (value, error) -> {
+          if (error == null) span.success();
+          else span.failure(error);
+        });
+    result.orTimeout(deadline.toNanos(), TimeUnit.NANOSECONDS);
     try {
       var all = Props.overlay(shared, props);
       var sharedKeys =
           codec.value(
               shared.entries().keySet().stream().map(k -> k.split("\\.")[0]).distinct().toList());
       if (!sharedKeys.isEmpty()) state.metadata.set("sharedProps", sharedKeys);
-      result =
-          state.level(all, "", false).thenApply(values -> new Resolved(values, state.metadata));
-    } catch (Throwable e) {
-      state.tasks.forEach(t -> t.cancel(true));
-      return CompletableFuture.failedFuture(e);
+      state
+          .level(all, "", false)
+          .whenComplete(
+              (values, error) -> {
+                if (error == null) result.complete(new Resolved(values, state.metadata));
+                else result.completeExceptionally(error);
+              });
+    } catch (Throwable error) {
+      result.completeExceptionally(error);
     }
-    result
-        .orTimeout(deadline.toMillis(), TimeUnit.MILLISECONDS)
-        .whenComplete(
-            (r, e) -> {
-              if (e != null) state.tasks.forEach(t -> t.cancel(true));
-            });
     return result;
   }
 
@@ -74,7 +92,7 @@ public final class PropsResolver {
     final boolean partial;
     final ObjectNode metadata = codec.object();
     final Semaphore permits = new Semaphore(maxConcurrency);
-    final List<CompletableFuture<?>> tasks = new CopyOnWriteArrayList<>();
+    final CancellationScope scope = new CancellationScope();
 
     State(InertiaRequest request, boolean partial) {
       this.request = request;
@@ -106,6 +124,7 @@ public final class PropsResolver {
     }
 
     CompletableFuture<ObjectNode> level(Props props, String prefix, boolean inheritedAlways) {
+      if (scope.stopped()) return CompletableFuture.failedFuture(new CancellationException());
       var plans = new ArrayList<Plan>();
       for (var entry : props.entries().entrySet()) {
         String path = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
@@ -118,36 +137,8 @@ public final class PropsResolver {
           continue;
         }
         CompletableFuture<Value> future;
-        if (prop.source() instanceof Prop.Computed computed) {
-          future =
-              CompletableFuture.supplyAsync(
-                  () -> {
-                    if (!permits.tryAcquire())
-                      throw new PropResolutionException(
-                          path, new RejectedExecutionException("Prop concurrency limit"));
-                    try {
-                      return value(computed.task().get());
-                    } catch (Exception e) {
-                      throw new PropResolutionException(path, e);
-                    } finally {
-                      permits.release();
-                    }
-                  },
-                  executor);
-        } else if (prop.source() instanceof Prop.Async async) {
-          if (!permits.tryAcquire())
-            future =
-                CompletableFuture.failedFuture(
-                    new RejectedExecutionException("Prop concurrency limit"));
-          else {
-            try {
-              future =
-                  async.task().get().thenApply(PropsResolver.this::value).toCompletableFuture();
-            } catch (Throwable e) {
-              future = CompletableFuture.failedFuture(e);
-            }
-            future.whenComplete((r, e) -> permits.release());
-          }
+        if (prop.source() instanceof Prop.Computed || prop.source() instanceof Prop.Async) {
+          future = schedule(path, prop.source());
         } else if (prop.source() instanceof Prop.Literal literal) {
           Value literalValue = value(literal.value());
           future =
@@ -156,7 +147,7 @@ public final class PropsResolver {
                       filter(literalValue.json(), path, inheritedAlways || prop.always()),
                       literalValue.scroll()));
         } else future = null;
-        if (future != null) tasks.add(future);
+
         plans.add(new Plan(path, prop, future, false));
       }
       var pending =
@@ -167,12 +158,16 @@ public final class PropsResolver {
       return CompletableFuture.allOf(pending)
           .thenCompose(
               ignored -> {
+                if (scope.stopped())
+                  return CompletableFuture.failedFuture(new CancellationException());
                 CompletableFuture<ObjectNode> output =
                     CompletableFuture.completedFuture(codec.object());
                 for (Plan plan : plans)
                   output =
                       output.thenCompose(
                           out -> {
+                            if (scope.stopped())
+                              return CompletableFuture.failedFuture(new CancellationException());
                             if (plan.excluded()) {
                               if (plan.prop().loading() == Prop.Loading.DEFERRED
                                   && !loaded(plan.prop(), plan.path()))
@@ -216,6 +211,60 @@ public final class PropsResolver {
                           });
                 return output;
               });
+    }
+
+    CompletableFuture<Value> schedule(String path, Prop.Source source) {
+      var result = scope.track(new CompletableFuture<Value>());
+      var task =
+          new FutureTask<Void>(
+              () -> {
+                if (scope.stopped() || result.isDone()) return null;
+                if (!permits.tryAcquire()) {
+                  result.completeExceptionally(
+                      new PropResolutionException(
+                          path, new RejectedExecutionException("Prop concurrency limit")));
+                  return null;
+                }
+                result.whenComplete((value, error) -> permits.release());
+                if (scope.stopped() || result.isDone()) return null;
+                try {
+                  if (source instanceof Prop.Computed computed) {
+                    var computedValue = computed.task().get();
+                    if (!scope.stopped() && !result.isDone()) result.complete(value(computedValue));
+                  } else {
+                    var stage =
+                        Objects.requireNonNull(
+                            ((Prop.Async) source).task().get(), "Async prop returned null stage");
+                    var upstream = scope.track(stage.toCompletableFuture());
+                    upstream.whenComplete(
+                        (value, error) -> {
+                          if (scope.stopped() || result.isDone()) return;
+                          if (error != null) result.completeExceptionally(error);
+                          else {
+                            try {
+                              result.complete(PropsResolver.this.value(value));
+                            } catch (Throwable failure) {
+                              result.completeExceptionally(failure);
+                            }
+                          }
+                        });
+                  }
+                } catch (Throwable error) {
+                  result.completeExceptionally(new PropResolutionException(path, error));
+                }
+                return null;
+              }) {
+            @Override
+            protected void done() {
+              if (isCancelled() && executor instanceof ThreadPoolExecutor pool) pool.remove(this);
+            }
+          };
+      scope.track(task);
+      if (scope.stopped() || result.isDone()) return result;
+      executor.execute(task);
+      // Cancellation may have won immediately before execute enqueued the handle.
+      if (task.isCancelled() && executor instanceof ThreadPoolExecutor pool) pool.remove(task);
+      return result;
     }
 
     void collect(Plan plan, ScrollPage scroll) {

@@ -25,12 +25,40 @@ public final class InertiaContext {
   private final Props.Builder shared = Props.builder();
   private final ObjectNode pending;
   private SessionStore.Delivery delivery;
+  private Boolean encryptHistory;
+  private InertiaObserver observer = InertiaObserver.NOOP;
+  private String component = "";
 
   public InertiaContext(InertiaRequest request, SessionStore session, PageCodec codec) {
     this.request = request;
     this.session = session;
     this.codec = codec;
     pending = codec.object();
+  }
+
+  public InertiaContext(
+      InertiaRequest request, SessionStore session, PageCodec codec, InertiaObserver observer) {
+    this(request, session, codec);
+    this.observer = Objects.requireNonNull(observer);
+  }
+
+  synchronized void observer(InertiaObserver observer, String component) {
+    if (state != State.CREATED) throw new IllegalStateException("Context already used");
+    this.observer = Objects.requireNonNull(observer);
+    this.component = component;
+  }
+
+  private <T> T observe(
+      InertiaObserver.Operation operation, java.util.function.Supplier<T> action) {
+    var span = Observations.start(observer, operation, request, component, "none");
+    try {
+      T value = action.get();
+      span.success();
+      return value;
+    } catch (RuntimeException | Error failure) {
+      span.failure(failure);
+      throw failure;
+    }
   }
 
   public InertiaRequest request() {
@@ -76,6 +104,17 @@ public final class InertiaContext {
     return this;
   }
 
+  /** Request-local override. Redirects do not persist this setting into the next request. */
+  public synchronized InertiaContext encryptHistory(boolean encrypt) {
+    writable();
+    encryptHistory = encrypt;
+    return this;
+  }
+
+  synchronized Boolean encryptHistory() {
+    return encryptHistory;
+  }
+
   public synchronized InertiaContext clearHistory() {
     writable();
     pending.put(CLEAR, true);
@@ -112,7 +151,11 @@ public final class InertiaContext {
     delivery =
         session == null
             ? null
-            : Objects.requireNonNull(session.beginPageDelivery(), "Missing session delivery");
+            : observe(
+                InertiaObserver.Operation.SESSION_BEGIN,
+                () ->
+                    Objects.requireNonNull(
+                        session.beginPageDelivery(), "Missing session delivery"));
     return delivery == null ? codec.object() : delivery.data();
   }
 
@@ -132,7 +175,13 @@ public final class InertiaContext {
   synchronized void complete() {
     if (state != State.PREPARED) throw new IllegalStateException("Invalid completion state");
     try {
-      if (delivery != null) session.completePageDelivery(delivery);
+      if (delivery != null)
+        observe(
+            InertiaObserver.Operation.SESSION_COMPLETE,
+            () -> {
+              session.completePageDelivery(delivery);
+              return null;
+            });
     } catch (RuntimeException | Error failure) {
       fail(failure);
       throw failure;
@@ -149,7 +198,13 @@ public final class InertiaContext {
   synchronized void failed() {
     if (state == State.COMMITTED || state == State.FAILED) return;
     state = State.FAILED;
-    if (delivery != null) session.abortPageDelivery(delivery);
+    if (delivery != null)
+      observe(
+          InertiaObserver.Operation.SESSION_ABORT,
+          () -> {
+            session.abortPageDelivery(delivery);
+            return null;
+          });
   }
 
   synchronized void fail(Throwable failure) {
@@ -172,7 +227,13 @@ public final class InertiaContext {
     try {
       if (session == null && !pending.isEmpty())
         throw new IllegalStateException("Flash/errors across redirects require a session");
-      if (session != null) session.merge(pending);
+      if (session != null)
+        observe(
+            InertiaObserver.Operation.SESSION_MERGE,
+            () -> {
+              session.merge(pending);
+              return null;
+            });
     } catch (RuntimeException | Error failure) {
       fail(failure);
       throw failure;

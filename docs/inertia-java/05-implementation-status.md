@@ -18,7 +18,7 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，共 113 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1，共 127 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
 | Rust → Java Page parity | 八组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件、default/named/scoped/first/all/重复字段 errors |
 | npm typecheck | 通过 | 当前示例 TypeScript |
@@ -43,10 +43,10 @@
 | J1 | 共享/页面冲突诊断、完整配置与错误策略、边界审查 |
 | J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
 | J3 | namespace 与 fail-closed 失效/写失败策略已落地；示例身份策略与 CSRF 过期恢复的进一步验收仍待处理 |
-| J4 | 更全面并发/取消/过载用例和观察；当前任一层超出并发额度拒绝而非排队，需压测评估 |
+| J4 | 更多并发/过载组合、结构化观察和压测；基础 MVC→render→props/SSR 取消链已落实。请求内许可耗尽拒绝；全局 executor 使用有界队列，取消排队任务释放队列槽位 |
 | J5 | 基础 SSR/Vite 与本地两版切换已验收；真实部署存储/路由资格并入 J7 |
-| J6 | 扩展边界组合、响应级 history/SSR override 的完整合同及浏览器验收；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
-| J7 | CI、可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、资源版本滚动演练和性能基线 |
+| J6 | 扩展边界组合、更多 history/SSR override 边界组合（基础合同及官方浏览器链路已验收）；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
+| J7 | CI 远端执行（workflow/本地入口已落地）、可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、实际部署环境演练和性能基线 |
 
 另：WebFlux/集群 Session/Vue/Svelte/Precognition 继续按原设计放在首版之外。Rust 库实现未改动，新增 `examples/java_contract_fixtures.rs` 导出器，Java 工程本次交付作为首个实施增量，尚未关闭的工作包见上表。当前 demo 用户保存仅展示 flash，不访问数据库。
 
@@ -200,3 +200,53 @@ ViteAssets/Manifest 支持安全 origin-relative asset base，旧构造默认 /b
 本批提交包含前述 SSR/Vite endpoint 边界、HTTP deadline/cancel、后台 health/watch、receipt/build-id、CSP、versioned assets 与 custom root 增量；整体 J0–J7 仍未完成。默认 Java 18080 / Node 13714 已更新到本批同一 verified release。
 
 提交前默认 production Chrome 回归为 2 passed / 4 skipped（其他配置模式），含基础 SSR/hydration/deferred/validation/CSRF/flash 与 Feed/once；git diff check 通过。
+
+## 请求 history 优先级与响应 SSR override 增量
+
+补齐实施细节设计中此前缺失的请求级 encryptHistory(boolean)：响应→请求→全局，false 省略字段。请求只持有本次 override，不通过 redirect/session 传播；props callback 在准备完成前可设置，late mutation 拒绝。clearHistory 保持 response/request/stored OR 和原 reservation 消费保证。
+
+新增 3 项 core 合同：18 组全局/请求/响应组合及 false omission/late write；redirect clear 一次传递且 encrypt 不泄漏、callback override 生效；HTML/JSON 下三来源 clear OR、withoutSsr 跳过 gateway、正常 HTML 调用 gateway 而 JSON 零调用。Maven spotless/verify 总计116项，0 failures/errors/skipped。
+
+新增 opt-in DemoHistory 与组件，官方 Link 操作四模式，仅 demo marker/visit counter。实际 npm run test:history Chrome 1 passed：首屏 SSR→history.state.page 为 ArrayBuffer→response false 的 plaintext Page→Back/Forward 保留旧 visit→重新进入 encrypted→clear 密钥→Back 实际发请求且 visit 增加→withoutSsr 空 root CSR mount/导航，无 pageerror。真实 Node mismatch gate/watch restart/DOWN→UP 故障恢复也通过。核对 [Inertia 官方 history encryption](https://inertiajs.com/docs/v3/security/history-encryption)；这不替代应用 logout、权限、CSRF/session policy，也不宣称 plaintext 历史因 clear 而受保护。
+
+前端 typecheck/双 build/receipt/publication 通过，已有 source-map warning 继续作为发布限制。默认 Java/Node 已同步新 release。该增量尚未提交；完整目标继续进行中，剩余门槛见上表。
+
+本轮默认 production Chrome 回归 2 passed / 5 skipped（各 opt-in 配置用例），基础 SSR/Feed 正常；未开启 demo-history 时实际 GET 返回404。git diff check 通过。
+
+## 可重复验证入口与 CI 增量
+
+新增 node inertia-java/scripts/verify.mjs，按顺序执行 clean Maven/Spotless verify、npm ci/typecheck/client+SSR build、publisher contracts、owned browser matrix、build integrity、SSR faults、CSP、custom root、history、两版切换。随机 loopback peer 与自有进程，不依赖默认18080/13714；不修改 source formatting。每阶段日志、耗时/exit、source HEAD/dirty、receipt 和最终 summary 保留到 unique temp output。截图转到各场景 output，失败 trace 留存。
+
+新增 test:browser-matrix 五配置：正常 SSR/Feed、all-errors、safe error/session invalidation、portal namespace、Node停止后的CSR/error recovery。Google Chrome154本地五配置全部通过（各2/3/3/3/2 passed），其余配置用例按 mode skip。聚合入口初次实际14阶段全部exit0，Java116项，Nodepublisher3项；证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-7v1MOI/summary.json。其后将 Maven 阶段强化为 clean，并重跑失败路径：无效 browser channel 在matrix阶段exit1，summary.success=false，build-integrity及后续阶段未执行；不是将注入失败当作产品失败。
+
+新增 GitHub workflow：Ubuntu24.04、Java21/Temurin、Node22.22.2、locked Playwright 配套 Chromium；action commit refs已通过上游git refs核对，read-only权限、paths触发/manual、cache、always artifact retention。actionlint1.7.7 首次发现 job env不允许runner context，修正为step env后无诊断通过。未提交/推送该workflow，远端job尚未运行，不宣称GitHub CI绿灯。CI和本地使用相同aggregate command；完整目标保留其他J7发布门槛。
+
+新版 aggregate（含 clean 与环境模式重置）在 macOS/Playwright Chromium156.0.8078.4 下14阶段全部exit0，116 Java contracts零failure/error/skipped，publisher3项；五配置浏览器矩阵全部通过，构建校验/SSR faults/CSP/custom-root/history/release-switch全部通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-BSXPU2/summary.json，8张desktop/mobile截图位于各matrix output。它是本地配套Chromium证据，仍不代替Ubuntu GitHub job执行。
+
+修正复用output目录时可能把旧build.json误标为本次receipt的边界：只有本轮成功copy才设置summary.receipt。真实失败注入在自有output预放旧receipt、使用无效JAVA_HOME，Maven阶段exit1，summary.success=false/receipt=null，未运行build且旧文件保留；证据 /tmp/inertia-java-stale-evidence-hJvQjq/summary.json。失败日志/结果仍写出，不将旧产物视为当前成功证明。
+
+默认18080/13714的HTTP首屏仍200、SSR标记存在且version与当前receipt一致；各owned harness清理完成，未终止已有默认服务。git diff check与workflow actionlint通过。本轮新CI/验证入口和上一轮history增量尚未提交，完整目标继续进行中。
+
+## MVC→render→props/SSR 取消链增量
+
+修复原外层CompletableFuture取消不传播、supplyAsync取消不interrupt运行callback、async只取消派生stage的问题。内部OperationFuture以CAS仲裁终结，session消费/失败恢复与完成属于同一结果；CancellationScope跟踪任务/源future，并在锁外取消，避免completion callback锁反转。取消赢时拒绝晚到的RootView/Page/commit；commit已赢时cancel返回false，不能倒退已经开始的完成。
+
+computed/async factory统一由FutureTask在props executor执行，跟踪真正的原始async Future；deadline与MVC等待使用纳秒。取消的ThreadPoolExecutor排队任务移除，处理cancel-before-enqueue竞态；源在取消后才返回也立即cancel。晚到的computed DTO不再序列化。async factory的线程语义改变已经明确记录：需在调度前capture request data/identity，不保证ThreadLocal/request scope自动传播；request-owned stage是取消所有权边界。
+
+新增10项core合同：deadline中断/worker恢复、caller cancel与未启动查询零调用、queue slot释放、原始async取消/worker factory、blocking factory deadline、晚到stage、完成/取消session唯一仲裁、SSR source取消且恢复flash、provider cancel失败抑制并继续取消其他句柄、cancel(false)不强制interrupt且晚DTO零序列化。加强已有MVC timeout断言：原始async source确实cancel，late complete失败。MVC normal/error timeout即使abort cleanup异常，也finally取消future并保留线程interrupt状态。
+
+新增真实HTTP/1.1外层render取消合同：headers/半个body后暂停，外层cancel使peer观察EOF/reset；flash回原session；相同gateway的下次HTML请求成功、许可恢复、flash只交付一次、总调用2次且无重试。Maven spotless/verify127项，0 failures/errors/skipped。总体目标继续进行中；全局观察/性能基线仍待完成，不把interrupt request等同于物理DB/远程操作停止，也不声称自动检测Servlet浏览器断连。
+
+取消增量的最终聚合回归：配套Chromium下14阶段全部exit0，clean verify仍127项零failure/error/skipped；正常/全errors/error/namespace/CSR五配置、build integrity、SSR故障、CSP、custom root、history、release-switch均通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-u4Oddx/summary.json。默认Java18080已重启为此实现，Node13714保留同一verified frontend release；本轮取消增量与前两轮history/CI尚未提交，目标仍在进行中。
+
+## 本批提交：history、取消链、观察 SPI 与 CI
+
+补齐 framework-independent InertiaObserver：props、render、SSR success/fallback 和 session begin/complete/abort/merge 的耗时/结果；每个 span 最多终结一次。旧构造器默认 NOOP，可显式注入及组合，LoggingInertiaObserver 通过 System.Logger 输出 JSON。MVC 创建 context 时沿用 renderer observer，独立 redirect context 也可注入。request ID 默认由服务器生成，不读取客户端 X-Request-Id；原三/四参数 request 构造保持可用。
+
+事件不包含 URL/header/props/flash/exception text/renderer body，未知 fallback reason 归为 UNKNOWN。component/endpoint ID 属于受信配置，request ID/component 不应作 metrics tag。observer inline 执行，必须快速、不阻塞；RuntimeException 不替换业务结果，fatal JVM Error 不属于隔离保证。render success 是产出 HttpOutcome，不能等同浏览器收到响应。
+
+新增4项观察合同：成功/会话关联和敏感字段不泄漏、未知 fallback 分类；观察器异常隔离和组合继续；取消/超时只上报一次；redirect merge 失败保留原异常。异步成功事件测试显式等待 observation callback，不假定 future.get 与全部 dependent callback 同时完成。J4 观察基础已落地，Boot 自动装配/Micrometer、MVC response/version-conflict 事件、HTTP transport 细分类及性能基线仍待实施；保留的 operation enum 不代表这些集成已实现。
+
+本批提交前重新运行 aggregate：macOS/Playwright Chromium156.0.8078.4，14阶段全部exit0；clean Maven/Spotless verify131项、0 failures/errors/skipped，publisher3项，五配置browser matrix、build integrity、SSR faults、CSP、custom root、history、release-switch通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-3OGa9c/summary.json。随后仅为新观察测试加入callback同步，再运行该4项合同及格式化通过，产品代码未变化。actionlint1.7.7与git diff check通过。
+
+本次提交收录以上history/CI/取消链及观察SPI增量，覆盖前文“尚未提交”的历史记录。远端GitHub workflow结果需以推送后实际运行记录为准，不能用本地成功代替；完整J0–J7目标仍在进行中。
