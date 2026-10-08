@@ -407,3 +407,7 @@ The props resolver and protocol rules are ports of [inertiajs/inertia-laravel](h
 ```bash
 cargo test --all-features
 ```
+
+## Java adapter planning
+
+See [Inertia Java architecture and implementation design](docs/inertia-java/README.md) for a source-based analysis of this Rust implementation and a proposed framework-independent Java core, Spring MVC adapter, and Node SSR integration. The documents are in Chinese; the Java project is not implemented yet.
