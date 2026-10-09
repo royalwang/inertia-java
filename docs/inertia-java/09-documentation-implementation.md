@@ -186,6 +186,12 @@ D0–D2阶段检查未覆盖完整 API 符号。D3新增官方JDK搜索索引驱
 
 修复将runner派生的证据目录放到可执行step，通过RUNNER_TEMP与GITHUB_ENV设置后续步骤环境；保留原证据位置和上传路径。加入固定版本actionlint1.7.7校验四份文档workflow表达式。实际回放确认原始四份被拒绝、修复四份通过；shellcheck/pyflakes未启用，不将此项宣称为脚本行为验证。对应远端重新验收另行记录，不以本地lint代替GitHub执行。
 
+### Linux浏览器安装与启动合同修复
+
+runner目录修复已在 `a6721ee` 推送。GitHub随后通过actionlint、Javadoc分类包、publication selection、30项文档合同、独立依赖清单和静态构建；[该次运行](https://github.com/royalwang/inertia-java/actions/runs/37937326508)在浏览器启动时失败：安装命令使用no-shell的完整Chromium，但四个文档browser入口将chromium映射为undefined，导致Playwright选择未安装的headless shell。
+
+四个入口统一直接传递chromium channel，与已有应用browser verifier一致；真实tag构建也复用修正后的入口。保留no-shell安装方式。固定Playwright配对Chromium已在本地实际启动，81篇站点/搜索/键盘复制等回归通过；版本导航命令在空registry下只验证next入口，不冒充真实历史版本导航。远端再次验收结果另行追加。
+
 ## 后续阶段
 
 D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已完成本地验收；D4优先中文路径和revision对应已落地，版本快照工具已实现本地合同，真实tag快照仍待验收。当前英文目录没有planned占位页。

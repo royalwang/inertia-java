@@ -18,7 +18,7 @@ try {
     if (server.closed) throw new Error('Preview exited: ' + server.transcript)
     try { return (await fetch(url)).ok } catch { return false }
   })
-  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL === 'chromium' ? undefined : (process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome') })
+  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome' })
   const page = await browser.newPage()
   const errors = []
   page.on('pageerror', error => errors.push(error.message))

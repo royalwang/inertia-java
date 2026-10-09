@@ -37,7 +37,7 @@ try {
     if (renderer.closed || server.closed) throw new Error('Example exited before readiness')
     try { return (await fetch(base + '/users')).ok } catch { return false }
   })
-  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL === 'chromium' ? undefined : (process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome') })
+  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome' })
   const context = await browser.newContext({ javaScriptEnabled: false })
   const page = await context.newPage()
   await page.goto(base + '/users')

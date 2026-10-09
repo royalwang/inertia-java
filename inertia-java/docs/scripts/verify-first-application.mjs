@@ -26,7 +26,7 @@ try {
     if (renderer.closed || server.closed) throw new Error('Application/renderer exited before readiness')
     try { return (await fetch(base + '/hello')).ok } catch { return false }
   })
-  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL === 'chromium' ? undefined : (process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome') })
+  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL ?? 'chrome' })
   const noJs = await browser.newContext({ javaScriptEnabled: false })
   const staticPage = await noJs.newPage()
   await staticPage.goto(base + '/hello')
