@@ -166,7 +166,7 @@ def main():
                        'Maven build plugins, JDK, OS, browser and service images are outside the dependency graph.',
                        'All-platform lock components may not be installed on this host; text evidence covers observed runtime jars and installed npm packages.',
                        'Bundled/minified code attribution needs distribution review; production npm dependencies alone do not describe client or SSR bundles.',
-                       'Owned Java/npm distribution license, notices, release version, signatures and namespace remain pending.']})
+                       'Owned Java/npm code declares Apache-2.0; attribution/notice review, release version, signatures and namespace remain separate qualifications.']})
         (output / 'inventory.json').write_text(json.dumps({'components': components}, indent=2) + '\n')
         lines = ['# Dependency and license declaration inventory', '', 'Publication qualified: **false**. Declared metadata and collected files require review.', '',
                  '| Scope | Count |', '|---|---|'] + [f'| {k} | {v} |' for k, v in result['counts'].items()]

@@ -12,7 +12,14 @@
   <build><plugins><plugin>
     <groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.4.2</version>
     <executions><execution><id>starter-documentation</id><phase>package</phase><goals><goal>jar</goal></goals>
-      <configuration><classifier>javadoc</classifier><classesDirectory>${project.basedir}/src/main/javadoc</classesDirectory></configuration>
+      <configuration><classifier>javadoc</classifier><classesDirectory>${project.build.directory}/license-javadoc</classesDirectory></configuration>
+    </execution></executions>
+  </plugin><plugin>
+    <groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId>
+    <executions><execution><id>starter-javadoc-index</id><phase>process-resources</phase><goals><goal>copy-resources</goal></goals>
+      <configuration><outputDirectory>${project.build.directory}/license-javadoc</outputDirectory>
+        <resources><resource><directory>${project.basedir}/src/main/javadoc</directory></resource></resources>
+      </configuration>
     </execution></executions>
   </plugin></plugins></build>
   <dependencies>

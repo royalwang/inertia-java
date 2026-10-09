@@ -46,6 +46,7 @@ export function packageRelease(store, root = projectRoot) {
     for (const name of ['package.json', 'package-lock.json']) copy(resolve(frontend, name), resolve(staging, 'frontend', name))
     copy(resolve(root, 'deploy/runtime.mjs'), resolve(staging, 'runtime.mjs'))
     copy(resolve(root, 'README.md'), resolve(staging, 'README.md'))
+    copy(resolve(root, 'LICENSE'), resolve(staging, 'LICENSE'))
     copyTree(resolve(root, 'docs'), resolve(staging, 'docs'))
     copy(resolve(root, 'deploy/README.md'), resolve(staging, 'RUNBOOK.md'))
     copyTree(resolve(root, 'deploy/systemd'), resolve(staging, 'operations/systemd'))

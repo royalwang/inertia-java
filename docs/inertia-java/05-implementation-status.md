@@ -583,3 +583,14 @@ npm初次官方sbom命令因示例缺version报EINVALIDPURLTYPE；仅为private�
 按新增CI顺序在稳定工作区连续执行：17阶段aggregate → 独立Maven consumer。aggregate证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-2Dzjat/summary.json` success=true，17阶段全exit0；Java291项零failures/errors/skipped；八配置browser全部通过，六个SSR配置实际运行No-JS用例，两个CSR配置明确skip。SSR faults、CSP/custom-root/history、A→B和带英文guide的独立deployment同时通过。消费者证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-ds66qusp/summary.json` success=true，九阶段预期结果全部满足（缺core拒绝exit1）。日志 `/tmp/inertia-java-final-ci-order.log`。执行期间未改产品、测试或发布包输入，仅在完成后追加本记录。
 
 这些是当前工作区的本地完整证据；没有以此冒充远端Actions/Linux/systemd/正式分发资格。Java版权/许可证问题仍待用户回答，未自行添加许可证。前轮和本轮改动尚未提交；默认服务未重启，整体目标保持进行中。
+
+
+## Java 工程采用 Apache-2.0
+
+用户于2026-10-09明确选择Apache-2.0。新增 `inertia-java/LICENSE`，原样取自Apache官方 `https://www.apache.org/licenses/LICENSE-2.0.txt`，SHA256 `cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30`。Java parent POM声明许可证，各子模块继承；私有React示例package与lock根metadata声明Apache-2.0。只作用于inertia-java原创代码/文档/示例，第三方条款保留，Rust Cargo.toml的MIT声明未变。未根据GitHub用户名推断或编造版权主体，也未修改官方正文附录的标准示例。
+
+Maven resources把LICENSE带入binary/source `META-INF/LICENSE`；Javadoc资源机制把正文带入 `resources/LICENSE`，依赖型starter的Javadoc同样带正文且保留说明index。示例Boot jar实际在root `META-INF/LICENSE` 保留正文；发布payload根目录复制LICENSE并纳入release hash。产物验证新增21个分类jar逐字节许可证检查。
+
+实际验证：Maven clean verify成功，Java291项零failures/errors/skipped（`/tmp/inertia-apache-build.log`）；npm ci/双build成功，lock JSON对照证明仅package根license变化、所有dependency versions/resolved/integrities未变；21jar验证 `/tmp/inertia-apache-library-artifacts.json` 通过。独立Maven消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-zxeefhxq/summary.json` 与部署SSR/CSR/Node断开/完整性 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-5bu5N2/summary.json` 均success=true，release manifest含LICENSE正确hash。依赖清单 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-dependencies-z7uvtb66/summary.json` 成功，十个owned parent/module/frontend声明均为Apache-2.0；第三方review剩31项，未伪称获得法律批准或public publicationQualified=true。
+
+自有许可证选择和正文缺失已解决，不再以版权署名信息阻塞Java实施。实际发行的第三方归属/notice和目标环境资格仍按其真实范围记录，开发和本地验证可以继续。此次未重跑17阶段aggregate；做的是与许可证打包相关的完整Maven、前端build、制品/依赖清单、独立消费和发布部署验证。默认服务未重启。

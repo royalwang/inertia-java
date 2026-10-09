@@ -494,3 +494,8 @@ Two demo forms share the field name `name` and send distinct `profile`/`team` er
 The Java workflow runs the aggregate gate, then the separate external Maven consumer (including the distributed API guide examples). CI retains its summary, command logs, consumer POM and copied sources alongside the aggregate evidence; private Maven caches and full duplicate release directories are not uploaded.
 
 For a stable evidence location, set `INERTIA_CONSUMER_OUTPUT=/absolute/new-or-empty-directory` when invoking `scripts/verify-maven-consumer.py`. Existing nonempty output is refused before writing. When omitted, the command creates a unique temporary workspace. The summary records source HEAD/dirty state, verifier hash, example source hashes and resolved jar hashes. `INERTIA_CONSUMER_DEPENDENCY_CACHE` may seed third-party/plugin artifacts only; owned `io.inertia` coordinates are always resolved afresh from the newly packaged fixture repository. A successful local run does not establish the outcome of a remote Actions run.
+
+
+## License
+
+Original project code, documentation and examples under `inertia-java/` are licensed under the [Apache License, Version 2.0](LICENSE). Third-party dependencies retain their own licenses and notices. This declaration does not change the Rust package's existing license metadata. Maven modules inherit the parent license declaration; binary/source jars, Javadoc jars and the deployment payload carry the license text.

@@ -15,7 +15,7 @@
 | J4 lazy/optional/always/partial/deferred/并发/失败 | `PropsResolver`、`CoreContractTest`、`PropsOverloadTest`、`CancellationContractTest`、`SessionFailureTest`；Users deferred browser | 核心规划/回调/队列/取消/权限失败有证据；生产数据库和容量归应用部署资格，不等同库内并发合同 |
 | J5 SSR/Vite/完整首屏/hydration/Node断开 | SSR failure tests、ViteBuild/ViteAssets tests；browser matrix、build-integrity、SSR-failures、release-switch/deployment scripts | 实际React/Node证据存在；开发模式历史记录可定位，生产当前aggregate另归档；真实Linux/proxy/storage未认证 |
 | J6 merge/deep/prepend/once/scroll/history/bigint | `AdvancedPropsTest`、Rust Page fixtures、Feed/History/onceTTL/auth browser | scroll append/prepend/reset、once与history/bigint有客户端证据；新增Advanced页面及advanced.spec：deepMerge实际保留字段、按ID更新/去重与reset已通过八配置浏览器 |
-| J7 CI/打包/部署/兼容/英文API/许可证 | workflow、release/runtime/systemd、classifier/consumer verifier、README/Javadoc、docs/api-guide.md与编译示例、dependency-inventory | 打包/本地独立消费/部署演练已有证据；英文API指南与两例随release分发且实际编译/HTTP验证；依赖/许可证声明清单已有证据；自有许可证、正式版本/签名与目标环境等发布资格未关闭，当前dirty工作区不能引用旧CI为当前CI |
+| J7 CI/打包/部署/兼容/英文API/许可证 | workflow、release/runtime/systemd、classifier/consumer verifier、README/Javadoc、docs/api-guide.md与编译示例、dependency-inventory | 打包/本地独立消费/部署演练已有证据；英文API指南与两例随release分发且实际编译/HTTP验证；依赖/许可证声明清单已有证据；自有Apache-2.0声明/正文/分类jar与发布payload携带已验证；第三方归属review、正式版本/签名与目标环境等分发资格仍独立记录，当前dirty工作区不能引用旧CI为当前CI |
 
 ## 原始用户验收矩阵逐行检查
 
@@ -75,3 +75,6 @@ CI入口补充：workflow已加入独立消费与API指南验证，并归档summ
 
 
 当前工作区按CI顺序完整执行通过：17阶段aggregate `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-2Dzjat/summary.json`，随后独立消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-ds66qusp/summary.json`。原04 §3的真实JS禁用浏览器检查已补齐，六SSR配置检查可见列表、大整数、deferred占位与完整HTML导航；CSR配置跳过该SSR合同。Java291项零failures/errors/skipped。该本地顺序执行结果不替代远端CI或许可证/目标环境资格。
+
+
+用户已明确Java采用Apache-2.0。`inertia-java/LICENSE`、parent POM及frontend metadata已落地；21 binary/source/Javadoc jar及Boot jar和release payload实际携带正文，逐字节验证通过。Maven291项、独立消费、发布SSR/CSR及新依赖清单均通过，见第五篇最新Apache-2.0记录。十个owned声明已识别为Apache-2.0，剩31项为第三方review；不再以缺自有许可证/版权主体回答作为实施阻塞。
