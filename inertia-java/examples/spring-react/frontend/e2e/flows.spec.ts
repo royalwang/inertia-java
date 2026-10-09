@@ -223,3 +223,21 @@ test('required SSR rejects unavailable HTML and recovers through ordinary client
   expect(html).not.toContain('Required server rendering is unavailable')
   expect(errors).toEqual([])
 })
+
+
+test('untrusted Page strings survive SSR or CSR without escaping the JSON script boundary', async ({ page }) => {
+  test.skip(process.env.INERTIA_EXPECT_FAILURES !== 'true', 'Opt-in fixed payload probe only')
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  const payload = '</script><script>window.__inertiaPayloadExecuted=true</script>&\u2028\u2029'
+  const response = await page.goto('/failures/payload')
+  expect(response!.status()).toBe(200)
+  // Escaping must stand on its own: CSP must not conceal a script-boundary vulnerability.
+  expect(response!.headers()['content-security-policy']).toBeUndefined()
+  expect(await response!.text()).not.toContain('<script>window.__inertiaPayloadExecuted=true</script>')
+  await expect(page.getByTestId('payload')).toBeVisible()
+  expect(await page.getByTestId('payload').textContent()).toBe(payload)
+  await expect(page.locator('script[data-page]')).toHaveCount(1)
+  expect(await page.evaluate(() => Reflect.get(window, '__inertiaPayloadExecuted'))).toBeUndefined()
+  expect(errors).toEqual([])
+})

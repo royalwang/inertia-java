@@ -55,6 +55,7 @@ try {
   await run('npm-ci', 'npm', ['ci'])
   await run('typecheck', 'npm', ['run', 'typecheck'])
   await run('build', 'npm', ['run', 'build'])
+  await run('dependency-inventory', 'python3', [resolve(root, 'scripts/dependency-inventory.py'), resolve(output, 'dependencies')], root)
   copyFileSync(resolve(frontend, 'dist/build.json'), resolve(output, 'build.json'))
   receipt = 'build.json'
   for (const [name, script] of [

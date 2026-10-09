@@ -16,8 +16,14 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
   static final String MESSAGE = "Your security token changed. Review your form and submit again.";
   private final PageCodec codec;
   private final String namespace;
+  private final Map<String, String> recovery;
 
   BrowserCsrfFailureHandler(PageCodec codec, String namespace) {
+    this(codec, namespace, Map.of("/users", "/users"));
+  }
+
+  BrowserCsrfFailureHandler(PageCodec codec, String namespace, Map<String, String> recovery) {
+    this.recovery = Map.copyOf(recovery);
     this.codec = codec;
     this.namespace = SessionStore.requireNamespace(namespace);
   }
@@ -26,9 +32,11 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
   public void handle(
       HttpServletRequest request, HttpServletResponse response, AccessDeniedException failure)
       throws IOException {
+    String target =
+        recovery.get(request.getRequestURI().substring(request.getContextPath().length()));
     if (!(failure instanceof CsrfException)
         || !"POST".equals(request.getMethod())
-        || !((request.getContextPath() + "/users").equals(request.getRequestURI()))
+        || target == null
         || !"true".equals(request.getHeader("X-Inertia"))) {
       response.sendError(403);
       return;
@@ -37,7 +45,7 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
       // The redirect target is fixed. Incoming Referer, URL, tokens and form data are not copied.
       var context =
           new InertiaContext(
-              new InertiaRequest("POST", URI.create("http://localhost/users"), Map.of()),
+              new InertiaRequest("POST", URI.create("http://localhost" + target), Map.of()),
               new HttpSessionStore(request.getSession(true), namespace),
               codec);
       context.withErrors(Map.of("_csrf", MESSAGE));
@@ -48,7 +56,7 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
     }
     response.setHeader("Cache-Control", "no-store");
     response.addHeader("Vary", "X-Inertia");
-    response.setHeader("Location", request.getContextPath() + "/users");
+    response.setHeader("Location", request.getContextPath() + target);
     response.setStatus(303);
   }
 }

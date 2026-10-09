@@ -91,12 +91,14 @@ public class InertiaAutoConfiguration {
       InertiaConfig config,
       ResponseRenderer renderer,
       InertiaProperties properties,
-      ObjectProvider<InertiaErrorPage> errorPages) {
+      ObjectProvider<InertiaErrorPage> errorPages,
+      PageCodec codec) {
     return new InertiaMvcConfigurer(
         config,
         renderer,
         properties.responseTimeout(),
         errorPages.getIfAvailable(),
-        properties.sessionNamespace());
+        properties.sessionNamespace(),
+        codec);
   }
 }

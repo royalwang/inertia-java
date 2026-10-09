@@ -14,6 +14,8 @@
 6. [本地 HTTP 性能基线](06-local-http-benchmark.md)：可复现命令、SSR/CSR与故障实测及测量限制。
 7. [发布打包与部署手册](../../inertia-java/deploy/README.md)：独立发布目录、校验启动、主机模板与验收边界。
 
+8. [首版验收逐项审查](07-acceptance-audit.md)：原始要求、可定位证据与明确缺口。
+
 ## 主要决策
 
 - Java 负责业务路由、鉴权、数据查询、Page 对象、Inertia 协议和根 HTML；JavaScript 运行时负责 React/Vue/Svelte SSR。保持现有 Inertia 客户端，无需另建客户端路由或同用途 REST API。

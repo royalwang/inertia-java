@@ -14,6 +14,10 @@ import org.springframework.util.StringUtils;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfiguration {
   @Bean
+  @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+      name = "inertia.demo-auth",
+      havingValue = "false",
+      matchIfMissing = true)
   SecurityFilterChain security(
       HttpSecurity http,
       io.inertia.core.PageCodec codec,

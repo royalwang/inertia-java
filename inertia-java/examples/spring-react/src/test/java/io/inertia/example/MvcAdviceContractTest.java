@@ -38,12 +38,21 @@ class MvcAdviceContractTest {
 
   static class PlainFailure extends RuntimeException {}
 
+  static class GenericFailure extends RuntimeException {}
+
   @SpringBootConfiguration
   @EnableAutoConfiguration(
       exclude =
           org.springframework.boot.autoconfigure.security.servlet
               .UserDetailsServiceAutoConfiguration.class)
-  @Import({Pages.class, Api.class, Advice.class, ApiAdvice.class, SecurityConfiguration.class})
+  @Import({
+    Pages.class,
+    Api.class,
+    Advice.class,
+    ApiAdvice.class,
+    GenericAdvice.class,
+    SecurityConfiguration.class
+  })
   static class App {
     @Bean
     InertiaConfig config() {
@@ -109,6 +118,11 @@ class MvcAdviceContractTest {
               .build());
     }
 
+    @GetMapping("/generic-advice")
+    InertiaResponse generic() {
+      throw new GenericFailure();
+    }
+
     @GetMapping("/ok")
     InertiaResponse ok() {
       return new InertiaResponse("Home", Props.empty());
@@ -160,6 +174,46 @@ class MvcAdviceContractTest {
     ResponseEntity<Map<String, String>> handle() {
       return ResponseEntity.status(422).body(Map.of("owner", "rest"));
     }
+  }
+
+  abstract static class GenericAdviceBase<T> {
+    abstract T response(InertiaContext context);
+
+    @ExceptionHandler(GenericFailure.class)
+    T handleGeneric(InertiaContext context) {
+      return response(context);
+    }
+  }
+
+  @ControllerAdvice(assignableTypes = Pages.class)
+  static class GenericAdvice extends GenericAdviceBase<InertiaResponse> {
+    @Override
+    InertiaResponse response(InertiaContext context) {
+      context.share("owner", "generic");
+      return new InertiaResponse("Home", Props.empty()).status(418);
+    }
+  }
+
+  @Test
+  void inheritedGenericAdviceProtectsSessionDelivery() throws Exception {
+    var session = new MockHttpSession();
+    new HttpSessionStore(session)
+        .put(InertiaContext.FLASH, new PageCodec().value(Map.of("toast", "keep")));
+    mvc.perform(
+            get("/generic-advice")
+                .session(session)
+                .header("X-Inertia", "true")
+                .header("X-Inertia-Version", "v1"))
+        .andExpect(status().is(418))
+        .andExpect(jsonPath("$.props.owner").value("generic"))
+        .andExpect(jsonPath("$.flash").doesNotExist());
+    mvc.perform(
+            get("/ok")
+                .session(session)
+                .header("X-Inertia", "true")
+                .header("X-Inertia-Version", "v1"))
+        .andExpect(jsonPath("$.flash.toast").value("keep"));
+    assertEquals(0, errorCalls.get());
   }
 
   @BeforeEach

@@ -18,11 +18,18 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
   private static final String ATTEMPT = InertiaExceptionResolver.class.getName() + ".attempt";
   private static final Log log = LogFactory.getLog(InertiaExceptionResolver.class);
   private final ResponseRenderer renderer;
+  private final PageCodec codec;
   private final Duration deadline;
   private final InertiaErrorPage errorPage;
 
   InertiaExceptionResolver(
       ResponseRenderer renderer, Duration deadline, InertiaErrorPage errorPage) {
+    this(renderer, deadline, errorPage, new PageCodec());
+  }
+
+  InertiaExceptionResolver(
+      ResponseRenderer renderer, Duration deadline, InertiaErrorPage errorPage, PageCodec codec) {
+    this.codec = Objects.requireNonNull(codec);
     this.renderer = renderer;
     this.deadline = deadline;
     this.errorPage = errorPage;
@@ -53,7 +60,7 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
       if (requiredSsrFailure(failure)) page.withoutSsr();
       page.status(status).withHeader("Cache-Control", "private, no-store");
       // A failed ordinary page's reservation is restored, not consumed by its error page.
-      var context = new InertiaContext(snapshot, null, new PageCodec());
+      var context = new InertiaContext(snapshot, null, codec);
       var pending = renderer.render(context, page).toCompletableFuture();
       HttpOutcome outcome;
       try {

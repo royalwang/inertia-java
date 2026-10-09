@@ -128,6 +128,145 @@ class InertiaHandlerValidatorTest {
     }
   }
 
+  @RestControllerAdvice
+  static class RestAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    InertiaResponse bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  static class BodyAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    @Ajax
+    InertiaResponse bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  static class AsyncAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    java.util.concurrent.CompletionStage<InertiaResponse> bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  static class WrappedAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<InertiaResponse> bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  static class WrongAdviceParameter {
+    @ExceptionHandler(IllegalArgumentException.class)
+    Map<String, String> bad(InertiaContext context) {
+      return Map.of();
+    }
+  }
+
+  @Controller
+  static class LocalAdvice {
+    @GetMapping("/local")
+    String page() {
+      return "view";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    HttpOutcome bad() {
+      return null;
+    }
+  }
+
+  static class GenericAdvice<T> {
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<T> bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  static class InheritedAdvice extends GenericAdvice<InertiaResponse> {}
+
+  @ControllerAdvice
+  @org.springframework.web.context.annotation.RequestScope
+  static class ScopedBadAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<InertiaResponse> bad() {
+      return null;
+    }
+  }
+
+  @ControllerAdvice
+  @org.springframework.web.context.annotation.RequestScope
+  static class ValidScopedAdvice {
+    ValidScopedAdvice() {
+      throw new AssertionError("Validator must not instantiate scoped advice");
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    InertiaResponse page(InertiaContext context) {
+      return null;
+    }
+  }
+
+  @RestControllerAdvice
+  static class ValidRestAdvice {
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<Map<String, String>> error() {
+      return ResponseEntity.badRequest().body(Map.of());
+    }
+  }
+
+  @TestFactory
+  Stream<DynamicTest> rejectsIncompatibleExceptionHandlersAtStartup() {
+    return Stream.of(
+            RestAdvice.class,
+            BodyAdvice.class,
+            AsyncAdvice.class,
+            WrappedAdvice.class,
+            WrongAdviceParameter.class,
+            LocalAdvice.class,
+            InheritedAdvice.class,
+            ScopedBadAdvice.class)
+        .map(
+            advice ->
+                DynamicTest.dynamicTest(
+                    advice.getSimpleName(),
+                    () -> {
+                      try (var context = context(Valid.class)) {
+                        context.register(advice);
+                        var failure = assertThrows(IllegalStateException.class, context::refresh);
+                        assertTrue(
+                            failure.getMessage().contains(advice.getName() + "#bad"),
+                            failure.getMessage());
+                      }
+                    }));
+  }
+
+  @Test
+  void typedScopedAdviceAndOrdinaryRestAdviceCoexistWithoutInstantiation() {
+    try (var context = context(Valid.class)) {
+      context.register(ValidScopedAdvice.class, ValidRestAdvice.class);
+      assertDoesNotThrow(context::refresh);
+    }
+  }
+
+  @Test
+  void rejectsAdviceInParentContext() {
+    try (var parent = new AnnotationConfigApplicationContext(RestAdvice.class);
+        var child = context(Valid.class)) {
+      child.setParent(parent);
+      var failure = assertThrows(IllegalStateException.class, child::refresh);
+      assertTrue(failure.getMessage().contains(RestAdvice.class.getName() + "#bad"));
+    }
+  }
+
   AnnotationConfigWebApplicationContext context(Class<?> controller) {
     var context = new AnnotationConfigWebApplicationContext();
     context.setServletContext(new MockServletContext());

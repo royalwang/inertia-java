@@ -18,7 +18,7 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 37、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4、CSRF recovery 3、config presentation 3、MVC config presentation 3、Rust HTTP policy 45、once TTL 11、required SSR core 5、MVC required SSR 2、MVC advice lifecycle 4，共 266 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 37、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 19、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4、CSRF recovery 3、config presentation 3、MVC config presentation 3、Rust HTTP policy 45、once TTL 11、required SSR core 5、MVC required SSR 2、MVC advice lifecycle 5、MVC outcome advice 5、Boot override wiring 4、demo identity 3、non-Inertia transfer 2，共 291 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
 | Rust → Java Page parity | 37组 fixture 完整 JSON 比较通过 | 原8组及merge/once/deferred rescue/scroll/history/bigint/shared组合，详见兼容矩阵 |
 | Rust → Java HTTP policy | 45项通过：41项直接对照，4项明确Java策略差异 | status、全部多值headers与body；纯policy，非真实代理/网络行为 |
@@ -43,12 +43,11 @@
 |---|---|
 | J0 | 已有37组Page与45项HTTP policy合同及明确客户端/运行时矩阵；已验证秒精度TTL实时/固定Clock语义及官方客户端到期边界；HTTP非法输入/失败组合与更多跨语言边界仍待验收 |
 | J1 | 完整配置与错误策略的剩余边界审查；已补齐Page URL resolver/shared-key元数据开关及错误页集成，已补齐定义来源/父子路径冲突诊断，明确同名覆盖与errors替换策略、提供有界观察和开发者报告 |
-| J2 | 已落地专用响应、启动诊断、一次安全错误页与typed应用Page advice隔离Context；仍需更多HttpOutcome advice、注解/自动装配替换组合 |
-| J3 | namespace、fail-closed 失效/写失败及示例cookie-CSRF缺失/失配后的显式重提恢复已验收；示例身份策略及登录/注销/会话失效与CSRF联动仍待处理 |
+| J2 | 已落地专用响应、mapping/advice启动诊断、一次安全错误页与typed应用Page advice隔离Context（含继承泛型）；HttpOutcome advice的重定向/会话写入/namespace失效，以及codec/resolver/renderer/MVC替换与codec候选歧义已验收；已补REST multipart与async streaming transfer边界；具体未关闭要求以第七篇逐项审查为准 |
 | J4 | 更广的并发/业务负载边界；已完成本地HTTP初始性能基线（数据库查询0），真实业务/部署容量仍待资格验证；已验收跨请求全局queue拒绝/取消槽位恢复、async持有请求许可、unrescued失败立即终止与合法deferred rescue隔离。基础 MVC→render→props/SSR 取消链、结构化事件、HTTP transport原因细分类、Boot/Micrometer 与 MVC write/version-conflict 观察已落实 |
 | J5 | 基础 SSR/Vite、本地两版切换及逐页requireSsr成功/503失败策略已验收；真实部署存储/路由资格并入 J7 |
 | J6 | 扩展边界组合、更多 history/SSR override 边界组合（基础合同及官方浏览器链路已验收）；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
-| J7 | 已有独立发布打包/校验运行入口及macOS外置目录演练；已具备name/description/URL/SCM元数据、21个binary/source/Javadoc产物与内容门槛，仓库外Maven消费/HTTP/classifier解析及缺产物拒绝已验收；剩余正式版本/tag/签名、英文 API 说明扩展、许可证/依赖审查、目标Linux/代理/会话/存储演练和部署性能资格；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
+| J7 | 已有独立发布打包/校验运行入口及macOS外置目录演练；已具备name/description/URL/SCM元数据、21个binary/source/Javadoc产物与内容门槛，仓库外Maven消费/HTTP/classifier解析及缺产物拒绝已验收；已新增实际依赖图、运行时archive对照与许可证声明/文本清单；剩余正式版本/tag/签名、英文 API 说明扩展、自有分发许可证/归属及第三方条款审查、目标Linux/代理/会话/存储演练和部署性能资格；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
 
 另：WebFlux/集群 Session/Vue/Svelte/Precognition 继续按原设计放在首版之外。Rust 库实现未改动，新增 `examples/java_contract_fixtures.rs` 导出器，Java 工程本次交付作为首个实施增量，尚未关闭的工作包见上表。当前 demo 用户保存仅展示 flash，不访问数据库。
 
@@ -451,3 +450,107 @@ Java全量Spotless/verify266项零failures/errors/skipped，初始失败 /tmp/in
 随后独立Maven consumer模板加入真实controller-local typed advice（InertiaContext.share、418 Page），先seed flash，再advice不领flash，再required503、正常JSON一次交付/无重放。新fixture七个阶段按预期通过，缺core为预期exit1；runtime从新jar/private repository解析，third-party seed明确排除io/inertia。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-8hx4e2al/summary.json，HTTP标记包含ADVICE。这是同新jar的外置应用验证，不冒充已在前轮consumer执行该场景。
 
 本轮MVC advice与前轮增量尚未提交；整体目标继续，更多HttpOutcome advice/注解/自动装配组合、身份策略和发布/生产资格仍待完成。默认服务未重启，远端CI未因本地通过而宣称当前代码已验证。
+
+
+## typed exception handler 启动诊断与泛型 Context
+
+InertiaHandlerValidator 保留现有构造器，作为 ApplicationContextAware bean 扩展扫描 controller-local/global ExceptionHandler；全局 advice 包含父容器。使用 MethodIntrospector、merged annotation 和带 containing class 的 MethodParameter，解析继承泛型返回类型。与普通映射共用同步/unwrapped、ResponseBody 和 context 参数限制，错误包含实际 bean class#method。ordinary REST advice 继续允许。
+
+新增10项启动合同：RestControllerAdvice、组合 ResponseBody 方法、CompletionStage<Page>、ResponseEntity<Page>、普通返回值携带 InertiaContext、local HttpOutcome+ResponseBody、继承泛型 wrapper、request-scope bad advice、父容器 bad advice；有效 typed request-scope advice 与 REST advice 共存，构造器故意抛错但没有被诊断实例化。原9项映射合同保留，总19项通过。扫描不调用 advice resolveBean/getOrder；初次 lazy bean 试验发现 Spring 自身排序会实例化 singleton lazy advice，因此不把 lazy singleton 永不实例化作为本库承诺。
+
+新增真实 MockMvc 泛型异常页合同，初次发现继承 T=InertiaResponse 的 handler 虽被适配器接受，prepareAdviceContext 使用 erased method return type 导致 flash 被错误页消费。修复为按 containing class 解析真实返回类型；泛型 advice 应与直接 Page handler 一样使用 fresh sessionless context。初次失败证据 /tmp/inertia-advice-generic-initial.log。该合同不以启动通过代替请求行为验证。
+
+
+修复后 targeted 24项（19 startup +5 MockMvc advice）全部通过，日志 /tmp/inertia-advice-generic-fixed.log。第一套aggregate KlDTwS仅证明启动诊断版本：运行中追加了泛型请求负例和修复，不能作为最终源码/277项证据；随后已对最终源码启动新的clean aggregate，结果另记。
+
+
+最终clean aggregate16阶段全部exit0，Java277项零failures/errors/skipped；21库制品内容/source/Javadoc、五配置浏览器、build/SSR故障、CSP/root/history、A→B与独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-WDE1vw/summary.json，日志 /tmp/inertia-advice-final-aggregate.log。源码在这套执行期间未变；只在结束后补本文结果。默认服务未重启；本轮6文件尚未提交，未宣称新代码的远端CI或目标生产资格。J2的HttpOutcome advice/session writes与自动装配替换组合、J3身份策略及其他工作包继续。
+
+
+## HttpOutcome exception advice 的隔离效果与原会话绑定
+
+新增真实 MockMvc 合同先复现两个问题：direct controller throw 后复用 Context，失败请求排队的 flash 会被 advice redirect 提交；props 失败后的 Context 已关闭，local HttpOutcome advice 返回500。初次失败 /tmp/inertia-outcome-advice-initial.log。
+
+InertiaMvcConfigurer 在创建正常 typed request Context 时保存原 HttpSessionStore 引用。prepareAdviceContext 同时识别 InertiaResponse/HttpOutcome（按具体 containing class 解析泛型），先 abort 原 context；Page advice 继续 sessionless，outcome advice 创建 fresh Context 并复用原 store/namespace/observer。不会复制旧 pending/shared，也不会从 request.getSession() 重新绑定失效/被移除的状态。advice 只提交自己的 pending；原 reservation 恢复后等待成功页面领取。普通 REST advice 不参与。
+
+5项新 MockMvc 合同覆盖：direct/async props/inherited generic global advice flash+errors merge、旧 pending 丢弃、单次领取/无重放与 namespace 隔离；无 Context 参数的 local HttpOutcome 在 props 失败后仍302并保护原 flash；真实 cookie/header CSRF 下 PUT advice 302→303；invalidated session 不新建；detached namespace 不重绑且其他 namespace 保留。targeted29项（19 startup+5 Page advice+5 outcome advice）通过，日志 /tmp/inertia-outcome-advice-expanded.log。
+
+此行为延续既有“提交会话后写响应”边界；网络/servlet write 失败不能伪称撤销已完成 merge，也不保证客户端已经收到重定向。会话库 fail-closed 检查不等于任意 container invalidate 的原子性。
+
+
+最终clean aggregate16阶段全部exit0，Java282项零failures/errors/skipped，library-artifacts21、五配置browser、build/SSR故障、CSP/root/history、两版切换、独立发布全部通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-8xrFwl/summary.json；日志 /tmp/inertia-outcome-advice-aggregate.log。默认服务没有重启，未宣称远端CI/目标生产资格。此前6文件增量加本轮新测试共7文件尚未提交；完整目标继续，下一步为J2自动装配替换/应用策略组合与J3身份链路。
+
+
+## Boot 自定义 codec 与适配器替换
+
+新增实际 WebApplicationContextRunner + WebMvcAutoConfiguration + MockMvc 合同，初次复现自定义 PageCodec 虽用于 props，MVC InertiaContext 却创建默认 codec，导致同页 flash 使用不同 serializer。初始失败 /tmp/inertia-overrides-initial.log。
+
+InertiaMvcConfigurer 新增六参数构造器显式接受 PageCodec，原三/四/五参数入口继续委托默认codec以保留兼容。Boot 默认 MVC configurer 注入容器 codec；正常request、Page/outcome advice 及库 error resolver 均沿该 codec 创建 Context。InertiaExceptionResolver 保留原内部入口并增加 codec 参数。没有把 private PageCodec 注册到 Spring REST converter，也没有更改应用 ObjectMapper。
+
+4项新合同：custom codec 的 props/当前 flash/跨redirect delivery/typed local advice 输出一致，普通 REST DTO 不变；custom resolver/renderer/MVC configurer 让默认bean back off且实际请求仅一个适配链；多个codec无Primary明确启动失败；带Primary时props/context序列化一致。custom MVC使用新六参数入口，并验证serializer贯穿其请求 effects。targeted10项（原Boot6+override4）通过，日志 /tmp/inertia-overrides-expanded.log。自定义组件的config/codec/budget一致性由应用负责，默认properties不强行覆盖已替换实例。
+
+
+最终clean aggregate16阶段全部exit0，Java286项零failures/errors/skipped；源码/Javadoc与21库制品检查、五配置browser、build/SSR故障、CSP/root/history、A→B与独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-CJwB2o/summary.json，日志 /tmp/inertia-overrides-aggregate.log。测试运行期间未修改产品源码。默认服务未重启，未宣称远端CI/目标生产资格。本轮和前轮合计10文件未提交；整体J0–J7目标继续，J3示例身份与会话/CSRF联动仍需落地。
+
+
+## 可选身份示例：Spring Security 登录、会话与 CSRF 边界
+
+新增 DemoAuth，inertia.demo-auth=true 时替换默认公开 security chain；默认示例行为保留。要求操作员明确配置至少12字符的 inertia.demo-password，内存用户名demo、BCrypt hash，仅作为local integration sample；未建自定义认证协议。Spring Security负责formLogin过滤器、credential验证、newSession fixation策略、SecurityContext持久化及logout/session/CSRF清理。request cache关闭且所有redirect target固定，避免未审查saved target。
+
+新增Auth/Login与Auth/Account React/SSR注册；login使用官方useForm +forceFormData，让标准Spring认证filter读取servlet参数，失败generic credentials错误，不回显密码且提交后清空输入。account只暴露authentication.name，private/no-store、encryptHistory；login clearHistory。成功登录在干净会话/configured namespace排队clearHistory，不复制匿名flash/errors。anonymous document访问account固定303/login；Inertia访问409 +X-Inertia-Location触发新文档，鉴权发生在MVC/props之前。
+
+BrowserCsrfFailureHandler支持trusted recovery map，默认仍仅/users；auth模式增加/login→/login与/logout→/account。CSRF拒绝只保存safe _csrf并303固定target；不重放登录/注销。过期header注销仍保留authenticated session，用户显式重提后才清理。页面展示安全提示。CookieCsrfTokenRepository与既有BrowserCsrfHandler在登录/注销后的新GET发新token。
+
+3项真实MockMvc合同通过：anonymous account控制响应且不创建session；login失败generic error单次交付/无密码、仍无权限；成功login原session invalid+新ID、匿名flash隔离、新CSRF、clear/encryptHistory，旧header注销拒绝且会话保留，有效注销使会话失效并拒绝account。日志 /tmp/inertia-auth-contract.log。
+
+browser matrix增加auth与auth-csr两配置，显式执行auth.spec与既有flows并reset auth flag。真实Chrome两配置均通过：页面SSR首屏/CSR mount、multipart失败/成功登录、密码清空、sessionID/CSRF cookie更新、授权HTML内容、stale logout review/explicit retry、注销后官方Link访问account的409/full reload。其余公开users/once/CSRF流程同时通过。初始运行 /tmp/inertia-auth-java.log发生在最终newSession/CSRFmap等源码改动前，仅属当时scope；最终clean aggregate结果另记。
+
+这不是生产身份系统资格；真实用户目录、HTTPS/cookie部署、集群会话和访问策略由应用提供。自然session expiry、跨标签页和history后退的更多身份边界尚未宣称通过。依据Spring官方CSRF/session-management/logout文档（链接见inertia-java/README），实际版本以锁定依赖为准。
+
+
+最终clean aggregate16阶段全部exit0，Java289项零failures/errors/skipped，21库制品与source/Javadoc、七配置browser（含auth SSR/CSR）、build/SSR故障、CSP/root/history、A→B及独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-obuV62/summary.json；日志 /tmp/inertia-auth-aggregate.log。另外实际新jar以loopback临时port启用auth但不给密码，启动如期exit1并提示配置密码，日志 /tmp/inertia-auth-missing-password.log；没有启动或操作默认服务。本轮与前轮尚未提交；完整目标继续，未将本地验收等同远端CI/生产资格。
+
+
+## 跨标签页注销、后退历史与真实容器会话过期
+
+新增browser合同先实测复现另一个标签页注销后旧账户仍留在原标签页；初始失败 /tmp/inertia-auth-boundaries-initial.log，细节 /tmp/inertia-java-browser-matrix/browser-auth.log。首次执行的history步骤后来补强为“再次进入public页，把private account留在后退链”，不把初次失败误称已覆盖补强后的完整轨迹。
+
+新增frontend/auth.ts；成功logout visit才写same-origin localStorage revision。root仅demo-auth模式输出meta并安装storage/pageshow监听：其他tab收到注销提示以replace重新加载/login，官方Login.clearHistory清理其private history；BFCache恢复时比较当前revision，避免恢复注销前document。通知只让客户端丢弃旧显示，不授予权限、也不替代Spring Security。storage不可用时当前tab仍完成注销，其他tab下次protected request仍由服务器拒绝；不承诺不可用storage时跨tab主动通知。
+
+新增auth.spec合同分别验证多tab注销通知+private后退链，以及真实Tomcat idle expiry：新增auth-expiry矩阵使用server.servlet.session.timeout=1m，无该session请求地等待65秒，不使用page clock或手工删cookie冒充过期；之后login为anonymous且sessionID变化，official Link访问account仍409，再fresh login成功。矩阵仍reset expiry flag，其他场景明确skip这项较长用例。
+
+
+八配置browser均通过，auth与auth-csr包括跨tab注销/private后退；auth-expiry实际测试耗时1.1m，浏览器日志 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-EkLYbr/browser-matrix/browser-auth-expiry.log 记录65秒真实等待后的匿名/新session/denied Link/fresh login。该项不把人工invalidate或cookie删除作为idle expiry替代。后续aggregate发布阶段继续，最终结果另记。
+
+
+最终clean aggregate16阶段全部exit0，Java289项零failures/errors/skipped，21库source/Javadoc制品检查、八配置browser、build/SSR故障、CSP/root/history、两版切换及独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-EkLYbr/summary.json；日志 /tmp/inertia-auth-boundaries-aggregate.log。源码/产物一致；默认服务未重启，本轮与前轮增量未提交。
+
+J3首版单节点HttpSession、表单验证/flash一次领取和失败恢复、namespace、CSRF显式重提，以及示例登录/注销/真实idle expiry/多tab注销/private后退的既定路径已有对应证据，因此从“未关闭实施项”移除J3。集群会话仍按原计划不属首版，生产身份系统资格仍不由本地demo代替。pageshow guard已有实现，但本轮back路径未额外断言pageshow.persisted=true，不把它宣称为所有BFCache/浏览器专用分支认证。完整目标继续，其他工作包与发布资格未据此缩小。
+
+
+## 原始验收审查、依赖/许可证清单与transfer/DOM缺口
+
+新增第七篇验收逐项审查，明确把deepMerge、partial except和命名error bag的实际UI轨迹列为缺口，不再仅以core metadata通过称完整浏览器覆盖。继续保留原J0–J7要求，不将较广部署/发布资格用本地成功替代。
+
+新增scripts/dependency-inventory.py：固定CycloneDX Maven plugin2.9.1生成reactor含test/provided的实际图，npm官方sbom生成all-platform与production锁图；验证组件重复/图引用/lock逐项完整性。并对照可执行jar内每个BOOT-INF/lib，用SBOM hash匹配第三方、target字节匹配owned依赖；额外Boot jarmode-tools未在Maven project图中，显式保留为archive-only待审查项，而非遗漏或虚构Maven license metadata。保存原SBOM、input/source/jar hash、inventory/review表、原样LICENSE/NOTICE/COPYING/copyright文本按hash存储。包含installed npm实际文本；未安装platform optional只声明锁信息，不伪造观察证据。
+
+npm初次官方sbom命令因示例缺version报EINVALIDPURLTYPE；仅为private示例补0.1.0-snapshot.0，lock根metadata同步，未升级任何dependency/version/resolved/integrity。两次独立收集通过；最终aggregate内再次执行，新增dependency-inventory阶段使总数17。当前89 Maven图组件、44 Java runtime jar、81 npm锁组件、4 production npm锁组件、38 installed npm包；review47项（可同component多原因），包括owned许可证缺失、reciprocal/multiple terms和运行时未识别文本等。success是收集/完整性门槛，publicationQualified始终false；不自动选择license分支、提供法律授权或漏洞清零结论。Maven插件依赖/JDK/OS/browser及bundle级attribution不在该依赖图范围。
+
+新增NonInertiaTransferTest两项真实WebApplicationContextRunner/MockMvc：携stale Inertia头的multipart upload仍201/binary且controller一次、无session/协议改写；StreamingResponseBody真实Spring async dispatch保留二进制（含null/非UTF8/脚本文本bytes）、Content-Disposition/Cache-Control、无Vary/X-Inertia且不创建session。targeted2项通过 /tmp/inertia-non-page-transfers.log。
+
+新增opt-in固定/failures/payload探针，About仅在收到payload时显示pre。官方客户端SSR/CSR实际Page/DOM测试验证script delimiter、&及U2028/U2029字节精确恢复；明确无CSP响应头，恶意script不执行、唯一Page JSON script、不出现pageerror。因此不会靠CSP掩盖JSON script boundary问题。最终aggregate结果另记。
+
+
+最终clean aggregate17阶段全部exit0（新增dependency-inventory），Java291项零failures/errors/skipped；21 source/Javadoc库制品、89 Maven/44 actual runtime jar/81 npm锁图完整性、八配置browser、build/SSR故障、CSP/root/history、A→B及独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-OVdppl/summary.json；依赖明细位于同目录dependencies/，日志 /tmp/inertia-acceptance-aggregate.log。DOM probe在failures/namespace SSR与csr-failures均通过，且无CSP掩护。另比较HEAD与当前lock JSON，除root与packages[""] version外完全相同，所有dependency metadata/resolved/integrity未变。
+
+技术清单通过不等于47项review获法律批准或publicationQualified=true；自有分发许可证与第三方条款仍需实际关闭。默认服务未重启，本轮与前轮改动未提交；整体目标仍未证明完成。明确下一项为J6 deepMerge/partial except和命名bags实际UI验收，见第七篇。
+
+
+## 高级 props 与命名错误袋的真实客户端验收
+
+新增 `/advanced` 示例和官方 React 客户端流程：nested deepMerge 保留未更新字段，members.id 匹配更新/去重，重复delta不重复插入；reset替换profile并移除merge/match metadata。except明确排除昂贵回调/profile，同时always status越过排除；下次only expensive计数仅增加一次，证明被排除回调没有执行。两个form同用name字段但分别传profile/team errorBag，验证错误隔离、成功后本表单清错、另一表单本地错误保留和flash无重放。
+
+初次aggregate在optional计数断言失败，证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-Y9gakn/summary.json`。核对 `src/props/resolver.rs` 的partial筛选与full-visit排除规则，以及Java `PropsResolver` 后，确认except-only会执行未被排除的optional回调，两端一致。修正浏览器断言并明确检查except响应optional=1和后续only optional=2；未为通过测试修改core语义。README记明这项Rust兼容行为，调用方如需跳过optional须显式except。
+
+
+提交前最终完整验证：17阶段全部exit0，Java291项零failures/errors/skipped；八配置浏览器包含Advanced两项新流程均通过，SSR故障、CSP/root/history、A→B发布切换与独立部署通过。证据：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-V9MTC1/summary.json`；日志 `/tmp/inertia-precommit-aggregate.log`。本次仅在执行期间补充说明文档，产品与测试源码保持稳定。验收审查已关闭上述deepMerge/except/命名bag浏览器缺口；远端CI和正式分发/目标环境资格仍未据本地成功关闭。

@@ -18,9 +18,10 @@ import org.springframework.web.servlet.config.annotation.*;
 public final class InertiaMvcConfigurer implements WebMvcConfigurer {
   public static final String CSP_NONCE_ATTRIBUTE = InertiaMvcConfigurer.class.getName() + ".nonce";
   private static final String CONTEXT = InertiaMvcConfigurer.class.getName() + ".context";
-  private final PageCodec codec = new PageCodec();
+  private final PageCodec codec;
   private static final String ADVICE_CONTEXT =
       InertiaMvcConfigurer.class.getName() + ".advice-context";
+  private static final String SESSION = InertiaMvcConfigurer.class.getName() + ".session";
   private static final String REQUEST = InertiaMvcConfigurer.class.getName() + ".request";
   private final InertiaConfig config;
   private final ResponseRenderer renderer;
@@ -46,6 +47,18 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
       Duration deadline,
       InertiaErrorPage errorPage,
       String sessionNamespace) {
+    this(config, renderer, deadline, errorPage, sessionNamespace, new PageCodec());
+  }
+
+  /** Use the same codec for rendering and request-owned flash/error effects. */
+  public InertiaMvcConfigurer(
+      InertiaConfig config,
+      ResponseRenderer renderer,
+      Duration deadline,
+      InertiaErrorPage errorPage,
+      String sessionNamespace,
+      PageCodec codec) {
+    this.codec = Objects.requireNonNull(codec);
     this.config = config;
     this.renderer = renderer;
     this.deadline = deadline;
@@ -82,14 +95,12 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               writeObserved(request, response, early.get(), renderer.observer(), "");
               return false;
             }
-            if (request.getAttribute(CONTEXT) == null)
+            if (request.getAttribute(CONTEXT) == null) {
+              var session = new HttpSessionStore(request.getSession(), sessionNamespace);
+              request.setAttribute(SESSION, session);
               request.setAttribute(
-                  CONTEXT,
-                  new InertiaContext(
-                      snapshot,
-                      new HttpSessionStore(request.getSession(), sessionNamespace),
-                      codec,
-                      renderer.observer()));
+                  CONTEXT, new InertiaContext(snapshot, session, codec, renderer.observer()));
+            }
             return true;
           }
 
@@ -133,20 +144,27 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
           instanceof
           org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver)
         position = i + 1;
-    resolvers.add(position, new InertiaExceptionResolver(renderer, deadline, errorPage));
+    resolvers.add(position, new InertiaExceptionResolver(renderer, deadline, errorPage, codec));
   }
 
-  /** Typed application error pages get a fresh sessionless context, like the library error page. */
+  /** Error pages are sessionless; error outcomes can commit only their own fresh effects. */
   private void prepareAdviceContext(MethodParameter parameter, HttpServletRequest request) {
     var method = parameter.getMethod();
-    if (method == null
-        || method.getReturnType() != InertiaResponse.class
+    if (method == null) return;
+    Class<?> returnType =
+        org.springframework.core.ResolvableType.forMethodReturnType(
+                method, parameter.getContainingClass())
+            .resolve();
+    if ((returnType != InertiaResponse.class && returnType != HttpOutcome.class)
         || !org.springframework.core.annotation.AnnotatedElementUtils.hasAnnotation(
             method, org.springframework.web.bind.annotation.ExceptionHandler.class)
         || request.getAttribute(REQUEST) == null
         || request.getAttribute(ADVICE_CONTEXT) != null) return;
     abort(request);
-    request.setAttribute(CONTEXT, new InertiaContext(snapshot(request), null, codec));
+    SessionStore session =
+        returnType == HttpOutcome.class ? (SessionStore) request.getAttribute(SESSION) : null;
+    request.setAttribute(
+        CONTEXT, new InertiaContext(snapshot(request), session, codec, renderer.observer()));
     request.setAttribute(ADVICE_CONTEXT, Boolean.TRUE);
   }
 

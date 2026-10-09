@@ -95,7 +95,15 @@ public class Application {
     return new InertiaConfig(
         development ? assets::version : build::buildId,
         rootId,
-        Set.of("Users/Index", "About", "Feed", "Error", "History"),
+        Set.of(
+            "Users/Index",
+            "About",
+            "Feed",
+            "Error",
+            "History",
+            "Auth/Login",
+            "Auth/Account",
+            "Advanced"),
         view ->
             "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
                 + "<link rel=\"icon\" href=\"data:,\"><meta name=\"inertia-root\" content=\""
@@ -104,6 +112,9 @@ public class Application {
                 + (view.nonce() == null
                     ? ""
                     : "<meta name=\"csp-nonce\" content=\"" + view.nonce() + "\">")
+                + (environment.getProperty("inertia.demo-auth", Boolean.class, false)
+                    ? "<meta name=\"inertia-demo-auth\" content=\"true\">"
+                    : "")
                 + assets.tags("src/app.tsx", view.nonce())
                 + view.head()
                 + "</head><body>"

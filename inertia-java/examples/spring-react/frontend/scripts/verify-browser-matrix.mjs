@@ -66,7 +66,10 @@ try {
     { name: 'all-errors', args: ['--inertia.all-errors=true'], env: { INERTIA_EXPECT_ALL_ERRORS: 'true' } },
     { name: 'failures', args: ['--inertia.demo-failures=true'], env: { INERTIA_EXPECT_FAILURES: 'true' } },
     { name: 'namespace', args: ['--inertia.demo-failures=true', '--inertia.session-namespace=portal'], env: { INERTIA_EXPECT_FAILURES: 'true' } },
+    { name: 'auth', args: ['--inertia.demo-auth=true', '--inertia.demo-password=local-demo-test-password'], env: { INERTIA_EXPECT_AUTH: 'true' } },
+    { name: 'auth-expiry', args: ['--inertia.demo-auth=true', '--inertia.demo-password=local-demo-test-password', '--server.servlet.session.timeout=1m'], env: { INERTIA_EXPECT_AUTH: 'true', INERTIA_EXPECT_AUTH_EXPIRY: 'true' } },
     { name: 'csr-failures', args: ['--inertia.demo-failures=true'], env: { INERTIA_EXPECT_CSR: 'true', INERTIA_EXPECT_FAILURES: 'true' }, csr: true },
+    { name: 'auth-csr', args: ['--inertia.demo-auth=true', '--inertia.demo-password=local-demo-test-password'], env: { INERTIA_EXPECT_AUTH: 'true', INERTIA_EXPECT_CSR: 'true' }, csr: true },
   ]) {
     if (scenario.csr) await stop(renderer)
     const java = start('java', [`-Dinertia.ssr=http://127.0.0.1:${port}/render`, '-jar',
@@ -80,9 +83,9 @@ try {
         return Boolean(javaPort)
       })
       // Explicitly reset mode flags so caller environment cannot silently skip this matrix.
-      const tests = start(process.execPath, ['node_modules/@playwright/test/cli.js', 'test', 'e2e/flows.spec.ts'], {
+      const tests = start(process.execPath, ['node_modules/@playwright/test/cli.js', 'test', 'e2e/flows.spec.ts', 'e2e/auth.spec.ts', 'e2e/advanced.spec.ts'], {
         cwd: frontend, env: { ...process.env, INERTIA_BASE_URL: `http://127.0.0.1:${javaPort}`,
-          INERTIA_EXPECT_CSR: 'false', INERTIA_EXPECT_ALL_ERRORS: 'false', INERTIA_EXPECT_FAILURES: 'false',
+          INERTIA_EXPECT_AUTH_EXPIRY: 'false', INERTIA_EXPECT_AUTH: 'false', INERTIA_EXPECT_CSR: 'false', INERTIA_EXPECT_ALL_ERRORS: 'false', INERTIA_EXPECT_FAILURES: 'false',
           ...scenario.env, INERTIA_E2E_OUTPUT: resolve(output, scenario.name) },
       }, 'browser-' + scenario.name)
       const code = await new Promise((done, reject) => { tests.on('error', reject); tests.on('close', done) })

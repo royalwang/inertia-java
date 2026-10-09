@@ -1,17 +1,31 @@
 package io.inertia.spring;
 
 import io.inertia.core.*;
+import java.lang.reflect.Method;
 import java.util.*;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.MethodIntrospector;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-/** Inspects registered MVC mappings after initialization, including composed annotations. */
-public final class InertiaHandlerValidator implements SmartInitializingSingleton {
+/**
+ * Inspects MVC mappings and exception handlers after initialization, including composed
+ * annotations.
+ */
+public final class InertiaHandlerValidator
+    implements SmartInitializingSingleton, ApplicationContextAware {
+  private ApplicationContext applicationContext;
   private final ObjectProvider<RequestMappingHandlerMapping> mappings;
 
   public InertiaHandlerValidator(ObjectProvider<RequestMappingHandlerMapping> mappings) {
@@ -19,12 +33,33 @@ public final class InertiaHandlerValidator implements SmartInitializingSingleton
   }
 
   @Override
+  public void setApplicationContext(ApplicationContext applicationContext) {
+    this.applicationContext = applicationContext;
+  }
+
+  @Override
   public void afterSingletonsInstantiated() {
+    Set<Class<?>> controllers = new HashSet<>();
     mappings
         .orderedStream()
         .forEach(
             mapping ->
-                mapping.getHandlerMethods().values().forEach(InertiaHandlerValidator::validate));
+                mapping
+                    .getHandlerMethods()
+                    .values()
+                    .forEach(
+                        handler -> {
+                          validate(handler);
+                          controllers.add(handler.getBeanType());
+                        }));
+    if (applicationContext != null)
+      for (String name :
+          BeanFactoryUtils.beanNamesForAnnotationIncludingAncestors(
+              applicationContext, ControllerAdvice.class)) {
+        Class<?> type = applicationContext.getType(name);
+        if (type != null) controllers.add(ClassUtils.getUserClass(type));
+      }
+    controllers.forEach(InertiaHandlerValidator::validateExceptionHandlers);
   }
 
   static boolean supports(HandlerMethod method) {
@@ -33,22 +68,60 @@ public final class InertiaHandlerValidator implements SmartInitializingSingleton
   }
 
   static void validate(HandlerMethod method) {
-    if (supports(method)) {
-      if (method.hasMethodAnnotation(ResponseBody.class)
-          || AnnotatedElementUtils.hasAnnotation(method.getBeanType(), ResponseBody.class))
+    validate(
+        method.getBeanType(),
+        method.getMethod(),
+        method.getReturnType(),
+        method.getMethodParameters(),
+        method.hasMethodAnnotation(ResponseBody.class));
+  }
+
+  private static void validateExceptionHandlers(Class<?> beanType) {
+    MethodIntrospector.selectMethods(
+            beanType,
+            (MethodIntrospector.MetadataLookup<ExceptionHandler>)
+                method ->
+                    AnnotatedElementUtils.findMergedAnnotation(method, ExceptionHandler.class))
+        .keySet()
+        .forEach(
+            method -> {
+              MethodParameter[] parameters = new MethodParameter[method.getParameterCount()];
+              for (int i = 0; i < parameters.length; i++)
+                parameters[i] = new MethodParameter(method, i).withContainingClass(beanType);
+              validate(
+                  beanType,
+                  method,
+                  new MethodParameter(method, -1).withContainingClass(beanType),
+                  parameters,
+                  AnnotatedElementUtils.hasAnnotation(method, ResponseBody.class));
+            });
+  }
+
+  private static void validate(
+      Class<?> beanType,
+      Method method,
+      MethodParameter returnType,
+      MethodParameter[] parameters,
+      boolean responseBody) {
+    Class<?> type = returnType.getParameterType();
+    if (type == InertiaResponse.class || type == HttpOutcome.class) {
+      if (responseBody || AnnotatedElementUtils.hasAnnotation(beanType, ResponseBody.class))
         throw invalid(
+            beanType,
             method,
-            "Use @Controller without @ResponseBody or @RestController for typed Inertia endpoints");
+            "Use @Controller/@ControllerAdvice without @ResponseBody, @RestController or @RestControllerAdvice for typed Inertia endpoints");
       return;
     }
-    if (containsInertia(ResolvableType.forMethodParameter(method.getReturnType()), 0))
+    if (containsInertia(ResolvableType.forMethodParameter(returnType), 0))
       throw invalid(
+          beanType,
           method,
           "Typed Inertia return values must be synchronous and unwrapped; async and container return types are unsupported");
-    for (var parameter : method.getMethodParameters())
+    for (var parameter : parameters)
       if (parameter.getParameterType() == InertiaContext.class
           || parameter.getParameterType() == InertiaRequest.class)
         throw invalid(
+            beanType,
             method,
             "InertiaContext/InertiaRequest parameters require an InertiaResponse or HttpOutcome return type");
   }
@@ -61,8 +134,7 @@ public final class InertiaHandlerValidator implements SmartInitializingSingleton
     return false;
   }
 
-  private static IllegalStateException invalid(HandlerMethod method, String message) {
-    return new IllegalStateException(
-        message + ": " + method.getBeanType().getName() + "#" + method.getMethod().getName());
+  private static IllegalStateException invalid(Class<?> beanType, Method method, String message) {
+    return new IllegalStateException(message + ": " + beanType.getName() + "#" + method.getName());
   }
 }

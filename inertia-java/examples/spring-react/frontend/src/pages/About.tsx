@@ -1,2 +1,2 @@
 import { Head, Link } from '@inertiajs/react'
-export default function About() { return <main><Head title="About" /><h1>About this app</h1><p>Inertia navigation uses the same Java routes.</p><Link href="/users">Back to users</Link><p><Link href="/feed">Explore feed</Link></p></main> }
+export default function About({ payload }: { payload?: string }) { return <main><Head title="About" /><h1>About this app</h1><p>Inertia navigation uses the same Java routes.</p>{payload !== undefined && <pre data-testid="payload">{payload}</pre>}<Link href="/users">Back to users</Link><p><Link href="/feed">Explore feed</Link></p><p><Link href="/advanced">Explore advanced props</Link></p></main> }

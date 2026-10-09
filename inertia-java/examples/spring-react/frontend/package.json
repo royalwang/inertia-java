@@ -1,5 +1,6 @@
 {
   "name": "inertia-java-react-example",
+  "version": "0.1.0-snapshot.0",
   "private": true,
   "type": "module",
   "engines": {
