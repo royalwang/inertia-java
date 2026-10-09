@@ -18,6 +18,10 @@
 
 9. [英文 Java API 指南](../../inertia-java/docs/api-guide.md)：实际调用方式、生命周期和随发布物分发的可编译示例。
 
+10. [开源文档库规划](08-open-source-documentation-plan.md)：用户路径、70条目录、站点与语言/版本策略、内容与示例规范、CI和D0–D4验收。
+
+11. [开源文档实施台账](09-documentation-implementation.md)：D0/D1正文、工具链、独立教程和本地验收边界。
+
 ## 主要决策
 
 - Java 负责业务路由、鉴权、数据查询、Page 对象、Inertia 协议和根 HTML；JavaScript 运行时负责 React/Vue/Svelte SSR。保持现有 Inertia 客户端，无需另建客户端路由或同用途 REST API。
@@ -38,3 +42,5 @@ Rust 分析基线：`6667d8d1be314067af989eb049ba419a07fcd412`。依据为本仓
 - [Spring MVC 返回值](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/return-types.html)：作为适配扩展点依据。
 
 Java 类名、配置名、目录和代码片段均为拟定接口。协议之外的设计取舍在各章明确说明。上述四篇为初始设计快照；实际实现与仍待完成的范围见第五篇实施记录。
+
+- [README专题迁移对应](10-readme-topic-migration.md)：旧锚点、新文档与历史文本保留。

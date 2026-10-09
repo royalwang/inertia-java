@@ -26,6 +26,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <inertia.documentation.skip>false</inertia.documentation.skip>
     <inertia.javadoc.skip>false</inertia.javadoc.skip>
+    <inertia.javadoc.doclint>all</inertia.javadoc.doclint>
+    <inertia.javadoc.fail-on-warnings>true</inertia.javadoc.fail-on-warnings>
     <spring-boot.version>3.5.7</spring-boot.version>
     <inertia.license-directory>${project.basedir}/..</inertia.license-directory>
   </properties>
@@ -84,7 +86,8 @@
         <groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId><version>3.7.0</version>
         <configuration>
           <skip>${inertia.javadoc.skip}</skip><failOnError>true</failOnError>
-          <doclint>all,-missing</doclint><notimestamp>true</notimestamp>
+          <doclint>${inertia.javadoc.doclint}</doclint>
+          <failOnWarnings>${inertia.javadoc.fail-on-warnings}</failOnWarnings><notimestamp>true</notimestamp>
           <detectJavaApiLink>false</detectJavaApiLink><detectLinks>false</detectLinks>
           <javadocDirectory>${project.build.directory}/license-javadoc</javadocDirectory><docfilessubdirs>true</docfilessubdirs>
         </configuration>

@@ -1,0 +1,146 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T10:13:18.457064+00:00",
+  "scope": "Native canonical tutorial imports and keyboard/clipboard site acceptance; no remote publication",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true
+  },
+  "base": "/inertia-java/",
+  "verification": {
+    "nodeContracts": 20,
+    "pythonContracts": 10,
+    "bootOverrideTests": 4,
+    "checkLog": "/tmp/inertia-docs-interaction-check.log",
+    "buildLog": "/tmp/inertia-docs-interaction-build.log",
+    "bootLog": "/tmp/inertia-docs-interaction-boot.log",
+    "publicationSelectionLog": "/tmp/inertia-docs-interaction-publication.log",
+    "siteReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-ELRDOz/summary.json",
+    "englishPages": 70,
+    "chinesePages": 11,
+    "payloadReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-Nu76yn/summary.json",
+    "payloadCanonicalFiles": 87,
+    "runtimeSourceAndPomHashesStillMatchLastJavadocAudit": 51,
+    "runtimeMatrixRerun": false,
+    "benchmarkRerun": false
+  },
+  "interactions": [
+    {
+      "name": "keyboard-search",
+      "enterOpens": true,
+      "controlKOpens": true,
+      "inputReceivesFocus": true,
+      "escapeClosesAndRestoresFocus": true
+    },
+    {
+      "name": "canonical-code-and-clipboard",
+      "copies": [
+        {
+          "route": "getting-started/first-application",
+          "language": "xml",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "getting-started/first-application",
+          "language": "java",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "getting-started/first-application",
+          "language": "tsx",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "reference/configuration",
+          "language": "yaml",
+          "canonicalSourceExceptTerminalNewline": false,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "getting-started/first-application",
+          "language": "sh",
+          "canonicalSourceExceptTerminalNewline": false,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "zh/getting-started/first-application",
+          "language": "xml",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "zh/getting-started/first-application",
+          "language": "java",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "zh/getting-started/first-application",
+          "language": "tsx",
+          "canonicalSourceExceptTerminalNewline": true,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "zh/reference/configuration",
+          "language": "yaml",
+          "canonicalSourceExceptTerminalNewline": false,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        },
+        {
+          "route": "zh/getting-started/first-application",
+          "language": "sh",
+          "canonicalSourceExceptTerminalNewline": false,
+          "keyboardCopy": true,
+          "clipboardMatchesRenderedText": true,
+          "visibleFocus": true
+        }
+      ]
+    }
+  ],
+  "normalization": "VitePress removes the terminal newline from rendered blocks; clipboard matches rendered text. Download/payload checks remain byte-exact.",
+  "initialFocusFailureReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-YBSsOA/summary.json",
+  "initialTerminalNewlineAssertionReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-3yC5ND/summary.json",
+  "hostingEvidence": "docs/inertia-java/verification/documentation-hosting-state.json",
+  "remaining": [
+    "Public Pages setup/deployment needs maintainer administration; current connector is pull-only",
+    "Maintainer-approved private security reporting channel",
+    "Real stable-tag snapshot/archive registration acceptance when an actual release exists"
+  ],
+  "inputs": {
+    "docs/inertia-java/open-source-docs-catalog.json": "29ef2c751c17367d8a40fa77bec214beb666f263adf8e8d27ae88c394e593746",
+    "inertia-java/docs/.vitepress/theme/SearchFocus.vue": "384af8ba15c60c541fc6a7f6981c3a7dee41666558671bd39b83765318bf03cb",
+    "inertia-java/docs/.vitepress/theme/index.js": "a8e7df38480e9e9637d303352f95c71cf31a441fcbb5cfe13f92ee31155d6e09",
+    "inertia-java/docs/README.md": "f6c5c84f13d61d5c65cb64e1b2065a5352984742c449483873b1472a578e0064",
+    "inertia-java/docs/examples/first-application/Hello.tsx": "0fd27bd3c60dd9080ea4231278e088d1efcfc1857ebf9824639c403acee4cbc8",
+    "inertia-java/docs/examples/first-application/HelloController.java": "a80e9bc2413bbf67d4cf49bce18523d97ad234561a6e5fc33074372972fe8ce7",
+    "inertia-java/docs/examples/first-application/pom.xml": "27e86586e8c7bc7de21b13dccbcdfb92f44f1bc99ae8114d892d15535211ddc0",
+    "inertia-java/docs/getting-started/first-application.md": "4267648c236e455daf3be2fd3940e2fa66c54e1b8caf0da42b01acc863783205",
+    "inertia-java/docs/reference/configuration.md": "872de03bf52dab3aee162b2d05ddfb46a634a0f6590dcccb01a63239c6f4063a",
+    "inertia-java/docs/scripts/smoke.mjs": "b88042fa94fecb5aeb489a55a6805197a8ce404df1e74bf1cfe0170d49b8d77d",
+    "inertia-java/docs/scripts/translations.mjs": "1eca01a4c5a584138ce51c640cde3bfcc3cfbccfed0e5ab7309134b3642b06e4",
+    "inertia-java/docs/scripts/translations.test.mjs": "6fdcca92f0f2bbd2609ee6dd38a127ce92704a1c0a34435bf84950ddc79d0b0e",
+    "inertia-java/docs/zh/getting-started/first-application.md": "607a7b9ae5d5cd1fb3f50ddbdb827f862119c78e9a974955e127b55cb4284fcb",
+    "inertia-java/docs/zh/reference/configuration.md": "6052f83e09fe7d464048f6acc050e45b219d52131e494490f855d15e7fb415ee"
+  }
+}

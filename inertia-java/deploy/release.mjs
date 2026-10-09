@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, lstatSync, existsSync, renameSync, rmSync, copyFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { copyDocumentation } from './documentation.mjs'
 import { publishAssets } from '../examples/spring-react/frontend/scripts/release-assets.mjs'
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url))
@@ -48,7 +49,7 @@ export function packageRelease(store, root = projectRoot) {
     copy(resolve(root, 'README.md'), resolve(staging, 'README.md'))
     copy(resolve(root, 'LICENSE'), resolve(staging, 'LICENSE'))
     copy(resolve(root, 'NOTICE'), resolve(staging, 'NOTICE'))
-    copyTree(resolve(root, 'docs'), resolve(staging, 'docs'))
+    copyDocumentation(resolve(root, 'docs'), resolve(staging, 'docs'))
     copy(resolve(root, 'deploy/README.md'), resolve(staging, 'RUNBOOK.md'))
     copyTree(resolve(root, 'deploy/systemd'), resolve(staging, 'operations/systemd'))
     publishAssets(resolve(staging, 'frontend/dist'), resolve(staging, 'assets'))

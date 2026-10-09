@@ -3,11 +3,25 @@ package io.inertia.core;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.*;
 
-/** Request-owned pending effects. Late writes and duplicate flash keys are rejected. */
+/**
+ * Request-owned render definitions and pending session effects; never reuse across requests.
+ *
+ * <p>Sharing and validation errors must be defined before resolution begins. Flash and history
+ * effects remain writable while props resolve, then close at preparation. Rendering reserves
+ * one-time session data and either completes its delivery or attempts restoration on failure.
+ * Completion precedes HTTP writing: a later transport failure cannot roll back consumed flash.
+ */
 public final class InertiaContext {
+  /** Storage key for pending flash data within the adapter session namespace. */
   public static final String FLASH = "inertia.flash_data";
+
+  /** Storage key for validation error bags within the adapter session namespace. */
   public static final String ERRORS = "inertia.errors";
+
+  /** Storage key for the pending clear-history effect. */
   public static final String CLEAR = "inertia.clear_history";
+
+  /** Storage key for the pending preserve-fragment effect. */
   public static final String FRAGMENT = "inertia.preserve_fragment";
 
   private enum State {
@@ -29,6 +43,13 @@ public final class InertiaContext {
   private InertiaObserver observer = InertiaObserver.NOOP;
   private String component = "";
 
+  /**
+   * Creates unused request state with no-op observation.
+   *
+   * @param request request metadata captured by the adapter
+   * @param session request's session store, or null when session effects are unavailable
+   * @param codec Page JSON codec for pending effects
+   */
   public InertiaContext(InertiaRequest request, SessionStore session, PageCodec codec) {
     this.request = request;
     this.session = session;
@@ -36,6 +57,15 @@ public final class InertiaContext {
     pending = codec.object();
   }
 
+  /**
+   * Creates unused request state with explicit observation.
+   *
+   * @param request request metadata captured by the adapter
+   * @param session request's session store, or null when session effects are unavailable
+   * @param codec Page JSON codec for pending effects
+   * @param observer non-null operation observer
+   * @throws NullPointerException if observer is null
+   */
   public InertiaContext(
       InertiaRequest request, SessionStore session, PageCodec codec, InertiaObserver observer) {
     this(request, session, codec);
@@ -61,14 +91,35 @@ public final class InertiaContext {
     }
   }
 
+  /**
+   * Returns the request captured for this context.
+   *
+   * @return request metadata
+   */
   public InertiaRequest request() {
     return request;
   }
 
+  /**
+   * Creates a response definition for the renderer; this call does not start resolution or commit.
+   *
+   * @param component configured component name
+   * @param props Page prop definitions
+   * @return response definition for the framework adapter
+   */
   public InertiaResponse render(String component, Props props) {
     return new InertiaResponse(component, props);
   }
 
+  /**
+   * Adds a request-local shared prop before rendering begins.
+   *
+   * @param key prop name or valid dot-separated nested path
+   * @param value literal value or Prop definition
+   * @return this context
+   * @throws IllegalStateException if resolution has started
+   * @throws PropDefinitionException if the path is invalid
+   */
   public synchronized InertiaContext share(String key, Object value) {
     if (state != State.CREATED)
       throw new IllegalStateException("Shared props must be defined before rendering");
@@ -76,6 +127,15 @@ public final class InertiaContext {
     return this;
   }
 
+  /**
+   * Queues one flash value while the context is unused or resolving props.
+   *
+   * @param key flash key, unique within this request
+   * @param value JSON-convertible value
+   * @return this context
+   * @throws IllegalStateException if the key is duplicated or effects are already closed
+   * @throws IllegalArgumentException if JSON conversion fails
+   */
   public synchronized InertiaContext flash(String key, Object value) {
     writable();
     var flash = pending.withObject("/" + FLASH);
@@ -85,18 +145,49 @@ public final class InertiaContext {
     return this;
   }
 
+  /**
+   * Queues validation messages in the default bag before rendering begins.
+   *
+   * @param errors field names mapped to a message or list of messages
+   * @return this context
+   * @throws IllegalStateException if resolution has started
+   * @throws IllegalArgumentException if error input is invalid
+   */
   public synchronized InertiaContext withErrors(Map<String, ?> errors) {
     return withErrors("default", errors);
   }
 
+  /**
+   * Queues validation messages in a named bag before rendering begins.
+   *
+   * @param bag non-null error-bag name
+   * @param errors field names mapped to a message or list of messages
+   * @return this context
+   * @throws IllegalStateException if resolution has started
+   * @throws IllegalArgumentException if error input is invalid
+   */
   public synchronized InertiaContext withErrors(String bag, Map<String, ?> errors) {
     return withErrors(ErrorBags.empty().with(bag, ValidationErrors.from(errors)));
   }
 
+  /**
+   * Queues validated messages in the default bag before rendering begins.
+   *
+   * @param errors validated field messages
+   * @return this context
+   * @throws IllegalStateException if resolution has started
+   */
   public synchronized InertiaContext withErrors(ValidationErrors errors) {
     return withErrors(ErrorBags.empty().with("default", errors));
   }
 
+  /**
+   * Merges error bags into pending request state before rendering begins.
+   *
+   * @param errors validated bags to merge with already queued bags
+   * @return this context
+   * @throws IllegalStateException if resolution has started
+   */
   public synchronized InertiaContext withErrors(ErrorBags errors) {
     if (state != State.CREATED)
       throw new IllegalStateException("Validation errors must be queued before rendering");
@@ -104,7 +195,13 @@ public final class InertiaContext {
     return this;
   }
 
-  /** Request-local override. Redirects do not persist this setting into the next request. */
+  /**
+   * Overrides history encryption for this Page only; redirects do not persist the override.
+   *
+   * @param encrypt whether the client should encrypt this Page's history state
+   * @return this context
+   * @throws IllegalStateException if effects are already closed
+   */
   public synchronized InertiaContext encryptHistory(boolean encrypt) {
     writable();
     encryptHistory = encrypt;
@@ -115,32 +212,74 @@ public final class InertiaContext {
     return encryptHistory;
   }
 
+  /**
+   * Queues the client clear-history flag for this Page or the next Page after redirect.
+   *
+   * @return this context
+   * @throws IllegalStateException if effects are already closed
+   */
   public synchronized InertiaContext clearHistory() {
     writable();
     pending.put(CLEAR, true);
     return this;
   }
 
+  /**
+   * Queues preservation of the client URL fragment for this Page or after redirect.
+   *
+   * @return this context
+   * @throws IllegalStateException if effects are already closed
+   */
   public synchronized InertiaContext preserveFragment() {
     writable();
     pending.put(FRAGMENT, true);
     return this;
   }
 
+  /**
+   * Creates a redirect to the request's validated same-origin back target.
+   *
+   * <p>The adapter must commit pending redirect effects separately through {@link
+   * #commitRedirect()}.
+   *
+   * @return protocol redirect outcome using the safe referer or fallback path
+   */
   public HttpOutcome back() {
     return ProtocolPolicy.redirect(request.safeBack());
   }
 
+  /**
+   * Queues default-bag validation messages and creates a safe back redirect.
+   *
+   * @param errors field message input
+   * @return back redirect outcome; the adapter still commits pending effects
+   * @throws IllegalStateException if resolution has started
+   * @throws IllegalArgumentException if error input is invalid
+   */
   public HttpOutcome backWithErrors(Map<String, ?> errors) {
     withErrors(errors);
     return back();
   }
 
+  /**
+   * Queues validated default-bag messages and creates a safe back redirect.
+   *
+   * @param errors validated field messages
+   * @return back redirect outcome; the adapter still commits pending effects
+   * @throws IllegalStateException if resolution has started
+   */
   public HttpOutcome backWithErrors(ValidationErrors errors) {
     withErrors(errors);
     return back();
   }
 
+  /**
+   * Creates a protocol location outcome for a full browser navigation.
+   *
+   * @param url application-approved navigation destination; only header characters are validated
+   * @return Inertia location response or ordinary redirect according to the request
+   * @throws IllegalArgumentException if the destination contains invalid header characters
+   */
   public HttpOutcome location(String url) {
     return ProtocolPolicy.location(request, url);
   }
@@ -190,7 +329,13 @@ public final class InertiaContext {
     state = State.COMMITTED;
   }
 
-  /** Abort a timed-out transport/render and restore any reserved session snapshot. */
+  /**
+   * Aborts an unfinished render and attempts to restore any reserved session snapshot once.
+   *
+   * <p>Repeated calls after failure or commitment do nothing. A committed Page's flash cannot be
+   * restored by aborting a later HTTP write. Storage failures propagate; this method does not retry
+   * unknown transaction outcomes.
+   */
   public synchronized void abort() {
     failed();
   }
@@ -222,6 +367,15 @@ public final class InertiaContext {
     }
   }
 
+  /**
+   * Atomically merges pending redirect effects into the session and closes this context.
+   *
+   * <p>Call only for an unused context before writing the redirect. Storage failure fails the
+   * context and propagates. No automatic retry is performed. The history-encryption override is
+   * request-local and is not part of the persisted redirect effects.
+   *
+   * @throws IllegalStateException if the context is used, or session effects exist without a store
+   */
   public synchronized void commitRedirect() {
     if (state != State.CREATED) throw new IllegalStateException("Context already used");
     try {

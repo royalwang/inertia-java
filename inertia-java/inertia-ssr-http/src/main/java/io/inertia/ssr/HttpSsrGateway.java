@@ -11,7 +11,19 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-/** Pooled renderer client. No credential forwarding, redirects, or render retries. */
+/**
+ * Shared, bounded HTTP client for a trusted renderer receiving resolved Page data.
+ *
+ * <p>Each invocation acquires an in-flight permit without queuing. Transport timeouts,
+ * response-byte limits and malformed renderer output produce classified {@link SsrGateway.Fallback}
+ * results; endpoint-resolution and request-construction failures can still throw synchronously.
+ * Cancelling an invocation's future signals its owned transport, not unrelated renders.
+ *
+ * <p>The gateway sends no browser credentials, follows no redirects and retries no render. Reuse
+ * one instance across requests. This API has no {@code close()} method or {@link AutoCloseable}
+ * contract; the owning application must account for its pooled client's application lifetime. The
+ * independently scheduled {@link SsrHealthMonitor} does have an explicit close contract.
+ */
 public final class HttpSsrGateway implements SsrGateway {
   private final HttpClient client;
   private final java.util.function.Function<InertiaRequest, URI> endpoints;
@@ -25,6 +37,21 @@ public final class HttpSsrGateway implements SsrGateway {
   private final InertiaObserver observer;
   private final String endpointId;
 
+  /**
+   * Creates a reused gateway with one fixed trusted renderer URL. Build and root identity
+   * verification are disabled by this overload. Transport observation uses the no-op observer and
+   * label renderer.
+   *
+   * @param endpoint trusted absolute HTTP(S) render URL; browser input must not choose it
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       URI endpoint,
       Duration connectTimeout,
@@ -35,6 +62,21 @@ public final class HttpSsrGateway implements SsrGateway {
     this(endpoint, connectTimeout, timeout, maxBytes, concurrency, codec, false);
   }
 
+  /**
+   * Creates a reused gateway with one fixed trusted renderer URL. Root identity verification is
+   * disabled by this overload. Transport observation uses the no-op observer and label renderer.
+   *
+   * @param endpoint trusted absolute HTTP(S) render URL; browser input must not choose it
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       URI endpoint,
       Duration connectTimeout,
@@ -55,6 +97,21 @@ public final class HttpSsrGateway implements SsrGateway {
     SsrEndpointResolver.validate(endpoint);
   }
 
+  /**
+   * Creates a reused gateway with request-dependent trusted endpoint selection. Build and root
+   * identity verification are disabled by this overload. Transport observation uses the no-op
+   * observer and label renderer.
+   *
+   * @param endpoints trusted production/development resolver; null resolution skips transport
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       SsrEndpointResolver endpoints,
       Duration connectTimeout,
@@ -65,6 +122,22 @@ public final class HttpSsrGateway implements SsrGateway {
     this(endpoints, connectTimeout, timeout, maxBytes, concurrency, codec, false);
   }
 
+  /**
+   * Creates a reused gateway with request-dependent trusted endpoint selection. Root identity
+   * verification is disabled by this overload. Transport observation uses the no-op observer and
+   * label renderer.
+   *
+   * @param endpoints trusted production/development resolver; null resolution skips transport
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       SsrEndpointResolver endpoints,
       Duration connectTimeout,
@@ -84,6 +157,22 @@ public final class HttpSsrGateway implements SsrGateway {
         null);
   }
 
+  /**
+   * Creates a reused gateway with request-dependent trusted endpoint selection. Transport
+   * observation uses the no-op observer and label renderer.
+   *
+   * @param endpoints trusted production/development resolver; null resolution skips transport
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @param rootId expected safe root identifier, or null to omit root verification
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       SsrEndpointResolver endpoints,
       Duration connectTimeout,
@@ -104,6 +193,22 @@ public final class HttpSsrGateway implements SsrGateway {
         rootId);
   }
 
+  /**
+   * Creates a reused gateway with one fixed trusted renderer URL. Transport observation uses the
+   * no-op observer and label renderer.
+   *
+   * @param endpoint trusted absolute HTTP(S) render URL; browser input must not choose it
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @param rootId expected safe root identifier, or null to omit root verification
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       URI endpoint,
       Duration connectTimeout,
@@ -147,6 +252,23 @@ public final class HttpSsrGateway implements SsrGateway {
         "renderer");
   }
 
+  /**
+   * Creates a reused gateway with request-dependent trusted endpoint selection.
+   *
+   * @param endpoints trusted production/development resolver; null resolution skips transport
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @param rootId expected safe root identifier, or null to omit root verification
+   * @param observer non-null fast observer receiving transport-stage events
+   * @param endpointId safe diagnostic label, never an endpoint URL
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       SsrEndpointResolver endpoints,
       Duration connectTimeout,
@@ -171,6 +293,23 @@ public final class HttpSsrGateway implements SsrGateway {
         endpointId);
   }
 
+  /**
+   * Creates a reused gateway with one fixed trusted renderer URL.
+   *
+   * @param endpoint trusted absolute HTTP(S) render URL; browser input must not choose it
+   * @param connectTimeout positive connection-establishment timeout
+   * @param timeout positive total transport deadline for one render
+   * @param maxBytes positive maximum response body bytes, enforced while receiving
+   * @param concurrency positive number of simultaneous transports; excess renders fall back
+   *     immediately
+   * @param codec shared Page JSON codec
+   * @param verifyBuild whether response buildId must equal the Page version
+   * @param rootId expected safe root identifier, or null to omit root verification
+   * @param observer non-null fast observer receiving transport-stage events
+   * @param endpointId safe diagnostic label, never an endpoint URL
+   * @throws IllegalArgumentException if limits, a fixed URL or diagnostic/root identifiers are
+   *     invalid
+   */
   public HttpSsrGateway(
       URI endpoint,
       Duration connectTimeout,
@@ -231,6 +370,18 @@ public final class HttpSsrGateway implements SsrGateway {
             .build();
   }
 
+  /**
+   * Posts one resolved Page to the selected trusted endpoint.
+   *
+   * <p>Returns fallback for exclusion, capacity, transport or decoded-response failure. A valid 2xx
+   * response is accepted; optional build/root checks precede trusted head/body use. No application
+   * authorization or renderer-health sampling is performed here.
+   *
+   * @param page immutable-by-copy Page containing the version used for build verification
+   * @param request request snapshot used for endpoint policy and diagnostic correlation
+   * @return an invocation-owned stage; cancellation signals its pending transport
+   * @throws RuntimeException if endpoint selection or outgoing request construction fails
+   */
   @Override
   public CompletionStage<Result> render(Page page, InertiaRequest request) {
     var span =

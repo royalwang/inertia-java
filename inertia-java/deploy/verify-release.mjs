@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { setTimeout as delay } from 'node:timers/promises'
 import { packageRelease } from './release.mjs'
+import { copyDocumentation, documentationFiles } from './documentation.mjs'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const frontend = resolve(root, 'examples/spring-react/frontend')
@@ -60,7 +61,7 @@ try {
   // when a developer edits documentation or builds a different release concurrently.
   const inputs = resolve(output, 'inputs')
   const version = readFileSync(resolve(root, 'pom.xml'), 'utf8').match(/<version>([^<]+)<\/version>/)?.[1]
-  const paths = ['pom.xml', 'README.md', 'LICENSE', 'NOTICE', 'docs', 'deploy/runtime.mjs', 'deploy/README.md', 'deploy/systemd',
+  const paths = ['pom.xml', 'README.md', 'LICENSE', 'NOTICE', 'deploy/runtime.mjs', 'deploy/README.md', 'deploy/systemd',
     'examples/spring-react/frontend/dist', 'examples/spring-react/frontend/package.json',
     'examples/spring-react/frontend/package-lock.json', `examples/spring-react/target/spring-react-${version}.jar`]
   for (const module of ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']) {
@@ -72,11 +73,16 @@ try {
     mkdirSync(resolve(dest, '..'), { recursive: true })
     cpSync(resolve(root, path), dest, { recursive: true, dereference: false })
   }
+  copyDocumentation(resolve(root, 'docs'), resolve(inputs, 'docs'))
   evidence.inputSnapshot = inputs
   const store = resolve(output, 'release store')
   const release = packageRelease(store, inputs)
   evidence.release = release
   evidence.manifest = JSON.parse(readFileSync(resolve(release, 'release.json'), 'utf8'))
+  const publishedDocs = Object.keys(evidence.manifest.files).filter(path => path.startsWith('docs/')).map(path => path.slice(5)).sort()
+  const expectedDocs = documentationFiles(resolve(inputs, 'docs')).sort()
+  if (JSON.stringify(publishedDocs) !== JSON.stringify(expectedDocs) || publishedDocs.some(path => /(^|\/)(node_modules|\.vitepress|public)(\/|$)/.test(path))) throw new Error('Documentation publication selection mismatch')
+  phases.push({ name: 'documentation-publication-selection', sourceFiles: publishedDocs.length, excludesPrivateTooling: true })
   await run('preflight', process.execPath, ['runtime.mjs', 'check'], release)
   await run('production-dependencies', 'npm', ['ci', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], resolve(release, 'frontend'))
   if (existsSync(resolve(release, 'frontend/node_modules/vite')) || existsSync(resolve(release, 'frontend/node_modules/@playwright/test'))) throw new Error('Dev dependency included in deployment')

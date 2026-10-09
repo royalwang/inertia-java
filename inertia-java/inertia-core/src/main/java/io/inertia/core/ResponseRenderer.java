@@ -3,6 +3,15 @@ package io.inertia.core;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Application-scoped Page render pipeline, producing an outcome before transport writes.
+ *
+ * <p>Each render owns prop/SSR cancellation and a one-time session delivery. Successful completion
+ * consumes the reserved delivery before the framework writes HTTP bytes. Later write failure cannot
+ * roll back consumed flash. The caller owns the executor, gateway, and shell supplied through its
+ * dependencies, and must apply {@link ProtocolPolicy#before(InertiaRequest, String)} at its
+ * boundary.
+ */
 public final class ResponseRenderer {
   private final InertiaConfig config;
   private final PageCodec codec;
@@ -10,10 +19,28 @@ public final class ResponseRenderer {
   private final InertiaObserver observer;
   private final String endpointId;
 
+  /**
+   * Creates a renderer with no-op observation and diagnostic endpoint label {@code renderer}.
+   *
+   * @param config application render policy
+   * @param codec Page JSON codec
+   * @param resolver application-scoped prop resolver
+   */
   public ResponseRenderer(InertiaConfig config, PageCodec codec, PropsResolver resolver) {
     this(config, codec, resolver, InertiaObserver.NOOP, "renderer");
   }
 
+  /**
+   * Creates a renderer with explicit diagnostics.
+   *
+   * @param config application render policy
+   * @param codec Page JSON codec
+   * @param resolver application-scoped prop resolver
+   * @param observer non-null operation observer
+   * @param endpointId bounded diagnostic label; does not select the SSR URL
+   * @throws NullPointerException if observer is null
+   * @throws IllegalArgumentException if endpointId is unsafe
+   */
   public ResponseRenderer(
       InertiaConfig config,
       PageCodec codec,
@@ -27,14 +54,42 @@ public final class ResponseRenderer {
     this.resolver = resolver;
   }
 
+  /**
+   * Returns the configured observer for adapter-level protocol and response events.
+   *
+   * @return operation observer
+   */
   public InertiaObserver observer() {
     return observer;
   }
 
+  /**
+   * Renders using a fresh sessionless context.
+   *
+   * @param request captured request metadata
+   * @param response request-owned response definition, claimed once
+   * @return stage producing the prepared outcome or failing with the render error
+   * @throws IllegalStateException synchronously if the response was already claimed
+   */
   public CompletionStage<HttpOutcome> render(InertiaRequest request, InertiaResponse response) {
     return render(new InertiaContext(request, null, codec), response);
   }
 
+  /**
+   * Renders one response using request-owned state and reserved one-time session data.
+   *
+   * <p>JSON visits resolve props without invoking SSR. HTML visits use SSR or the CSR shell;
+   * required SSR promotes unavailability to {@link SsrRequiredException}. Failure or cancellation
+   * attempts session restoration and cancels owned tasks. The result includes post-protocol
+   * normalization; this method does not write to a Servlet response or perform the
+   * pre-version-conflict check.
+   *
+   * @param context unused request-owned context
+   * @param response request-owned response definition, claimed once
+   * @return cancellable stage for a prepared outcome; provider, shell, session, and SSR errors fail
+   *     it
+   * @throws IllegalStateException synchronously if response or context was already used
+   */
   public CompletionStage<HttpOutcome> render(InertiaContext context, InertiaResponse response) {
     InertiaRequest request = context.request();
     var span =

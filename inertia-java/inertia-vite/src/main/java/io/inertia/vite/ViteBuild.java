@@ -6,11 +6,26 @@ import java.nio.file.*;
 import java.security.*;
 import java.util.*;
 
-/** A release directory verified before application startup; deploy it immutably afterwards. */
+/**
+ * Startup verification of a format-1 client/SSR release receipt and its exact file inventory.
+ *
+ * <p>The build identity covers recorded content digests, including both the client manifest and SSR
+ * entry. Verification detects content mismatch and unrecorded files; it does not authenticate the
+ * publisher. Keep verified directories immutable afterwards: this object does not monitor changes.
+ */
 public final class ViteBuild {
   private final String buildId;
   private final Map<String, String> clientFiles;
 
+  /**
+   * Verifies {@code build.json}, file digests, containment, manifest references, and inventory.
+   *
+   * @param directory release root containing {@code build.json}, {@code client/}, and {@code ssr/}
+   * @param codec JSON codec used for the receipt and canonical build-identity calculation
+   * @throws IOException if a receipt, directory, or recorded file cannot be read or resolved
+   * @throws IllegalArgumentException if the receipt, identity, content, paths, or inventory is
+   *     invalid
+   */
   public ViteBuild(Path directory, PageCodec codec) throws IOException {
     Path root = directory.toRealPath();
     var receipt = codec.read(Files.readString(root.resolve("build.json")));
@@ -92,6 +107,13 @@ public final class ViteBuild {
             });
   }
 
+  /**
+   * Verifies an independently published client tree against this receipt's client inventory.
+   *
+   * @param releaseDirectory root of the published client assets, without the {@code client/} prefix
+   * @throws IOException if the tree or a recorded asset cannot be read or resolved
+   * @throws IllegalArgumentException if an asset differs, escapes the root, or is unrecorded
+   */
   public void verifyClientAssets(Path releaseDirectory) throws IOException {
     Path root = releaseDirectory.toRealPath();
     for (var entry : clientFiles.entrySet()) {
@@ -112,6 +134,11 @@ public final class ViteBuild {
     }
   }
 
+  /**
+   * Returns the verified shared client/SSR identity from the canonical receipt.
+   *
+   * @return lowercase SHA-256 build identifier suitable for the Page version and renderer check
+   */
   public String buildId() {
     return buildId;
   }

@@ -1,0 +1,409 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09",
+  "scope": "D2 documentation local verification; not public publication or remote CI",
+  "sourceHead": "86d5c3ed64ed993abba84905aedd827879d610ee",
+  "sourceState": "current uncommitted documentation over unchanged Java/example source",
+  "browserMatrix": [
+    {
+      "scenario": "ssr",
+      "passed": 8,
+      "modeSpecificSkipped": 8,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-ssr.log",
+      "sha256": "0c58c4737bee023c410943462c5573d9982af715977f82e3f49b4f6f91d00e27"
+    },
+    {
+      "scenario": "all-errors",
+      "passed": 9,
+      "modeSpecificSkipped": 7,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-all-errors.log",
+      "sha256": "4d49cf286da3c3f897cb68acab770ef06c1a0df4394703a5bcc494fa69b14421"
+    },
+    {
+      "scenario": "failures",
+      "passed": 11,
+      "modeSpecificSkipped": 5,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-failures.log",
+      "sha256": "45a8f411eec4e6671c9a4bbb5e1f2c582b64cc424b87ea7d45c1fcdeb9066c80"
+    },
+    {
+      "scenario": "namespace",
+      "passed": 11,
+      "modeSpecificSkipped": 5,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-namespace.log",
+      "sha256": "39619b74af39944c67a21ac36e1a2051641e94ced22a5131ce4a1246086c6959"
+    },
+    {
+      "scenario": "auth",
+      "passed": 10,
+      "modeSpecificSkipped": 6,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-auth.log",
+      "sha256": "b9568a33800b05bd931209ff0359c4c6055b4b758913cddf1c2b3f6600c6eaf9"
+    },
+    {
+      "scenario": "auth-expiry",
+      "passed": 11,
+      "modeSpecificSkipped": 5,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-auth-expiry.log",
+      "sha256": "3b4d05e09645462f3f5ee067214eea22a000f7d180aa26ab0c8cd213c4a5a759"
+    },
+    {
+      "scenario": "csr-failures",
+      "passed": 9,
+      "modeSpecificSkipped": 7,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-csr-failures.log",
+      "sha256": "a48c5197d27ee5e2c056badb90ab54ff71e4ccf7bdf612131481148f02c3731a"
+    },
+    {
+      "scenario": "auth-csr",
+      "passed": 8,
+      "modeSpecificSkipped": 8,
+      "log": "/tmp/inertia-docs-d2-matrix.eORf21/browser-auth-csr.log",
+      "sha256": "bb50ee90c4a3021663b12c8a9e78a941795f150d32a9db29274730d1764d0dc4"
+    }
+  ],
+  "health": {
+    "log": "/tmp/inertia-docs-d2-health.log",
+    "output": "/tmp/inertia-docs-d2-health.zGVRSw",
+    "verified": [
+      "Verified UP with real SSR",
+      "Verified decoded Page schema, own-component registry and valid rendering after rejection",
+      "Verified Node --watch bundle restart and SSR recovery",
+      "Verified DOWN with Java liveness and CSR fallback",
+      "Verified UP and SSR recovery without Java restart"
+    ]
+  },
+  "site": {
+    "summary": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-IKDIzS/summary.json",
+    "sha256": "fd305c6cf6486ff71224c27c59bfa097fd8b52a1863022ee0821e2b18c92d323",
+    "availablePages": 43,
+    "base": "/inertia-omega/inertia-java/",
+    "searchNavigation": [
+      {
+        "term": "CSRF",
+        "route": "guide/csrf"
+      },
+      {
+        "term": "deep merge",
+        "route": "props/merging"
+      },
+      {
+        "term": "once",
+        "route": "props/once"
+      },
+      {
+        "term": "renderer health",
+        "route": "ssr/health"
+      }
+    ]
+  },
+  "documentationSources": {
+    "inertia-java/docs/index.md": "804e73ca08a49259098597af30138b240596404d89c3be414aa5ac9108d5c2dd",
+    "inertia-java/docs/getting-started/overview.md": "93e51c16896ead2d8750eb9eabee5b06ebf8e16450ce5ffc2f049eb881619625",
+    "inertia-java/docs/getting-started/installation.md": "3b84f222a4d33033e228daeb384352e2a0c81185cdc1647e0ef5615c32ab0fe6",
+    "inertia-java/docs/getting-started/quick-start.md": "3889d83868d9b7999e2d3119014bda1c460fc3d0bee48c82e9344c4ec76b3364",
+    "inertia-java/docs/getting-started/first-application.md": "8848a5af6038b2c76825223016e779ec633abafcd3639850873f4b6aa87091bf",
+    "inertia-java/docs/getting-started/development.md": "7a2b797da8ebe27f3b86ec3d190e81f71a3d204e1df40b1fa374c1d1ec89a98c",
+    "inertia-java/docs/getting-started/project-structure.md": "11b24b1c61c41220b4df4bf04b5cb9deed00f21b3d282e71e16e23e7101fd3eb",
+    "inertia-java/docs/getting-started/compatibility.md": "42432e3f20e620ba535f383197003d22f4dd80dfd4aeda9fdd8b705b9ba4be2f",
+    "inertia-java/docs/concepts/request-lifecycle.md": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e",
+    "inertia-java/docs/concepts/protocol.md": "54734e6d1fa7c5184323feb3fcfe543b3cca08de4137884768f22b1dc8f1325e",
+    "inertia-java/docs/concepts/ownership.md": "2c5beb536483084fed31bf0460d4ca2eddfc35d5ff04b48d913e31e970cb3cc3",
+    "inertia-java/docs/concepts/rendering.md": "09c8d1bc05adf0a64123bef63265f771bb67dd3a1dbf287aad00b48b563d3b44",
+    "inertia-java/docs/concepts/versioning.md": "2345d13a7e862f363c214840efed7a5597cda6f0ad3c555b0181e35a0bf3bb09",
+    "inertia-java/docs/guide/pages.md": "4268d8b3c1b0836529fbb8b0834536b09805b2d1223e92f4956b8acbde3d61f4",
+    "inertia-java/docs/guide/responses.md": "175a2b05b0af72d33719b17baa41e88ae9f260efcde9a326081d690abf1a5be1",
+    "inertia-java/docs/guide/shared-data.md": "2a23f5fcb468c521559516b8e3540a08f36fddc91be5cb795a1f75bd9de937bd",
+    "inertia-java/docs/guide/forms-validation.md": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82",
+    "inertia-java/docs/guide/flash-session.md": "8d8b0bd379fe8986c476c2aba4b86dbdeceba2596eb79f7d205c35c592519290",
+    "inertia-java/docs/guide/authentication.md": "3d14a317104decd23265715871e0522b812482a165b53eac67ebaf78e7b862e4",
+    "inertia-java/docs/guide/csrf.md": "247e766c967c383d8559d837c7e53e92f6a0400d7e0b5cff9cfe24e4c7c4c23b",
+    "inertia-java/docs/guide/errors.md": "8c3e2204d09882021df9ca2f137d20182e20a0ebffde0d7347a110fce855f87d",
+    "inertia-java/docs/guide/history-bigint.md": "99daf75a77eab8cfe8bcd0b5d3fd541e41d9ae6163867761190de94b5ae07630",
+    "inertia-java/docs/props/basics.md": "ab7e449b540495cf51055bbe4d2753d1510a7a9f93db4dc13bd087e32ade8ab0",
+    "inertia-java/docs/props/loading.md": "c21e052d3efc3d5c60b2ec342b79dec1a214573df7d642417f89f688977210f2",
+    "inertia-java/docs/props/partial-reloads.md": "d0c968602a08c915255b3cf9ca5a440b58f6715a03f1df31d9ae7a855676cd2d",
+    "inertia-java/docs/props/deferred.md": "6a3e065174ae1aba23782a7ae2759d294f37ac3897a4b1d7cb3c910cb6e1fa55",
+    "inertia-java/docs/props/async-concurrency.md": "d5154991e9ad6464791b2b69ca0e77ca93143a1b7dd63d44a8e93c8e9ec877f3",
+    "inertia-java/docs/props/merging.md": "373571973df1c40d217075fef1dbbc1e94fed364307a2e8fe8c799d143cb3c7b",
+    "inertia-java/docs/props/once.md": "69bd2df7db6c004c7466ff9dc196659e0f4b0422e0f712fd0f8f4b49ff0fe3e0",
+    "inertia-java/docs/props/scroll.md": "138c3a8917413f0908f4450b65c668172cb6048d8f3e4a0628614f8031fafe1a",
+    "inertia-java/docs/props/diagnostics.md": "c05365abf103eebed29b83b85d8d48e6722d984ae47f5e7e0d54e0facd520ae6",
+    "inertia-java/docs/ssr/setup.md": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a",
+    "inertia-java/docs/ssr/vite-assets.md": "30426051a4de599528f5251de6f1f5e82cff2e2d91a6fdfc994faa4da7cd30ef",
+    "inertia-java/docs/ssr/root-template.md": "aeaa472fe0c8d7277838ff20c9fdefb69e03e13f2626ee43fbe9d7d6475d31b5",
+    "inertia-java/docs/ssr/gateway.md": "df45d1427d8a5f9f0991866411d46e691304ae9f5908b53bbf68849d0cb38263",
+    "inertia-java/docs/ssr/fallback.md": "93fb8e4326a8294d1449e4e03a5a7b5acc19aeb953627ccd12f02d864a5b9dda",
+    "inertia-java/docs/ssr/health.md": "7c2012b834324bc3a344f618ada6b8aa00349f8631bc8a6e4865eb376e39822c",
+    "inertia-java/docs/integrations/spring-boot.md": "11659e32c2bfb544d6b731a61bf01cbf5ef33853ffe3942c0bbd050f9045086a",
+    "inertia-java/docs/integrations/spring-mvc.md": "0f1f92de5780fd5133c26d13eaa7bc1055887e3c7e513e53e59592e196e4db6d",
+    "inertia-java/docs/integrations/custom-adapter.md": "e313d256dc9862a44cf06e2dbec09fd0a290f4d35c994d9f152582e6a24ff652",
+    "inertia-java/docs/integrations/custom-session.md": "b3848429839cd4bf0bc453dbba17f776cd8cc25c686553cc0ea6bf5286d7b69e",
+    "inertia-java/docs/integrations/observability.md": "f9e7a70324b39ce80632885f1749d0fbd4d62408cf97a0870f55ca1bb84c77fa",
+    "inertia-java/docs/api-guide.md": "e4c9be60cb2944e901c684ccff67eea7f4a72916aeaeb4567e86c60288f11d34"
+  },
+  "buildInputs": {
+    "inertia-java/examples/spring-react/target/spring-react-0.1.0-SNAPSHOT.jar": "4957efec1e875c438fd400bfc26a3e536b4fa83b3a2b478b09edad0dd2b59b90",
+    "inertia-java/examples/spring-react/frontend/dist/build.json": "b09972e1e5098c7851b0abc12c2f40208f21e42dcb211af72b3e3f18a51abded"
+  },
+  "success": true,
+  "unitEvidence": {
+    "tests": 291,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reports": [
+      {
+        "name": "io.inertia.core.AdvancedPropsTest",
+        "timestamp": null,
+        "sha256": "c7bdd4b1784c404e4711991a2678f5d8388517c65c1be6cdde4ccef88d05cb89"
+      },
+      {
+        "name": "io.inertia.core.CancellationContractTest",
+        "timestamp": null,
+        "sha256": "c2f2572b865cce18c1d4f236a98553a19deaf202ac0af7dcd3ee841d3a73d33c"
+      },
+      {
+        "name": "io.inertia.core.ConfigPresentationTest",
+        "timestamp": null,
+        "sha256": "8c41a92618ce3f024cb55e2b98aca8f8d2236eaa97596339d57749f631b164a0"
+      },
+      {
+        "name": "io.inertia.core.CoreContractTest",
+        "timestamp": null,
+        "sha256": "3dd1e7f207cca54ac5ff639dbd6fed9b989ebb707bed775b4cfa160ac1eb7d07"
+      },
+      {
+        "name": "io.inertia.core.CspNonceTest",
+        "timestamp": null,
+        "sha256": "02eae214b9b82b331943fd26474d600500b7b3e7d943ddad4862c0bfa48b9358"
+      },
+      {
+        "name": "io.inertia.core.ErrorDeliveryTest",
+        "timestamp": null,
+        "sha256": "ea82a20940c3de5771e3789b117264594c1a77b47cda3c7709b5c4cd634a01fb"
+      },
+      {
+        "name": "io.inertia.core.HistoryOverridesTest",
+        "timestamp": null,
+        "sha256": "e1bc1c4bbd60f345eff6e176332ef35d85ec23d51409d063d0e7e0248df55dfd"
+      },
+      {
+        "name": "io.inertia.core.ObservationContractTest",
+        "timestamp": null,
+        "sha256": "1327490863e6ecafa2f420b779ced89073387f9fc123bf69b38c53184bf74337"
+      },
+      {
+        "name": "io.inertia.core.OnceTtlContractTest",
+        "timestamp": null,
+        "sha256": "e022c0e989fcfaa158b786f19b7dd63012186af6b3039123676fb949069ec779"
+      },
+      {
+        "name": "io.inertia.core.PropDefinitionDiagnosticTest",
+        "timestamp": null,
+        "sha256": "51061d435078519c040226501ea2812a387b6a8097bdcaaf454baac3c86e88a6"
+      },
+      {
+        "name": "io.inertia.core.PropsOverloadTest",
+        "timestamp": null,
+        "sha256": "a0d8acb2db7a7f7282062d735e2805eca49259240b6b5bde0e435191d7e24d3a"
+      },
+      {
+        "name": "io.inertia.core.RequiredSsrTest",
+        "timestamp": null,
+        "sha256": "0c9fafeb93b1d1ba5666724c2097f4a6fcb5c4d011929ab35cc6711ce79009fd"
+      },
+      {
+        "name": "io.inertia.core.RustHttpParityTest",
+        "timestamp": null,
+        "sha256": "69d04e539187625769d74f1707df0fa167afe1389dbf0eaca4e891dfe83dc09d"
+      },
+      {
+        "name": "io.inertia.core.RustParityTest",
+        "timestamp": null,
+        "sha256": "eface5d977b5a56936f89c815edf8617e80ba6cc8328e8fadb2ce39fc3564bf0"
+      },
+      {
+        "name": "io.inertia.core.SessionContractTest",
+        "timestamp": null,
+        "sha256": "2d99bd0951a6c22407d772ca606f706859b022f7dc9e634d0e9c2f275bca985c"
+      },
+      {
+        "name": "io.inertia.core.SessionFailureTest",
+        "timestamp": null,
+        "sha256": "8a530a6c5ab7dc3c01bb47e47867800976024c464095993d10cdc317b65980de"
+      },
+      {
+        "name": "io.inertia.boot.InertiaAutoConfigurationTest",
+        "timestamp": null,
+        "sha256": "561f01b2900df1d1ffcfcfae4cd2aa36972180948271f57a860d143099b292dd"
+      },
+      {
+        "name": "io.inertia.boot.InertiaMetricsTest",
+        "timestamp": null,
+        "sha256": "4354a50fdcf9ee7c4d5302f1e7873897c152df65e2425d9313b944b3316daf3a"
+      },
+      {
+        "name": "io.inertia.boot.InertiaOverridesTest",
+        "timestamp": null,
+        "sha256": "ae757e6735c5bf5f0023b550266ea50aa12c9f43c4a5fb73f1b597b8579b9eaa"
+      },
+      {
+        "name": "io.inertia.boot.NonInertiaTransferTest",
+        "timestamp": null,
+        "sha256": "3e464c7001824864b55a3bbacf7d68736814559520aea183cc04ae3b8f1e852c"
+      },
+      {
+        "name": "io.inertia.spring.HttpSessionStoreTest",
+        "timestamp": null,
+        "sha256": "d40c11fbd7237df6976fc86591b8b20d5de75d49ea3ac83acec1e9a4ae5c99ad"
+      },
+      {
+        "name": "io.inertia.spring.InertiaExceptionResolverTest",
+        "timestamp": null,
+        "sha256": "789a32e2fd5e1404457cba4161dacb5519e698b883c19c58fc83c5c55d5c120f"
+      },
+      {
+        "name": "io.inertia.spring.InertiaHandlerValidatorTest",
+        "timestamp": null,
+        "sha256": "6bbf8a21020590941009ea67589f2ca9ff315dbc426037b4c32fda3c0282be5e"
+      },
+      {
+        "name": "io.inertia.spring.InertiaRequestLifecycleTest",
+        "timestamp": null,
+        "sha256": "7411c4bb4e03bb1dfc1e93d65cefe962d61e179aa8f1d20dc3db89d139a9d6d9"
+      },
+      {
+        "name": "io.inertia.spring.JakartaValidationBridgeTest",
+        "timestamp": null,
+        "sha256": "da62ecc975622009926e01f4971f1ea7479c60d53bbe1c24bf03c129a99d02d2"
+      },
+      {
+        "name": "io.inertia.spring.MvcObservationTest",
+        "timestamp": null,
+        "sha256": "45d45ddc47b722f611c9c8480cccad6ecd7310c4e69312854407d5889ed6a7f4"
+      },
+      {
+        "name": "io.inertia.spring.ValidationBridgeTest",
+        "timestamp": null,
+        "sha256": "ac64f924c75daf77711635d2113075980e4280f91da8a5f1ddfbb10ab207151d"
+      },
+      {
+        "name": "io.inertia.ssr.HttpObservationTest",
+        "timestamp": null,
+        "sha256": "4b1441d03cfe9f4bb5db2cccae91813d7290b2fb0834efb50bc7539afa828d05"
+      },
+      {
+        "name": "io.inertia.ssr.HttpSsrFailureTest",
+        "timestamp": null,
+        "sha256": "458cfef4603bc46fa22cf93cff899d6a86b3f99350aee61b5579f346f2ef8f42"
+      },
+      {
+        "name": "io.inertia.ssr.HttpSsrGatewayTest",
+        "timestamp": null,
+        "sha256": "de478ded4ae80caa1fa61e807b1d9c9dfba5b7d693309378fc32c389faae3015"
+      },
+      {
+        "name": "io.inertia.ssr.SsrEndpointResolverTest",
+        "timestamp": null,
+        "sha256": "a5e9592823a0c8398a17e3bbb1c1afd2657bd5fdf72e912bd504ee49a3c47c49"
+      },
+      {
+        "name": "io.inertia.ssr.SsrHealthMonitorTest",
+        "timestamp": null,
+        "sha256": "68a7a5779c06c965f7de0024f39c25a38b640afa439c13999f02964913b68acc"
+      },
+      {
+        "name": "io.inertia.vite.ViteAssetsTest",
+        "timestamp": null,
+        "sha256": "1e2d74f0a89090c0f5b29ef74cfa493d444fdefca8c53407b7f27b73b19dff0a"
+      },
+      {
+        "name": "io.inertia.vite.ViteBuildTest",
+        "timestamp": null,
+        "sha256": "0b06b819232ebdf1127660e352658508c49e67210282a8d058ca672c0c382436"
+      },
+      {
+        "name": "io.inertia.example.BrowserCsrfRecoveryTest",
+        "timestamp": null,
+        "sha256": "e1fce3dac238cccfa754a660c5fef218a2e40948c2fff389fac649e9261cbcb8"
+      },
+      {
+        "name": "io.inertia.example.CspFilterTest",
+        "timestamp": null,
+        "sha256": "bbe4a6ff4d25224e9bb048009068d4f7d320a2af641dcd779eabebb52e3b8625"
+      },
+      {
+        "name": "io.inertia.example.DemoAuthTest",
+        "timestamp": null,
+        "sha256": "d6e189de5e7ec4f62e155cbe6caf3e17fa704c3c91e7067cc71ed02314ea4263"
+      },
+      {
+        "name": "io.inertia.example.MvcAdviceContractTest",
+        "timestamp": null,
+        "sha256": "fdc79eb595ece375cbfe43f5511dfd677441a15d248cac7c967b950ed9b6bf0d"
+      },
+      {
+        "name": "io.inertia.example.MvcAllErrorsTest",
+        "timestamp": null,
+        "sha256": "36d4abb31eecd31c43fe4f81b15f430e11c0e78acec10a1fe5da41492c5bacfa"
+      },
+      {
+        "name": "io.inertia.example.MvcConfigPresentationTest",
+        "timestamp": null,
+        "sha256": "096327a1fcb99073a233904ed1e064c6c59bed429a794838056c59744d76f09e"
+      },
+      {
+        "name": "io.inertia.example.MvcContractTest",
+        "timestamp": null,
+        "sha256": "e49f1eb18b61c6839074e4bdd34feb2a3ec1a1babba73bf74b579b2f038ef5d5"
+      },
+      {
+        "name": "io.inertia.example.MvcErrorPageTest",
+        "timestamp": null,
+        "sha256": "9331b4c75c9c26d1452448cf28b86acc22612046d624a6a805aed2123c45387b"
+      },
+      {
+        "name": "io.inertia.example.MvcIsolationTest",
+        "timestamp": null,
+        "sha256": "a52fe3d5cc8ce18ef1f11386934356ebe82d11d562623d475a0f25de38fca50d"
+      },
+      {
+        "name": "io.inertia.example.MvcOutcomeAdviceContractTest",
+        "timestamp": null,
+        "sha256": "434974025d7302ec0c4cb9a4d91d8adf07b834ad6072fb0735bb3fd825a5ef9d"
+      },
+      {
+        "name": "io.inertia.example.MvcRequiredSsrTest",
+        "timestamp": null,
+        "sha256": "8d951b01ea8adcb86dbf522aae9a9bf5ab69d724a5a53b6fc4e9acb06b2090e5"
+      },
+      {
+        "name": "io.inertia.example.MvcSessionFailureTest",
+        "timestamp": null,
+        "sha256": "9fbd183ae008f4bdb39be2992277657929c7f838adf12bc8b4a980d64802f33d"
+      },
+      {
+        "name": "io.inertia.example.MvcTimeoutTest",
+        "timestamp": null,
+        "sha256": "f18072f66b684bc5b27453660a2570170124074db87d485f253c2cd8c5dcff6b"
+      }
+    ],
+    "scope": "Existing current build unit evidence; Java/example sources unchanged from baseline. Not rerun for prose."
+  },
+  "package": {
+    "success": true,
+    "release": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d2-package-zGotFb/dc336b6c05ae6516e01e3568cd88ff49505dec8fa089876e43516b906b649014",
+    "releaseId": "dc336b6c05ae6516e01e3568cd88ff49505dec8fa089876e43516b906b649014",
+    "documentationFiles": 49,
+    "byteIdentical": true,
+    "excludesPrivateTooling": true,
+    "summary": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d2-package-zGotFb/summary.json"
+  },
+  "toolingSources": {
+    "inertia-java/docs/scripts/check.mjs": "3f3ce5eab41ba70da06ac4eee85702d7af676d4a7d4a60fa89c40be84e23140f",
+    "inertia-java/docs/scripts/smoke.mjs": "168a8e2ecfce2ed548af50feec57f61ff1916e5683227af571166e9c5045f04c",
+    "inertia-java/docs/.vitepress/config.mjs": "2234ea397e90d95d493255f7262e9585e83f6122ced7b2add36a1c6f828cfc68",
+    "docs/inertia-java/open-source-docs-catalog.json": "f7f34792f44607ab301ecee81777c10f35fe4230a97e6994f820f7721787b03c"
+  }
+}

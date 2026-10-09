@@ -12,10 +12,23 @@ public final class ErrorBags {
     this.bags = Collections.unmodifiableMap(new LinkedHashMap<>(bags));
   }
 
+  /**
+   * Creates an empty immutable collection of named validation bags.
+   *
+   * @return empty bags
+   */
   public static ErrorBags empty() {
     return new ErrorBags(Map.of());
   }
 
+  /**
+   * Adds a bag or appends messages to the existing bag of the same name.
+   *
+   * @param bag non-null literal bag name; no non-blank restriction is imposed here
+   * @param errors messages to append
+   * @return new immutable bags
+   * @throws NullPointerException if bag or errors is null
+   */
   public ErrorBags with(String bag, ValidationErrors errors) {
     Objects.requireNonNull(bag);
     var combined = new LinkedHashMap<>(bags);
@@ -23,6 +36,12 @@ public final class ErrorBags {
     return new ErrorBags(combined);
   }
 
+  /**
+   * Merges bags by name, appending messages within matching fields.
+   *
+   * @param other bags to append
+   * @return new immutable bags preserving existing order
+   */
   public ErrorBags merge(ErrorBags other) {
     ErrorBags combined = this;
     for (var entry : other.bags.entrySet())
@@ -84,6 +103,17 @@ public final class ErrorBags {
     return value;
   }
 
+  /**
+   * Builds validation props using default-bag precedence.
+   *
+   * <p>If a default bag exists, named bags are omitted. Its fields are returned directly unless a
+   * requested bag name is supplied, in which case they are wrapped under that name. Without a
+   * default bag, all named bags are returned; requestedBag does not filter them.
+   *
+   * @param requestedBag client-requested bag wrapper, or null for direct default-bag fields
+   * @param all true for all messages per field, false for first-message strings
+   * @return unmodifiable client error map
+   */
   public Map<String, Object> toProp(String requestedBag, boolean all) {
     if (bags.containsKey("default")) {
       var errors = bags.get("default").toProp(all);

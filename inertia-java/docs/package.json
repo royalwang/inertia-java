@@ -1,0 +1,35 @@
+{
+  "name": "inertia-java-documentation",
+  "version": "0.1.0-snapshot.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "docs:dev": "node scripts/prepare.mjs && vitepress dev .",
+    "docs:check": "node scripts/prepare.mjs && markdownlint-cli2 && node scripts/check.mjs && node scripts/check-readme.mjs && node scripts/check-api.mjs && node --test scripts/check-api.test.mjs scripts/translations.test.mjs scripts/versions.test.mjs scripts/external-links.test.mjs && python3 scripts/site-archive-test.py && python3 scripts/dependency-inventory-test.py",
+    "docs:build": "node scripts/prepare.mjs && vitepress build .",
+    "docs:preview": "vitepress preview .",
+    "docs:smoke": "node scripts/smoke.mjs",
+    "docs:examples": "node scripts/examples.mjs",
+    "docs:first-application": "node scripts/verify-first-application.mjs",
+    "docs:quick-start": "node scripts/verify-quick-start.mjs",
+    "docs:snapshot": "node scripts/release-snapshot.mjs",
+    "docs:register-version": "node scripts/version-artifacts.mjs --register",
+    "docs:assemble-versions": "node scripts/version-artifacts.mjs --assemble .vitepress/dist",
+    "docs:smoke-versions": "node scripts/smoke-versions.mjs",
+    "docs:dependencies": "python3 scripts/dependency-inventory.py",
+    "docs:links": "node scripts/external-links.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "github-slugger": "2.0.0",
+    "gray-matter": "4.0.3",
+    "linkinator": "7.6.1",
+    "markdown-it": "14.1.0",
+    "markdownlint-cli2": "0.23.3",
+    "vitepress": "1.6.4"
+  }
+}

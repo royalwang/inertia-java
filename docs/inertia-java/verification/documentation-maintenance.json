@@ -1,0 +1,84 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T09:43:59.836934+00:00",
+  "scope": "Separate documentation dependency declarations and focused operation instructions; no new runtime or performance qualification",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true
+  },
+  "dependencies": {
+    "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-dependencies-vus_9qxo/summary.json",
+    "rawNpmSbomRetained": true,
+    "publicationQualified": false,
+    "counts": {
+      "allPlatformLockedPackagePaths": 278,
+      "uniqueComponents": 270,
+      "installedPackagePathsObserved": 230,
+      "licenseFileObservations": 225
+    },
+    "licenseObservationsRecheckedByteForByte": 225,
+    "reviewReasons": {
+      "no-recognized-installed-license-file": 10,
+      "optional-platform-package-not-observed": 48
+    },
+    "graphBoundary": "All raw package paths checked against lock; repeated npm refs allowed only when metadata excluding path is identical; graph references checked with coalesced identical components",
+    "limitations": [
+      "Declared metadata and collected texts do not grant legal publication approval.",
+      "All-platform lock graph includes optional packages not installed on this host.",
+      "No claim that every tool dependency is bundled in the website; generated bundle attribution requires separate review.",
+      "JDK, Node, npm, Python, browsers, OS and service images are outside this package graph."
+    ]
+  },
+  "verification": {
+    "contentAndTools": {
+      "nodeContracts": 16,
+      "archiveContracts": 5,
+      "dependencyContracts": 5,
+      "log": "/tmp/inertia-docs-maintenance-check.log"
+    },
+    "strictBuild": "/tmp/inertia-docs-maintenance-build.log",
+    "browser": {
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-8l0Deb/summary.json",
+      "englishPages": 70,
+      "chinesePages": 11,
+      "success": true
+    },
+    "javaPayload": {
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-15iOp7/summary.json",
+      "canonicalFiles": 87,
+      "byteIdentical": true,
+      "privateToolingExcluded": true
+    },
+    "publicationSelection": {
+      "log": "/tmp/inertia-docs-maintenance-publication.log",
+      "passed": true
+    },
+    "workflows": "All three documentation YAML workflows parse; all actions commit-pinned; remote execution not asserted",
+    "runtimeMatrixRerun": false,
+    "benchmarkRerun": false
+  },
+  "remainingLocalWork": [
+    "Review complete old README topic mapping before shrinking its preserved technical body/anchors",
+    "Manual or scheduled third-party external link checks; internal links do not substitute"
+  ],
+  "remainingPublication": [
+    "Actual stable source tag and real snapshot/archive registration/navigation",
+    "Authenticated Pages settings, remote Actions and public deployment",
+    "Maintainer-approved private security reporting channel",
+    "Distribution-specific third-party attribution review; metadata collection is not publication approval"
+  ],
+  "inputs": {
+    "inertia-java/docs/scripts/dependency-inventory.py": "309fd6e975922350a18ffcc666a75980486cf0e7f73f50b60638da91a47ea0d0",
+    "inertia-java/docs/scripts/dependency-inventory-test.py": "027a099db3f72995e99e0eaa0687aa66675676e8e48a1fc2863aad67895f3b3a",
+    "inertia-java/scripts/dependency-inventory.py": "dc0bd7e80736729f4cf9fcbbadc196845ca8103bc992c2a47872a313528bb602",
+    "inertia-java/docs/package.json": "6207799151c0c79f181dc338f4a55b585f7fed802969706d18c96a975188e3d0",
+    "inertia-java/docs/package-lock.json": "a72d9419b9c0e5b096a163eca51165c534d884ab8b5bcdf70a5c46af0c1bedd8",
+    "inertia-java/docs/README.md": "9c99556371c66512c6a6c55e5450337e151d6bcac5b163cf47e5069d668abb1e",
+    "inertia-java/docs/community/license.md": "e24f4edfdb87d8b225aa4a598e956bd9c125b8e03dc88a1f9860d8c4212a04a3",
+    "inertia-java/docs/testing/browser-tests.md": "0da6f8e9774a8b0c47ad255903c6fb6bf2071df5b01d94b27b3bada586598215",
+    "inertia-java/docs/troubleshooting/performance.md": "2dba3f9797a2d7b7e24c2fd0c97bba1aae1dd3c24fce8b78ed29a10e56d1fa6b",
+    "inertia-java/README.md": "eee57f162947237c0106258761236974127303449452c687ecb33dca91d279bf",
+    ".github/workflows/inertia-java-docs.yml": "f42b10c035bf215a4a24230c538f5a46832ce284d53e630029432808120ae587",
+    ".github/workflows/inertia-java-docs-deploy.yml": "98d06398b379b6c519966eb93ca7be3f56fbe5f2642140d519dde80fe5185e0c"
+  }
+}

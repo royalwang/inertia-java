@@ -408,6 +408,6 @@ The props resolver and protocol rules are ports of [inertiajs/inertia-laravel](h
 cargo test --all-features
 ```
 
-## Java adapter planning
+## Java adapter and documentation
 
-See [Inertia Java architecture and implementation design](docs/inertia-java/README.md) for a source-based analysis of this Rust implementation and a proposed framework-independent Java core, Spring MVC adapter, and Node SSR integration. The documents are in Chinese. The [Java implementation](inertia-java/README.md) now includes a runnable Spring MVC and React/Node SSR example; implementation and compatibility work are ongoing.
+The [Java implementation](inertia-java/README.md) provides a framework-independent core, Spring MVC adapter, and a runnable React/Node SSR example. The first implementation acceptance is complete. Start with the [Java documentation index](inertia-java/docs/README.md) for the available API, compatibility and deployment guides. The [architecture and implementation documents](docs/inertia-java/README.md) and [open-source documentation plan](docs/inertia-java/08-open-source-documentation-plan.md) are in Chinese; the local documentation site contains all 70 English catalog pages and actual generated Javadoc. Eleven priority Chinese pages are available with English revision tracking. Full member comments, release-tag snapshots and public launch requirements remain open; public deployment has not been verified.

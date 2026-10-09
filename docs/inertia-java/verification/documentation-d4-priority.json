@@ -1,0 +1,306 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T08:38:13.475Z",
+  "scope": "D4 priority Chinese journeys and revision/locale tooling; not full D4 version snapshots or public launch acceptance",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true,
+    "runtimeJavaChanged": false
+  },
+  "englishPages": 70,
+  "chinesePages": 11,
+  "translations": [
+    {
+      "id": "home",
+      "locale": "zh-CN",
+      "path": "zh/index.md",
+      "title": "Inertia Java 中文文档",
+      "status": "reviewed",
+      "sourceRevision": "cbd44285f4af1498a233a228c3f0d0bea50f3d7502fc99f9f56f7c9895e8eed6",
+      "sha256": "c28f7438b0b558b5e006b9e5b2542a7d03eed59b08bb21d9605596691c079c07",
+      "englishSha256": "cbd44285f4af1498a233a228c3f0d0bea50f3d7502fc99f9f56f7c9895e8eed6"
+    },
+    {
+      "id": "getting-started/overview",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/overview.md",
+      "title": "什么是 Inertia Java？",
+      "status": "reviewed",
+      "sourceRevision": "93e51c16896ead2d8750eb9eabee5b06ebf8e16450ce5ffc2f049eb881619625",
+      "sha256": "9702e9934d7b3a2768286374e2308dca4cc1c2f23e8037c09fba6aa982c7c7b6",
+      "englishSha256": "93e51c16896ead2d8750eb9eabee5b06ebf8e16450ce5ffc2f049eb881619625"
+    },
+    {
+      "id": "getting-started/installation",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/installation.md",
+      "title": "安装",
+      "status": "reviewed",
+      "sourceRevision": "de6029fb6e47cf652fe1094eae20c2fd2a465f37621ff9a2377c5a4223dd0f92",
+      "sha256": "0aea0f3975da75d9b2405415ff3ed9027274d4fee33ca4a45fef0c9e6626ff6f",
+      "englishSha256": "de6029fb6e47cf652fe1094eae20c2fd2a465f37621ff9a2377c5a4223dd0f92"
+    },
+    {
+      "id": "getting-started/quick-start",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/quick-start.md",
+      "title": "运行 React 示例",
+      "status": "reviewed",
+      "sourceRevision": "f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1",
+      "sha256": "8e26de134a962748e3a5f234ceff28ffb8a2da4cd9ede1fee96a95c3b393a4da",
+      "englishSha256": "f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1"
+    },
+    {
+      "id": "getting-started/first-application",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/first-application.md",
+      "title": "创建第一个 Spring 应用",
+      "status": "reviewed",
+      "sourceRevision": "46835e2bbc76334927d730859d2df1f53d906a1b17a55c2a895ad36d4eddd5c9",
+      "sha256": "8da7d1cc05c2f9074d8b3f0a59becf93660440af0d9c9a8dadcf7c14cd112614",
+      "englishSha256": "46835e2bbc76334927d730859d2df1f53d906a1b17a55c2a895ad36d4eddd5c9"
+    },
+    {
+      "id": "concepts/request-lifecycle",
+      "locale": "zh-CN",
+      "path": "zh/concepts/request-lifecycle.md",
+      "title": "请求与响应生命周期",
+      "status": "reviewed",
+      "sourceRevision": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e",
+      "sha256": "70ce0952e667e45636e27c8b577204ddc29219bc1e39f1648f659e410e095d03",
+      "englishSha256": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e"
+    },
+    {
+      "id": "guide/forms-validation",
+      "locale": "zh-CN",
+      "path": "zh/guide/forms-validation.md",
+      "title": "表单与校验",
+      "status": "reviewed",
+      "sourceRevision": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82",
+      "sha256": "db30a83612f95cefd2c9c98e81419f9c7ce12f16ae01f62fb54fc72b79190cc7",
+      "englishSha256": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82"
+    },
+    {
+      "id": "ssr/setup",
+      "locale": "zh-CN",
+      "path": "zh/ssr/setup.md",
+      "title": "设置 React 与 Node SSR",
+      "status": "reviewed",
+      "sourceRevision": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a",
+      "sha256": "ba78a89d2c9d66707d4b9366820745d2e59f05a9739c0b62ae531ff1f3484ac9",
+      "englishSha256": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a"
+    },
+    {
+      "id": "reference/configuration",
+      "locale": "zh-CN",
+      "path": "zh/reference/configuration.md",
+      "title": "配置参考",
+      "status": "reviewed",
+      "sourceRevision": "0cf30672880f2214af6cddf8bfb260912dbecb830d494565d060b54e81fe4873",
+      "sha256": "9e8dae4e8785c9c15b31464d8b75da51d13c288610b79a9aef32817c63bd1d65",
+      "englishSha256": "0cf30672880f2214af6cddf8bfb260912dbecb830d494565d060b54e81fe4873"
+    },
+    {
+      "id": "reference/errors",
+      "locale": "zh-CN",
+      "path": "zh/reference/errors.md",
+      "title": "错误与 SSR 降级原因",
+      "status": "reviewed",
+      "sourceRevision": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354",
+      "sha256": "92b5d16d856082763980798af822c65a98eab7c3e163f64b13c6b2c40dd3f1ce",
+      "englishSha256": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354"
+    },
+    {
+      "id": "troubleshooting/startup",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/startup.md",
+      "title": "启动与依赖排错",
+      "status": "reviewed",
+      "sourceRevision": "a62a23cbc48f5911fcf8d400c6c531c9ea5918ea2173f2ca1bd710fc76ad61ad",
+      "sha256": "9bcca22164c1b05ab59b51f420eb5e1897f65d8d935c043df277eda2f84009a7",
+      "englishSha256": "a62a23cbc48f5911fcf8d400c6c531c9ea5918ea2173f2ca1bd710fc76ad61ad"
+    }
+  ],
+  "checks": {
+    "markdownFiles": 82,
+    "apiAndTranslationContractTests": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    "unindexedChinesePagesAllowed": false,
+    "revisionAlgorithm": "sha256",
+    "executableFences": "equal to canonical English; Mermaid labels may be translated",
+    "inlineTechnicalTokens": "every canonical English code_inline token retained",
+    "semanticReview": "Chinese prose manually authored and reviewed against canonical pages; token/hash checks alone do not prove semantic equivalence"
+  },
+  "site": {
+    "summaryPath": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-l3CxJi/summary.json",
+    "summarySha256": "a865b73e26b75608dc5f6a70b41c07dcdb29de0279782b4a6318acdbbb69c4ca",
+    "success": true,
+    "startedAt": "2026-10-09T08:37:34.446Z",
+    "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-l3CxJi",
+    "phases": [
+      {
+        "name": "direct-page-loads",
+        "pages": 70
+      },
+      {
+        "name": "local-search",
+        "terms": [
+          "flash",
+          "deferred",
+          "requireSsr",
+          "session-namespace"
+        ]
+      },
+      {
+        "name": "application-search-navigation",
+        "journeys": [
+          {
+            "term": "CSRF",
+            "route": "guide/csrf"
+          },
+          {
+            "term": "deep merge",
+            "route": "props/merging"
+          },
+          {
+            "term": "once",
+            "route": "props/once"
+          },
+          {
+            "term": "renderer health",
+            "route": "ssr/health"
+          },
+          {
+            "term": "response-timeout",
+            "route": "reference/configuration"
+          },
+          {
+            "term": "inertia.ssr_http",
+            "route": "reference/metrics"
+          },
+          {
+            "term": "private",
+            "route": "community/security"
+          }
+        ]
+      },
+      {
+        "name": "canonical-source-downloads",
+        "byteIdentical": true
+      },
+      {
+        "name": "generated-javadoc",
+        "modules": 7,
+        "publicTypes": 71,
+        "memberAnchors": 496,
+        "entryAndAttributionBytes": true,
+        "representativeMethodNavigation": true
+      },
+      {
+        "name": "chinese-priority-journeys",
+        "pages": 11,
+        "perPageEnglishCounterparts": true,
+        "untranslatedEnglishFallback": true,
+        "chineseSearchNavigation": [
+          "校验",
+          "预算",
+          "会话"
+        ],
+        "canonicalSourceDownload": true
+      },
+      {
+        "name": "chinese-mobile-navigation",
+        "horizontalOverflow": false
+      },
+      {
+        "name": "mobile-navigation-and-console",
+        "errors": []
+      }
+    ],
+    "base": "/inertia-java/",
+    "finishedAt": "2026-10-09T08:37:57.929Z"
+  },
+  "screenshots": [
+    {
+      "path": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-l3CxJi/mobile.png",
+      "sha256": "7e97c3d6d02e8b0cd3d9fbb2274fd3e392bacb0756966f4f94dff3ebf3c60081"
+    },
+    {
+      "path": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-l3CxJi/mobile-zh.png",
+      "sha256": "ef180518264213f7147097483825e5325f7588aa3e6707b1e479ab3356c5d668"
+    }
+  ],
+  "package": {
+    "success": true,
+    "observedAt": "2026-10-09T08:38:13.475Z",
+    "scope": "actual package content only; not a new runtime deployment rehearsal",
+    "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-wqqkkr",
+    "payload": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-wqqkkr/releases/780154ae1d711a030ffb35ef6f59e9a305d7c82e349bf421e6c2d994837b0329",
+    "documentationFiles": 87,
+    "byteIdentical": true,
+    "privateToolingExcluded": true,
+    "releaseId": "780154ae1d711a030ffb35ef6f59e9a305d7c82e349bf421e6c2d994837b0329"
+  },
+  "logs": [
+    {
+      "path": "/tmp/inertia-docs-d4-check.log",
+      "sha256": "8bdab454949c2b8ab16189c82cb895e456535a7ecf4692a41d6ae6c1c9e6222d"
+    },
+    {
+      "path": "/tmp/inertia-docs-d4-build.log",
+      "sha256": "d36e1268030656cff7b903fc94126ea4b43e6fb33138248d07078dbce9bbdddc"
+    },
+    {
+      "path": "/tmp/inertia-docs-d4-smoke.log",
+      "sha256": "20f254506ddf0943aa5add13fe3bf7f4f871450d48ec723ed6802679fe967a86"
+    },
+    {
+      "path": "/tmp/inertia-docs-d4-package.log",
+      "sha256": "a5f81b958c6cff954973b805bdb5a116583b99a55b198fc5c77bfaf8b2d8ddaf"
+    }
+  ],
+  "toolInputs": [
+    {
+      "path": "inertia-java/docs/scripts/check.mjs",
+      "sha256": "af16d42d39849f43994e9a15e0842ec5d659eca25102a796f18204d7e630e589"
+    },
+    {
+      "path": "inertia-java/docs/scripts/translations.mjs",
+      "sha256": "f438fa3581cdc1e714079626aa18dac93963d99aa63f82887fd61789fdd236c8"
+    },
+    {
+      "path": "inertia-java/docs/scripts/translations.test.mjs",
+      "sha256": "c053e030d6e7ad4bd58d2f01182fadfa284cc1f50bc03af7bc225e887406c722"
+    },
+    {
+      "path": "inertia-java/docs/scripts/smoke.mjs",
+      "sha256": "9f4ee626efec64c69a584bb56ad0e8dd072dda1dd4623dec016d370dbd0c0d77"
+    },
+    {
+      "path": "inertia-java/docs/.vitepress/config.mjs",
+      "sha256": "813395f2cd4a190c0fb8ee4d8f6ff57fa795acc2e1fccffd0d23bc1fa4990bbe"
+    },
+    {
+      "path": "inertia-java/docs/.vitepress/theme/TranslationNotice.vue",
+      "sha256": "e1f2993661097aff3899d56a8e7c37e4fcc32734cf7ffada1a01a9d27fe0c72f"
+    },
+    {
+      "path": "docs/inertia-java/open-source-docs-catalog.json",
+      "sha256": "6a4b4116934a76ae4d6638e5850abe71bc0fd0cf760b9370847ff08e4a7725ff"
+    }
+  ],
+  "runtimeEvidence": "Canonical Java/example sources unchanged; prior independent app and browser acceptance retained. This turn validates matching translated instructions, not a new application runtime run.",
+  "remote": {
+    "publicDeploymentVerified": false,
+    "currentDocumentationRemoteCiVerified": false
+  },
+  "remaining": [
+    "Complete public member Javadoc prose and tighten missing-comment gates",
+    "Implement and qualify immutable snapshots against actual release tags",
+    "Confirm private security reporting channel",
+    "Authenticated Pages settings verification and public deployment acceptance"
+  ]
+}

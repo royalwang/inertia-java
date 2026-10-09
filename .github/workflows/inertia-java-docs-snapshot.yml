@@ -1,0 +1,53 @@
+name: Build tagged Inertia Java documentation
+
+# Produces a reviewable bundle only. It does not create tags, publish releases, or deploy Pages.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing origin tag with a stable Java version and reviewed documentation
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    if: github.repository == 'royalwang/inertia-java' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      INERTIA_BROWSER_CHANNEL: chromium
+      INERTIA_DOCS_OUTPUT: ${{ runner.temp }}/inertia-docs-snapshot-evidence
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: inertia-java/**/pom.xml
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.22.2'
+      - name: Export actual tagged source, build, check and bundle
+        working-directory: inertia-java/docs
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: npm run docs:snapshot -- --tag "$RELEASE_TAG" --output "$RUNNER_TEMP/inertia-docs-snapshot-bundle"
+      - name: Retain verified static bundle and registration receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: inertia-java-docs-snapshot-${{ github.run_id }}
+          path: ${{ runner.temp }}/inertia-docs-snapshot-bundle/*
+          retention-days: 90
+      - name: Retain build and browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: inertia-java-docs-snapshot-evidence-${{ github.run_id }}
+          path: ${{ runner.temp }}/inertia-docs-snapshot-evidence/**
+          retention-days: 14

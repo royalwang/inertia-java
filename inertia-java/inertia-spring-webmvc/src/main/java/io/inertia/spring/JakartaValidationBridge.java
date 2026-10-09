@@ -6,10 +6,27 @@ import jakarta.validation.ElementKind;
 import jakarta.validation.Path;
 import java.util.*;
 
-/** Optional Jakarta Validation integration. Only node paths and messages are read. */
+/**
+ * Optional Jakarta Validation integration that reads only property paths and messages.
+ *
+ * <p>No root beans, invalid values, or provider internals are serialized. Messages and supported
+ * map keys are retained as text, so applications must choose client-safe validation messages and
+ * paths.
+ */
 public final class JakartaValidationBridge {
   private JakartaValidationBridge() {}
 
+  /**
+   * Copies violations into deterministic immutable field messages.
+   *
+   * <p>Sorts by dotted field path and then message text to stabilize a provider's unordered Set.
+   * Uses property/parameter names and iterable indexes or supported string/numeric/enum keys;
+   * unknown iterable positions use {@code *}. A path without named parts becomes {@code _form}.
+   *
+   * @param violations non-null violations from an application validator
+   * @return immutable messages without reading rejected values
+   * @throws IllegalArgumentException if a map path uses an unsupported key type
+   */
   public static ValidationErrors errors(Set<? extends ConstraintViolation<?>> violations) {
     record Message(String field, String text) {}
     var messages = new ArrayList<Message>();

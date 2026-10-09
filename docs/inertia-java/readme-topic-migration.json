@@ -1,0 +1,540 @@
+{
+  "format": 1,
+  "status": "reviewed-public-guides-with-historical-detail-preserved",
+  "sourceSnapshot": {
+    "path": "docs/inertia-java/verification/readme-before-topic-migration.txt",
+    "sha256": "eee57f162947237c0106258761236974127303449452c687ecb33dca91d279bf",
+    "lines": 517
+  },
+  "topics": [
+    {
+      "heading": "Documentation",
+      "level": 2,
+      "anchor": "documentation",
+      "destinations": [
+        "inertia-java/docs/index.md",
+        "inertia-java/docs/README.md"
+      ]
+    },
+    {
+      "heading": "API guide",
+      "level": 2,
+      "anchor": "api-guide",
+      "destinations": [
+        "inertia-java/docs/api-guide.md"
+      ]
+    },
+    {
+      "heading": "Observation SPI",
+      "level": 2,
+      "anchor": "observation-spi",
+      "destinations": [
+        "inertia-java/docs/integrations/observability.md",
+        "inertia-java/docs/reference/metrics.md"
+      ]
+    },
+    {
+      "heading": "Prop definitions and overrides",
+      "level": 2,
+      "anchor": "prop-definitions-and-overrides",
+      "destinations": [
+        "inertia-java/docs/props/basics.md",
+        "inertia-java/docs/props/diagnostics.md"
+      ]
+    },
+    {
+      "heading": "Build",
+      "level": 2,
+      "anchor": "build",
+      "destinations": [
+        "inertia-java/docs/getting-started/installation.md",
+        "inertia-java/docs/getting-started/quick-start.md"
+      ]
+    },
+    {
+      "heading": "Run the example",
+      "level": 2,
+      "anchor": "run-the-example",
+      "destinations": [
+        "inertia-java/docs/getting-started/quick-start.md"
+      ]
+    },
+    {
+      "heading": "Development mode",
+      "level": 2,
+      "anchor": "development-mode",
+      "destinations": [
+        "inertia-java/docs/getting-started/development.md"
+      ]
+    },
+    {
+      "heading": "Browser verification",
+      "level": 2,
+      "anchor": "browser-verification",
+      "destinations": [
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "Modules and ownership",
+      "level": 2,
+      "anchor": "modules-and-ownership",
+      "destinations": [
+        "inertia-java/docs/getting-started/project-structure.md",
+        "inertia-java/docs/concepts/ownership.md"
+      ]
+    },
+    {
+      "heading": "Execution configuration",
+      "level": 2,
+      "anchor": "execution-configuration",
+      "destinations": [
+        "inertia-java/docs/reference/configuration.md",
+        "inertia-java/docs/props/async-concurrency.md"
+      ]
+    },
+    {
+      "heading": "Current boundaries",
+      "level": 2,
+      "anchor": "current-boundaries",
+      "destinations": [
+        "inertia-java/docs/getting-started/compatibility.md",
+        "inertia-java/docs/integrations/custom-session.md",
+        "inertia-java/docs/community/releases.md"
+      ]
+    },
+    {
+      "heading": "Validation and CSRF",
+      "level": 2,
+      "anchor": "validation-and-csrf",
+      "destinations": [
+        "inertia-java/docs/guide/forms-validation.md",
+        "inertia-java/docs/guide/csrf.md"
+      ]
+    },
+    {
+      "heading": "MVC diagnostics and error pages",
+      "level": 2,
+      "anchor": "mvc-diagnostics-and-error-pages",
+      "destinations": [
+        "inertia-java/docs/guide/errors.md",
+        "inertia-java/docs/reference/spring-api.md",
+        "inertia-java/docs/troubleshooting/startup.md"
+      ]
+    },
+    {
+      "heading": "Session namespaces and failures",
+      "level": 2,
+      "anchor": "session-namespaces-and-failures",
+      "destinations": [
+        "inertia-java/docs/guide/flash-session.md",
+        "inertia-java/docs/integrations/custom-session.md"
+      ]
+    },
+    {
+      "heading": "Vite and SSR endpoint contracts",
+      "level": 2,
+      "anchor": "vite-and-ssr-endpoint-contracts",
+      "destinations": [
+        "inertia-java/docs/ssr/vite-assets.md",
+        "inertia-java/docs/ssr/gateway.md"
+      ]
+    },
+    {
+      "heading": "Renderer failure acceptance",
+      "level": 2,
+      "anchor": "renderer-failure-acceptance",
+      "destinations": [
+        "inertia-java/docs/ssr/fallback.md",
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "Background renderer health and watch",
+      "level": 2,
+      "anchor": "background-renderer-health-and-watch",
+      "destinations": [
+        "inertia-java/docs/ssr/health.md"
+      ]
+    },
+    {
+      "heading": "Release build integrity",
+      "level": 2,
+      "anchor": "release-build-integrity",
+      "destinations": [
+        "inertia-java/docs/deployment/build-release.md",
+        "inertia-java/docs/troubleshooting/assets-versions.md",
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "Renderer release verification",
+      "level": 2,
+      "anchor": "renderer-release-verification",
+      "destinations": [
+        "inertia-java/docs/deployment/build-release.md",
+        "inertia-java/docs/ssr/gateway.md",
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "Request CSP nonces",
+      "level": 2,
+      "anchor": "request-csp-nonces",
+      "destinations": [
+        "inertia-java/docs/ssr/root-template.md",
+        "inertia-java/docs/deployment/proxy-security.md",
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "Versioned assets and release switching",
+      "level": 2,
+      "anchor": "versioned-assets-and-release-switching",
+      "destinations": [
+        "inertia-java/docs/deployment/rolling-upgrades.md",
+        "inertia-java/docs/ssr/vite-assets.md"
+      ]
+    },
+    {
+      "heading": "Custom mount root",
+      "level": 2,
+      "anchor": "custom-mount-root",
+      "destinations": [
+        "inertia-java/docs/ssr/root-template.md",
+        "inertia-java/docs/reference/configuration.md"
+      ]
+    },
+    {
+      "heading": "Browser history and per-page SSR",
+      "level": 2,
+      "anchor": "browser-history-and-per-page-ssr",
+      "destinations": [
+        "inertia-java/docs/guide/history-bigint.md",
+        "inertia-java/docs/concepts/rendering.md"
+      ]
+    },
+    {
+      "heading": "Aggregate verification and CI",
+      "level": 2,
+      "anchor": "aggregate-verification-and-ci",
+      "destinations": [
+        "inertia-java/docs/testing/browser-tests.md",
+        "inertia-java/docs/community/contributing.md"
+      ]
+    },
+    {
+      "heading": "Cancellation and worker ownership",
+      "level": 2,
+      "anchor": "cancellation-and-worker-ownership",
+      "destinations": [
+        "inertia-java/docs/props/async-concurrency.md",
+        "inertia-java/docs/concepts/ownership.md"
+      ]
+    },
+    {
+      "heading": "Local HTTP performance baseline",
+      "level": 2,
+      "anchor": "local-http-performance-baseline",
+      "destinations": [
+        "inertia-java/docs/troubleshooting/performance.md"
+      ]
+    },
+    {
+      "heading": "Independent release directory",
+      "level": 2,
+      "anchor": "independent-release-directory",
+      "destinations": [
+        "inertia-java/docs/deployment/build-release.md",
+        "inertia-java/docs/deployment/processes.md",
+        "inertia-java/docs/deployment/operations.md"
+      ]
+    },
+    {
+      "heading": "Example CSRF recovery",
+      "level": 2,
+      "anchor": "example-csrf-recovery",
+      "destinations": [
+        "inertia-java/docs/guide/csrf.md"
+      ]
+    },
+    {
+      "heading": "Page URL and shared-key presentation",
+      "level": 2,
+      "anchor": "page-url-and-shared-key-presentation",
+      "destinations": [
+        "inertia-java/docs/guide/shared-data.md",
+        "inertia-java/docs/reference/core-api.md"
+      ]
+    },
+    {
+      "heading": "HTTP policy compatibility",
+      "level": 3,
+      "anchor": "http-policy-compatibility",
+      "destinations": [
+        "inertia-java/docs/concepts/protocol.md",
+        "inertia-java/docs/getting-started/compatibility.md"
+      ]
+    },
+    {
+      "heading": "Once expiry and invalidation",
+      "level": 3,
+      "anchor": "once-expiry-and-invalidation",
+      "destinations": [
+        "inertia-java/docs/props/once.md",
+        "inertia-java/docs/testing/fixtures.md"
+      ]
+    },
+    {
+      "heading": "Library documentation artifacts",
+      "level": 3,
+      "anchor": "library-documentation-artifacts",
+      "destinations": [
+        "inertia-java/docs/reference/javadoc.md",
+        "inertia-java/docs/community/releases.md"
+      ]
+    },
+    {
+      "heading": "Required SSR pages",
+      "level": 3,
+      "anchor": "required-ssr-pages",
+      "destinations": [
+        "inertia-java/docs/ssr/fallback.md",
+        "inertia-java/docs/reference/errors.md"
+      ]
+    },
+    {
+      "heading": "Independent Maven consumer rehearsal",
+      "level": 3,
+      "anchor": "independent-maven-consumer-rehearsal",
+      "destinations": [
+        "inertia-java/docs/testing/browser-tests.md",
+        "inertia-java/docs/community/releases.md"
+      ]
+    },
+    {
+      "heading": "Application exception pages",
+      "level": 3,
+      "anchor": "application-exception-pages",
+      "destinations": [
+        "inertia-java/docs/guide/errors.md",
+        "inertia-java/docs/reference/spring-api.md"
+      ]
+    },
+    {
+      "heading": "Application exception redirects",
+      "level": 3,
+      "anchor": "application-exception-redirects",
+      "destinations": [
+        "inertia-java/docs/guide/errors.md",
+        "inertia-java/docs/guide/flash-session.md"
+      ]
+    },
+    {
+      "heading": "Custom codec and adapter overrides",
+      "level": 3,
+      "anchor": "custom-codec-and-adapter-overrides",
+      "destinations": [
+        "inertia-java/docs/integrations/spring-boot.md",
+        "inertia-java/docs/integrations/custom-adapter.md"
+      ]
+    },
+    {
+      "heading": "Opt-in local identity demonstration",
+      "level": 3,
+      "anchor": "opt-in-local-identity-demonstration",
+      "destinations": [
+        "inertia-java/docs/guide/authentication.md",
+        "inertia-java/docs/guide/history-bigint.md"
+      ]
+    },
+    {
+      "heading": "Dependency and license declaration inventory",
+      "level": 3,
+      "anchor": "dependency-and-license-declaration-inventory",
+      "destinations": [
+        "inertia-java/docs/community/license.md",
+        "inertia-java/docs/community/releases.md"
+      ]
+    },
+    {
+      "heading": "Advanced props and named forms",
+      "level": 3,
+      "anchor": "advanced-props-and-named-forms",
+      "destinations": [
+        "inertia-java/docs/props/merging.md",
+        "inertia-java/docs/guide/forms-validation.md"
+      ]
+    },
+    {
+      "heading": "API guide verification in CI",
+      "level": 3,
+      "anchor": "api-guide-verification-in-ci",
+      "destinations": [
+        "inertia-java/docs/testing/browser-tests.md",
+        "inertia-java/docs/community/contributing.md"
+      ]
+    },
+    {
+      "heading": "SSR input contract",
+      "level": 2,
+      "anchor": "ssr-input-contract",
+      "destinations": [
+        "inertia-java/docs/ssr/gateway.md",
+        "inertia-java/docs/reference/ssr-vite-api.md"
+      ]
+    },
+    {
+      "heading": "Development acceptance",
+      "level": 2,
+      "anchor": "development-acceptance",
+      "destinations": [
+        "inertia-java/docs/getting-started/development.md",
+        "inertia-java/docs/testing/browser-tests.md"
+      ]
+    },
+    {
+      "heading": "License",
+      "level": 2,
+      "anchor": "license",
+      "destinations": [
+        "inertia-java/docs/community/license.md"
+      ]
+    }
+  ],
+  "boundary": "Destinations are current learning/reference pages; the exact old body is preserved as historical engineering text, including former evidence/status statements and links. It is not current normative documentation.",
+  "upstreamReferences": [
+    {
+      "target": "inertia-java/docs/integrations/observability.md",
+      "label": "Micrometer timers",
+      "href": "https://docs.micrometer.io/micrometer/reference/concepts/timers.html",
+      "section": "Observation SPI"
+    },
+    {
+      "target": "inertia-java/docs/integrations/observability.md",
+      "label": "Creating your own auto-configuration",
+      "href": "https://docs.spring.io/spring-boot/3.5/reference/features/developing-auto-configuration.html",
+      "section": "Observation SPI"
+    },
+    {
+      "target": "inertia-java/docs/guide/csrf.md",
+      "label": "Spring Security's SPA CSRF integration",
+      "href": "https://docs.spring.io/spring-security/reference/6.5/servlet/exploits/csrf.html",
+      "section": "Validation and CSRF"
+    },
+    {
+      "target": "inertia-java/docs/guide/csrf.md",
+      "label": "Inertia CSRF handling",
+      "href": "https://inertiajs.com/docs/v3/security/csrf-protection",
+      "section": "Example CSRF recovery"
+    },
+    {
+      "target": "inertia-java/docs/guide/errors.md",
+      "label": "Spring MVC error status semantics",
+      "href": "https://docs.spring.io/spring-framework/docs/6.2.x/javadoc-api/org/springframework/web/servlet/mvc/support/DefaultHandlerExceptionResolver.html",
+      "section": "MVC diagnostics and error pages"
+    },
+    {
+      "target": "inertia-java/docs/ssr/vite-assets.md",
+      "label": "Vite's backend integration manifest",
+      "href": "https://vite.dev/guide/backend-integration",
+      "section": "Vite and SSR endpoint contracts"
+    },
+    {
+      "target": "inertia-java/docs/ssr/fallback.md",
+      "label": "HttpClient cancellation",
+      "href": "https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#sendAsync(java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler)",
+      "section": "Renderer failure acceptance"
+    },
+    {
+      "target": "inertia-java/docs/ssr/health.md",
+      "label": "Node's native watch mode",
+      "href": "https://nodejs.org/api/cli.html#--watch",
+      "section": "Background renderer health and watch"
+    },
+    {
+      "target": "inertia-java/docs/ssr/root-template.md",
+      "label": "W3C CSP3 working draft",
+      "href": "https://www.w3.org/TR/CSP3/#strict-dynamic-usage",
+      "section": "Request CSP nonces"
+    },
+    {
+      "target": "inertia-java/docs/guide/history-bigint.md",
+      "label": "official history encryption documentation",
+      "href": "https://inertiajs.com/docs/v3/security/history-encryption",
+      "section": "Browser history and per-page SSR"
+    },
+    {
+      "target": "inertia-java/docs/testing/browser-tests.md",
+      "label": "Playwright browser documentation",
+      "href": "https://playwright.dev/docs/browsers",
+      "section": "Aggregate verification and CI"
+    },
+    {
+      "target": "inertia-java/docs/props/async-concurrency.md",
+      "label": "CompletableFuture",
+      "href": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html",
+      "section": "Cancellation and worker ownership"
+    },
+    {
+      "target": "inertia-java/docs/props/async-concurrency.md",
+      "label": "FutureTask",
+      "href": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/FutureTask.html",
+      "section": "Cancellation and worker ownership"
+    },
+    {
+      "target": "inertia-java/docs/reference/javadoc.md",
+      "label": "Maven Source 3.3.1 lifecycle goal",
+      "href": "https://maven.apache.org/plugins-archives/maven-source-plugin-3.3.1/usage.html",
+      "section": "Library documentation artifacts"
+    },
+    {
+      "target": "inertia-java/docs/reference/javadoc.md",
+      "label": "Maven Javadoc 3.7.0 jar goal",
+      "href": "https://maven.apache.org/plugins-archives/maven-javadoc-plugin-3.7.0/jar-mojo.html",
+      "section": "Library documentation artifacts"
+    },
+    {
+      "target": "inertia-java/docs/guide/authentication.md",
+      "label": "Spring Security CSRF and SPA integration",
+      "href": "https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html",
+      "section": "Opt-in local identity demonstration"
+    },
+    {
+      "target": "inertia-java/docs/guide/authentication.md",
+      "label": "session fixation protection",
+      "href": "https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html",
+      "section": "Opt-in local identity demonstration"
+    },
+    {
+      "target": "inertia-java/docs/guide/authentication.md",
+      "label": "logout handling",
+      "href": "https://docs.spring.io/spring-security/reference/servlet/authentication/logout.html",
+      "section": "Opt-in local identity demonstration"
+    },
+    {
+      "target": "inertia-java/docs/community/license.md",
+      "label": "npm SBOM documentation",
+      "href": "https://docs.npmjs.com/cli/commands/npm-sbom/",
+      "section": "Dependency and license declaration inventory"
+    },
+    {
+      "target": "inertia-java/docs/community/license.md",
+      "label": "CycloneDX Maven plugin",
+      "href": "https://github.com/CycloneDX/cyclonedx-maven-plugin",
+      "section": "Dependency and license declaration inventory"
+    }
+  ],
+  "linkCorrections": [
+    {
+      "old": "https://jakarta.ee/specifications/bean-validation/3.0/apidocs/jakarta/validation/path.node",
+      "current": "https://jakarta.ee/specifications/bean-validation/3.0/apidocs/jakarta/validation/Path.Node.html",
+      "destination": "inertia-java/docs/reference/spring-api.md"
+    },
+    {
+      "old": "https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpsession",
+      "current": "https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/HttpSession.html",
+      "destination": "inertia-java/docs/reference/spring-api.md"
+    }
+  ]
+}

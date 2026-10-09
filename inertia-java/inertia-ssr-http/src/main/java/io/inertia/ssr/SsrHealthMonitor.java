@@ -7,15 +7,33 @@ import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.util.concurrent.*;
 
-/** Independent background health sampling. Reading a snapshot never sends an HTTP request. */
+/**
+ * Application-owned background health sampler, independent from Page rendering.
+ *
+ * <p>Reading a snapshot never sends a request. Sampling requires HTTP 200 and a JSON {@code status:
+ * OK} within 4096 response bytes. Health does not verify build/root identity, component rendering
+ * or hydration. Close the monitor when its application owner stops.
+ */
 public final class SsrHealthMonitor implements AutoCloseable {
+  /** Lifecycle/result category of the cached health snapshot. */
   public enum State {
+    /** No completed check has published a result. */
     UNKNOWN,
+    /** The latest check received the expected health response. */
     UP,
+    /** The latest check failed its transport/status/shape contract. */
     DOWN,
+    /** The owner closed this monitor; late checks cannot revive it. */
     STOPPED
   }
 
+  /**
+   * Immutable cached observation, not a synchronous readiness decision.
+   *
+   * @param state lifecycle or last result category
+   * @param reason bounded internal classification; no renderer body or exception message
+   * @param checkedAt time of the last published check, or null before the first result
+   */
   public record Snapshot(State state, String reason, Instant checkedAt) {}
 
   private final URI endpoint;
@@ -30,6 +48,16 @@ public final class SsrHealthMonitor implements AutoCloseable {
   private volatile boolean closed;
   private boolean started;
 
+  /**
+   * Creates owned HTTP/scheduler resources without starting checks.
+   *
+   * @param endpoint trusted absolute HTTP(S) health URL
+   * @param connectTimeout positive connection-establishment budget
+   * @param timeout positive total budget for each health request
+   * @param interval positive fixed delay after one check finishes
+   * @param codec shared codec for the health response
+   * @throws IllegalArgumentException if endpoint policy or any budget is invalid
+   */
   public SsrHealthMonitor(
       URI endpoint, Duration connectTimeout, Duration timeout, Duration interval, PageCodec codec) {
     this.endpoint = ConfiguredHttpUrl.endpoint(endpoint);
@@ -53,6 +81,12 @@ public final class SsrHealthMonitor implements AutoCloseable {
             Thread.ofPlatform().daemon(true).name("inertia-ssr-health").factory());
   }
 
+  /**
+   * Starts fixed-delay checks immediately; repeated calls while open are idempotent.
+   *
+   * @return this owned monitor
+   * @throws IllegalStateException if already closed
+   */
   public synchronized SsrHealthMonitor start() {
     if (closed) throw new IllegalStateException("Health monitor is closed");
     if (!started) {
@@ -62,6 +96,11 @@ public final class SsrHealthMonitor implements AutoCloseable {
     return this;
   }
 
+  /**
+   * Reads the latest volatile snapshot without waiting for or initiating transport.
+   *
+   * @return cached UNKNOWN/UP/DOWN/STOPPED state and its check timestamp
+   */
   public Snapshot snapshot() {
     return snapshot;
   }
@@ -105,6 +144,12 @@ public final class SsrHealthMonitor implements AutoCloseable {
     if (!closed) snapshot = new Snapshot(state, reason, Instant.now());
   }
 
+  /**
+   * Permanently stops sampling and cancels the owned pending request and scheduler.
+   *
+   * <p>Repeated close is harmless. The STOPPED snapshot retains the previous checkedAt timestamp;
+   * late asynchronous completion cannot publish a new UP/DOWN state.
+   */
   @Override
   public void close() {
     synchronized (this) {

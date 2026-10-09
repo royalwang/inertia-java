@@ -1,0 +1,119 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T09:36:34.582590+00:00",
+  "scope": "Local immutable version tooling and next documentation acceptance; no actual release snapshot or public deployment",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true
+  },
+  "hosting": {
+    "repository": "royalwang/inertia-java",
+    "base": "/inertia-java/",
+    "maintainerConfirmed": true,
+    "publicDeploymentVerified": false,
+    "githubCliAuthenticated": false
+  },
+  "versioning": {
+    "registeredReleases": 0,
+    "originTags": 0,
+    "snapshotBuildFromRealReleaseTag": false,
+    "historicalReleaseNavigationJourneys": 0,
+    "localContracts": {
+      "node": 16,
+      "pythonArchives": 5,
+      "publicationSelection": 1
+    },
+    "syntheticFixturesOnly": "Temporary local Git repositories cover lightweight and annotated origin tags and mismatched refs; synthetic archive content covers extraction and immutable install boundaries",
+    "determinismBoundary": "Identical static input produces identical gzip/tar bytes; future source/toolchain rebuild byte equality is not asserted"
+  },
+  "verification": {
+    "site": {
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-DB618s/summary.json",
+      "success": true,
+      "englishPages": 70,
+      "chinesePages": 11,
+      "mobileScreenshotsVisuallyInspected": [
+        "mobile-zh.png"
+      ]
+    },
+    "versionNavigation": {
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-version-navigation-vTKN4S/summary.json",
+      "success": true,
+      "registeredReleaseJourneys": 0
+    },
+    "actualJavaPayload": {
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-48sm2z/summary.json",
+      "success": true,
+      "documentationFiles": 87,
+      "byteIdentical": true,
+      "rootVersionRegistryExcluded": true
+    },
+    "cliRejections": {
+      "success": true,
+      "checks": [
+        {
+          "command": [
+            "node",
+            "inertia-java/docs/scripts/release-snapshot.mjs"
+          ],
+          "exit": 1,
+          "error": "Command failed: git rev-parse --verify refs/tags/nonexistent-documentation-contract-tag^{commit}\nfatal: Needed a single revision"
+        },
+        {
+          "command": [
+            "node",
+            "inertia-java/docs/scripts/version-artifacts.mjs"
+          ],
+          "exit": 1,
+          "error": "ENOENT: no such file or directory, lstat '/private/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-version-rejection-0hwnat63/unbuilt-site'"
+        }
+      ]
+    },
+    "workflows": "All three YAML documents parse and every action uses a 40-character commit; not remotely executed"
+  },
+  "logs": {
+    "check": "/tmp/inertia-docs-versions-check.log",
+    "build": "/tmp/inertia-docs-versions-build.log",
+    "smoke": "/tmp/inertia-docs-versions-smoke.log",
+    "contracts": "/tmp/inertia-docs-versions-contracts.log",
+    "publication": "/tmp/inertia-docs-versions-publication.log",
+    "package": "/tmp/inertia-docs-versions-package.log",
+    "assemble": "/tmp/inertia-docs-versions-assemble.log",
+    "navigation": "/tmp/inertia-docs-versions-navigation.log",
+    "origin-tags": "/tmp/inertia-docs-versions-origin-tags.log",
+    "github-auth": "/tmp/inertia-docs-versions-github-auth.log"
+  },
+  "remaining": [
+    "Actual origin release tag containing stable, consistent source and reviewed documentation",
+    "Review and publish its verified static archive, then register and navigate a real historical version",
+    "Authenticated verification of Pages settings, remote Actions and public deployment",
+    "Maintainer-approved private security reporting channel"
+  ],
+  "inputs": {
+    ".github/workflows/inertia-java-docs-deploy.yml": "263b053f6c75be2ccec0031e8a32fbe30653f1f0a2543e5951ebf76f1024c98e",
+    ".github/workflows/inertia-java-docs-snapshot.yml": "2c9bf2628994a7bb3b0041a231cd98c845ec33c65c008f917ad584c1bb4466d8",
+    ".github/workflows/inertia-java-docs.yml": "99f90d80b3d14841eeeb8df7250d8f5873a73274f5ee2a993a7ec8609d3d85e3",
+    "docs/inertia-java/open-source-docs-catalog.json": "022795fb89b65dec36b487c20277c96555b1980de464c873b82d056839ad3cc6",
+    "inertia-java/deploy/documentation.mjs": "83f6349b64aa325d4892af29c36cd0f0271d286db7d69f45a1822ba161f89384",
+    "inertia-java/deploy/documentation.test.mjs": "cef865ebfbd8fd24120ba09ccdf04dfe68d4543cf3e5aa4c046b55cb529558f1",
+    "inertia-java/docs/.vitepress/config.mjs": "cf9e464be26c209ee974777c327be77f6a058a8022bafca9d91384c1afa0a3fe",
+    "inertia-java/docs/.vitepress/theme/SourceNotes.vue": "bfc0e210249eb8d5e1ab8a3ca941b03af37de68f54f0be1a7b5507dd5f05d292",
+    "inertia-java/docs/.vitepress/theme/VersionMenu.vue": "5e241605807bb8d048f95790448f738b1b856ec7c5527c0f11f6f41209e47d25",
+    "inertia-java/docs/.vitepress/theme/index.js": "6143a6ddc2d5f59eb8016feeb973e9bb3a3e16327e4d456e151a4906c2bf3963",
+    "inertia-java/docs/README.md": "1d01250f4e08ee479a8a026d7eed3696ec366b2a961440bbfe52880af6abe40e",
+    "inertia-java/docs/community/releases.md": "418daff99c8f2e1782b6d2a8c4bcf85eceb3afe544036e3e6bd7ea57ded44e0d",
+    "inertia-java/docs/package.json": "8f11015e81cdf16f536e3c26653ce7450653d0494222e509dac3a68ca7a40cb0",
+    "inertia-java/docs/scripts/check-api.mjs": "d39f5be9c1b8b467501b24717f70bbee92598758008446d3d20e2d946d25674b",
+    "inertia-java/docs/scripts/check.mjs": "fb5025f3d589e7c5504ebb3f4ee4fd382c1d1b06424dc306c96a1ef30b215743",
+    "inertia-java/docs/scripts/prepare-javadoc.py": "080557fa99d900e16c956ff8415db59fe021e8facd86a323ffa0e2f57a6431e3",
+    "inertia-java/docs/scripts/release-snapshot.mjs": "4e2b49ee096e9d7851d0dc61ec236cbd01fabc36bc32ba41ceb8e0aedb02ab57",
+    "inertia-java/docs/scripts/site-archive-test.py": "98ef3a3a55c2f5d215447d79563af1680bd290d104c6d61b571c2e88617eb867",
+    "inertia-java/docs/scripts/site-archive.py": "2bab1355516019935062c71a969d3a24211efc58f42736249bfaa0c5f217e53f",
+    "inertia-java/docs/scripts/smoke-versions.mjs": "28141b348c0e9721bb19f0de5015f30e5071d883a319be4ff42213146c358554",
+    "inertia-java/docs/scripts/smoke.mjs": "7ed89683776086b36b8d37748db900f7c5405bdce48597995b2080137a34a9eb",
+    "inertia-java/docs/scripts/version-artifacts.mjs": "4efdc89029eb994d2b024158668ccd423d26b9f35ec5fb97f5371348aaa95e5b",
+    "inertia-java/docs/scripts/versions.mjs": "19b8761485779177b6b8df62d3430f462e354efed1d9e9afbefa849b4277b44c",
+    "inertia-java/docs/scripts/versions.test.mjs": "c17d7faca346f4b7634af09d3baaca41f4346238c625f0c0b2a87e29543dc6b4",
+    "inertia-java/docs/versions.json": "a73039caa12d7f2b3bffb2a5e21c36776cca71a55301f010a24eff9ae4deaa9b"
+  }
+}

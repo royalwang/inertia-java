@@ -1,0 +1,1914 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T08:22:32.585Z",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true,
+    "runtimeJavaChanged": false
+  },
+  "scope": "D3 English prose, API site preparation, API/configuration map checks and chosen Pages base; not full D3/D4 or public release acceptance",
+  "pages": [
+    {
+      "id": "home",
+      "path": "index.md",
+      "status": "written",
+      "sha256": "d666203bc451716ee7374ed1f43173b2d2db2cc43a6b3996fdba3df8e070bddc"
+    },
+    {
+      "id": "getting-started/overview",
+      "path": "getting-started/overview.md",
+      "status": "written",
+      "sha256": "93e51c16896ead2d8750eb9eabee5b06ebf8e16450ce5ffc2f049eb881619625"
+    },
+    {
+      "id": "getting-started/installation",
+      "path": "getting-started/installation.md",
+      "status": "written",
+      "sha256": "de6029fb6e47cf652fe1094eae20c2fd2a465f37621ff9a2377c5a4223dd0f92"
+    },
+    {
+      "id": "getting-started/quick-start",
+      "path": "getting-started/quick-start.md",
+      "status": "written",
+      "sha256": "f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1"
+    },
+    {
+      "id": "getting-started/first-application",
+      "path": "getting-started/first-application.md",
+      "status": "written",
+      "sha256": "46835e2bbc76334927d730859d2df1f53d906a1b17a55c2a895ad36d4eddd5c9"
+    },
+    {
+      "id": "getting-started/development",
+      "path": "getting-started/development.md",
+      "status": "written",
+      "sha256": "f01f2fabf066509df26d64ae7fd8195759f079f22ec1f18b1e0c17868e970e88"
+    },
+    {
+      "id": "getting-started/project-structure",
+      "path": "getting-started/project-structure.md",
+      "status": "written",
+      "sha256": "11b24b1c61c41220b4df4bf04b5cb9deed00f21b3d282e71e16e23e7101fd3eb"
+    },
+    {
+      "id": "getting-started/compatibility",
+      "path": "getting-started/compatibility.md",
+      "status": "written",
+      "sha256": "b25ea90281722db0cca3dc09a61f469728a50009613ba2f446d9f50e6371a5bc"
+    },
+    {
+      "id": "concepts/request-lifecycle",
+      "path": "concepts/request-lifecycle.md",
+      "status": "written",
+      "sha256": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e"
+    },
+    {
+      "id": "concepts/protocol",
+      "path": "concepts/protocol.md",
+      "status": "written",
+      "sha256": "9afce1dd7a97079af5d73041b3b805d4417c941242486f0f0d51ba78720bec29"
+    },
+    {
+      "id": "concepts/ownership",
+      "path": "concepts/ownership.md",
+      "status": "written",
+      "sha256": "2c5beb536483084fed31bf0460d4ca2eddfc35d5ff04b48d913e31e970cb3cc3"
+    },
+    {
+      "id": "concepts/rendering",
+      "path": "concepts/rendering.md",
+      "status": "written",
+      "sha256": "09c8d1bc05adf0a64123bef63265f771bb67dd3a1dbf287aad00b48b563d3b44"
+    },
+    {
+      "id": "concepts/versioning",
+      "path": "concepts/versioning.md",
+      "status": "written",
+      "sha256": "2d89efc0f220c2c7ffd1b878fc20300f0f6b0e10519501dcbc6b57ef43428825"
+    },
+    {
+      "id": "guide/pages",
+      "path": "guide/pages.md",
+      "status": "written",
+      "sha256": "4268d8b3c1b0836529fbb8b0834536b09805b2d1223e92f4956b8acbde3d61f4"
+    },
+    {
+      "id": "guide/responses",
+      "path": "guide/responses.md",
+      "status": "written",
+      "sha256": "175a2b05b0af72d33719b17baa41e88ae9f260efcde9a326081d690abf1a5be1"
+    },
+    {
+      "id": "guide/shared-data",
+      "path": "guide/shared-data.md",
+      "status": "written",
+      "sha256": "2a23f5fcb468c521559516b8e3540a08f36fddc91be5cb795a1f75bd9de937bd"
+    },
+    {
+      "id": "guide/forms-validation",
+      "path": "guide/forms-validation.md",
+      "status": "written",
+      "sha256": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82"
+    },
+    {
+      "id": "guide/flash-session",
+      "path": "guide/flash-session.md",
+      "status": "written",
+      "sha256": "8d8b0bd379fe8986c476c2aba4b86dbdeceba2596eb79f7d205c35c592519290"
+    },
+    {
+      "id": "guide/authentication",
+      "path": "guide/authentication.md",
+      "status": "written",
+      "sha256": "3d14a317104decd23265715871e0522b812482a165b53eac67ebaf78e7b862e4"
+    },
+    {
+      "id": "guide/csrf",
+      "path": "guide/csrf.md",
+      "status": "written",
+      "sha256": "247e766c967c383d8559d837c7e53e92f6a0400d7e0b5cff9cfe24e4c7c4c23b"
+    },
+    {
+      "id": "guide/errors",
+      "path": "guide/errors.md",
+      "status": "written",
+      "sha256": "8c3e2204d09882021df9ca2f137d20182e20a0ebffde0d7347a110fce855f87d"
+    },
+    {
+      "id": "guide/history-bigint",
+      "path": "guide/history-bigint.md",
+      "status": "written",
+      "sha256": "99daf75a77eab8cfe8bcd0b5d3fd541e41d9ae6163867761190de94b5ae07630"
+    },
+    {
+      "id": "props/basics",
+      "path": "props/basics.md",
+      "status": "written",
+      "sha256": "ab7e449b540495cf51055bbe4d2753d1510a7a9f93db4dc13bd087e32ade8ab0"
+    },
+    {
+      "id": "props/loading",
+      "path": "props/loading.md",
+      "status": "written",
+      "sha256": "c21e052d3efc3d5c60b2ec342b79dec1a214573df7d642417f89f688977210f2"
+    },
+    {
+      "id": "props/partial-reloads",
+      "path": "props/partial-reloads.md",
+      "status": "written",
+      "sha256": "d0c968602a08c915255b3cf9ca5a440b58f6715a03f1df31d9ae7a855676cd2d"
+    },
+    {
+      "id": "props/deferred",
+      "path": "props/deferred.md",
+      "status": "written",
+      "sha256": "6a3e065174ae1aba23782a7ae2759d294f37ac3897a4b1d7cb3c910cb6e1fa55"
+    },
+    {
+      "id": "props/async-concurrency",
+      "path": "props/async-concurrency.md",
+      "status": "written",
+      "sha256": "d5154991e9ad6464791b2b69ca0e77ca93143a1b7dd63d44a8e93c8e9ec877f3"
+    },
+    {
+      "id": "props/merging",
+      "path": "props/merging.md",
+      "status": "written",
+      "sha256": "373571973df1c40d217075fef1dbbc1e94fed364307a2e8fe8c799d143cb3c7b"
+    },
+    {
+      "id": "props/once",
+      "path": "props/once.md",
+      "status": "written",
+      "sha256": "69bd2df7db6c004c7466ff9dc196659e0f4b0422e0f712fd0f8f4b49ff0fe3e0"
+    },
+    {
+      "id": "props/scroll",
+      "path": "props/scroll.md",
+      "status": "written",
+      "sha256": "138c3a8917413f0908f4450b65c668172cb6048d8f3e4a0628614f8031fafe1a"
+    },
+    {
+      "id": "props/diagnostics",
+      "path": "props/diagnostics.md",
+      "status": "written",
+      "sha256": "c05365abf103eebed29b83b85d8d48e6722d984ae47f5e7e0d54e0facd520ae6"
+    },
+    {
+      "id": "ssr/setup",
+      "path": "ssr/setup.md",
+      "status": "written",
+      "sha256": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a"
+    },
+    {
+      "id": "ssr/vite-assets",
+      "path": "ssr/vite-assets.md",
+      "status": "written",
+      "sha256": "30426051a4de599528f5251de6f1f5e82cff2e2d91a6fdfc994faa4da7cd30ef"
+    },
+    {
+      "id": "ssr/root-template",
+      "path": "ssr/root-template.md",
+      "status": "written",
+      "sha256": "aeaa472fe0c8d7277838ff20c9fdefb69e03e13f2626ee43fbe9d7d6475d31b5"
+    },
+    {
+      "id": "ssr/gateway",
+      "path": "ssr/gateway.md",
+      "status": "written",
+      "sha256": "df45d1427d8a5f9f0991866411d46e691304ae9f5908b53bbf68849d0cb38263"
+    },
+    {
+      "id": "ssr/fallback",
+      "path": "ssr/fallback.md",
+      "status": "written",
+      "sha256": "93fb8e4326a8294d1449e4e03a5a7b5acc19aeb953627ccd12f02d864a5b9dda"
+    },
+    {
+      "id": "ssr/health",
+      "path": "ssr/health.md",
+      "status": "written",
+      "sha256": "da7cb4b7e46332ef0567cb4cbc72fd8b4fc7575600628ce29539b88613ea8207"
+    },
+    {
+      "id": "integrations/spring-boot",
+      "path": "integrations/spring-boot.md",
+      "status": "written",
+      "sha256": "11659e32c2bfb544d6b731a61bf01cbf5ef33853ffe3942c0bbd050f9045086a"
+    },
+    {
+      "id": "integrations/spring-mvc",
+      "path": "integrations/spring-mvc.md",
+      "status": "written",
+      "sha256": "0f1f92de5780fd5133c26d13eaa7bc1055887e3c7e513e53e59592e196e4db6d"
+    },
+    {
+      "id": "integrations/custom-adapter",
+      "path": "integrations/custom-adapter.md",
+      "status": "written",
+      "sha256": "e313d256dc9862a44cf06e2dbec09fd0a290f4d35c994d9f152582e6a24ff652"
+    },
+    {
+      "id": "integrations/custom-session",
+      "path": "integrations/custom-session.md",
+      "status": "written",
+      "sha256": "b3848429839cd4bf0bc453dbba17f776cd8cc25c686553cc0ea6bf5286d7b69e"
+    },
+    {
+      "id": "integrations/observability",
+      "path": "integrations/observability.md",
+      "status": "written",
+      "sha256": "515a727ae80c2d7960064f1ec75e7dc72b9a95045989cd23b7f89ebba38af105"
+    },
+    {
+      "id": "deployment/build-release",
+      "path": "deployment/build-release.md",
+      "status": "written",
+      "sha256": "3382577c8bf201fc2fa9d4af656954e237d3f84e04ca90fd638163e2821a521a"
+    },
+    {
+      "id": "deployment/processes",
+      "path": "deployment/processes.md",
+      "status": "written",
+      "sha256": "5072a9539dfe48b23fe24613fb873f0530a9552c86a7e9642e9022a1df08b62a"
+    },
+    {
+      "id": "deployment/proxy-security",
+      "path": "deployment/proxy-security.md",
+      "status": "written",
+      "sha256": "a7368833417214a0a247a590a8b541cb647f29bd85b6d7efaf9cfd3ecf691222"
+    },
+    {
+      "id": "deployment/rolling-upgrades",
+      "path": "deployment/rolling-upgrades.md",
+      "status": "written",
+      "sha256": "94a7c2a91ddbcdc76476f9b6d5cf6f7d3a8869bab3484374a0516a533610f40a"
+    },
+    {
+      "id": "deployment/operations",
+      "path": "deployment/operations.md",
+      "status": "written",
+      "sha256": "c2399dcd0da5887989364ba2603151e6c4fff76c5dd2273d2e94c78a691db805"
+    },
+    {
+      "id": "reference/configuration",
+      "path": "reference/configuration.md",
+      "status": "written",
+      "sha256": "0cf30672880f2214af6cddf8bfb260912dbecb830d494565d060b54e81fe4873"
+    },
+    {
+      "id": "reference/core-api",
+      "path": "reference/core-api.md",
+      "status": "written",
+      "sha256": "29e4288380d75188a3c3148e9b297fb90e017977fb64b4d29374e1c8b534b136"
+    },
+    {
+      "id": "reference/spring-api",
+      "path": "reference/spring-api.md",
+      "status": "written",
+      "sha256": "18192ee36793ad5138728afaa140332a03f36e4a2c15eaf7e8ff7e226f05965e"
+    },
+    {
+      "id": "reference/ssr-vite-api",
+      "path": "reference/ssr-vite-api.md",
+      "status": "written",
+      "sha256": "57f61e207992b512329faaf3dcfc0543a5850c1a8524bfef86c6d57c3b8ff39d"
+    },
+    {
+      "id": "reference/protocol-metadata",
+      "path": "reference/protocol-metadata.md",
+      "status": "written",
+      "sha256": "2983d27fba22ff13d20e66b67bef84c5584078ca7450ef8ff09660566739434c"
+    },
+    {
+      "id": "reference/errors",
+      "path": "reference/errors.md",
+      "status": "written",
+      "sha256": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354"
+    },
+    {
+      "id": "reference/metrics",
+      "path": "reference/metrics.md",
+      "status": "written",
+      "sha256": "b20fc76fb58580fa7edd7620fa9583a9e7b42eeac09c5e9477fa60ab16f27393"
+    },
+    {
+      "id": "reference/javadoc",
+      "path": "reference/javadoc.md",
+      "status": "written",
+      "sha256": "be08f251517ea53edd0a87a213bbdbab89d047b53f0f8a5292bb6d5dd87f86b2"
+    },
+    {
+      "id": "testing/assertable-page",
+      "path": "testing/assertable-page.md",
+      "status": "written",
+      "sha256": "a292eaac31fce74540fcabb959cbb9bb2430e7d5ab5fb75422ccf128bb42b640"
+    },
+    {
+      "id": "testing/spring-tests",
+      "path": "testing/spring-tests.md",
+      "status": "written",
+      "sha256": "d98cddf826b72ff5821340a64ba7e792fa6e2f1b31615b46d146c7cfb9e90a7a"
+    },
+    {
+      "id": "testing/browser-tests",
+      "path": "testing/browser-tests.md",
+      "status": "written",
+      "sha256": "7d0b50ba0cd5f31ecd9df04048ff7ef912bc5174352116b4bcda995a6c746b7a"
+    },
+    {
+      "id": "testing/fixtures",
+      "path": "testing/fixtures.md",
+      "status": "written",
+      "sha256": "47e1532eeac4e84247c96f647c6aca278154652018f935652aa7bce4c7667323"
+    },
+    {
+      "id": "troubleshooting/startup",
+      "path": "troubleshooting/startup.md",
+      "status": "written",
+      "sha256": "a62a23cbc48f5911fcf8d400c6c531c9ea5918ea2173f2ca1bd710fc76ad61ad"
+    },
+    {
+      "id": "troubleshooting/ssr-hydration",
+      "path": "troubleshooting/ssr-hydration.md",
+      "status": "written",
+      "sha256": "cadcb92eb0a4605665311a29f123ba2b63f173d68384594a2ab9fa3b453d4592"
+    },
+    {
+      "id": "troubleshooting/assets-versions",
+      "path": "troubleshooting/assets-versions.md",
+      "status": "written",
+      "sha256": "8a546ee3bd04aaa5f55401921fd4ae2b2b24a709aec79c923a859319375ac260"
+    },
+    {
+      "id": "troubleshooting/forms-session",
+      "path": "troubleshooting/forms-session.md",
+      "status": "written",
+      "sha256": "b26c73395b258386bc1290b4a671cf17625c6b9f3b97871c66f21c956f6a7be7"
+    },
+    {
+      "id": "troubleshooting/performance",
+      "path": "troubleshooting/performance.md",
+      "status": "written",
+      "sha256": "6de5868a87aaf2366593b1a131071d44056cc7018424b8fbd41e8a4bfc539f76"
+    },
+    {
+      "id": "community/contributing",
+      "path": "community/contributing.md",
+      "status": "written",
+      "sha256": "eac8190196f4c47f6b64049ce7c07612c12e992ab7581b0fafab33c5246665bd"
+    },
+    {
+      "id": "community/support",
+      "path": "community/support.md",
+      "status": "written",
+      "sha256": "d295430090446b1c891e78c60e485dde4fc4a329a6150333a11fca42d83ef248"
+    },
+    {
+      "id": "community/security",
+      "path": "community/security.md",
+      "status": "written",
+      "sha256": "77fd9d1e948bb6f2c0838710c5085fe209e6169d04548e6a4433ea498c05369e"
+    },
+    {
+      "id": "community/releases",
+      "path": "community/releases.md",
+      "status": "written",
+      "sha256": "97cd369a1af750c5fa513d9d5dbde7331e9b5898e073cd05ffcdc7cbe504ca44"
+    },
+    {
+      "id": "community/license",
+      "path": "community/license.md",
+      "status": "written",
+      "sha256": "3f2bd1f891888e64591dd5aceda5b0c361fc40e7fdaa6d9870a39e78b64866ea"
+    },
+    {
+      "id": "legacy-api-guide",
+      "path": "api-guide.md",
+      "status": "existing-markdown",
+      "sha256": "e4c9be60cb2944e901c684ccff67eea7f4a72916aeaeb4567e86c60288f11d34"
+    }
+  ],
+  "checks": {
+    "markdownFiles": 71,
+    "catalogPages": 70,
+    "configurationFields": 19,
+    "timers": 11,
+    "apiDriftTests": {
+      "passed": 5,
+      "failed": 0
+    },
+    "publicationSelectionTest": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "site": {
+    "summaryPath": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-sVrBvQ/summary.json",
+    "summarySha256": "a712cc3d8bca911dfee3a9402186024131ce4a53cd80bcb78307781b0da1fa84",
+    "success": true,
+    "startedAt": "2026-10-09T08:22:15.365Z",
+    "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-sVrBvQ",
+    "phases": [
+      {
+        "name": "direct-page-loads",
+        "pages": 70
+      },
+      {
+        "name": "local-search",
+        "terms": [
+          "flash",
+          "deferred",
+          "requireSsr",
+          "session-namespace"
+        ]
+      },
+      {
+        "name": "application-search-navigation",
+        "journeys": [
+          {
+            "term": "CSRF",
+            "route": "guide/csrf"
+          },
+          {
+            "term": "deep merge",
+            "route": "props/merging"
+          },
+          {
+            "term": "once",
+            "route": "props/once"
+          },
+          {
+            "term": "renderer health",
+            "route": "ssr/health"
+          },
+          {
+            "term": "response-timeout",
+            "route": "reference/configuration"
+          },
+          {
+            "term": "inertia.ssr_http",
+            "route": "reference/metrics"
+          },
+          {
+            "term": "private",
+            "route": "community/security"
+          }
+        ]
+      },
+      {
+        "name": "canonical-source-downloads",
+        "byteIdentical": true
+      },
+      {
+        "name": "generated-javadoc",
+        "modules": 7,
+        "publicTypes": 71,
+        "memberAnchors": 496,
+        "entryAndAttributionBytes": true,
+        "representativeMethodNavigation": true
+      },
+      {
+        "name": "mobile-navigation-and-console",
+        "errors": []
+      }
+    ],
+    "base": "/inertia-java/",
+    "finishedAt": "2026-10-09T08:22:32.409Z"
+  },
+  "javadoc": {
+    "apiIndexSha256": "0ecc6a4cd2ab3987d7f2943645e2ac41182e27c30d2099e7c88d8c294a748381",
+    "publicTypes": 71,
+    "verifiedMemberAnchors": 496,
+    "modules": [
+      {
+        "id": "inertia-core",
+        "archiveSha256": "9279cff3c9a7e76da5b9e8f77b80e9a0fb440a5e8955f7758e3aa9d77a582434",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "constant-values.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "833707571179af003fb01071031d5374288c18958a09d30f9de48d5cd61122c8",
+            "siteSha256": "0556d723b4df2f235f4dab9df21a44f3b42908d7f3bc58d4a608bf103bdfd369"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bde89646500dcc16a759f44980a825a54f7002c5e5a0521829b238c3737cbcd2",
+            "siteSha256": "7d514adc08267e279061a4b3fc1b789ff8ae9dd1e7d26c9671689bc95247a47f"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "610fa068335b88f6cbd8703f25286876c399f9a5d39eeb6153a89c8d32cc2395",
+            "siteSha256": "ad5c4251ba5a4015673e6c2fdb4a9ac4716f5f38849f46ca53503532d3665bc1"
+          },
+          {
+            "path": "serialized-form.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "94d9e762d51267d5a53a1ef21033a30f895db253007088ade481053f42c6ad80",
+            "siteSha256": "68fbaa6b0a284f930f8d01db3b01c14a3d60677b851bf509d2a621fae494110d"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "fd559dbd14a39d975b77749a195c8dd076ba234b81ad2606ec0b6b11484ca0bc",
+            "siteSha256": "4b7eb844eb1bd22f9d371fa8374485ed15a2df3b25535f09ece0dfe598c1579f"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "56e9cb0af223e1076aebd03a15efde21219c12f7705b323a2840a17899170b9e",
+            "siteSha256": "f2eb97459a74b85ad81c0038616d14934687d3c866f8d53ee2a13b4dd0db25f2"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "89d3333bc7582343ab477d41752302500872331792d9293c046a6bfd517fa94f",
+            "siteSha256": "867566821951b06e6950f313ff0deb5de627845737624d64bfff6801b5021a25"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bba62adcb0feb2d7110b986311a95a49332123d4371938663430ddc798046747",
+            "siteSha256": "0315e283ecf61838eb5a9e31f4dac93b04491db4d1b8fe703bdb00ca95baac14"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a7fb48903eaf0abee0bfeda93ada4b899637979511d0be9be4a4a811ee1c2e96",
+            "siteSha256": "be92fa4a6fa4b6df00d12415319c578655d116d6848568369802b0f4208f122c"
+          },
+          {
+            "path": "io/inertia/core/InertiaRequest.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ed96d707fffcb73614818cb89303039b873260e3af42de7770184bd7c6155fc8",
+            "siteSha256": "e0a94756dbad1481904bb784d7aee30185e1d6071e56653555310ac73d9c9b19"
+          },
+          {
+            "path": "io/inertia/core/PropDefinitionException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8ee94c9053f0f73d16784b0a6114bfd8243ff5e6475c54157cf4e649701dd1ae",
+            "siteSha256": "a37dc3b9deafaa910272df49520e8da5ce0c01658b7701292ddf233b959aed54"
+          },
+          {
+            "path": "io/inertia/core/SessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "85c8f006106429ebb58a90355f477ba53ffd830acb66fb3ccd69d8deafcae879",
+            "siteSha256": "2af501c2fc3982fe860d3e3eedc980acc04d64f63a3384db7d00a78a557b5c0b"
+          },
+          {
+            "path": "io/inertia/core/Prop.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "69564d608eff867b4abb974d8710fb86ae3f4ec170f15bfa2cbb41eb74bc9fd7",
+            "siteSha256": "b70ff0a0c21dbae64886800389027790ff8ab9b279edf2d6bec72e56a0e4b6d0"
+          },
+          {
+            "path": "io/inertia/core/Page.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "2e8165d83078ede31b2cf1d8b8dbc330d24932d2fe8f42f483502dba535aa6a5",
+            "siteSha256": "f384b1bb9818955f9898d287c4f41fc0fd0215e144ef3ef9ef17453f9057a0b1"
+          },
+          {
+            "path": "io/inertia/core/PropsResolver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4f9a02ce338e10393d7e93ab171d586d95bf2b81ac7e4c7e4edb4e00e87b0160",
+            "siteSha256": "b0116e5aa8a34a55f5415bad05b12a3ccf48482241493a5f04ac6320f792e85a"
+          },
+          {
+            "path": "io/inertia/core/Observations.Span.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "10cc2eb624eb6493b478ae4ad13048ebb17347ccff66181a07f50653e2dcba8c",
+            "siteSha256": "123ae0418e4d4e79b024268cc56a720f5bdfe60ee9f28821edb6656edfb8e527"
+          },
+          {
+            "path": "io/inertia/core/PageCodec.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "beb8fb16408ade1087e184932ad5e1048ceca9e69b8d7cb8f6713905a5e1b750",
+            "siteSha256": "4ec0cb60fc36bd58fd905b25cf0a08d18c3b0697501e2213e798b61ceb3bdddf"
+          },
+          {
+            "path": "io/inertia/core/PropResolutionException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "356c7515747e64fc3026ae12b2a250a452786ebfbe4adad39d34b46d8b8457e8",
+            "siteSha256": "37d05f42b573f58278c87b28868884aa0a03c87d7313548973a20f2ed03c3fdb"
+          },
+          {
+            "path": "io/inertia/core/Prop.Literal.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "7435cdce6cebd86fbca64d2fdf9c9b74f4867a36beea510d5800968691d7e525",
+            "siteSha256": "28b2a57bfe8a317625a26ec24ac2ac69951d5f98bf70aa2ad2e04520c023697c"
+          },
+          {
+            "path": "io/inertia/core/InertiaResponse.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "435a3b33289d863d5a13dde12e14780e74ed68ec7ed4e02b0bb4ced1d111b2f9",
+            "siteSha256": "173fcdf550fe4a314ce0dee0734c6bf93d16492c58a348e6abe6d9caa0e0728d"
+          },
+          {
+            "path": "io/inertia/core/Prop.Task.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "3feb815b2b08ef0bc75d90c73ab4abe350ed049beabaa730deb6f04c5dd199bb",
+            "siteSha256": "1d5b6a86c1eff08b7341f6af670d4e213490b672fe51f2a58426de3b7ecee0df"
+          },
+          {
+            "path": "io/inertia/core/ResponseRenderer.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8279b3c8230ed777ec9f1c99fe42aa870d7bec0c0ce293135e6416c8c688bb67",
+            "siteSha256": "aa33d79a24c2c88c4ddeeb4a858edc375ead711b4339e69adc1d30c396058237"
+          },
+          {
+            "path": "io/inertia/core/SsrGateway.Result.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "cabab002ffeccc68134086d082933803a6cc9984a99e1b1d7496308452723a77",
+            "siteSha256": "9eab243830fd7df344c72b87917b1d9a04163cfc937bbd3c0f809d41436061e7"
+          },
+          {
+            "path": "io/inertia/core/Props.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ff581678cce0caf652f3d2dae1f26fdb76347b9b9175e58bedca3452d2a4c5eb",
+            "siteSha256": "a9f7ffa90c52307b4bbac11b33f3b4342b3672874645ae7f9d3caae0d7422e19"
+          },
+          {
+            "path": "io/inertia/core/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c49982cce42a14cd1a9922e18b183c183016d7588046a975411bbe1e6f140d3c",
+            "siteSha256": "79cafc57e57a73632441845cf7afc7db61081148d72b6449e81a3e64a134be3c"
+          },
+          {
+            "path": "io/inertia/core/ValidationErrors.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b14d37f32144476fa4950858caff1aee09807293f56ad1492030107a195fb892",
+            "siteSha256": "c62d4048be5f96c76971b9b17a0d96773a2afded07303f90b038558e95ab2284"
+          },
+          {
+            "path": "io/inertia/core/MemorySessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "88f307331f84b1bb0905c7896628cf96870dedcc9bd6646d81895262e8e49c4d",
+            "siteSha256": "7372888ce5aecf32cba25ddf4860e1a31b339500ece79d77546fcd9f52b24b3a"
+          },
+          {
+            "path": "io/inertia/core/InertiaConfig.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "39b4f9c3fa25e755736557e6981362d07d717d588a1ad3fd1c41a1953e6d6e71",
+            "siteSha256": "3cd146fa428481fd651be2fb1f5afc24c060f4aae7477549e14a79a156dfd3ed"
+          },
+          {
+            "path": "io/inertia/core/Prop.Source.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8e2823bf279e5f6ffa61ff3a2549adbf411a526d6f651086fcc34f00cf3e35cb",
+            "siteSha256": "7a2014fe6cdb7b162c2fcb890aed0b25da217eda03216c42008f20ce3166326a"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.Event.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "abaccdd54a3069451864475804a39003f65c8d5fafac25fa1f86e18e38ad78ad",
+            "siteSha256": "d3b68a54645e626c47b8a31a5ea682225f2a45c9459bebe721a9b69d810307de"
+          },
+          {
+            "path": "io/inertia/core/Prop.Nested.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "01cee163b1dad3347a01ea1227c340943b8fdb0bfb5b98775108c79678967616",
+            "siteSha256": "880896123cc6433a212b173711c65944228f0af783941e9dadd0bbc220e1c0bb"
+          },
+          {
+            "path": "io/inertia/core/Observations.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "29ca98e206735eff094ca0aed4894cf1844dcca73240db0fce05fae6486713a8",
+            "siteSha256": "dda6f9f001c614f6c625b5ae1580bf94562e2af25a4c13b5157a6f0cbbc28040"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.Operation.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b5e59a124568efcc57819352ff551c6f8ec5ac8a4186f852129e09444a4c6d10",
+            "siteSha256": "2f5191e8e48a9d9f971050118cc89f1cbb03e39aeaed0b9050875b369506e2d6"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.ResponseKind.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "da666196bac729af7bab9bcabfad2838ecfcdc72d99ba6d6f58348aab9ba891d",
+            "siteSha256": "af581495995dfd4fdc0cd0451d1741e9e1c7637b38c4e420e25c13799e429e1c"
+          },
+          {
+            "path": "io/inertia/core/SsrGateway.Fallback.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "eb9a01cd34149bc804e9974617151e18656455681748b18d5bc6a545cc7959e0",
+            "siteSha256": "cd38a19237683915c39add87e7f66c33747025a3d6c4d9f2e4e9cc65cad68f00"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.Reason.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0428c4c46f3e7a5a0e0b5ed825ac7a9835b41f72296962e60192f2d0cf5522f4",
+            "siteSha256": "f4992a8dfa20abc60919246105eb2d2438b16ebf0882a4016257f24caca383cb"
+          },
+          {
+            "path": "io/inertia/core/Prop.Once.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "163151d32e531e28cfbd58054dae2e2f99354e1d7942666695243a6e6599860b",
+            "siteSha256": "2a9bf1725ca45719cf9413f6e315f8eba5eec4f609349d881c31a27bbfd0ed85"
+          },
+          {
+            "path": "io/inertia/core/Props.Source.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "74559b53880ee714447cb097efb109c2b8acd95ab34324bd6dab7f7502690264",
+            "siteSha256": "2e2d5f4e24b331444ca5c0d241b3c2b28a9f6db2943a22b50a58d741da929ac9"
+          },
+          {
+            "path": "io/inertia/core/Prop.Loading.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4527decfe3f2a3bf96c38fe1152c232a058b10d175d3143706bfd7b62b21b1d6",
+            "siteSha256": "9b108f2c395885673270f6989beb503ddf40a7129919a69515b07a6735aa722a"
+          },
+          {
+            "path": "io/inertia/core/Prop.Async.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4ac46ead8758c9bdebc02641d28500dd150e609a82e8dfd735bc1c0d43d016ec",
+            "siteSha256": "c9cc4cd456098e2e7bf9f6cd5d270d7b8beee520e922c0aa70999fae9778f262"
+          },
+          {
+            "path": "io/inertia/core/SsrRequiredException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "113fc67760751310417f06edec20d2ebc85d4a34f001d897ff9ab96c1d8df029",
+            "siteSha256": "04cb08ce1968931ce547f61a68d415e106aa2d67f71d497203ba75823d69708e"
+          },
+          {
+            "path": "io/inertia/core/CspNonce.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "3387460404b39bb709edd6d1e5f00023858bc92fb4e6ba306bfde7615ddc1c8a",
+            "siteSha256": "13ab3d2ac79a55c0221d534e1049dee39045506ddc1ed9534b078fe3bba84a3d"
+          },
+          {
+            "path": "io/inertia/core/RootView.View.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "417135e069bb3743cbf2e72ab701ca4cf012ed65a195aa6b6091accfa626eadd",
+            "siteSha256": "de68067a76c7a71acc91298ac6987cbe49cf462a47f7a69784017c50912dc50b"
+          },
+          {
+            "path": "io/inertia/core/Prop.Merge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "045f34ad2fa718192b2763f18ad912bd68d27ef0c3dd5abebe40177d1be8ed4b",
+            "siteSha256": "5af4101477fd8958aff5a5eb2f59776c1acfd65a098c5385cc6132523dcec2d2"
+          },
+          {
+            "path": "io/inertia/core/ScrollPage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c3d0008fd450ef63c20ae7c3fee540bf12cf2a81458a69c622b351f69fbbc7c5",
+            "siteSha256": "c636d7c109cf25831c6eac01d386c2097eee61397f53bafc30f8909117c1fe31"
+          },
+          {
+            "path": "io/inertia/core/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "cc11902b812de44623c57d93001053f9b2b5f8b80d400d7e9cab1cbb2cc86522",
+            "siteSha256": "d2fb0f60bfd1194244be84c05e4d39fb7283044f29bf58fdcc5a59e4315b26df"
+          },
+          {
+            "path": "io/inertia/core/SsrGateway.Rendered.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "336499c5adc04ebc25ab2ddd2398a4cf5ebb30985714cd4e7acf4af4077a5db8",
+            "siteSha256": "ad7143fb7500e3a8604045ab5a77e7ee2d3428e14262524878814e55e7b6f93b"
+          },
+          {
+            "path": "io/inertia/core/InertiaContext.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1ca405573e100bf0e38eca7e1fee3aced3af94cec8faa2514bce9926915900c1",
+            "siteSha256": "e0b90699f3b6e0c4d7471ea0cbbf6c06d672c7d440f9fe1c9e1857d41e154bb5"
+          },
+          {
+            "path": "io/inertia/core/PropDefinitionException.Kind.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a23d8782b3e2a7c1994423c51182beec57e54ca62a807f821e2175443cc1fde4",
+            "siteSha256": "a8c52718fc8792beb2827b1ab729766f7ac23cfa23e22032f80cd322baa2841e"
+          },
+          {
+            "path": "io/inertia/core/Prop.Computed.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "cb7743b00a7250a8631d6cb91cca1f00300d1c887f0d149d571777ce2eef78b0",
+            "siteSha256": "50a8e02ea615a39edadb11055893def547e7aaa69105488ad7a6453800468dcb"
+          },
+          {
+            "path": "io/inertia/core/ConfiguredHttpUrl.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c4331c555d4fb1e7da9df8875080ea79d47608ddf7f54a86f2c24cd428e9ac9e",
+            "siteSha256": "dacc4e0522c6bd1bed1c7a5007492a8fc63efce87f18d5486ea5681954f606bc"
+          },
+          {
+            "path": "io/inertia/core/ErrorBags.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e9cfa127013ead7359a799265b6d8c59ed2ac005be0c366ec63d4bda75274746",
+            "siteSha256": "f58ec36bf452b5aed9be9f41d5d8c4664b45f40a85c9c67f3cd10171d2af9ce0"
+          },
+          {
+            "path": "io/inertia/core/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "90c1ded31833c8d44289aedeeaeb30e43285d50a65c9baabc2fff82977888eb6",
+            "siteSha256": "844205a8d78c17a1e35b125b305af2920935b2f3d119febcf64f2df9479543b2"
+          },
+          {
+            "path": "io/inertia/core/HttpOutcome.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a1fe239e8b820c9d4ceb3759d10d0068f6d18283d1bc30c5fc04559152b8b843",
+            "siteSha256": "ebfeb95001f5a65aa55ce16a0c9e4978b054c3a16902cc336b246b980cc93158"
+          },
+          {
+            "path": "io/inertia/core/PropsResolver.Resolved.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "379f7e0b5e546848aed5146b2f8f4cf3451b54339482374d6fffab329344412b",
+            "siteSha256": "b280cf1400c41ebb03281d9d3ef1c4302b7b032c86415d48d7f99fc7830100b8"
+          },
+          {
+            "path": "io/inertia/core/LoggingInertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e042b7db1fed7fb4934b9205ec959a13bb4fe638937eb840e19ee3e83b5eeae4",
+            "siteSha256": "d4774f110e472a055ec16a5832ad84b0eaa985be0b016ccab88d29ab8264ac9e"
+          },
+          {
+            "path": "io/inertia/core/RootView.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "04e7d9349a643db85db622d76964ed6423780928083db6a8c56a48936a581520",
+            "siteSha256": "c954609973a181dfd745f96368fbe81a95fb26c724680552808c5d17cdf55bab"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.Outcome.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b0d3dd9be650c6fcaa8224ce2467af046bf9455275181ce15e9af9ebdba4bf2a",
+            "siteSha256": "854385b7a63286982dfccacf7bddb522935263c037cde77adf317d84111067b1"
+          },
+          {
+            "path": "io/inertia/core/ProtocolPolicy.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bb01f2e6af31c40ae42740cbded203dbce94a49bb6f7c8462a4681c9d97b53c8",
+            "siteSha256": "abfc0eb906ebf6c2cc34f6658818c96562745a769aa4ee3cfd34f7fea83ddaf9"
+          },
+          {
+            "path": "io/inertia/core/SsrGateway.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4062e3052e9ea34d02f45062f6b6b9be0793943eae8fde89c292bf23c1bf4d42",
+            "siteSha256": "9cb63563230031b6258ea81667ee72185b3cc8b764e820e5f0d7af345eb0d934"
+          },
+          {
+            "path": "io/inertia/core/SessionStore.Delivery.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "daca580744910a9c134529e619232ad13a04dc51775d49ba3e2e0f6287c05a8f",
+            "siteSha256": "303f7c741506afa1c250e8ea509a7bffaf594d52d4e2b4554df9131023b9eb89"
+          },
+          {
+            "path": "io/inertia/core/Props.Builder.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e0348900e65a38b624e40b3e5661416a1e77009e7f5a82935c2afa22c94f446a",
+            "siteSha256": "f38b793c159cf0e1973a99f153a1a744fa824777a02c20d50c98064f6aefd87e"
+          },
+          {
+            "path": "io/inertia/core/InertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5e777fb056655086e0a9bfba6fa99bca80a4aed3cc0f87d04e5377d737379f78",
+            "siteSha256": "200bda54d0ea261305f5a9e1e7050fee37f10d1e4df83cd41a5f4ad438e23470"
+          },
+          {
+            "path": "io/inertia/core/Props.Override.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "97adf5c3a45e0f548a6ec6109b4d1f7508ee47417a83cc5bf62f880ab570aecc",
+            "siteSha256": "7b1845a5f4593751a467a83af4f99474b7a80c2cdb2de7ae55fc966498e26c08"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaRequest.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b66433cab9b884989948d5bce12e0ea7ba819b2265fba1fd3ceba5a81b9b725e",
+            "siteSha256": "181c73b604dc96cb867be88a7657fc91800e70f1b091022784053af28c88e309"
+          },
+          {
+            "path": "io/inertia/core/class-use/PropDefinitionException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8324e8c920b7a8b1612ed4ebb462e3b3658566f42e86a575ecb94888438b1c53",
+            "siteSha256": "e943e8a72de1d1f4bde4abefd3178b1b12bee41f7c363476c795f5a6ff56bd48"
+          },
+          {
+            "path": "io/inertia/core/class-use/SessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8607ca6869b12db2bedb3d283e7ce0732fd2eed8dc583e8d8760f1c1619517bb",
+            "siteSha256": "b9c1cdee497f36d4a1059d3c6701ce7a8b13fe9e3b2cba03492a26931b8492ba"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "53c4577b59b7f7c0f62e53f4f62a5977a7fb5dda27bc0c6c8088f0ef4449c536",
+            "siteSha256": "8ed00057e59d9e64b8f4319264a33684545425439254acb122f8deec13de883c"
+          },
+          {
+            "path": "io/inertia/core/class-use/Page.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "93a2992c7143e78e2927852513382ca7750bc8b5927f2a84c86160e4e1ac5640",
+            "siteSha256": "e1f0d0f8abbef99b97177909e4791ec2bc6d3954470c4824de6f01dce615fbb2"
+          },
+          {
+            "path": "io/inertia/core/class-use/PropsResolver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "31e0c9289ee90484ee6fa6ed2f1f1cbe7a0f81028be86910f557e5bfd9897228",
+            "siteSha256": "38cffbe6fe5bbcbde24b62d8a4659a8f1fae405a0075d5d262201443cba3e1d3"
+          },
+          {
+            "path": "io/inertia/core/class-use/Observations.Span.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c4203813e172c6bfbf33a34e174f1354b653a9fe6f733c3a9bf29e072706e158",
+            "siteSha256": "21b1b5b832c6dbdde4f2776d2846af5e8c8988c5a04106815ebf00770ff8ba81"
+          },
+          {
+            "path": "io/inertia/core/class-use/PageCodec.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "fcd1602d70d1a998aa4e1cbd22681e9fcc25c67037e9d5862f7fc09af7cfdcf3",
+            "siteSha256": "7f882904081ef8bf57f36d1960cb0627bdc01b9f7fa79d40a582326fd919d7fd"
+          },
+          {
+            "path": "io/inertia/core/class-use/PropResolutionException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1dfdc97bcd311c186231e3d9c0e462d08c0088a9ff3c51b63ddb6a56f73b52a0",
+            "siteSha256": "433c7b1913205542c9208770986cba4a82a12028d6cd588d7b81fa6869adda20"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Literal.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "46deab23634f4dd377f4d62aa63789aea11c6f1f40212e1c41ce7f6d79611e08",
+            "siteSha256": "19eb0a5dc79e7ec6591b97a6263a908d2651e24fb1b9ad3bec8f1f73f2cf4984"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaResponse.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e4c002de4686127873d1f7d9b50ec7e112cbe7fbd2b653c6c51159b76785f6ed",
+            "siteSha256": "898d3d11c879ffbc6741696dec3d4ca19d02d9e5e9f806a6fdcc33a57877ddd5"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Task.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "f586b33e9a4ca30c0d051f6078653c45a53f7fbbf23195d391190018a81b126c",
+            "siteSha256": "f87cf33f1663155f65451a57f930d815196bec73667c3081ff51427791a37ec2"
+          },
+          {
+            "path": "io/inertia/core/class-use/ResponseRenderer.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a926de25aa7ece07b92b8d45b822e4115c6d9b4f0e09eebafb55c4ec3888b828",
+            "siteSha256": "c15d61bfe5af980324f7208a8cda10fce04f12e2f37a493a1d853d646848c11b"
+          },
+          {
+            "path": "io/inertia/core/class-use/SsrGateway.Result.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "524a4552566dc7632f2850620b04a2513012ae9aec01211dbab6f6be7f219f89",
+            "siteSha256": "f3e926d6530d7997e8667b2763d93e2767160e3bac52b517e72387b8a9660210"
+          },
+          {
+            "path": "io/inertia/core/class-use/Props.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "cb4ab4682bf61ff29969162d67900e772fc1e5454a51aed027af4e157e996bd4",
+            "siteSha256": "4fda19546b5161c505916577aa972a04e96ce02dfdd497e5cf338ba5f5ead17d"
+          },
+          {
+            "path": "io/inertia/core/class-use/ValidationErrors.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "423535d57d89bc555bceb87de22eab2cfb7578c3529c04cfbebe3a6191c3bd39",
+            "siteSha256": "fd94f02757be6f5db1b6cd5e3d84d2c8a1ffc7a502f5779b9f6ee4b1468ba532"
+          },
+          {
+            "path": "io/inertia/core/class-use/MemorySessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "33d3348f09dfddff566f791b85eb5c17a66cc44c8bcc6299e608f0725d6c780d",
+            "siteSha256": "030f691335318c2e875cc8f771ba469e979f2c5c910b044fa1b7e2804c3cb931"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaConfig.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "15660032d080222cd47a8c6f527f7b143546711b2be9246c13582a4a05528599",
+            "siteSha256": "41d5c6d880b9785a8484b804d8943dcf58a2dfc045043c750e2b8d937dd66602"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Source.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0576e4633ce0d45ad71b72c4a1d2a00bf9d841ebec7a5d205157fc03cb5831a8",
+            "siteSha256": "409725e15187c94953848dc8bb1b8f9de69b952ea6485161bbf550ebe0972571"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.Event.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "2947f370673d995dc85aa632854f97b66634fe7dc68e8c8df7c94f58bad0adaf",
+            "siteSha256": "69a5bcb381893a4c9ccfc5527acafa7807df0d6fe1a6fe785d15fbf54613a79c"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Nested.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "3108f5c9f762920b3c970728c7bbcf43cbf1fe120dfd60e107b8a0fa9a9d144a",
+            "siteSha256": "63947d0b97a28eba04ce11467457af52d14548ff81074be67ab27a0f5d902000"
+          },
+          {
+            "path": "io/inertia/core/class-use/Observations.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "265231f107e603a12914431dbed22c51c321f9e9084c70188c2e30a3d75cfb7d",
+            "siteSha256": "35d705218e0b7757abe8ed7cd4af3b6cbd05af926015a3a81402124aa88ca7cb"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.Operation.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bfc4fbf2deaf00adf02be515f8df58be541b6368dd4ac27aeafbd87e0fb67f66",
+            "siteSha256": "1b683ef82eb0d4f28db2a03241718978a9d425a9f56f3253b74194141ae2db0e"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.ResponseKind.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "d2485623a80ed18926cc43f77d954ce91499e08c1953860bfc58646ae274afec",
+            "siteSha256": "7bb35cfb61e40c945beeb3c3810bf7d1d7165ad5605270dfe882a47387ad4432"
+          },
+          {
+            "path": "io/inertia/core/class-use/SsrGateway.Fallback.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "247ff07052b7b78effafffcc4a068a1a21f91294bff65dad20519d65706346bd",
+            "siteSha256": "ee47146687bfea9f2cf82bb5d00cf401d4ab3299b946d8e0b3c1874093364743"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.Reason.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "08b3ea78c739d1d44acda443af7cdb6a9d032b2d3be472bfdc9cc7b5b1406d9d",
+            "siteSha256": "cd4e1e7e619d2f41106024e1b2fed10a316adc6c06bbe50363512c4cc338ea47"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Once.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "765c21e06abe45e0e2967435d8fe300654a0a27a7dce78778ba6a398fccf802a",
+            "siteSha256": "062518606885202c7db2019483e95adf7235f3520eba5a7c95b9dd5edada50d7"
+          },
+          {
+            "path": "io/inertia/core/class-use/Props.Source.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bef8f0415d2319438fa4edaca75a3f9162804b35744ed6e154dda66563e10cac",
+            "siteSha256": "2a059f1eae2bf22fc5538a92d2263d469fbea50ce73ba22efeea3a734d539293"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Loading.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a5a1b69b6b5fbe294ac77b39b702225e9bf41fa9494aff4e0aa0039dd42c12bd",
+            "siteSha256": "61f92cd1bf93a013380c3beaafd15966f4f61cc68341619a77a76cbd48be4bd2"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Async.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "25f914aadc5d174de503a1f664bd8e5d64bf1e2485c6727d165ec44ad702c2d4",
+            "siteSha256": "2faa027b9076e87c555e7d0d5ef8cb8c17e171fa08cc5c8fd118b411a3e35efb"
+          },
+          {
+            "path": "io/inertia/core/class-use/SsrRequiredException.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "9645b084185ba515ee29e39c446f4fbc4185b7da6d46b58c87cbcb143dd7ae13",
+            "siteSha256": "9491fa6705e9461ecc84d27f772c8d91d4079353f970291b767467c959660d03"
+          },
+          {
+            "path": "io/inertia/core/class-use/CspNonce.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a186fd67a6cc25ba0d744f279c678994e7f341bb0798bb931ed33b2626e13d0d",
+            "siteSha256": "960514fff452ad22c096414d7f221dcb180a08640e80592b9e85b2915d16ca70"
+          },
+          {
+            "path": "io/inertia/core/class-use/RootView.View.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e0467f708d09ee529c64b9904da7861226fec754c3195766f9a0a75ac9235f94",
+            "siteSha256": "9e9287f13f3a6bc01ecf2b045e8e48caf4e91d599f72c5dbb96131d45729182a"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Merge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "efc7e7e1c4e128b5e9286eef5987c846ada46298bbabca6a6be3e8ac1e7a9813",
+            "siteSha256": "2b3871b4015b2e2e365b69ab73ca9332b243cf907b6eb6d62c2c26be1b7c4378"
+          },
+          {
+            "path": "io/inertia/core/class-use/ScrollPage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "779fb285d8ba3d8a8160356149debb70082d529756d6db94a595c723b0bf766c",
+            "siteSha256": "1594c0a27f8b4eb2a3fe0d64db4dee0d09bfe08e7d721e9f4d4ddb714cdeedca"
+          },
+          {
+            "path": "io/inertia/core/class-use/SsrGateway.Rendered.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b2ac7a385eca46f6a628049ae8a62c71ccb3c19bfa3f672b378c446ece0e1fba",
+            "siteSha256": "d6b7216db9b188b92310e586735c77de6d0719e49110afc916619e80f8e5afc1"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaContext.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5355382f7adb7585b9e09accf8543c20a28d8d16840b9525242ff602949198db",
+            "siteSha256": "a3991bbdada9f04662ec0f05e9a3506a365c3aa5c38cc00dd591951b0f9a2a01"
+          },
+          {
+            "path": "io/inertia/core/class-use/PropDefinitionException.Kind.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "dc16baceb5c5d9b043a4df29479de827ea5c75ef3278cc4d40711fe8922992e3",
+            "siteSha256": "f641beab69452446b569357170fc2f348dd9b52c360537b222b103b874cacfa2"
+          },
+          {
+            "path": "io/inertia/core/class-use/Prop.Computed.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "f2f7dcafa143977fcba032ccfaf3a8a872a38dd8a2980e8273ff8e50c2d23c3d",
+            "siteSha256": "ef98cc51d12fd9229226140cde361cca3e5d5f3821577bb09ba170c7ad9b8293"
+          },
+          {
+            "path": "io/inertia/core/class-use/ConfiguredHttpUrl.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "29dbce5de0f5f4c1e53cbfd301a52979ffae971a3ba55e34d0b2a99e976ab85d",
+            "siteSha256": "3b21b925914e31ff462df72c60ddc02a1b8983643ab03caf86181dc5bbb88a19"
+          },
+          {
+            "path": "io/inertia/core/class-use/ErrorBags.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "eeead65d9bed1cd0b12725641eeaee147d866688602324256012b256e8235562",
+            "siteSha256": "1c6faffb39f482a62f6f353dba9eac27c83d9ab60d3a6b3b7884f39b04d07726"
+          },
+          {
+            "path": "io/inertia/core/class-use/HttpOutcome.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "001f9b1e800f7fee01a41082e9697e5ccab271010f78108ad98c8e5fd4836ed2",
+            "siteSha256": "34b75d23663e760950dbbb781dec1c92cf064207bf59cad21dc6f7b91420027d"
+          },
+          {
+            "path": "io/inertia/core/class-use/PropsResolver.Resolved.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "521ffe9dcaf8fe46327385b0203e3a749878b6fb4fec5d20a7ed9c94fdbcabc6",
+            "siteSha256": "f166725ba4fa399f5a14dfc373f28232ea200eb2d2753a1f65b2ef1eb1b67d17"
+          },
+          {
+            "path": "io/inertia/core/class-use/LoggingInertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "7ac6181b59d956897da326b1e0de802fb7bb1aed670551bef1fbbbad5f46e1a6",
+            "siteSha256": "7621f6dc9b1f7adfec12a9a6b176d695887a4bd2e6929b2522fc2911a35aa3d3"
+          },
+          {
+            "path": "io/inertia/core/class-use/RootView.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "29686296ca2d88fafd6ad93179f4d94580c043dded0612126ba93185aa2e33e8",
+            "siteSha256": "59396ec92b6d7d7cf960fd82f68bda13312739e7dd8f2e786145cf25b81f46cc"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.Outcome.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "6ff02904cfc78054bc82aec8b2cc4d6e522b0080075bed9eda740b2eddf399b7",
+            "siteSha256": "d7ba1d036e7b847c7e0d8fb4140b8e2ebf0187dd026d09948b03ccce91b9cf56"
+          },
+          {
+            "path": "io/inertia/core/class-use/ProtocolPolicy.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "045c755ed80ab79e20be2d6dbbd0a453437b34e0b292329008a71be8cf744f83",
+            "siteSha256": "5336284fddc58a4ba94b704312039364055dca193c80a73e6443841ae9eca310"
+          },
+          {
+            "path": "io/inertia/core/class-use/SsrGateway.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "311ab41fd92c055d28379b8edfb6bee43a6efd37ae98df716222f3a4372904ce",
+            "siteSha256": "02d18a3b5eba47491dadffadea555d54b021639b36208f3e83c672c5e6d795c7"
+          },
+          {
+            "path": "io/inertia/core/class-use/SessionStore.Delivery.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5efdf159fd4442dadc9e3e40d812a0508f23dbb391f5c22b0a322b6853243d9b",
+            "siteSha256": "c35d40067c9337b53ec4af5967772c2ac76bedb0ae9a549c97d93adca66b49ca"
+          },
+          {
+            "path": "io/inertia/core/class-use/Props.Builder.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5d963fda5c71cbfd855ed8ab5501c06ba0622aadaea19c0e0e1040e7fbb3b099",
+            "siteSha256": "241819e396c50c37e895cb2f3a6a1c14efa150c92606237eb98691a673dbe459"
+          },
+          {
+            "path": "io/inertia/core/class-use/InertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "43bc2ae79cf45032af5a7064c5a187d7dbff693a0d4f3a759bd56341f8a76c1b",
+            "siteSha256": "da563bd953c8c59d9ebe76d6b0037162fe4e91e898790330e2be0f4f46daa065"
+          },
+          {
+            "path": "io/inertia/core/class-use/Props.Override.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e472c0d661ee9da89318e9912cc6d95e173bc9b88170f699dd629d5ebfcc300e",
+            "siteSha256": "a6244511ec4c3dd3da4478998c9169aef87a60b252054a761e41ceeb2c3b69b3"
+          }
+        ]
+      },
+      {
+        "id": "inertia-ssr-http",
+        "archiveSha256": "5ea6cbabe47d3e1d7a4fbecb2d4501bd7250bcb29a9e5dacbe0931d4f6ebe7d0",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ab09189a27c9ed330a658dbd3c5d04f2a73d2e8eca46c2985de34d0add802cd9",
+            "siteSha256": "45ddf4606d202c09f593455b4c706771dd30121a0114da317a5bd7c05b8ad447"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bb0390293c5c1698af2251c81ac57b368511a1332ba80fee18f10dd4e68bc6c3",
+            "siteSha256": "8a20f266ff25a0ae6e1b752e6b56aea7c643d4a1647b8fb415139a1eb343e8a4"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "51ce074d9a7948f41cac4afbd3e15a279e7c5e34d5d792dae0dcf1c917b0a012",
+            "siteSha256": "fb1c1b1b4951c4703d21c7bd2ab92ef62914af8158f4bfb9eef78ec5324cd4a2"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "65e7c535eaada0f8e4e5c9e024806862f0074b01563fd4e702eb078b3c499ef3",
+            "siteSha256": "97c095fa8e733791b2e55036142310117e1505d0c71f841411f0ea5b43f2e227"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "19e8de2e05169589e379f9f3918c99e3cc98fe89109117228ad80e3e497120b8",
+            "siteSha256": "b1e15579a1d60b055113fb354ef0b0ddaea18c11e004e75974282eb2ad0544f4"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "792ad74f7247a1f07610029b7205f1993778ba46227ca74cfff537919c6abe3d",
+            "siteSha256": "1df173e69b388566069111fc203c8e38fa1a9cddaafe7d28724a8ff8e9eddf7e"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ad152a77ce743b6a6b3488a8c71e600c4f6535e8d69b4e628ea9f84ed891f6af",
+            "siteSha256": "8b038ff9b152c4dff61d051875db5263167a4348654417d5e780fb0fd814d8e7"
+          },
+          {
+            "path": "io/inertia/ssr/SsrHealthMonitor.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "dfba0763f8fb33120ea793920e8226beccc763d92f327de7335fdc62ceab85e1",
+            "siteSha256": "80d1da0bd944b13fea7e08d2dc845dbe37bdd5c60ad944487afea4694f1267fc"
+          },
+          {
+            "path": "io/inertia/ssr/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0650e0e12571a08b3baecfa1e4e9180c2d85ba85eb2517c0ac6b07249c970db4",
+            "siteSha256": "e1213dc8969cb891d176d81c5ad03b914103cfd9a8d79399e45926ee4906d0ce"
+          },
+          {
+            "path": "io/inertia/ssr/SsrHealthMonitor.Snapshot.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "70380ab88e09a50a61a4b45ffc34048f831cf837a249966ab9dab3f2514930e6",
+            "siteSha256": "b595c54e04ca1e5b7fdaceb331345a4ff38677f1c8bea9523177d5c11e2a660a"
+          },
+          {
+            "path": "io/inertia/ssr/SsrHealthMonitor.State.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "f19c41be05001a6c0a21e789d7a705f871f2bc0599cd571a61b4cdc0b5aa4625",
+            "siteSha256": "d20831b55ec1c8c53bac02bacf73755b16faa8d9cac0da4c927e700d2a29c3a4"
+          },
+          {
+            "path": "io/inertia/ssr/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "94cfe6111846e3023c6b43f062ae6d5786fd0657481faf88e6ee100a97d91701",
+            "siteSha256": "3727c7e999166971644bb28e621d7c197a9d3f686fb5186fd5efe22d8e9ef3e8"
+          },
+          {
+            "path": "io/inertia/ssr/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a4f77f662af4da86ef5c1fe9a9d31c4b20381f68ea39c56a8528a5a7dc65cabe",
+            "siteSha256": "ec6c848fd3247cb08dcefd05370d547a8e419009bddf76113a775d3c29373255"
+          },
+          {
+            "path": "io/inertia/ssr/HttpSsrGateway.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e925e1c6cd8f115b28178913503b829b32ff9dc652b72a7cea395547cf404903",
+            "siteSha256": "f160bbf965e45acb5944a735f711327114a26451bcad0b8f6f314815e43e1ead"
+          },
+          {
+            "path": "io/inertia/ssr/SsrEndpointResolver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4b86823273e6e05fc7dfe45a80dfe54d9fd7759b03f88c85fa1fab35e7a856b9",
+            "siteSha256": "dea1706dad89ecb4305d8bbd20b79dd6f63581da1b634d5e072bc1365b152303"
+          },
+          {
+            "path": "io/inertia/ssr/class-use/SsrHealthMonitor.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0616af63113819f356f9917c52cfa2c50b1de50f2a5ed5bbcc0eb35a44e75fd7",
+            "siteSha256": "3913ac0239bfcf4f8af0656821c1c0bc55c1533d7fe73b1bb230bfd075eea1d1"
+          },
+          {
+            "path": "io/inertia/ssr/class-use/SsrHealthMonitor.Snapshot.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5b231abac1cb4f3b5fd271321611f6da7cfb8d8ebb186b202149a1e231e20ad1",
+            "siteSha256": "ab0d496ebdd780e795e1bfa3584da2738c363be5f547fdc88a6603bfbc75a84f"
+          },
+          {
+            "path": "io/inertia/ssr/class-use/SsrHealthMonitor.State.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8762b1e2fec589213c24fa007219cf673a2f03e6417f56a3ac5c64756b1de5c4",
+            "siteSha256": "c25a887946e0a1f0599f4d90f63934ceea94021a3e9e614b2affd5f64edb228e"
+          },
+          {
+            "path": "io/inertia/ssr/class-use/HttpSsrGateway.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1d8b8aa1200c63023c6917bc9dad3b86f59f7fba1994d5ce0126e593a7b08c5a",
+            "siteSha256": "79acabfab0b396a4ef56fa2c562b00fdcdc9b209bb1e6e549718a9a6954a56d2"
+          },
+          {
+            "path": "io/inertia/ssr/class-use/SsrEndpointResolver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "343cd71c0a346c9997e9f1573fa5eae1d94a8af6f05dfe7b915e4da9a299fd95",
+            "siteSha256": "cb2a3fe9747e43bc067c3a12c036b1d9ea0540b0124fd234c6dc39d0dda56488"
+          }
+        ]
+      },
+      {
+        "id": "inertia-vite",
+        "archiveSha256": "a249748494216471f807e6e8a59225cbc00d56fd876ebfe2b47525bd1a096f99",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "58ce0f9d9fb0e894eedbdd1192ce71482a9ae7beb32536eb91907037e5105ae0",
+            "siteSha256": "f3718a07e5039a831872497625391c6a4b3db54c041c546a213fdabd7f8a45d0"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "533f8080eb23c63faf3688cc0720d6bf235d5202b0a3cc75fc663f01795cfc86",
+            "siteSha256": "729808099b4c3906ae22372657f492628cbb605d50ea11d6583f2183c738347a"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1bc1b31b74b330abd1adcbe178cffcabd019cf8f92e0dd0c406bbfb1eea0a86d",
+            "siteSha256": "9fe35074e9c873d57a4b0fc5776824a76fc22a6628f5b4788c068220b44d8e92"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "7212fccc8f48a9faec4fd3dff80cb1ae98bb2c824a032656e583c431de5207a8",
+            "siteSha256": "0e8240d1acdabd5f82e72259928e4a1adda8f9c6ca9de84e53ce955b382412f6"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "9e441a3ffc17314fac8abcb19aa9833497ecbddc096a8fc9835d1415e8fc3ec5",
+            "siteSha256": "f91b88265d6226e2b0328f0be4a6c26eb37ccded270cdb9cb316bc88052cc09c"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "082a8fda0cf71f090b558b8b7c358940e62bf02a9421f877a56ff26f1f8555df",
+            "siteSha256": "09d9785ec1c1a541c99c0cb7ffd93f7de7a6eb06acbb6946df71a01f8ffe5d2c"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ce1cb6055d1f0c418be0bf4e6b380a03613a10caead0150b29aa5e480d604055",
+            "siteSha256": "f2b2a2b60433f6d684f62935033380220c782c50d5c54cacf285a74bd5eef30b"
+          },
+          {
+            "path": "io/inertia/vite/ViteAssets.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4d3e097d7e8b2a0daa36ca5345dcaa1b389bdd840d670795a9c31e3cb1478ce5",
+            "siteSha256": "01f3f47d2f0eaec9f9a4c61a6964b524f546e7dfe899fb9a22fdfaa41041d602"
+          },
+          {
+            "path": "io/inertia/vite/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "96078b4dabf336c8a5535f268100aca94aed322e0d8792d2159929eba949dfbf",
+            "siteSha256": "54250eb5cb730acdb66c2776887fba928602c1c8924cb0c4efe775e98f24c789"
+          },
+          {
+            "path": "io/inertia/vite/ViteBuild.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "d9beb1d6635b989ec5e4b5810043affeafd4fb8b1071003289245dc2248763e6",
+            "siteSha256": "8461b359f877d07fc483c9101634e956ff0cfa885fb1796b35727903ca1f9d06"
+          },
+          {
+            "path": "io/inertia/vite/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "af124f55ba329a591f46f263f6ffe3e812471f9b25f2b2258e4065bfa3f783c2",
+            "siteSha256": "2764b45a8da016dffd2caf2a90a7c545a9b426ba555baa8481a16fe62ce39ec9"
+          },
+          {
+            "path": "io/inertia/vite/ViteManifest.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "9499daf0fed6cfa4e95372c8d72a9bf8d6c2c8650b1cc231b8c95587801550f8",
+            "siteSha256": "9ebff5e500b98cc317d4f4f1adb665fd5be4456f02c0cf0babe6f5cf98fc47e7"
+          },
+          {
+            "path": "io/inertia/vite/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "45eebef5c50aaea2c73f5220ab21ba752786943a434f6f832594f9c085b4580a",
+            "siteSha256": "21ccc964ef28bd427a515d99befd4b307bc207d6cf0e74fdc6a9f312960bc133"
+          },
+          {
+            "path": "io/inertia/vite/class-use/ViteAssets.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4f03334ef28b3e5d4237eaade50f2629db9f157df4b4f612223c0a1bd353b313",
+            "siteSha256": "ac5ed2a93bfbc88e3c5ff82695feb1ef6fd4209876566561f21c0cbdba6f3b1b"
+          },
+          {
+            "path": "io/inertia/vite/class-use/ViteBuild.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "00af56075ece71bed1c0f7d5a1d3c977c409c935c2d205311ab9c9728590fd0c",
+            "siteSha256": "1fefca8ce590a71ffc81ce1c59379f014a87110d004194adf14fd9aa4d4038ab"
+          },
+          {
+            "path": "io/inertia/vite/class-use/ViteManifest.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ed31b186c03a6ce64920d6d552c10a05aea4aa62a65938e6fa90e3114cb1a4e6",
+            "siteSha256": "3dad4adc4fd1965fe86f69bc9bb306e70846349a6dd4c3c4cbeffc3625bb6f7b"
+          }
+        ]
+      },
+      {
+        "id": "inertia-spring-webmvc",
+        "archiveSha256": "350fe15d822c06f9b316526213bc3a17413820edc4164188ad9dc58115c5b031",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "65137c64c9d21a839fb2f95ecd399b1620c239618a562b60030dfb67d5013288",
+            "siteSha256": "ffbbcb5fa9c6549db89f186664fc62b504fe9e3479e00ed12b8c6bf11f7efc4d"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "21188455bef9a4241a3782c5c4a408fb516162f9910a0664860f7dd3ca598ed3",
+            "siteSha256": "2af51c05bb7ef180e592064a0a34b9ec900ce2daedd4210646af511678018935"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5dbed80d55cd3bf553cc98ae86b73a841a07898cdb142b802af472a38dca4fbc",
+            "siteSha256": "72e0a9bd4b8c6f556c6db28fe09d336de6de4819a3611da1eab5c0cdd451989c"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0a33e3fd64613668a61bf1e70fb18f7bf1f47ae19e71b119801502b99345427f",
+            "siteSha256": "426485330dec8907fc4be91916b99b664b1c1dbf9076898ab69e75afe54dc9bc"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ac995650ad76a3d7a1d277992339c1af454438e7320dc2180f5ea54bd0e6a6db",
+            "siteSha256": "760c4117391313e8528cfd8aed26ab0ac55722534117e9443e679bad50c5917e"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "51c3ec35d20c0ff93167845a43e9b74ac3ca06c861b71486d0d07af26f8a824a",
+            "siteSha256": "794ded52ddac8daeaece24994b3c93f057471adf0515cbff1dc56e7837e7b2e5"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1697c822e5d799d060a7cb96896ec128d2da205b18ae3eeed0ff8734ad5476c8",
+            "siteSha256": "2b1b7985676ea380b4f99c51e94441fdb04fbec55675af4cf8328ef3486ca6d7"
+          },
+          {
+            "path": "io/inertia/spring/ValidationBridge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b3984212a1121d693ab596c9494b8fb58214d101c43d1c628c610c1be2c5acb1",
+            "siteSha256": "a27731407ccfe67999955f137f2edb1884e4e125e24e5a6e7c913b8c56dd79ac"
+          },
+          {
+            "path": "io/inertia/spring/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "d3c016faf6b347cc9ef82e23b482ae6dd57b2a295382a119672215cc0e0853a9",
+            "siteSha256": "a638240ced707c59ee502a7432630da49e20dc48e72e96f967cb1e2bb2139890"
+          },
+          {
+            "path": "io/inertia/spring/JakartaValidationBridge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "02766fc4d2ea6a7e33a0c2b1806277d2d3265ca3c840340cb6e37343634d8e00",
+            "siteSha256": "4c64af42f454075651cc5c7c899a1be4e288f84a5bb712e7ff26030148ae9d4f"
+          },
+          {
+            "path": "io/inertia/spring/InertiaErrorPage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "bfc468d69b48a07335ea3a5766843529f71839cf0a0e467bef1e60d008e477d3",
+            "siteSha256": "fcf5c15f6ee212344931df2f761c06a9346b0830eb782cc6570f3b168c0c655d"
+          },
+          {
+            "path": "io/inertia/spring/InertiaHandlerValidator.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c272235fcd87e960ed1bdf7521500dc6a1a68bdb7874f681765935fc531c424b",
+            "siteSha256": "cd5e03da1e979438d6579ed9e05632f6b52ef8173e57d942f125b136b44404da"
+          },
+          {
+            "path": "io/inertia/spring/HttpSessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8526e0f0af3b943174068fb948361108e77ca89e7e15bf7a363877dac0b62aec",
+            "siteSha256": "bd194f0deb6c150d0d52cf33540c53400dc73f73f84b36839e3ae552aacfb2e3"
+          },
+          {
+            "path": "io/inertia/spring/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c105b909e25cc8cd979c3545bb1b0731d698fd5c9f4f4df9d0248c9da384fc37",
+            "siteSha256": "802174c5a9d1a09fdf448de8720a93756c1b03cd06c556606dd4dcd812d2f74f"
+          },
+          {
+            "path": "io/inertia/spring/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "e0a0b88907bfb628ead981398c6056fbabca82f9d405c3abbe775780b6fe1308",
+            "siteSha256": "f9e524b5c656d93774f7c0b37ace62779fb8a2e31358bd08e7bd5f2466b9f710"
+          },
+          {
+            "path": "io/inertia/spring/InertiaMvcConfigurer.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "dd81ba9f142a558ef0c6aa326d356688ea376af6a755d84c4ad490eb4931cf77",
+            "siteSha256": "95ef35cd53ae0bc069185f522aad628261729433befd3745d9644e7161567146"
+          },
+          {
+            "path": "io/inertia/spring/class-use/ValidationBridge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "44c3f81a99f013af8492a4993258f564cf3b479bacdb36ab6764d0e0ecf8f4a3",
+            "siteSha256": "34c2821bc2369468cf7329e05379da4fccd4847b85443586cb66807557b84774"
+          },
+          {
+            "path": "io/inertia/spring/class-use/JakartaValidationBridge.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a929e73c69e7a99602cf85a81d6063b1274465516a9dbec68240532ee373cb1b",
+            "siteSha256": "b209a670cdf5911c6a74af60c3f354d345a0e260ba6c55d7565b7a0e7d2e97d4"
+          },
+          {
+            "path": "io/inertia/spring/class-use/InertiaErrorPage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "fdc2df6417048a4a110443afd8da37c2c978c8be03a9df7b34208f19dc9e1de0",
+            "siteSha256": "37b74d1bbc604a0989bd7a2c92a329711a5121f15deb56ba5d0881375bb02fb1"
+          },
+          {
+            "path": "io/inertia/spring/class-use/InertiaHandlerValidator.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "466db2e88326fbbfb01e47312a8088080a6801906d4c0f81f943cf397782cbd6",
+            "siteSha256": "fc8ff8104e16d87435e834b644f3987648346a68eeadc408feff2ea74c58b8f6"
+          },
+          {
+            "path": "io/inertia/spring/class-use/HttpSessionStore.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ce799a0dc71093e59c6b447a4369c2741525871c144c9c50e16cc317c3f5ee28",
+            "siteSha256": "97642c753d1dc47f88620881502c282666ab0d66f02eccf7c1867ee557549131"
+          },
+          {
+            "path": "io/inertia/spring/class-use/InertiaMvcConfigurer.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4ead4e25b9581eb8357db61bc2c00f57b84e412c1bd85bde321457e3ff38c1f7",
+            "siteSha256": "63472fe77ab7a4cd9354608693a08968c3516dccdf8fc6ce724c21deaee4a91a"
+          }
+        ]
+      },
+      {
+        "id": "inertia-spring-boot-autoconfigure",
+        "archiveSha256": "781df6863aa77deb58a10ef70787ce218b9d9cc808ef6f945ab08bbc980ded7f",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a102abbd7980407b5db0c52ccfa421a25b70ec2edd09f5514f5a0373cd69bf23",
+            "siteSha256": "34f7c71721dd8331f1da9300b10657752fa735791c687f2247377a543ae27e8f"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "5f1c4812aa287ce4635d7feaf76e986a8181516abe4089c24d543a0d7e3921cf",
+            "siteSha256": "67b3d785b6e4a081f880e37f17c9988e0b6bf1152af3420b5ba32489eb2a86b0"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "489004bd6b81f06ab4e423441cb064dc9c753baabe30dd69453272102c06fe6e",
+            "siteSha256": "6b550cc87fb0b44adc62dcdb9b03209e2a6645434dbaba9b727147a2152dc838"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "6a29ec0d213d7d311f07dd808fe357c292d59dabc8bbbbf4fc5bea70234903ba",
+            "siteSha256": "b8e10490e82951bb797494e49376c755df23a031fe230462d5c6e0594914808c"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1e7ca7ab4d754bc465c0e4021265eb1a25af66b340f190cf77ee980a97d5878e",
+            "siteSha256": "605e983c6eded2c71c883c5830663f6a7ab88a8ff275ccc873a14345304dc5a9"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "830407afabc2e7508c6303f177e745aa5342f74499c7c43312878c9cd4b05644",
+            "siteSha256": "ebbe8e23dc70234d61027136e81ab771dbd84ede80cd84fb7c401f79e2f51747"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0d4405db9fdf29800817d8e59a63b0d4d9efa1643def808db8db8457ff8fbcfd",
+            "siteSha256": "5a9bb08312c1cfc09403e0d136214d4aad74e66a25d0003157a0d37b09d61a5a"
+          },
+          {
+            "path": "io/inertia/boot/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "d7ac78a10f3a86374c72bb695f82b2846475be4a3b1de29c1e0f3969b15aec7d",
+            "siteSha256": "ca57d4e346e8017b34631142f113f24474a3b2d9cf1c5c3efa88326c3c392976"
+          },
+          {
+            "path": "io/inertia/boot/InertiaMetricsAutoConfiguration.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "02c4703c0963a542354248acdaff319e5187fbde6b106be4d4e3683ab1f96cbf",
+            "siteSha256": "be88e532e7a1b662cef1ab51f2729c24f539682475873e7894449fc88e723c18"
+          },
+          {
+            "path": "io/inertia/boot/InertiaAutoConfiguration.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "51bbb674bf9568a448f607d4779ca9b16f3526ca52f87644cacd31ca5a35827f",
+            "siteSha256": "803997028156e8f2a4ca771e06517a1154f76c39b8bea57469bf14c6b717eefe"
+          },
+          {
+            "path": "io/inertia/boot/MicrometerInertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "0c2c78bee21aab058cd34ba4ed2c0efce908fbe8bfcbd2b39e659929dfc3f25a",
+            "siteSha256": "b109972239c087324a58890a86737a4663a20ba3329af5563c0dc95184835cbe"
+          },
+          {
+            "path": "io/inertia/boot/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "244ee8118a1207866d755bab94451ff8c19ba60d29fdbce71b442d5a8e376831",
+            "siteSha256": "82c09f886625bb9ab1cb0898af54b9358efe81060d1acfa4edc966d8f3cc61a9"
+          },
+          {
+            "path": "io/inertia/boot/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "a3981e35e48247639713bc12b57e4425cad3f43b45bd0cd589630c6464eff51d",
+            "siteSha256": "870fc5a107d4ccb47816c18387b3be1f3d803e725ce495a8e723a343ceb2bdd1"
+          },
+          {
+            "path": "io/inertia/boot/InertiaProperties.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "95e06a792e2477fcafd895142088dbed7c9d3c8c68327b5076c4c3c1e37eab10",
+            "siteSha256": "bc67135c019307d4c4988289ce26e8b26b86b8231c6cc660e914db0e9a490b73"
+          },
+          {
+            "path": "io/inertia/boot/class-use/InertiaMetricsAutoConfiguration.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1c70cbbc7e6d8852fbd3617cce4661e5703ead7f878afd89f4077ceaeec8ebca",
+            "siteSha256": "645289a4fd3d66f07e1e5b87ddee71d45ca63afb69e47003d2c1eab91c01e563"
+          },
+          {
+            "path": "io/inertia/boot/class-use/InertiaAutoConfiguration.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "8726d753cbf33c1917e1ac046ef883a2e2d55007d53549998c6d703342c18dfe",
+            "siteSha256": "33cced29f18815e26b1d395d31c8ec7d909fdff6ed8183411868da7c9f4c1b5d"
+          },
+          {
+            "path": "io/inertia/boot/class-use/MicrometerInertiaObserver.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4ea378205a0ec811672fdd621c2c6186d1ed5b614a6db0014bbeb2fe361763ff",
+            "siteSha256": "2e22062c38e900da4c9a4ec910c4fdc0c9f6cccf8ebd70f662cf614db76c525d"
+          },
+          {
+            "path": "io/inertia/boot/class-use/InertiaProperties.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "7e0cdda600be25fecbd7ab38fec10f5407e762ec8a9586d6fba720b83a1eaeb5",
+            "siteSha256": "6622214aa92e6f78cd47e7b25f2bee1838f78a189279628053084f788005a499"
+          }
+        ]
+      },
+      {
+        "id": "inertia-spring-boot-starter",
+        "archiveSha256": "f10a0240b8aa807212305e986cda9fb4051c7e3d4fd2428f5a4d7e79f37f4c56",
+        "siteTransformations": [
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "874562a4b1b6ef2e47d392ae2c6f67e7b45886706a2d4b9e06adacd865f415bf",
+            "siteSha256": "9b81dc004cbeaf14c28b8083291c080b8fa990a3584def44e9a51a12e8caaa82"
+          }
+        ]
+      },
+      {
+        "id": "inertia-testing",
+        "archiveSha256": "6b20d07eebade20b83cc5f303b2ae27ee0b07b7e121627ae72eca346f13acf7c",
+        "siteTransformations": [
+          {
+            "path": "stylesheet.css",
+            "reason": "unbundled-optional-font-import",
+            "sourceSha256": "84019efdfc9438b9eef2c191d3c689c1841146120ec8ebb8bae055e56cb3566d",
+            "siteSha256": "74fcb116b9259b1d01ffec32cb55bb375bd228a6ac0378d0b2971ed9964792bb"
+          },
+          {
+            "path": "overview-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "9493be96111757950298ecbe23b706a543c4f35b6e719398e176e4c2ce1bd7e3",
+            "siteSha256": "bab3db6dc04d11051443c60337b8591e58d6c244dda11c3a36396b21cc7f6b0c"
+          },
+          {
+            "path": "index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "9dac96f50655300ddd42c1d09f099852299507be989d1e125a0671e4b2ba0ffb",
+            "siteSha256": "4f2ea4027aa6083e6c94274ec3cdba0d16296ace558da1a516bd852f0930fba7"
+          },
+          {
+            "path": "index-all.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "4396c39c6352237d6fe4cd7fb3ec8015006d74f233a61a256f350b4ce95b9318",
+            "siteSha256": "7e7a78554bf7fcdfb05e8927750ed9c04ed7bb204716b339203f69fcd51f9a34"
+          },
+          {
+            "path": "allpackages-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "596d7ac4b946242d1c31c1c247fb76e27391ccb55bd7bea722458602a5e9deba",
+            "siteSha256": "43950692bcba045c634ed0f2e8f1184ca10343bc17b811879c34382b5b24c97a"
+          },
+          {
+            "path": "help-doc.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "d9376c61ba99d7630f26b9abc4754d4310a1d8c72869dc187272a07d7ed8edfe",
+            "siteSha256": "68e58dbbd308fa19b8089165fce5f31024a55bfc074211e38c7401daba503e1f"
+          },
+          {
+            "path": "search.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "036e4ea15e74058d5967fc2daee681e92d3f89454874ebd77920189cff8ada39",
+            "siteSha256": "5c01f1da9bd86350c875b03738219e877ecdb3d465b654c057ff81b82c28d9f4"
+          },
+          {
+            "path": "allclasses-index.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "b660a417548b59d0952ddfbab2b8767dd419fd5caf79260cda79a63642610ead",
+            "siteSha256": "d6670dc6d9e7dade275f53cf08c3a11cb22aa6831de6a0a1492fe149725face5"
+          },
+          {
+            "path": "io/inertia/testing/package-use.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "c3b3c692f9a28d03b66550263424b2adc8884bd0b643693ecd155409f5539923",
+            "siteSha256": "0e3907470aa3f080c173566553a294576a7b57adb7aadeacd42989c895dece5f"
+          },
+          {
+            "path": "io/inertia/testing/package-summary.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "dafecfe9f1431c1d22d8b60463de233684e934325cad86ac97e26d6a1616b7c6",
+            "siteSha256": "fb76e170d8479a4e3061ea8a14f24f279b774fc61b41143ff2a569ae597bbac8"
+          },
+          {
+            "path": "io/inertia/testing/AssertablePage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "ce67dd7ac9ca76f78357ae42e0aa5a06af9976cb4406d960c64394cad791e2f2",
+            "siteSha256": "c8657bd6e10e556d3816a8362da9a57d9f1aa52493325cfeafc49862052a51cf"
+          },
+          {
+            "path": "io/inertia/testing/package-tree.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "f47552fa4585773099ceddc0d4429a4d14cd6753c96672fc43489fafd422eaf5",
+            "siteSha256": "6839ff5808871dbd9387cd15cfea4e9b016ed9fff8adf895f044868919bb2893"
+          },
+          {
+            "path": "io/inertia/testing/class-use/AssertablePage.html",
+            "reason": "site-data-favicon",
+            "sourceSha256": "1a2e010a8943a2b36266141c0720c06c06be953a5049c0f403abe01d183736c1",
+            "siteSha256": "6a239cf32cbae38f12acf9164a2fcbfa0add80ac2fe2a73235be101d6a0224e4"
+          }
+        ]
+      }
+    ],
+    "completeMemberProse": false
+  },
+  "package": {
+    "success": true,
+    "observedAt": "2026-10-09T08:22:32.585Z",
+    "scope": "actual package content only; not a new runtime deployment rehearsal",
+    "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-YqP7gv",
+    "payload": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-YqP7gv/releases/3ab6f7108caf7dd5a05e6b2c1aacdf413fca12fcd128195f968dbf4f3c930c3b",
+    "documentationFiles": 76,
+    "byteIdentical": true,
+    "privateToolingExcluded": true,
+    "releaseId": "3ab6f7108caf7dd5a05e6b2c1aacdf413fca12fcd128195f968dbf4f3c930c3b"
+  },
+  "maven": {
+    "command": "./mvnw --batch-mode -DskipTests package",
+    "success": true,
+    "testsRerun": false,
+    "log": "/tmp/inertia-docs-d3-api-package.log",
+    "logSha256": "d31e6c23102eb88f747b4fb4ca92149a051b4300779b4ff5df407da526fefc68"
+  },
+  "toolInputs": [
+    {
+      "path": "inertia-java/docs/scripts/prepare-javadoc.py",
+      "sha256": "a4e0064d621d244d7d48e01d8857f0ddd94a9ddedc1650f867d253d37c14f5de"
+    },
+    {
+      "path": "inertia-java/docs/scripts/check-api.mjs",
+      "sha256": "2c203dcf7f2fd83bfc8d43db238e3709d75d697ce2a4be6cf589150a6f616e58"
+    },
+    {
+      "path": "inertia-java/docs/scripts/check-api.test.mjs",
+      "sha256": "5143d918d2bb97a482948fe232938d1af15fba49f01eb7a73c1610a9d3e7804d"
+    },
+    {
+      "path": "inertia-java/docs/scripts/check.mjs",
+      "sha256": "84626a7592cdbfdb39f20cc341ba0d0020edfa1417891c79fcc1292954451b10"
+    },
+    {
+      "path": "inertia-java/docs/scripts/smoke.mjs",
+      "sha256": "532592e6714a0157cc93a03fd6f6b8b95952c479357980f65dcb53d76234a071"
+    },
+    {
+      "path": "inertia-java/docs/.vitepress/config.mjs",
+      "sha256": "31a01fec63c1e98ae129bafde951c2a5d1cf8e58d72d9371efc9e39b704a5952"
+    },
+    {
+      "path": "docs/inertia-java/open-source-docs-catalog.json",
+      "sha256": "07c776cd1ae8af148bc53987dd73ad88cd7104196a8189d8d7d2a80995f1b7bc"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/tmp/inertia-docs-d3-check.log",
+      "sha256": "cfd3f04f7959e45ce7937c4beb8812d38a19bece90e67f4946bc64c034812687"
+    },
+    {
+      "path": "/tmp/inertia-docs-d3-build.log",
+      "sha256": "355d9367843284e2ff212220898bb752fd10ae6aef8f4c0a99734ecfa6b60718"
+    },
+    {
+      "path": "/tmp/inertia-docs-d3-smoke.log",
+      "sha256": "114e6c83d84e4c60eda47bc7e826a018a6c11e8bcdae78996fd764caf8fdab7f"
+    },
+    {
+      "path": "/tmp/inertia-docs-d3-package.log",
+      "sha256": "e79b7fde79f5c727a1e2e8df7dd9899c23150e0ad4ca68450c7389122a1c68f0"
+    }
+  ],
+  "remote": {
+    "ciExecutedForTheseChanges": false,
+    "publicPagesDeploymentVerified": false,
+    "ghAuthenticated": false,
+    "privateReportingConfirmed": false
+  },
+  "remaining": [
+    "Complete public member Javadoc prose and tighten missing-comment gates",
+    "Priority Chinese translations and English revision tracking",
+    "Verify private security report channel",
+    "Authenticated Pages settings verification, deployment and public URL acceptance",
+    "Version snapshot policy implementation against real release tags"
+  ]
+}

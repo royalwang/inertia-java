@@ -5,3 +5,8 @@
 **/node_modules/
 inertia-java/examples/spring-react/frontend/dist/
 inertia-java/examples/spring-react/frontend/.inertia/
+
+# Java documentation generated outputs
+inertia-java/docs/.vitepress/cache/
+inertia-java/docs/.vitepress/dist/
+inertia-java/docs/public/

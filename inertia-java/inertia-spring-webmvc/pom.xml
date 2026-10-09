@@ -8,6 +8,10 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>inertia-spring-webmvc</artifactId>
+  <properties>
+    <inertia.javadoc.doclint>all</inertia.javadoc.doclint>
+    <inertia.javadoc.fail-on-warnings>true</inertia.javadoc.fail-on-warnings>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.inertia</groupId>

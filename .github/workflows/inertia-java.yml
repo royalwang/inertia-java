@@ -2,9 +2,9 @@ name: Inertia Java verification
 
 on:
   push:
-    paths: ['inertia-java/**', 'docs/inertia-java/**', '.github/workflows/inertia-java.yml']
+    paths: ['inertia-java/**', '!inertia-java/docs/**', '.github/workflows/inertia-java.yml']
   pull_request:
-    paths: ['inertia-java/**', 'docs/inertia-java/**', '.github/workflows/inertia-java.yml']
+    paths: ['inertia-java/**', '!inertia-java/docs/**', '.github/workflows/inertia-java.yml']
   workflow_dispatch:
 
 permissions:
@@ -38,6 +38,8 @@ jobs:
         run: |
           npm ci
           npx --no-install playwright install --with-deps --no-shell chromium
+      - name: Verify documentation publication boundary
+        run: node --test inertia-java/deploy/documentation.test.mjs
       - name: Verify Java, frontend and owned browser scenarios
         env:
           INERTIA_VERIFY_OUTPUT: ${{ runner.temp }}/inertia-java-verification

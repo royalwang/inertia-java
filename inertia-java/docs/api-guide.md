@@ -38,7 +38,7 @@ An independent adapter follows this sequence:
 ## Page and context calls
 
 | API | Purpose and lifetime |
-|---|---|
+| --- | --- |
 | `context.render(component, props)` | Create a request-owned Page response; no rendering occurs yet |
 | `context.share(key, value)` | Define shared props before resolution starts |
 | `context.flash(key, value)` | Queue effects; duplicate keys within the same context fail |
@@ -68,7 +68,7 @@ Props props = Props.builder()
 ```
 
 | Factory | Full visit | Matching partial visit |
-|---|---|---|
+| --- | --- | --- |
 | Plain value / `Prop.value` | Included | Included if selected |
 | `Prop.lazy(Task)` | Executes | Executes if selected |
 | `Prop.async(Supplier<CompletionStage<?>>)` | Schedules its factory | Schedules if selected |
@@ -87,7 +87,7 @@ The resolver runs sibling work concurrently within one total deadline and a per-
 These APIs emit protocol metadata for the official client; the server does not maintain a browser-side merged collection.
 
 | Definition | Behavior |
-|---|---|
+| --- | --- |
 | `Prop.value(rows).merge()` | Append root collection on matching partial visits |
 | `Prop.value(rows).prepend()` | Prepend root collection |
 | `Prop.value(profile).deepMerge().matchOn("members.id")` | Recursive object merge; match nested collection members by ID |
@@ -120,7 +120,7 @@ Application `@ExceptionHandler` has precedence. Typed Page advice starts a fresh
 Define an application `InertiaConfig` bean. The starter does not derive component registration, templates, assets or SSR endpoint from generic properties. Its validated execution properties are:
 
 | Property (`inertia.` prefix) | Default |
-|---|---|
+| --- | --- |
 | `props-timeout` / `response-timeout` | `3s` / `5s` |
 | `props-concurrency` | `8` |
 | `executor-core-size` / `executor-max-size` | `8` / `32` |

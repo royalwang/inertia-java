@@ -22,21 +22,42 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 /**
  * Inspects MVC mappings and exception handlers after initialization, including composed
  * annotations.
+ *
+ * <p>Typed endpoints must return an unwrapped synchronous Page or outcome, and must not use
+ * ResponseBody semantics. Nested generic Inertia values are checked up to eight levels. Ordinary
+ * handlers may not request Inertia context/request arguments. This is signature validation, not
+ * authentication, component-registry validation, or execution of controller methods.
  */
 public final class InertiaHandlerValidator
     implements SmartInitializingSingleton, ApplicationContextAware {
   private ApplicationContext applicationContext;
   private final ObjectProvider<RequestMappingHandlerMapping> mappings;
 
+  /**
+   * Creates a validator that resolves MVC mappings after singleton initialization.
+   *
+   * @param mappings provider of ordered request mappings; retained until initialization validation
+   */
   public InertiaHandlerValidator(ObjectProvider<RequestMappingHandlerMapping> mappings) {
     this.mappings = mappings;
   }
 
+  /**
+   * Captures the application context for discovering ControllerAdvice types and ancestors.
+   *
+   * @param applicationContext Spring application context
+   */
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
   }
 
+  /**
+   * Validates mapped controllers and discovered application exception handlers at startup.
+   *
+   * @throws IllegalStateException if a handler combines unsupported annotations, wrapped Inertia
+   *     values, or Inertia arguments without an explicitly typed return
+   */
   @Override
   public void afterSingletonsInstantiated() {
     Set<Class<?>> controllers = new HashSet<>();

@@ -1,0 +1,18 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T09:57:11.504Z",
+  "source": "GitHub connector authenticated GET https://api.github.com/repos/royalwang/inertia-java",
+  "repository": "royalwang/inertia-java",
+  "defaultBranch": "main",
+  "hasPages": false,
+  "hasIssues": false,
+  "connectorPermissions": {
+    "admin": false,
+    "maintain": false,
+    "push": false,
+    "triage": false,
+    "pull": true
+  },
+  "privateReporting": "not exposed by this repository response; not verified",
+  "boundary": "Connector permissions do not describe local SSH Git push permissions; no settings mutation or deployment performed"
+}

@@ -1,0 +1,1273 @@
+{
+  "format": 1,
+  "status": "documentation-library-in-progress",
+  "baselineCommit": "86d5c3ed64ed993abba84905aedd827879d610ee",
+  "language": {
+    "canonical": "en",
+    "additional": [
+      "zh-CN"
+    ],
+    "translationPolicy": "D4 priority journeys; translations track canonical page IDs and reviewed version.",
+    "translationPriority": [
+      "home",
+      "getting-started/overview",
+      "getting-started/installation",
+      "getting-started/quick-start",
+      "getting-started/first-application",
+      "concepts/request-lifecycle",
+      "guide/forms-validation",
+      "ssr/setup",
+      "reference/configuration",
+      "reference/errors",
+      "troubleshooting/startup"
+    ],
+    "translationRevision": "sha256 of canonical English Markdown bytes; changes require human review",
+    "priorityStatus": "11 priority pages locally verified; canonical English revisions, locale navigation and search checked"
+  },
+  "site": {
+    "engine": "VitePress",
+    "candidateVersion": "1.6.4",
+    "root": "inertia-java/docs",
+    "defaultBase": "/inertia-java/",
+    "deploymentStatus": "manual-workflow-prepared-not-deployed",
+    "implementedVersion": "1.6.4",
+    "buildStatus": "local-verified-preview",
+    "hostingDecision": "GitHub Pages repository root /inertia-java/ (maintainer confirmed)",
+    "javadoc": {
+      "version": "0.1.0-SNAPSHOT",
+      "path": "reference/javadoc/0.1.0-SNAPSHOT/",
+      "modules": 7,
+      "publicTypes": 71,
+      "memberAnchors": 496,
+      "completeMemberProse": true,
+      "strictDoclintModules": [
+        "inertia-core",
+        "inertia-ssr-http",
+        "inertia-vite",
+        "inertia-spring-webmvc",
+        "inertia-spring-boot-autoconfigure",
+        "inertia-testing"
+      ],
+      "remainingMemberProseModules": []
+    },
+    "versioning": {
+      "registry": "inertia-java/docs/versions.json",
+      "status": "tooling-locally-verified-no-release-tags",
+      "snapshotBase": "/inertia-java/versions/<stable-version>/",
+      "registeredReleases": 0,
+      "policy": "Actual origin tag, stable matching Maven/catalog/pages, immutable source commit and verified archive SHA-256; no synthetic published releases"
+    },
+    "hostingObserved": "GitHub repository API has_pages=false; connected app pull=true, push/admin=false; no deployment or settings mutation"
+  },
+  "sections": [
+    {
+      "id": "getting-started",
+      "title": "Getting started",
+      "phase": "D1",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/README.md",
+        "inertia-java/pom.xml",
+        "inertia-java/examples/spring-react/pom.xml"
+      ],
+      "verificationAnchors": [
+        "inertia-java/scripts/verify-maven-consumer.py"
+      ]
+    },
+    {
+      "id": "concepts",
+      "title": "Concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaRequest.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/ResponseRenderer.java",
+        "inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaMvcConfigurer.java"
+      ],
+      "verificationAnchors": [
+        "inertia-java/inertia-core/src/test/java/io/inertia/core/CoreContractTest.java"
+      ]
+    },
+    {
+      "id": "guide",
+      "title": "Application guides",
+      "phase": "D2",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java",
+        "inertia-java/examples/spring-react/src/main/java/io/inertia/example/SecurityConfiguration.java",
+        "inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/ValidationBridge.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaContext.java"
+      ],
+      "verificationAnchors": [
+        "inertia-java/examples/spring-react/frontend/e2e/flows.spec.ts",
+        "inertia-java/examples/spring-react/frontend/e2e/auth.spec.ts",
+        "inertia-java/examples/spring-react/frontend/e2e/advanced.spec.ts"
+      ]
+    },
+    {
+      "id": "props",
+      "title": "Props",
+      "phase": "D2",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/Prop.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/Props.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/PropsResolver.java",
+        "inertia-java/examples/spring-react/src/main/java/io/inertia/example/AdvancedDemo.java"
+      ],
+      "verificationAnchors": [
+        "inertia-java/inertia-core/src/test/java/io/inertia/core/AdvancedPropsTest.java",
+        "inertia-java/examples/spring-react/frontend/e2e/advanced.spec.ts"
+      ]
+    },
+    {
+      "id": "ssr",
+      "title": "SSR and Vite",
+      "phase": "D2",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-ssr-http/src/main/java/io/inertia/ssr/HttpSsrGateway.java",
+        "inertia-java/inertia-vite/src/main/java/io/inertia/vite/ViteAssets.java",
+        "inertia-java/examples/spring-react/frontend/src/ssr.tsx"
+      ],
+      "verificationAnchors": [
+        "inertia-java/examples/spring-react/frontend/scripts/verify-ssr-health.mjs",
+        "inertia-java/examples/spring-react/frontend/scripts/verify-development.mjs"
+      ]
+    },
+    {
+      "id": "integrations",
+      "title": "Integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java",
+        "inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaMvcConfigurer.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/SessionStore.java"
+      ],
+      "verificationAnchors": [
+        "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java"
+      ]
+    },
+    {
+      "id": "deployment",
+      "title": "Deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/deploy/README.md",
+        "inertia-java/deploy/release.mjs",
+        "inertia-java/deploy/runtime.mjs"
+      ],
+      "verificationAnchors": [
+        "inertia-java/deploy/verify-release.mjs",
+        "inertia-java/examples/spring-react/frontend/scripts/verify-release-switch.mjs"
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "Reference",
+      "phase": "D3",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaConfig.java",
+        "inertia-java/docs/api-guide.md"
+      ],
+      "verificationAnchors": [
+        "inertia-java/scripts/verify-library-artifacts.py"
+      ]
+    },
+    {
+      "id": "testing",
+      "title": "Testing",
+      "phase": "D3",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/inertia-testing/src/main/java/io/inertia/testing/AssertablePage.java",
+        "inertia-java/scripts/verify.mjs",
+        "inertia-java/compatibility/verify-fixtures.mjs"
+      ],
+      "verificationAnchors": [
+        "inertia-java/scripts/verify.mjs"
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "Troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/README.md",
+        "inertia-java/inertia-core/src/main/java/io/inertia/core/PropDefinitionException.java",
+        "inertia-java/inertia-ssr-http/src/main/java/io/inertia/ssr/HttpSsrGateway.java"
+      ],
+      "verificationAnchors": [
+        "inertia-java/inertia-ssr-http/src/test/java/io/inertia/ssr/HttpSsrFailureTest.java"
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Community",
+      "phase": "D3",
+      "priority": "P0",
+      "sourceAnchors": [
+        "inertia-java/LICENSE",
+        "inertia-java/NOTICE",
+        ".github/workflows/inertia-java.yml",
+        "inertia-java/scripts/dependency-inventory.py"
+      ],
+      "verificationAnchors": [
+        "inertia-java/scripts/dependency-inventory.py"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "path": "index.md",
+      "title": "Inertia Java",
+      "section": "home",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Choose quick start, integration, reference or help; show current distribution status.",
+      "dependsOn": []
+    },
+    {
+      "id": "getting-started/overview",
+      "path": "getting-started/overview.md",
+      "title": "What is Inertia Java?",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Choose the adapter and understand Java/Node/browser ownership.",
+      "dependsOn": []
+    },
+    {
+      "id": "getting-started/installation",
+      "path": "getting-started/installation.md",
+      "title": "Installation",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Install from source/local artifacts and select core or starter dependencies without implying Maven Central publication.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "getting-started/quick-start",
+      "path": "getting-started/quick-start.md",
+      "title": "Run the React example",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Build and run the checkout, observe HTML then JSON, and stop SSR to see CSR.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "getting-started/first-application",
+      "path": "getting-started/first-application.md",
+      "title": "Create your first Spring application",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Assemble a new consuming project, InertiaConfig, assets and a controller outside the example checkout.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "getting-started/development",
+      "path": "getting-started/development.md",
+      "title": "Development workflow",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Start Vite hot SSR, explain ports/CORS/HMR, and shut down owned services.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "getting-started/project-structure",
+      "path": "getting-started/project-structure.md",
+      "title": "Project and module structure",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Separate reusable modules, business services, browser code and the renderer.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "getting-started/compatibility",
+      "path": "getting-started/compatibility.md",
+      "title": "Supported versions and distribution status",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Read verified Java/Boot/React/Node/browser combinations and distinguish source snapshots from released artifacts.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "concepts/request-lifecycle",
+      "path": "concepts/request-lifecycle.md",
+      "title": "Request and response lifecycle",
+      "section": "concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Follow Security, MVC before-policy, props, SSR/root, session finalization and byte writing.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "concepts/protocol",
+      "path": "concepts/protocol.md",
+      "title": "The Inertia protocol",
+      "section": "concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Explain HTML/JSON, version409, mutation303, Vary, headers and deliberate Rust differences.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "concepts/ownership",
+      "path": "concepts/ownership.md",
+      "title": "State, identity and ownership",
+      "section": "concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Separate immutable app config, per-request state, business transactions and explicit captured identity.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "concepts/rendering",
+      "path": "concepts/rendering.md",
+      "title": "SSR, hydration and CSR",
+      "section": "concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Describe first HTML versus JSON visits and actual client mount/hydrate behavior.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "concepts/versioning",
+      "path": "concepts/versioning.md",
+      "title": "Build and asset versions",
+      "section": "concepts",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Bind Java version, manifest, client and renderer; explain refreshing an old client.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "guide/pages",
+      "path": "guide/pages.md",
+      "title": "Pages, controllers and components",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Return typed InertiaResponse from @Controller, register allowed components, and keep REST separate.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/responses",
+      "path": "guide/responses.md",
+      "title": "Responses, status and headers",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Set status/business headers, use HttpOutcome redirects/location/back, and preserve protocol ownership.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/shared-data",
+      "path": "guide/shared-data.md",
+      "title": "Shared data and overrides",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Explain internal/config/request/page precedence, errors overrides and dot-path conflicts.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/forms-validation",
+      "path": "guide/forms-validation.md",
+      "title": "Forms and validation",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Use Jakarta/BindingResult, default/named bags, redirect errors and explicit resubmission.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/flash-session",
+      "path": "guide/flash-session.md",
+      "title": "Flash and session delivery",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Queue flash, reserve one delivery, restore failures and namespace applications.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/authentication",
+      "path": "guide/authentication.md",
+      "title": "Authentication and authorization",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Integrate a real application Security chain, capture public DTOs, rotate sessions and authorize every visit.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/csrf",
+      "path": "guide/csrf.md",
+      "title": "CSRF and cookie handling",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Wire cookie/header tokens and recover from rejection without replaying mutations.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/errors",
+      "path": "guide/errors.md",
+      "title": "Exception handling and error pages",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Explain safe error pages, typed Page/outcome advice, ordering and recursion limits.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "guide/history-bigint",
+      "path": "guide/history-bigint.md",
+      "title": "History and exact integers",
+      "section": "guide",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Use history controls and bigint across props/flash, and explain browser key clearing.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/basics",
+      "path": "props/basics.md",
+      "title": "Values, nested props and paths",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Define literals/nested paths, reject conflicts and distinguish omission from null.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/loading",
+      "path": "props/loading.md",
+      "title": "Lazy, optional and always props",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Show full/partial selection with callback counts, including except-only optional behavior.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/partial-reloads",
+      "path": "props/partial-reloads.md",
+      "title": "Partial reloads",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Use only/except, same-component matching, ancestor filtering and unselected zero queries.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/deferred",
+      "path": "props/deferred.md",
+      "title": "Deferred props and rescue",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Group and load optional data after first paint and use explicit rescue metadata.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/async-concurrency",
+      "path": "props/async-concurrency.md",
+      "title": "Async props, budgets and cancellation",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Configure bounded work, handle overload/deadlines and avoid sharing cancellable futures.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/merging",
+      "path": "props/merging.md",
+      "title": "Append, prepend and deep merge",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Use matchOn with actual client state, update IDs and reset merged state.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/once",
+      "path": "props/once.md",
+      "title": "Once props, expiry and refresh",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Explain keys, expiry seconds, fresh/partial refresh and authorization independence.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/scroll",
+      "path": "props/scroll.md",
+      "title": "Infinite scroll and paginator metadata",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Adapt a custom ScrollPage and match pageName/direction/reset to client collections.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "props/diagnostics",
+      "path": "props/diagnostics.md",
+      "title": "Prop errors and override diagnostics",
+      "section": "props",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Trace definition/resolution failures and observe override provenance without leaking values.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/setup",
+      "path": "ssr/setup.md",
+      "title": "Set up React and Node SSR",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Configure app/SSR entries, official renderer, trusted endpoint and build/root IDs.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/vite-assets",
+      "path": "ssr/vite-assets.md",
+      "title": "Vite assets and manifest",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Load recursive imports/css, configure entry and base, and protect against traversal/mixed receipts.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/root-template",
+      "path": "ssr/root-template.md",
+      "title": "Root templates and CSP",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Insert trusted SSR body once, escape view data, pass a server nonce and customize root IDs.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/gateway",
+      "path": "ssr/gateway.md",
+      "title": "HTTP SSR gateway",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Configure connect/render timeouts, bytes, concurrency, exclusions and Page envelope checks.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/fallback",
+      "path": "ssr/fallback.md",
+      "title": "CSR fallback and required SSR",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Separate renderer failure from props/authorization failure and choose per-page fail policy.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "ssr/health",
+      "path": "ssr/health.md",
+      "title": "Renderer health and recovery",
+      "section": "ssr",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Probe in the background, supervise independently and verify stop/watch/recover behavior.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "integrations/spring-boot",
+      "path": "integrations/spring-boot.md",
+      "title": "Spring Boot starter",
+      "section": "integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Explain auto-configuration, required InertiaConfig, optional metrics and bean replacement.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "integrations/spring-mvc",
+      "path": "integrations/spring-mvc.md",
+      "title": "Standalone Spring MVC",
+      "section": "integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Register configurer, validator, session mutex listener and synchronous typed handlers.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "integrations/custom-adapter",
+      "path": "integrations/custom-adapter.md",
+      "title": "Custom HTTP adapters",
+      "section": "integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Implement before/render/redirect/abort/write with core, keeping binaries and streams in the host.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "integrations/custom-session",
+      "path": "integrations/custom-session.md",
+      "title": "Custom session stores",
+      "section": "integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Implement atomic delivery SPI and scope guarantees; clustered Redis remains a future adapter.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "integrations/observability",
+      "path": "integrations/observability.md",
+      "title": "Logging and Micrometer",
+      "section": "integrations",
+      "phase": "D2",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Wire observers, bounded tags, HTTP/render distinctions and sensitive-data exclusion.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "deployment/build-release",
+      "path": "deployment/build-release.md",
+      "title": "Build an immutable release",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Package libraries, classifiers, docs, LICENSE/NOTICE and same-build Java/client/SSR payload.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "deployment/processes",
+      "path": "deployment/processes.md",
+      "title": "Run Java and Node",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Run the release outside the checkout, install production dependencies and supervise readiness/shutdown.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "deployment/proxy-security",
+      "path": "deployment/proxy-security.md",
+      "title": "Proxy, TLS and private pages",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Provide deployment-owned proxy trust, cookies/CSRF, private caching and internal renderer routing.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "deployment/rolling-upgrades",
+      "path": "deployment/rolling-upgrades.md",
+      "title": "Release switching and rollback",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Retain old hashed assets, switch A/B and explain single-node session continuity limits.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "deployment/operations",
+      "path": "deployment/operations.md",
+      "title": "Production operations checklist",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Check target Linux templates, resource budgets, logs, failure recovery and baseline measurement.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/configuration",
+      "path": "reference/configuration.md",
+      "title": "Configuration reference",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "List property name/type/default/owner/validation/effect with library versus example configuration clearly separated.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/core-api",
+      "path": "reference/core-api.md",
+      "title": "Core API map",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Index request/config/context/response/page/codec/props/session/root and link exact generated symbols.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/spring-api",
+      "path": "reference/spring-api.md",
+      "title": "Spring API map",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Index MVC, validation, session, Boot conditions and replacement-bean behavior.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/ssr-vite-api",
+      "path": "reference/ssr-vite-api.md",
+      "title": "SSR and Vite API map",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Index gateway/resolver/health/build/assets constructor contracts and closeable resources.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/protocol-metadata",
+      "path": "reference/protocol-metadata.md",
+      "title": "Headers and Page metadata",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Document fields, omission/null, merge/once/scroll/history/bigint and Java differences.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/errors",
+      "path": "reference/errors.md",
+      "title": "Errors and fallback reasons",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Map exception/reason to symptoms, HTTP behavior, safe recovery and matching tests.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/metrics",
+      "path": "reference/metrics.md",
+      "title": "Metrics reference",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "List names, tags, units and counts; distinguish SSR HTTP, rendering and response writes.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "reference/javadoc",
+      "path": "reference/javadoc.md",
+      "title": "Generated Javadoc",
+      "section": "reference",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Link versioned generated API output for six runtime modules and the dependency-only starter guide.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "testing/assertable-page",
+      "path": "testing/assertable-page.md",
+      "title": "Page assertions",
+      "section": "testing",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Use AssertablePage JSON Pointer assertions with separate status/header and browser checks.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "testing/spring-tests",
+      "path": "testing/spring-tests.md",
+      "title": "Spring integration tests",
+      "section": "testing",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Test typed controllers, validation/advice, flash recovery, non-Inertia routes and bean overrides.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "testing/browser-tests",
+      "path": "testing/browser-tests.md",
+      "title": "Official-client acceptance",
+      "section": "testing",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Run development/SSR/CSR, no-JS, auth, merge/history and fault harnesses with owned peers.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "testing/fixtures",
+      "path": "testing/fixtures.md",
+      "title": "Rust compatibility fixtures",
+      "section": "testing",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Regenerate actual Rust oracles and live TTL without overwriting accepted expectations.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "troubleshooting/startup",
+      "path": "troubleshooting/startup.md",
+      "title": "Startup and dependency errors",
+      "section": "troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Diagnose unsupported return types, absent config/components, ambiguous beans and consuming snapshots.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "troubleshooting/ssr-hydration",
+      "path": "troubleshooting/ssr-hydration.md",
+      "title": "Missing SSR and hydration mismatch",
+      "section": "troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Inspect receipt/root/endpoint, actual HTML and logs, then distinguish fallback from hydration errors.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "troubleshooting/assets-versions",
+      "path": "troubleshooting/assets-versions.md",
+      "title": "Missing assets and repeated refresh",
+      "section": "troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Check hot URL, CORS, manifest/asset archive, build ID and old-client409 loops.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "troubleshooting/forms-session",
+      "path": "troubleshooting/forms-session.md",
+      "title": "Lost flash and validation errors",
+      "section": "troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Diagnose namespace/bag/session/CSRF, delivery restoration and duplicate effects.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "troubleshooting/performance",
+      "path": "troubleshooting/performance.md",
+      "title": "Slow requests and overload",
+      "section": "troubleshooting",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Separate props/database/SSR/response timings and use bounded budgets and the existing benchmark.",
+      "dependsOn": [
+        "getting-started/overview",
+        "concepts/request-lifecycle"
+      ]
+    },
+    {
+      "id": "community/contributing",
+      "path": "community/contributing.md",
+      "title": "Contributing",
+      "section": "community",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Define setup, design-first changes, focused checks and documentation/API change expectations.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "community/support",
+      "path": "community/support.md",
+      "title": "Getting help and reporting bugs",
+      "section": "community",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Provide a minimal reproducible example with versions/behavior; avoid sensitive payloads.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "community/security",
+      "path": "community/security.md",
+      "title": "Reporting security issues",
+      "section": "community",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Describe supported scopes and a maintainer-configured private reporting channel, without inventing an address.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "community/releases",
+      "path": "community/releases.md",
+      "title": "Releases and upgrades",
+      "section": "community",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Define snapshot/release distinctions, support windows, release notes and upgrade/migration guides.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "community/license",
+      "path": "community/license.md",
+      "title": "License and attribution",
+      "section": "community",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Describe Java Apache-2.0 and royalwang/2026, Rust scope and retained third-party terms.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
+      "id": "legacy-api-guide",
+      "path": "api-guide.md",
+      "title": "Java API guide (existing entry)",
+      "section": "legacy",
+      "phase": "existing",
+      "priority": "P0",
+      "status": "existing-markdown",
+      "outcome": "Keep the existing linked guide and Java examples working during migration.",
+      "dependsOn": []
+    }
+  ],
+  "translations": [
+    {
+      "id": "home",
+      "locale": "zh-CN",
+      "path": "zh/index.md",
+      "title": "Inertia Java 中文文档",
+      "status": "reviewed",
+      "sourceRevision": "eb119d600730720277e4501d6e3ebbe720a83068fcff21d53a9b6b61a0b2c992"
+    },
+    {
+      "id": "getting-started/overview",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/overview.md",
+      "title": "什么是 Inertia Java？",
+      "status": "reviewed",
+      "sourceRevision": "93e51c16896ead2d8750eb9eabee5b06ebf8e16450ce5ffc2f049eb881619625"
+    },
+    {
+      "id": "getting-started/installation",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/installation.md",
+      "title": "安装",
+      "status": "reviewed",
+      "sourceRevision": "de6029fb6e47cf652fe1094eae20c2fd2a465f37621ff9a2377c5a4223dd0f92"
+    },
+    {
+      "id": "getting-started/quick-start",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/quick-start.md",
+      "title": "运行 React 示例",
+      "status": "reviewed",
+      "sourceRevision": "f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1"
+    },
+    {
+      "id": "getting-started/first-application",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/first-application.md",
+      "title": "创建第一个 Spring 应用",
+      "status": "reviewed",
+      "sourceRevision": "4267648c236e455daf3be2fd3940e2fa66c54e1b8caf0da42b01acc863783205"
+    },
+    {
+      "id": "concepts/request-lifecycle",
+      "locale": "zh-CN",
+      "path": "zh/concepts/request-lifecycle.md",
+      "title": "请求与响应生命周期",
+      "status": "reviewed",
+      "sourceRevision": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e"
+    },
+    {
+      "id": "guide/forms-validation",
+      "locale": "zh-CN",
+      "path": "zh/guide/forms-validation.md",
+      "title": "表单与校验",
+      "status": "reviewed",
+      "sourceRevision": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82"
+    },
+    {
+      "id": "ssr/setup",
+      "locale": "zh-CN",
+      "path": "zh/ssr/setup.md",
+      "title": "设置 React 与 Node SSR",
+      "status": "reviewed",
+      "sourceRevision": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a"
+    },
+    {
+      "id": "reference/configuration",
+      "locale": "zh-CN",
+      "path": "zh/reference/configuration.md",
+      "title": "配置参考",
+      "status": "reviewed",
+      "sourceRevision": "872de03bf52dab3aee162b2d05ddfb46a634a0f6590dcccb01a63239c6f4063a"
+    },
+    {
+      "id": "reference/errors",
+      "locale": "zh-CN",
+      "path": "zh/reference/errors.md",
+      "title": "错误与 SSR 降级原因",
+      "status": "reviewed",
+      "sourceRevision": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354"
+    },
+    {
+      "id": "troubleshooting/startup",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/startup.md",
+      "title": "启动与依赖排错",
+      "status": "reviewed",
+      "sourceRevision": "a62a23cbc48f5911fcf8d400c6c531c9ea5918ea2173f2ca1bd710fc76ad61ad"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+name: Check external Inertia Java documentation links
+
+# Network-sensitive checks are manual and separate from prose PR gates.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    if: github.repository == 'royalwang/inertia-java' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      INERTIA_DOCS_OUTPUT: ${{ runner.temp }}/inertia-docs-links
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.22.2'
+          cache: npm
+          cache-dependency-path: inertia-java/docs/package-lock.json
+      - name: Install locked tools and check referenced HTTP destinations
+        working-directory: inertia-java/docs
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run docs:links
+      - name: Retain URL provenance, statuses and unverified cases
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: inertia-java-docs-links-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          path: |
+            ${{ runner.temp }}/inertia-docs-links/*/*.json
+            ${{ runner.temp }}/inertia-docs-links/*/*.log

@@ -6,8 +6,22 @@ import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-/** Plans before execution; each resolve owns metadata and a single total deadline. */
+/**
+ * Application-scoped prop planner and executor with a separate total deadline per resolution.
+ *
+ * <p>Shared definitions are overlaid by Page definitions before request selection. Successful JSON
+ * output follows declaration order. Fatal provider failure, timeout, or result cancellation stops
+ * request-owned work; cancellation of external asynchronous operations is best effort. The caller
+ * owns the supplied executor and must not share a mutable provider result across requests.
+ */
 public final class PropsResolver {
+  /**
+   * Resolved JSON and client protocol metadata owned by one invocation.
+   *
+   * @param props resolved prop object; returned directly without a defensive copy
+   * @param metadata merge, once, deferred, scroll, and optional shared-key metadata; returned
+   *     directly
+   */
   public record Resolved(ObjectNode props, ObjectNode metadata) {}
 
   private record Value(JsonNode json, ScrollPage scroll) {}
@@ -21,15 +35,53 @@ public final class PropsResolver {
   private final Clock clock;
   private final InertiaObserver observer;
 
+  /**
+   * Creates a resolver using the UTC clock and no-op observation.
+   *
+   * @param codec Page JSON codec
+   * @param executor application-owned executor for provider invocation
+   * @param deadline positive total budget per resolve call
+   * @param maxConcurrency positive per-request active provider limit
+   * @throws IllegalArgumentException if the budget or concurrency limit is invalid
+   * @throws NullPointerException if a required dependency is null
+   */
   public PropsResolver(PageCodec codec, Executor executor, Duration deadline, int maxConcurrency) {
     this(codec, executor, deadline, maxConcurrency, Clock.systemUTC());
   }
 
+  /**
+   * Creates a resolver with an explicit clock for once-prop expiry metadata.
+   *
+   * @param codec Page JSON codec
+   * @param executor application-owned executor for provider invocation
+   * @param deadline positive total budget per resolve call
+   * @param maxConcurrency positive per-request active provider limit
+   * @param clock clock used to calculate once-prop expiry
+   * @throws IllegalArgumentException if the budget or concurrency limit is invalid
+   * @throws NullPointerException if a required dependency is null
+   */
   public PropsResolver(
       PageCodec codec, Executor executor, Duration deadline, int maxConcurrency, Clock clock) {
     this(codec, executor, deadline, maxConcurrency, clock, InertiaObserver.NOOP);
   }
 
+  /**
+   * Creates a resolver with explicit execution, expiry, and observation policy.
+   *
+   * <p>The concurrency limit rejects excess active providers; it is not an unbounded waiting queue.
+   * Asynchronous factories run on the supplied executor and must return a non-null stage. The
+   * resolver tracks the returned future for best-effort cancellation but does not own the executor
+   * lifecycle.
+   *
+   * @param codec Page JSON codec
+   * @param executor application-owned executor for provider invocation
+   * @param deadline positive total budget per resolve call
+   * @param maxConcurrency positive per-request active provider limit
+   * @param clock clock used for once-prop expiry metadata
+   * @param observer non-null operation observer
+   * @throws IllegalArgumentException if the budget or concurrency limit is invalid
+   * @throws NullPointerException if a required dependency is null
+   */
   public PropsResolver(
       PageCodec codec,
       Executor executor,
@@ -47,11 +99,36 @@ public final class PropsResolver {
     this.maxConcurrency = maxConcurrency;
   }
 
+  /**
+   * Resolves a Page's selected props and includes shared-key metadata.
+   *
+   * @param request request headers controlling partial, deferred, once, and scroll selection
+   * @param component target component used to validate partial reload selection
+   * @param shared shared prop definitions
+   * @param props Page prop definitions, taking precedence over matching shared definitions
+   * @return stage for resolved JSON; provider failures and timeouts complete it exceptionally
+   */
   public CompletionStage<Resolved> resolve(
       InertiaRequest request, String component, Props shared, Props props) {
     return resolve(request, component, shared, props, true);
   }
 
+  /**
+   * Plans and resolves selected definitions under one total deadline.
+   *
+   * <p>Unselected providers are not invoked. Rescued deferred failures are represented in metadata;
+   * other provider failures fail the stage and cancel sibling work. Cancelling the returned future
+   * also stops request-owned tasks. Once metadata instructs the client and does not create a server
+   * cache or authorization boundary.
+   *
+   * @param request request headers controlling partial, deferred, once, and scroll selection
+   * @param component target component used to validate partial reload selection
+   * @param shared shared prop definitions
+   * @param props Page prop definitions, taking precedence over matching shared definitions
+   * @param exposeSharedPropKeys whether to emit top-level shared key names in metadata
+   * @return request-owned result stage; exceptional completion includes timeout, cancellation,
+   *     capacity rejection, or a {@link PropResolutionException}
+   */
   public CompletionStage<Resolved> resolve(
       InertiaRequest request,
       String component,

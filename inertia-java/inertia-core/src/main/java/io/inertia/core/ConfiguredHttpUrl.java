@@ -6,6 +6,17 @@ import java.net.URI;
 public final class ConfiguredHttpUrl {
   private ConfiguredHttpUrl() {}
 
+  /**
+   * Validates a trusted configured absolute HTTP(S) target.
+   *
+   * <p>Requires a host and rejects user info, fragments, port zero, and ports above 65535. It does
+   * not resolve DNS or enforce an internal-network allowlist; configuration ownership is the trust
+   * boundary.
+   *
+   * @param uri deployment-controlled endpoint URL; path and query are allowed
+   * @return unchanged valid URI
+   * @throws IllegalArgumentException if the URI is null or violates endpoint syntax
+   */
   public static URI endpoint(URI uri) {
     if (uri == null
         || !("http".equals(uri.getScheme()) || "https".equals(uri.getScheme()))
@@ -19,6 +30,14 @@ public final class ConfiguredHttpUrl {
     return uri;
   }
 
+  /**
+   * Parses a trusted HTTP(S) origin used by a development hot file.
+   *
+   * @param text origin text, trimmed before parsing; query and non-root paths are rejected
+   * @return validated origin without a trailing slash
+   * @throws IllegalArgumentException if the URI or origin syntax is invalid
+   * @throws NullPointerException if text is null
+   */
   public static URI origin(String text) {
     URI uri = endpoint(URI.create(text.trim()));
     if (uri.getRawQuery() != null

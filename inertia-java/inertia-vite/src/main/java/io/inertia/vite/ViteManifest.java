@@ -8,16 +8,40 @@ import java.nio.file.*;
 import java.security.*;
 import java.util.*;
 
-/** Production assets are snapshotted at startup, together with their version hash. */
+/**
+ * Immutable snapshot of a validated Vite client manifest and its asset tags.
+ *
+ * <p>Reuse a snapshot across requests. Its version hashes the manifest bytes only; use {@link
+ * ViteBuild} when client and SSR contents must share a verified release identity. Referenced assets
+ * must be deployed immutably; this object does not watch or hash their contents.
+ */
 public final class ViteManifest {
   private final JsonNode manifest;
   private final String version;
   private final String assetBase;
 
+  /**
+   * Reads a manifest using the {@code /build/} asset base.
+   *
+   * @param file client manifest JSON file
+   * @param codec JSON codec
+   * @throws IOException if the manifest cannot be read
+   * @throws IllegalArgumentException if the manifest structure or asset paths are invalid
+   */
   public ViteManifest(Path file, PageCodec codec) throws IOException {
     this(file, codec, "/build/");
   }
 
+  /**
+   * Reads and validates a manifest once, including imported entries and CSS paths.
+   *
+   * @param file client manifest JSON file
+   * @param codec JSON codec
+   * @param assetBase same-origin absolute path starting and ending with a slash; {@code /} is
+   *     allowed
+   * @throws IOException if the manifest cannot be read
+   * @throws IllegalArgumentException if the base, manifest, imported entries, or paths are invalid
+   */
   public ViteManifest(Path file, PageCodec codec, String assetBase) throws IOException {
     this.assetBase = base(assetBase);
     byte[] bytes = Files.readAllBytes(file);
@@ -32,14 +56,34 @@ public final class ViteManifest {
     }
   }
 
+  /**
+   * Returns the SHA-256 digest of the original manifest bytes.
+   *
+   * @return lowercase hexadecimal manifest digest, not a whole-release receipt
+   */
   public String version() {
     return version;
   }
 
+  /**
+   * Builds asset tags without a CSP nonce.
+   *
+   * @param entry exact manifest entry key
+   * @return stylesheet, deduplicated module-preload, and entry-script HTML
+   * @throws IllegalArgumentException if the entry is absent
+   */
   public String tags(String entry) {
     return tags(entry, null);
   }
 
+  /**
+   * Builds asset tags, traversing imports once and preserving discovery order.
+   *
+   * @param entry exact manifest entry key
+   * @param nonce CSP nonce applied to every generated tag, or {@code null} to omit it
+   * @return stylesheet and preload links followed by the entry module script
+   * @throws IllegalArgumentException if the entry is absent or the nonce is invalid
+   */
   public String tags(String entry, String nonce) {
     String attribute = CspNonce.attribute(nonce);
     if (!manifest.has(entry)) throw new IllegalArgumentException("Missing Vite entry: " + entry);

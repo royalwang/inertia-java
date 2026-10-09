@@ -1,0 +1,518 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T08:58:34.916180+00:00",
+  "scope": "D3 Javadoc contract prose and incremental strict doclint; incomplete whole-library member prose; no public deployment",
+  "source": {
+    "head": "86d5c3ed64ed993abba84905aedd827879d610ee",
+    "uncommitted": true,
+    "javaSourcesChanged": true,
+    "runtimeInstructionsAndSignaturesUnchanged": true
+  },
+  "strictDoclint": {
+    "modules": [
+      "inertia-ssr-http",
+      "inertia-vite",
+      "inertia-spring-boot-autoconfigure",
+      "inertia-testing"
+    ],
+    "missingCommentsChecked": true,
+    "failOnWarnings": true,
+    "coreSourceSubset": {
+      "exitCode": 0,
+      "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-core-spi-doclint-2hvpupnp",
+      "sources": [
+        "SessionStore",
+        "RootView",
+        "SsrGateway",
+        "PropsResolver",
+        "PageCodec",
+        "InertiaContext",
+        "Prop"
+      ],
+      "log": "/tmp/inertia-docs-javadoc-core-spi.log"
+    },
+    "remainingModules": [
+      "inertia-core",
+      "inertia-spring-webmvc"
+    ],
+    "completeMemberProse": false
+  },
+  "bytecodeComparison": {
+    "command": "javap -p -c -s -constants for every compiled class, sorted by class name",
+    "excludes": "Debug/source line tables and archive metadata; raw class-file equality is not claimed",
+    "modules": [
+      {
+        "module": "inertia-core",
+        "classes": 59,
+        "unchanged": true,
+        "sha256": "204c1da7290ad4f85cd63453951d43196e67c18e40b4f2f2c61f24f8fa5e3205"
+      },
+      {
+        "module": "inertia-spring-boot-autoconfigure",
+        "classes": 4,
+        "unchanged": true,
+        "sha256": "8974ce14a8af7e42ecf99bb0020feaa462df765a7c3b5dcdb2af95bbf99b4c57"
+      },
+      {
+        "module": "inertia-spring-webmvc",
+        "classes": 11,
+        "unchanged": true,
+        "sha256": "a17e0a49b43b64ec6655792a6bb192825eb49ddb60362be06bc5ab9903bb1b73"
+      },
+      {
+        "module": "inertia-ssr-http",
+        "classes": 7,
+        "unchanged": true,
+        "sha256": "2703b68aa8fc1ae49506fbb40c969896cfd16b94c1a6a43c101c735b9f835b19"
+      },
+      {
+        "module": "inertia-testing",
+        "classes": 1,
+        "unchanged": true,
+        "sha256": "0e12b77da9978f0dbd2333c122a186e67d75888ce5b665575c7598da0301d200"
+      },
+      {
+        "module": "inertia-vite",
+        "classes": 3,
+        "unchanged": true,
+        "sha256": "fde9ef9d6f2bd76a74e985f55c3188fea7326092222a33f3dbaff1e1e60d0ec2"
+      }
+    ]
+  },
+  "classifierProseSpotChecks": [
+    {
+      "module": "inertia-core",
+      "type": "InertiaContext",
+      "page": "io/inertia/core/InertiaContext.html",
+      "phrase": "Completion precedes HTTP writing"
+    },
+    {
+      "module": "inertia-core",
+      "type": "Prop",
+      "page": "io/inertia/core/Prop.html",
+      "phrase": "Fluent operations return new definitions"
+    },
+    {
+      "module": "inertia-core",
+      "type": "SessionStore",
+      "page": "io/inertia/core/SessionStore.html",
+      "phrase": "Atomically reserves currently available"
+    },
+    {
+      "module": "inertia-core",
+      "type": "PropsResolver",
+      "page": "io/inertia/core/PropsResolver.html",
+      "phrase": "Successful JSON output follows declaration order"
+    },
+    {
+      "module": "inertia-core",
+      "type": "RootView",
+      "page": "io/inertia/core/RootView.html",
+      "phrase": "Synchronous application-owned HTML shell renderer"
+    },
+    {
+      "module": "inertia-core",
+      "type": "SsrGateway",
+      "page": "io/inertia/core/SsrGateway.html",
+      "phrase": "Asynchronous boundary between the Java render pipeline"
+    },
+    {
+      "module": "inertia-core",
+      "type": "PageCodec",
+      "page": "io/inertia/core/PageCodec.html",
+      "phrase": "isolated Jackson mapper copy"
+    },
+    {
+      "module": "inertia-ssr-http",
+      "type": "HttpSsrGateway",
+      "page": "io/inertia/ssr/HttpSsrGateway.html",
+      "phrase": "This API has no close() method"
+    },
+    {
+      "module": "inertia-ssr-http",
+      "type": "SsrEndpointResolver",
+      "page": "io/inertia/ssr/SsrEndpointResolver.html",
+      "phrase": "Selects a trusted renderer endpoint without making a network request"
+    },
+    {
+      "module": "inertia-ssr-http",
+      "type": "SsrHealthMonitor",
+      "page": "io/inertia/ssr/SsrHealthMonitor.html",
+      "phrase": "Application-owned background health sampler"
+    },
+    {
+      "module": "inertia-vite",
+      "type": "ViteManifest",
+      "page": "io/inertia/vite/ViteManifest.html",
+      "phrase": "Its version hashes the manifest bytes only"
+    },
+    {
+      "module": "inertia-vite",
+      "type": "ViteAssets",
+      "page": "io/inertia/vite/ViteAssets.html",
+      "phrase": "Separate calls to version() and tags(String) are not an atomic snapshot"
+    },
+    {
+      "module": "inertia-vite",
+      "type": "ViteBuild",
+      "page": "io/inertia/vite/ViteBuild.html",
+      "phrase": "it does not authenticate the publisher"
+    },
+    {
+      "module": "inertia-spring-boot-autoconfigure",
+      "type": "InertiaAutoConfiguration",
+      "page": "io/inertia/boot/InertiaAutoConfiguration.html",
+      "phrase": "Spring owns the default executor"
+    },
+    {
+      "module": "inertia-spring-boot-autoconfigure",
+      "type": "InertiaMetricsAutoConfiguration",
+      "page": "io/inertia/boot/InertiaMetricsAutoConfiguration.html",
+      "phrase": "An application-supplied InertiaObserver disables this default observer"
+    },
+    {
+      "module": "inertia-spring-boot-autoconfigure",
+      "type": "InertiaProperties",
+      "page": "io/inertia/boot/InertiaProperties.html",
+      "phrase": "Direct Java construction must supply all values"
+    },
+    {
+      "module": "inertia-spring-boot-autoconfigure",
+      "type": "MicrometerInertiaObserver",
+      "page": "io/inertia/boot/MicrometerInertiaObserver.html",
+      "phrase": "without taking ownership of the registry"
+    },
+    {
+      "module": "inertia-testing",
+      "type": "AssertablePage",
+      "page": "io/inertia/testing/AssertablePage.html",
+      "phrase": "an explicit JSON null is still present"
+    }
+  ],
+  "corrections": [
+    "CancellationScope is package-private, not a public extension point",
+    "HttpSsrGateway has no public close method; SsrHealthMonitor has an owned close lifecycle",
+    "English configuration and its Chinese revision were reviewed together",
+    "InertiaContext.location validates header characters; applications select trusted navigation targets"
+  ],
+  "verification": {
+    "mavenPackage": true,
+    "javaRuntimeTestsRerun": false,
+    "reason": "Comment-only source changes plus equivalent explicit default constructors; all 85 compiled class signatures/instructions compared unchanged",
+    "libraryArtifacts": 21,
+    "isolatedArtifactContractChecks": 6,
+    "documentationContractTests": 12,
+    "publicationSelectionContractTests": 1,
+    "site": {
+      "path": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-cMJBR4/summary.json",
+      "sha256": "3273d196863ed9b1e54072c52e58022851fc12b3bee9ff47dc50dc5af300dcba",
+      "summary": {
+        "success": true,
+        "startedAt": "2026-10-09T08:57:01.107Z",
+        "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-cMJBR4",
+        "phases": [
+          {
+            "name": "direct-page-loads",
+            "pages": 70
+          },
+          {
+            "name": "local-search",
+            "terms": [
+              "flash",
+              "deferred",
+              "requireSsr",
+              "session-namespace"
+            ]
+          },
+          {
+            "name": "application-search-navigation",
+            "journeys": [
+              {
+                "term": "CSRF",
+                "route": "guide/csrf"
+              },
+              {
+                "term": "deep merge",
+                "route": "props/merging"
+              },
+              {
+                "term": "once",
+                "route": "props/once"
+              },
+              {
+                "term": "renderer health",
+                "route": "ssr/health"
+              },
+              {
+                "term": "response-timeout",
+                "route": "reference/configuration"
+              },
+              {
+                "term": "inertia.ssr_http",
+                "route": "reference/metrics"
+              },
+              {
+                "term": "private",
+                "route": "community/security"
+              }
+            ]
+          },
+          {
+            "name": "canonical-source-downloads",
+            "byteIdentical": true
+          },
+          {
+            "name": "generated-javadoc",
+            "modules": 7,
+            "publicTypes": 71,
+            "memberAnchors": 496,
+            "entryAndAttributionBytes": true,
+            "representativeMethodNavigation": true
+          },
+          {
+            "name": "chinese-priority-journeys",
+            "pages": 11,
+            "perPageEnglishCounterparts": true,
+            "untranslatedEnglishFallback": true,
+            "chineseSearchNavigation": [
+              "校验",
+              "预算",
+              "会话"
+            ],
+            "canonicalSourceDownload": true
+          },
+          {
+            "name": "chinese-mobile-navigation",
+            "horizontalOverflow": false
+          },
+          {
+            "name": "mobile-navigation-and-console",
+            "errors": []
+          }
+        ],
+        "base": "/inertia-java/",
+        "finishedAt": "2026-10-09T08:57:24.158Z"
+      }
+    },
+    "package": {
+      "path": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-2FclZ4/summary.json",
+      "sha256": "1bb5295a03bcebf5aa967655a0fb07620f99ea0eb7579f03238ee689f57a0b01",
+      "summary": {
+        "success": true,
+        "observedAt": "2026-10-09T08:55:54.046Z",
+        "scope": "actual package content only; not a new runtime deployment rehearsal",
+        "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-2FclZ4",
+        "payload": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-2FclZ4/releases/56e0e8a1a9418bc30b0b4d75c9cc60e96418cde700bd202b5bc8c5325e5eaf12",
+        "documentationFiles": 87,
+        "byteIdentical": true,
+        "privateToolingExcluded": true,
+        "releaseId": "56e0e8a1a9418bc30b0b4d75c9cc60e96418cde700bd202b5bc8c5325e5eaf12"
+      }
+    }
+  },
+  "logs": [
+    {
+      "path": "/tmp/inertia-docs-javadoc-package-final.log",
+      "sha256": "b141fb61ab758edf419fcde2bff049d11fda93605e3e4b3de3fa9a728afeaa73"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-core-spi.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-artifacts.log",
+      "sha256": "7cf97946b9bb26480bceae567ae9249a3a69a0cbe5da5e51c89d22917096bf5e"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-artifact-contracts.log",
+      "sha256": "2640c083b84ea9a17028334251d81197e6b9dc76719dd0551f150a181ee7126c"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-site-check.log",
+      "sha256": "074677582a52c72927d7e15edd18fd9c4523b42ab2c9a2ae4ff238769cb81fa8"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-site-build.log",
+      "sha256": "27a6ad4cabb44879480d762586d4cdc5a50826aa78daf9b065ca32996e352271"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-site-smoke.log",
+      "sha256": "6d6196cc975192c0e6cbfea976c3959ad366d473e30d6907e1241bdb734979ec"
+    },
+    {
+      "path": "/tmp/inertia-docs-javadoc-payload-contract.log",
+      "sha256": "f1724f731942733a0c89be72a7d2a239b86f1a0e2e1cf7e7a4b4bca0fcfde005"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaContext.java",
+      "sha256": "7278e3642513eab3b6e8fc6ae76ff7e6e19c3d46b6c7474023bf3b630375b0ea"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/PageCodec.java",
+      "sha256": "3226877c2f0e8c76473c63a9aac6eec276729634bb3cdb35d582500d3a1070cf"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/Prop.java",
+      "sha256": "95a98f150de41dba62b675c60813cc946ff157629ace6ee6a4a5e973c4b3a35e"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/PropsResolver.java",
+      "sha256": "975709411da3b2721a7c1a8df75440e36294045a6bb0a797b7890d83473c1259"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/RootView.java",
+      "sha256": "f00a35706bf9ae6492bf39c81388107f6a85408ad7a3efe2c33b05319dab4b7f"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/SessionStore.java",
+      "sha256": "a9c3210bca0c41c8d6fa46f60a3480d1aa9509651c8cda2b04691084b0997775"
+    },
+    {
+      "path": "inertia-java/inertia-core/src/main/java/io/inertia/core/SsrGateway.java",
+      "sha256": "14a8f51767d6b66f656dc43a80516b397ad419bb0eed311fa9acda6e86b8dba0"
+    },
+    {
+      "path": "inertia-java/inertia-spring-boot-autoconfigure/pom.xml",
+      "sha256": "ae13158b68728478dd2c46ea7bbfa033826d152443f8c96047b3c349882dc54b"
+    },
+    {
+      "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java",
+      "sha256": "f80a210d9ce84911107001debe270c0acc0762f3edfcd8c5fdc7d131e1d28862"
+    },
+    {
+      "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java",
+      "sha256": "060fd53d41af8d470b04a8d1834208be7e10a30531e8307ac0134815488bdac8"
+    },
+    {
+      "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java",
+      "sha256": "daa2150f2558b2a9ee278296a16c9f1e40642974d303e2e6963ec667228f0425"
+    },
+    {
+      "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/MicrometerInertiaObserver.java",
+      "sha256": "1214611d8ec36f15248b2a38e679cf99972b67bd68a340f94ea3a0a224c28de1"
+    },
+    {
+      "path": "inertia-java/inertia-ssr-http/pom.xml",
+      "sha256": "2ec908d83547a6b3cbd2273066ea82a5c7af7a71d95acf2657e4e26ee837abf6"
+    },
+    {
+      "path": "inertia-java/inertia-ssr-http/src/main/java/io/inertia/ssr/HttpSsrGateway.java",
+      "sha256": "9c99c5ecf3d9c6383e832c7b22c3a790b68ca1b72ebbc5dad116780d77f7c9c7"
+    },
+    {
+      "path": "inertia-java/inertia-ssr-http/src/main/java/io/inertia/ssr/SsrEndpointResolver.java",
+      "sha256": "a87c218dff3aa1fbcafea0cddc20af789130ece7ed2849385e6294d344e0c600"
+    },
+    {
+      "path": "inertia-java/inertia-ssr-http/src/main/java/io/inertia/ssr/SsrHealthMonitor.java",
+      "sha256": "f5a46d0bda177914e6ef5e0e55232a36f171c7a751f774815a28d6a2e5ea48c7"
+    },
+    {
+      "path": "inertia-java/inertia-testing/pom.xml",
+      "sha256": "35d7e897f2de7fbe83459fc0cd517d98baeeedf4c6f6d792cd8a0618bbaf32d8"
+    },
+    {
+      "path": "inertia-java/inertia-testing/src/main/java/io/inertia/testing/AssertablePage.java",
+      "sha256": "69dd8deaacefa1e1fcea16487be92054fe341b0de8ea3c3ed09c3d17df52957f"
+    },
+    {
+      "path": "inertia-java/inertia-vite/pom.xml",
+      "sha256": "5f74e97ba5f2d0f0369ea89a644b9de709b7df518bdaed462af23fd2530a9e5c"
+    },
+    {
+      "path": "inertia-java/inertia-vite/src/main/java/io/inertia/vite/ViteAssets.java",
+      "sha256": "3a42837e7a390c43e0a995feca3c2558cac19fb96796f5eb62a751404c7742d4"
+    },
+    {
+      "path": "inertia-java/inertia-vite/src/main/java/io/inertia/vite/ViteBuild.java",
+      "sha256": "c85af9e728b7e4396e3867d9e65427c1fd106bc47dc58ae8a337bfd2b59fa1fa"
+    },
+    {
+      "path": "inertia-java/inertia-vite/src/main/java/io/inertia/vite/ViteManifest.java",
+      "sha256": "62eb458df2f3f2901cb244f2213351f1384ef59f72494424c03e3372b437ec9f"
+    },
+    {
+      "path": "inertia-java/pom.xml",
+      "sha256": "e8521714824fa22e2ff168ca6522b0dfd997c3625d7f6ceb07a1244545c06218"
+    },
+    {
+      "path": "inertia-java/docs/reference/configuration.md",
+      "sha256": "204872cf4cd22ffb8f0ea8edbf4827f8078ac73272d66e7cd4797e9a2f7f7100"
+    },
+    {
+      "path": "inertia-java/docs/zh/reference/configuration.md",
+      "sha256": "bfcbda79fc127c7982797446ddc7a31550d9ecd419087b93f3894330feca79cb"
+    },
+    {
+      "path": "inertia-java/docs/reference/core-api.md",
+      "sha256": "9754a831e5e90a070d50f57af813aa586d590beeabbff08b3bfea57768c10ff1"
+    },
+    {
+      "path": "inertia-java/docs/reference/ssr-vite-api.md",
+      "sha256": "3fe10c286277e0d787c689365ca81ac30d6b904a1c4593f2f7a6918f54535dbe"
+    },
+    {
+      "path": "inertia-java/docs/reference/javadoc.md",
+      "sha256": "0fe716bb94128ed0cfa925756c06fa2fc85786f7268b18a5699123c9c474bb0c"
+    },
+    {
+      "path": "docs/inertia-java/open-source-docs-catalog.json",
+      "sha256": "6f4407ba27222964e3d0acb4420bfed983b16e7b706f59071402c6014bd989a6"
+    }
+  ],
+  "remaining": [
+    "Complete and review remaining core and MVC public member contracts before enabling module-wide missing-comment checks",
+    "Real release-tag snapshots await an actual release tag",
+    "Public Pages workflow and private security reporting channel remain unverified; no deployment performed"
+  ],
+  "gitDelivery": {
+    "committed": false,
+    "pushed": false
+  },
+  "classifierInputs": [
+    {
+      "module": "inertia-core",
+      "sha256": "ee185f4cc36aa60dee32117052b84bf4fa866bd17d1e7eb46634ab51beb11512",
+      "publicTypes": 52,
+      "memberAnchors": 399
+    },
+    {
+      "module": "inertia-ssr-http",
+      "sha256": "e675673c576d87b85c644f30388d6b7c9c5648f4c3acfe9c294c3bf267f10554",
+      "publicTypes": 5,
+      "memberAnchors": 28
+    },
+    {
+      "module": "inertia-vite",
+      "sha256": "fa99af1a783e602ce21c91894258c9d0970dbe3497eb3b49042b94924288b0de",
+      "publicTypes": 3,
+      "memberAnchors": 14
+    },
+    {
+      "module": "inertia-spring-webmvc",
+      "sha256": "44047c77e90c14de72db718493d8437dbea095790ee82c7a13a7b0544b3588a3",
+      "publicTypes": 6,
+      "memberAnchors": 26
+    },
+    {
+      "module": "inertia-spring-boot-autoconfigure",
+      "sha256": "be979596e1b402a63e9842bd86ee2ff070c7b374d29aad2d39b28ad2b0a78dc7",
+      "publicTypes": 4,
+      "memberAnchors": 24
+    },
+    {
+      "module": "inertia-spring-boot-starter",
+      "sha256": "f10a0240b8aa807212305e986cda9fb4051c7e3d4fd2428f5a4d7e79f37f4c56",
+      "publicTypes": 0,
+      "memberAnchors": 0
+    },
+    {
+      "module": "inertia-testing",
+      "sha256": "b2dc1782690548954b7ed519780443a821cecf0238354c2548bd4521e3c43fa6",
+      "publicTypes": 1,
+      "memberAnchors": 5
+    }
+  ]
+}

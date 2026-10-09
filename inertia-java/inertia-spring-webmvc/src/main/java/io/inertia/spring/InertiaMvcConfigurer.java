@@ -14,9 +14,28 @@ import org.springframework.web.method.support.*;
 import org.springframework.web.servlet.*;
 import org.springframework.web.servlet.config.annotation.*;
 
-/** Only explicitly typed Inertia handlers participate in protocol processing. */
+/**
+ * Servlet MVC integration for synchronous, unwrapped {@link InertiaResponse} and {@link
+ * HttpOutcome} controller return types.
+ *
+ * <p>The interceptor captures request metadata, handles version conflicts before controller work,
+ * and creates namespaced session state. Return handlers wait for asynchronous provider/SSR work
+ * within the response budget on the Servlet thread; this is not Servlet asynchronous dispatch.
+ * Application exception advice keeps precedence over the final error-page resolver.
+ *
+ * <p>Use {@code @Controller} without ResponseBody, RestController, or async/container wrappers.
+ * Proxy URL reconstruction and server CSP nonce generation belong to application configuration.
+ * Boot registers the session mutex listener; plain Spring applications must arrange equivalent
+ * stable session locking when their container uses session wrappers.
+ */
 public final class InertiaMvcConfigurer implements WebMvcConfigurer {
+  /**
+   * Servlet request attribute for a trusted String CSP nonce, captured before rendering.
+   *
+   * <p>Set this from server middleware; the adapter never reads a nonce from client headers.
+   */
   public static final String CSP_NONCE_ATTRIBUTE = InertiaMvcConfigurer.class.getName() + ".nonce";
+
   private static final String CONTEXT = InertiaMvcConfigurer.class.getName() + ".context";
   private final PageCodec codec;
   private static final String ADVICE_CONTEXT =
@@ -29,10 +48,25 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
   private final InertiaErrorPage errorPage;
   private final String sessionNamespace;
 
+  /**
+   * Creates the MVC integration with no custom error Page and the default session namespace.
+   *
+   * @param config application render policy and current version supplier
+   * @param renderer application-scoped renderer
+   * @param deadline positive maximum wait for Page rendering on the Servlet request thread
+   */
   public InertiaMvcConfigurer(InertiaConfig config, ResponseRenderer renderer, Duration deadline) {
     this(config, renderer, deadline, null);
   }
 
+  /**
+   * Creates the integration with an optional final error Page and default session namespace.
+   *
+   * @param config application render policy and current version supplier
+   * @param renderer application-scoped renderer
+   * @param deadline positive maximum wait for Page rendering on the Servlet request thread
+   * @param errorPage application safe-error policy, or null for plain-text fallback
+   */
   public InertiaMvcConfigurer(
       InertiaConfig config,
       ResponseRenderer renderer,
@@ -41,6 +75,16 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     this(config, renderer, deadline, errorPage, SessionStore.DEFAULT_NAMESPACE);
   }
 
+  /**
+   * Creates the integration with namespaced session effects and a default Page codec.
+   *
+   * @param config application render policy and current version supplier
+   * @param renderer application-scoped renderer
+   * @param deadline positive maximum wait for Page rendering on the Servlet request thread
+   * @param errorPage application safe-error policy, or null for plain-text fallback
+   * @param sessionNamespace validated session-state namespace
+   * @throws IllegalArgumentException if the namespace is invalid
+   */
   public InertiaMvcConfigurer(
       InertiaConfig config,
       ResponseRenderer renderer,
@@ -50,7 +94,23 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     this(config, renderer, deadline, errorPage, sessionNamespace, new PageCodec());
   }
 
-  /** Use the same codec for rendering and request-owned flash/error effects. */
+  /**
+   * Creates the integration using the same codec for rendering and request-owned effects.
+   *
+   * <p>Use this overload when configuring Jackson modules or serializers. This constructor
+   * validates codec and namespace, but budget ordering/positivity must be validated by the
+   * application or Boot properties. It does not take ownership of renderer dependencies or their
+   * shutdown.
+   *
+   * @param config application render policy and current version supplier
+   * @param renderer application-scoped renderer
+   * @param deadline positive maximum wait for Page rendering on the Servlet request thread
+   * @param errorPage application safe-error policy, or null for plain-text fallback
+   * @param sessionNamespace validated session-state namespace
+   * @param codec non-null codec shared with the renderer
+   * @throws IllegalArgumentException if the namespace is invalid
+   * @throws NullPointerException if codec is null
+   */
   public InertiaMvcConfigurer(
       InertiaConfig config,
       ResponseRenderer renderer,
@@ -66,6 +126,15 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     this.sessionNamespace = SessionStore.requireNamespace(sessionNamespace);
   }
 
+  /**
+   * Registers protocol pre-processing only for explicitly typed Inertia handlers.
+   *
+   * <p>A version-conflict response bypasses controller invocation and session creation. Otherwise
+   * the adapter captures metadata and attaches request-owned context/session state before argument
+   * binding.
+   *
+   * @param registry MVC interceptor registry
+   */
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(
@@ -136,6 +205,14 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     return snapshot;
   }
 
+  /**
+   * Adds one final Inertia error resolver after application ExceptionHandler resolution.
+   *
+   * <p>The fallback uses a fresh sessionless error context and attempts one error Page before plain
+   * text. It does not consume the failed Page's restored one-time delivery or handle ordinary REST.
+   *
+   * @param resolvers ordered mutable MVC exception-resolver list
+   */
   @Override
   public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
     int position = 0;
@@ -173,6 +250,14 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
         || HttpOutcome.class.equals(parameter.getParameterType());
   }
 
+  /**
+   * Registers request/context arguments for participating typed handlers and typed advice.
+   *
+   * <p>Typed error Page advice gets a fresh sessionless context. Typed outcome advice retains the
+   * original store/namespace for its own new effects; invalidated or detached state is not rebound.
+   *
+   * @param resolvers mutable MVC argument-resolver list
+   */
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
     resolvers.add(
@@ -201,6 +286,14 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
         });
   }
 
+  /**
+   * Registers typed Page/outcome handlers with bounded waiting and pre-write effect completion.
+   *
+   * <p>Timeout or interruption aborts context delivery and cancels the pending render. A redirect
+   * commits its pending effects before writing. Later write failure cannot undo completed delivery.
+   *
+   * @param handlers mutable MVC return-value-handler list
+   */
   @Override
   public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
     handlers.add(
