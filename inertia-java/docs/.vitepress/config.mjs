@@ -35,12 +35,12 @@ export default defineConfig({
   locales: {
     root: { label: 'English', lang: 'en-US' },
     zh: {
-      label: '简体中文', lang: 'zh-CN', description: 'Inertia Java 优先路径中文文档；英文为规范正文。',
+      label: '简体中文', lang: 'zh-CN', description: '使用 Java 21 和 Spring MVC 构建 Inertia 应用。',
       themeConfig: {
         nav: [
           { text: '开始使用', link: '/zh/getting-started/overview' },
           { text: '配置参考', link: '/zh/reference/configuration' },
-          { text: 'API 指南（英文）', link: '/api-guide' },
+          { text: 'API 指南', link: '/zh/api-guide' },
         ],
         sidebar: chineseSidebar,
         outline: { label: '本页目录', level: [2, 3] },

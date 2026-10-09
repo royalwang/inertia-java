@@ -9,7 +9,7 @@
   },
   "scripts": {
     "docs:dev": "node scripts/prepare.mjs && vitepress dev .",
-    "docs:check": "node scripts/prepare.mjs && markdownlint-cli2 && node scripts/check.mjs && node scripts/check-readme.mjs && node scripts/check-api.mjs && node --test scripts/check-api.test.mjs scripts/translations.test.mjs scripts/versions.test.mjs scripts/external-links.test.mjs && python3 scripts/site-archive-test.py && python3 scripts/dependency-inventory-test.py",
+    "docs:check": "node scripts/prepare.mjs && markdownlint-cli2 && node scripts/check.mjs && node scripts/check-readme.mjs && node scripts/check-api.mjs && node --test scripts/check-api.test.mjs scripts/markdown-headings.test.mjs scripts/translations.test.mjs scripts/versions.test.mjs scripts/external-links.test.mjs && python3 scripts/site-archive-test.py && python3 scripts/dependency-inventory-test.py",
     "docs:build": "node scripts/prepare.mjs && vitepress build .",
     "docs:preview": "vitepress preview .",
     "docs:smoke": "node scripts/smoke.mjs",

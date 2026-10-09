@@ -4,7 +4,7 @@ import { resolve, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
-import GithubSlugger from 'github-slugger'
+import { siteHeadings } from './markdown-headings.mjs'
 import { readRegistry, validateRegistry } from './versions.mjs'
 import { checkTranslations } from './translations.mjs'
 
@@ -30,13 +30,7 @@ const fail = message => errors.push(message)
 const ids = new Map(catalog.pages.map(page => [page.id, page]))
 if (ids.size !== catalog.pages.length) fail('Duplicate page IDs')
 if (new Set(catalog.pages.map(page => page.path)).size !== catalog.pages.length) fail('Duplicate page paths')
-const headings = file => {
-  const tokens = md.parse(matter(readFileSync(file, 'utf8')).content, {})
-  const slugger = new GithubSlugger()
-  const anchors = new Set()
-  for (let i = 0; i < tokens.length; i++) if (tokens[i].type === 'heading_open') anchors.add(slugger.slug(tokens[i + 1].content.replace(/`/g, '')))
-  return anchors
-}
+const headings = file => new Set(siteHeadings(readFileSync(file, 'utf8'), file))
 const visit = (id, path = []) => {
   if (path.includes(id)) { fail('Dependency cycle: ' + [...path, id].join(' -> ')); return }
   for (const dependency of ids.get(id)?.dependsOn ?? []) {

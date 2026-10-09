@@ -44,4 +44,4 @@ verification:
 
 禁用 JavaScript 确认文档首屏，再启用 JavaScript 验证导航/表单。带当前版本的 Inertia GET 应返回 JSON 且不调用 Node。只停止自己启动的 renderer，检查默认 fallback 或 required-SSR 策略。
 
-部署前继续阅读[资源（英文）](../../ssr/vite-assets.md)、[root template（英文）](../../ssr/root-template.md)和 [gateway 限制（英文）](../../ssr/gateway.md)。缓存健康状态不能代替实际 Page 渲染验收。
+部署前继续阅读[资源](vite-assets.md)、[root template](root-template.md)和 [gateway 限制](gateway.md)。缓存健康状态不能代替实际 Page 渲染验收。

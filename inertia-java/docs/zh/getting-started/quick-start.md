@@ -81,4 +81,4 @@ curl -i -H 'X-Inertia: true' -H "X-Inertia-Version: $BUILD_ID" http://127.0.0.1:
 
 只停止自己启动的 Node，保持 Java 运行，启用 JavaScript 后重载 `/users`。默认页面返回 CSR shell，由 React 挂载；禁用 JavaScript 时没有首屏内容。这是正常降级，不能称为 SSR 成功。
 
-完成后用 Ctrl-C 停止自己启动的 Java。源码编辑见[开发模式（英文）](../../getting-started/development.md)，仓库外应用见[第一个应用](first-application.md)。自动化浏览器检查见[浏览器测试（英文）](../../testing/browser-tests.md)。
+完成后用 Ctrl-C 停止自己启动的 Java。源码编辑见[开发模式](development.md)，仓库外应用见[第一个应用](first-application.md)。自动化浏览器检查见[浏览器测试](../testing/browser-tests.md)。

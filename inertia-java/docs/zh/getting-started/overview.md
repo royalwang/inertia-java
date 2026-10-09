@@ -29,7 +29,7 @@ Inertia Java 实现这套服务端协议，参考本仓库的 Rust 实现，同�
 4. 对首次文档请求，调用配置好的 Node 渲染器获得 HTML，再把 Page 和资源标签装入应用的 root view。
 5. React 对已有 HTML 执行 hydration。之后官方 `Link` 导航携带 Inertia 请求头，获得 Page JSON，而不是另一份完整文档。
 
-HTML 访问可以不启用 SSR。SSR 失败时，默认策略返回可由客户端渲染的外壳；使用 `requireSsr()` 的响应在无法提供 SSR 时返回安全的 503。JSON 访问不调用 Node。完整区别见[渲染模式（英文）](../../concepts/rendering.md)。
+HTML 访问可以不启用 SSR。SSR 失败时，默认策略返回可由客户端渲染的外壳；使用 `requireSsr()` 的响应在无法提供 SSR 时返回安全的 503。JSON 访问不调用 Node。完整区别见[渲染模式](../concepts/rendering.md)。
 
 ## 选择集成方式
 
@@ -37,7 +37,7 @@ HTML 访问可以不启用 SSR。SSR 失败时，默认策略返回可由客户�
 | --- | --- |
 | Servlet Spring MVC + Boot | `inertia-spring-boot-starter` 和应用提供的 `InertiaConfig` bean |
 | 不使用 Boot 的 Spring MVC | `inertia-spring-webmvc`，显式配置 configurer、executor 和会话 listener |
-| 其他 Java HTTP 框架 | `inertia-core`，按 [API 指南中的生命周期（英文）](../../api-guide.md#core-integration-and-ownership)实现适配器 |
+| 其他 Java HTTP 框架 | `inertia-core`，按 [API 指南中的生命周期](../api-guide.md#核心集成与所有权)实现适配器 |
 
 示例使用 React 与 Node；可复用核心不依赖 React、Spring、Node 或数据库。其他客户端/框架组合需要单独集成和验收，当前 React 证据不能代表所有 Inertia 客户端。
 
@@ -49,4 +49,4 @@ HTML 访问可以不启用 SSR。SSR 失败时，默认策略返回可由客户�
 
 ## 下一步
 
-通过[快速上手](quick-start.md)运行仓库示例，或通过[安装](installation.md)为自己的应用选择依赖。修改锁定客户端或运行时前，先阅读[兼容版本（英文）](../../getting-started/compatibility.md)。
+通过[快速上手](quick-start.md)运行仓库示例，或通过[安装](installation.md)为自己的应用选择依赖。修改锁定客户端或运行时前，先阅读[兼容版本](compatibility.md)。

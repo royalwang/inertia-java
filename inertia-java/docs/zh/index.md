@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: home
   source: index.md
-  sourceRevision: e867a2e5eb79f901674327ebb9158ce749eb1a15a441293247df1baf0c4165a0
+  sourceRevision: 6d7da52d4372b23a53abed8fbfa4b5a8b879b1153083c880bfbb4d646e3b174b
 sources:
 - inertia-java/pom.xml
 - inertia-java/README.md
@@ -25,15 +25,17 @@ verification:
 
 | 目标 | 下一步 |
 | --- | --- |
-| 理解 Java、Node 与浏览器如何协作 | [项目概览](getting-started/overview.md) |
-| 观察 SSR 首屏与浏览器导航 | [运行 React 示例](getting-started/quick-start.md) |
-| 在仓库外创建独立应用 | [第一个 Spring 应用](getting-started/first-application.md) |
-| 选择依赖并接入既有应用 | [安装](getting-started/installation.md)，再读 [API 指南（英文）](../api-guide.md) |
-| 实现表单与校验 | [表单与校验](guide/forms-validation.md)，以及[认证（英文）](../guide/authentication.md)和 [CSRF（英文）](../guide/csrf.md) |
-| 配置 SSR 与排查降级 | [SSR 设置](ssr/setup.md)、[错误原因](reference/errors.md)与 [SSR 排查（英文）](../troubleshooting/ssr-hydration.md) |
-| 查默认值与 API 签名 | [配置参考](reference/configuration.md)、[核心 API 地图（英文）](../reference/core-api.md)和 [Javadoc（英文）](../reference/javadoc.md) |
-| 理解交付与故障边界 | [请求生命周期](concepts/request-lifecycle.md)与[启动排错](troubleshooting/startup.md) |
-| 发布、测试或贡献 | [部署（英文）](../deployment/build-release.md)、[测试（英文）](../testing/browser-tests.md)与[贡献（英文）](../community/contributing.md) |
+| 理解项目架构 | [什么是 Inertia Java？](getting-started/overview.md) |
+| 观察 SSR 与浏览器导航 | [运行 React 示例](getting-started/quick-start.md) |
+| 在仓库外创建应用 | [第一个 Spring 应用](getting-started/first-application.md) |
+| 接入既有 Java 应用 | [安装](getting-started/installation.md)，再读 [API 指南](api-guide.md) |
+| 构建表单并保护写操作 | [表单与校验](guide/forms-validation.md)、[认证](guide/authentication.md)与 [CSRF](guide/csrf.md) |
+| 控制加载与客户端状态 | [加载策略](props/loading.md)、[局部访问](props/partial-reloads.md)、[合并](props/merging.md)与 [once](props/once.md) |
+| 配置渲染与诊断 | [SSR 设置](ssr/setup.md)、[降级](ssr/fallback.md)与[可观测性](integrations/observability.md) |
+| 查找默认值和签名 | [配置参考](reference/configuration.md)、[API 地图](reference/core-api.md)与 [Javadoc](reference/javadoc.md) |
+| 发布应用或诊断问题 | [部署](deployment/build-release.md)、[测试](testing/browser-tests.md)与[故障排查](troubleshooting/startup.md) |
+| 参与贡献或获取帮助 | [贡献](community/contributing.md)、[支持](community/support.md)与[安全报告](community/security.md) |
+| 理解生命周期与所有权规则 | [请求生命周期](concepts/request-lifecycle.md)，再读[所有权](concepts/ownership.md) |
 
 ## 库提供什么
 
@@ -47,6 +49,6 @@ verification:
 
 ## 文档语言
 
-英文是规范正文。中文文档覆盖入门流程和部分应用指南，其他内容可阅读英文版本。尚未翻译的页面在中文侧栏中标有“英文”。
+英文是规范正文。中文文档覆盖完整指南库，包括入门、应用功能、API 指南、部署及社区说明。可以通过页面上方的对应链接切换语言；API 名称、命令和可执行示例在两种语言中保持一致。
 
-Inertia Java 使用 [Apache-2.0 许可证（英文）](../community/license.md)。
+Inertia Java 使用 [Apache-2.0 许可证](community/license.md)。

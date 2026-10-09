@@ -60,7 +60,7 @@ starter 传递引入可选 SSR/Vite 库，但不启动 Node、不生成 React �
 
 starter 在 `inertia.*` 下绑定执行和会话设置，包括 props/response 截止时间、executor 大小和 `session-namespace`。组件、root template、Vite 资源和 SSR endpoint 由配置 bean 提供。示例的 `-Dinertia.frontend` 等 JVM 参数属于示例应用，不是通用 starter 属性。
 
-正式属性和 bean 替换规则见[配置参考](../reference/configuration.md)及 [API 配置表（英文）](../../api-guide.md#boot-configuration-and-replacement-beans)。
+正式属性和 bean 替换规则见[配置参考](../reference/configuration.md)及 [API 配置表](../api-guide.md#boot-配置与-bean-替换)。
 
 ## 排查依赖解析
 
@@ -68,4 +68,4 @@ starter 在 `inertia.*` 下绑定执行和会话设置，包括 props/response �
 
 私有仓库发布应使用已授权的 snapshot 流程，包含完整 parent/module POM 和 jar。分发包内 Maven 子目录是发布输入，不代表已具备远端 snapshot metadata、凭据、签名或命名空间授权。
 
-继续阅读[第一个应用](first-application.md)，或使用 [API 指南（英文）](../../api-guide.md)了解最小协议集成。
+继续阅读[第一个应用](first-application.md)，或使用 [API 指南](../api-guide.md)了解最小协议集成。

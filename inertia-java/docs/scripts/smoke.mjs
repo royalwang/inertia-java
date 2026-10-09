@@ -82,6 +82,16 @@ try {
     assert.equal(await source.getAttribute('download'), null)
   }
   check.evidence.phases.push({ name: 'tutorial-source-links', languages: ['en', 'zh-CN'], canonicalRepositoryPath: true })
+  const renderedAnchors = new Map(), renderedLinks = []
+  const inspectRenderedLinks = async () => {
+    const state = await page.evaluate(() => ({
+      path: location.pathname,
+      anchors: [...document.querySelectorAll('.vp-doc [id]')].map(element => element.id),
+      links: [...document.querySelectorAll('.vp-doc a[href]')].map(link => ({ path: new URL(link.href).pathname, anchor: new URL(link.href).hash.slice(1), origin: new URL(link.href).origin })),
+    }))
+    renderedAnchors.set(decodeURIComponent(state.path), new Set(state.anchors))
+    renderedLinks.push(...state.links.filter(link => link.origin === new URL(url).origin).map(link => ({ ...link, from: state.path })))
+  }
   const available = catalog.pages.filter(item => item.status !== 'planned')
   for (const item of available) {
     const route = item.path === 'index.md' ? '' : item.path.replace(/\.md$/, '')
@@ -89,6 +99,9 @@ try {
     assert.equal(response.status(), 200, item.path)
     await page.locator('.vp-doc h1').waitFor()
     assert.equal(await page.locator('.source-notes').count(), 0, 'Unexpected source inventory: ' + item.path)
+    await inspectRenderedLinks()
+    const counterpart = page.locator('.translation-notice a').first()
+    assert.equal(await counterpart.evaluate(link => new URL(link.href).pathname), base + 'zh/' + route)
     if (item.id !== 'home') assert.ok(await page.locator(`a[href="${base + route}"]`).count() > 0, 'Missing navigation: ' + item.path)
   }
   check.evidence.phases.push({ name: 'direct-page-loads', pages: available.length })
@@ -157,6 +170,11 @@ try {
     assert.equal(response.status(), 200, item.path)
     await page.locator('.vp-doc h1').filter({ hasText: item.title }).waitFor()
     assert.equal(await page.locator('html').getAttribute('lang'), 'zh-CN')
+    assert.equal(await page.locator('.source-notes').count(), 0, item.path)
+    assert.equal(await page.locator('#VPSidebarNav a').filter({ hasText: /（英文）/ }).count(), 0, 'English fallback in complete Chinese sidebar')
+    const sidebarPaths = await page.locator('#VPSidebarNav a').evaluateAll(links => links.map(link => new URL(link.href).pathname))
+    assert.ok(sidebarPaths.every(path => path.startsWith(base + 'zh/')), 'Chinese sidebar escapes locale: ' + item.path)
+    await inspectRenderedLinks()
     const original = catalog.pages.find(entry => entry.id === item.id)
     const originalRoute = original.path === 'index.md' ? '' : original.path.replace(/\.md$/, '')
     const counterpart = page.locator('.translation-notice a').first()
@@ -167,23 +185,30 @@ try {
   await page.waitForURL(url + 'zh/getting-started/quick-start')
   await page.locator('.translation-notice').getByRole('link', { name: '查看对应英文' }).click()
   await page.waitForURL(url + 'getting-started/quick-start')
+  for (const link of renderedLinks) {
+    const target = renderedAnchors.get(decodeURIComponent(link.path))
+    if (target && link.anchor) assert.ok(target.has(decodeURIComponent(link.anchor)), `Missing rendered anchor: ${link.from} -> ${link.path}#${link.anchor}`)
+    if (link.from.startsWith(base + 'zh/') && target) assert.ok(link.path.startsWith(base + 'zh/'), 'Chinese article links to English: ' + link.from + ' -> ' + link.path)
+  }
+  check.evidence.phases.push({ name: 'bilingual-rendered-links', pages: renderedAnchors.size, sameLocaleChineseLinks: true, actualHeadingAnchors: true })
   await page.goto(url + 'props/basics')
-  await page.locator('.translation-notice').getByText('this page has no Chinese translation.', { exact: false }).waitFor()
-  await page.locator('.translation-notice').getByRole('link', { name: '中文优先文档' }).click()
-  await page.waitForURL(url + 'zh/')
-  await page.locator('.vp-doc h1').filter({ hasText: 'Inertia Java 中文文档' }).waitFor()
+  await page.locator('.translation-notice').getByRole('link', { name: '阅读本页中文译文' }).click()
+  await page.waitForURL(url + 'zh/props/basics')
+  await page.goto(url + 'zh/')
   await page.getByRole('heading', { name: '应用指南', exact: true }).click()
-  const englishFallback = page.locator('#VPSidebarNav a[href="' + base + 'guide/authentication"]')
-  await englishFallback.filter({ hasText: /（英文）/ }).waitFor()
-  assert.match(await englishFallback.textContent(), /（英文）/)
-  await englishFallback.click()
-  await page.waitForURL(url + 'guide/authentication')
-  await page.locator('.vp-doc h1').filter({ hasText: 'Authentication and authorization' }).waitFor()
+  const authentication = page.locator('#VPSidebarNav a[href="' + base + 'zh/guide/authentication"]')
+  await authentication.click()
+  await page.waitForURL(url + 'zh/guide/authentication')
+  await page.locator('.vp-doc h1').filter({ hasText: '认证与授权' }).waitFor()
   await page.goto(url + 'zh/')
   for (const [term, title, route] of [
     ['校验', '表单与校验', 'zh/guide/forms-validation'],
     ['预算', '配置参考', 'zh/reference/configuration'],
-    ['会话', '请求与响应生命周期', 'zh/concepts/request-lifecycle'],
+    ['会话', 'Flash 与会话交付', 'zh/guide/flash-session'],
+    ['生命周期', '请求与响应生命周期', 'zh/concepts/request-lifecycle'],
+    ['深度合并', '追加、前插与深度合并', 'zh/props/merging'],
+    ['渲染器健康', '渲染器健康与恢复', 'zh/ssr/health'],
+    ['私密', '报告安全问题', 'zh/community/security'],
   ]) {
     await page.getByRole('button', { name: /搜索文档/ }).first().click()
     await page.locator('#localsearch-input').fill(term)
@@ -194,7 +219,17 @@ try {
   await page.goto(url + 'zh/concepts/request-lifecycle')
   const chineseDownload = page.getByRole('link', { name: 'CoreApiExample.java', exact: true })
   assert.equal(await chineseDownload.getAttribute('href'), base + 'examples/CoreApiExample.java')
-  check.evidence.phases.push({ name: 'chinese-priority-journeys', pages: translations.length, perPageEnglishCounterparts: true, untranslatedEnglishFallback: true, chineseSearchNavigation: ['校验', '预算', '会话'], canonicalSourceDownload: true })
+  await page.goto(url + 'zh/reference/javadoc')
+  for (const module of api.modules) {
+    const entry = page.locator(`.vp-doc a[href$="${module.id}/index.html"]`)
+    assert.equal(await entry.count(), 1, 'Chinese Javadoc entry: ' + module.id)
+    assert.equal(await entry.evaluate(link => new URL(link.href).pathname), base + apiRoot + module.id + '/index.html')
+  }
+  await page.goto(url + 'zh/api-guide')
+  for (const name of ['CoreApiExample.java', 'SpringApiExample.java']) assert.equal(await page.getByRole('link', { name, exact: true }).getAttribute('href'), base + 'examples/' + name)
+  await page.goto(url + 'zh/community/security')
+  assert.equal(await page.locator('.vp-doc a[href="https://github.com/royalwang/inertia-java/security/advisories/new"]').count(), 1)
+  check.evidence.phases.push({ name: 'complete-chinese-guides', pages: translations.length, perPageEnglishCounterparts: true, allSidebarLinksChinese: true, chineseSearchNavigation: ['校验', '预算', '会话', '生命周期', '深度合并', '渲染器健康', '私密'], canonicalSourceDownload: true, javadocEntries: api.modules.length, privateSecurityReportLink: true })
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto(url + 'getting-started/quick-start')
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'Mobile horizontal overflow')

@@ -1,6 +1,6 @@
 # Inertia Java 开源文档库规划
 
-日期：2026-10-09。代码基线：`86d5c3e`。状态：实施中；D0–D2已有本地可验收交付；D3的27篇正文与实际Javadoc站点入口已落地，D4的11篇优先中文与修订检查已落地；六个运行库公开成员说明与严格doclint已完成本地验收；公开Pages已部署；私密安全报告已由维护者确认启用；真实版本快照待首次稳定版发布时验收。具体状态见第10节。
+日期：2026-10-10（全量中文更新）。代码基线：`86d5c3e`。状态：实施中；D0–D2已有本地可验收交付；D3的27篇正文与实际Javadoc站点入口已落地，D4已扩展为全部70篇中文及修订检查；六个运行库公开成员说明与严格doclint已完成本地验收；公开Pages已部署；私密安全报告已由维护者确认启用；真实版本快照待首次稳定版发布时验收。具体状态见第10节。
 
 目标是让外部开发者完成“理解产品 → 跑通示例 → 接入自己的 Spring 应用 → 使用高级能力 → 测试和部署 → 参与贡献”，不依赖阅读实施流水账或 Rust 源码。
 
@@ -174,13 +174,13 @@ npm --prefix inertia-java/docs run docs:smoke
 
 ### 托管与权限
 
-仓库已重定向至 `royalwang/inertia-java`。维护者已确认使用 GitHub Pages 仓库根路径：`https://royalwang.github.io/inertia-java/`，VitePress base 为 `/inertia-java/`。初期读取元数据时`has_pages=false`；后续维护者完成配置并手动发布，发布run 37939084658的build/deploy均success，当前元数据为`has_pages=true`，英文/中文首页均HTTP200。当前连接器仍仅有pull权限，private-reporting状态未核实。需要独立域名时再配置 DNS 与 base。
+仓库已重定向至 `royalwang/inertia-java`。维护者已确认使用 GitHub Pages 仓库根路径：`https://royalwang.github.io/inertia-java/`，VitePress base 为 `/inertia-java/`。初期读取元数据时`has_pages=false`；后续维护者完成配置并手动发布，发布run 37939084658的build/deploy均success，当前元数据为`has_pages=true`，英文/中文首页均HTTP200。当前连接器仍仅有pull权限；维护者已明确确认启用GitHub Private vulnerability reporting。需要独立域名时再配置 DNS 与 base。
 
 Pull request 只构建/归档站点预览，不持有部署写权限；可信主分支/正式tag才允许部署。workflow中 Actions 固定commit、docs依赖锁定、Pages deployment串行化，失败保留旧站；按站点需要给 `pages:write`/`id-token:write`，不修改Java库现有CI权限。D0验证文档预览；公开 Pages 部署属于后续实施动作，本轮不更改远端设置。
 
 ## 8. 语言、贡献与维护机制
 
-英文作为开源正文真源，中文为优先第二语言；本规划用中文。D4先翻译 overview/installation/quick-start/first-application、核心生命周期、forms、SSR setup、配置与常见错误，保留同一page ID，标记对应库版本与英文revision。未翻译内容显示明确的英文入口，不生成看似已有的空中文页。API名字、属性名和错误码不翻译。
+英文作为开源正文真源，中文为完整第二语言；本规划用中文。D4最初先交付11篇优先页面，后续按维护者要求扩展到全部70篇目录正文，保留同一page ID，标记对应库版本与英文revision。中文侧栏、正文链接及API指南使用对应中文路径；生成Javadoc和上游参考保持原语言。API名字、属性名和错误码不翻译，不生成空中文占位页。
 
 新增 `inertia-java/CONTRIBUTING.md` 和 `SECURITY.md`，由仓库已有维护机制收集实际联系渠道，不编造安全邮箱、维护者团队或支持SLA。贡献文档需涵盖问题报告最小信息、设计讨论、代码/文档变更、focused checks、许可证与第三方归属、release notes；贡献者行为准则采用维护者实际认可的政策后再对外发布。
 
@@ -196,7 +196,7 @@ Pull request 只构建/归档站点预览，不持有部署写权限；可信主
 | D1 可上手预览 | Home + Getting started7页 + Concepts5页，共13新页；现有API guide可读 | 干净checkout跑示例；仓库外新应用教程完整；JS禁用首屏和HTML/JSON/表单；英文用户无需工程流水账即可上手 |
 | D2 应用功能指南 | Guide9 + Props9 + SSR6 + Integrations5，共29页 | 每个主题有完整来源/示例/结果；deferred/merge/once/scroll/auth/CSRF有对应交互；应用配置与库配置准确区分 |
 | D3 完整首版文档库 | Deployment5 + Reference8 + Testing4 + Troubleshooting5 + Community5，共27页；Javadoc补全/站点入口；发布政策 | 所有69拟新增页及既有API guide审查通过；全部公开导航/搜索/链接/示例可用；公开符号/配置无遗漏；确认托管和维护渠道后发布网站 |
-| D4 中文与持续维护 | 优先路径中文、翻译状态追踪、版本快照和升级文档流程 | 关键路径与对应英文版本一致；发布tag构建可重现；不将部分中文覆盖宣称为完整双语站 |
+| D4 中文与持续维护 | 全部70篇中文、翻译状态追踪、版本快照和升级文档流程 | 全部目录正文与对应英文修订一致；导航/链接/锚点/搜索/移动端可用；发布tag构建可重现，真实tag验收随正式版本发布进行 |
 
 D1是可上手预览，D3才可称完整首版开源文档库。每页完成需同时满足：正文覆盖读者结果；API/参数有源码依据；示例编译或操作实测；必要的异常反馈和恢复可执行；内部链接/搜索正确；版本状态明确；已审查并进入导航。只有标题、复制流水账、TODO或自动生成签名都不满足完成条件。
 
@@ -209,12 +209,12 @@ D1是可上手预览，D3才可称完整首版开源文档库。每页完成需�
 - D1：Home、Getting started 7页、Concepts 5页，共13篇新正文；既有 API guide 保持原路径。每页记录版本、源码和验证入口。完整仓库外 Spring 应用教程包含独立 POM、Java/React 示例与自动化实测；快速上手也从干净源文件副本重新构建验证。
 - D2：新增 Application guides 9篇、Props 9篇、SSR 6篇、Integrations 5篇，共29篇；各页提供任务步骤、来源、验证和明确边界。该阶段目录为43篇可读页面、27篇待写页面。八种真实浏览器场景、renderer健康恢复、43页导航/搜索与发布内容边界验证通过；保留为D2历史证据。
 - D3正文：新增部署5、参考8、测试4、排错5、社区5，共27篇；70条英文目录均有正文。实际七个Javadoc分类包进入版本化站点；71公开类型、496成员锚点、19核心/Boot配置字段和11指标名称有机器检查。贡献/安全文件与Java PR模板已建立；维护者已确认启用GitHub Private vulnerability reporting，安全政策已补充正式私密报告入口。
-- D4优先中文：11篇（首页、入门4、请求生命周期、表单、SSR设置、配置、错误、启动排错），保留canonical ID、版本与英文SHA-256修订。内置locale导航、每页中英对应、明确英文回退、标准分词搜索已接入；check拒绝过期修订/命令漂移/缺失或未登记中文页。
+- D4中文扩展：从11篇优先页面补齐至全部70篇（新增59篇），覆盖既有API指南及全部功能/部署/参考/测试/排错/社区正文；保留canonical ID、版本、源码证据与英文SHA-256修订。中文导航和正文链接进入对应中文页面，跨页片段使用实际中文标题锚点；生成Javadoc和上游资源保留原语言。check对每个目录ID强制要求已审校译文，拒绝过期修订、命令/API漂移及未登记中文页。本地140篇站点/搜索/移动导航与146文件发布选择通过；完整证据和公开发布边界见[全量中文验收](verification/documentation-full-chinese.json)。
 - Javadoc：六个运行库的44个公开源码类型文件已补齐用途/参数/所有权/结果/主要失败契约，record字段与enum值均有说明；父构建和六个模块默认完整doclint且warnings失败。71公开类型/496成员锚点、21个分类/运行包、85class签名/指令不变、core/MVC隔离缺失注释拒绝、81篇站点回归通过。初期增量记录保留为历史，当前证据见 [完整Javadoc验收](verification/documentation-javadoc-complete.json)。
 - 版本工具：已实现真实origin tag源码导出、稳定版本校验、静态归档及SHA-256登记、不可变版本合并与原生版本选择器；本地合同与next站点通过。远端当前没有release tag，registry为空；没有伪造正式版本或真实历史导航验收。
 - 文档工具清单：独立npm CycloneDX/lock核对、实际许可证文件与review项已落地，覆盖300个锁路径/291个组件；五项拒绝合同和本地站点验收通过。清单收集不是静态捆绑归属批准；README的44个专题迁移对应、原锚点及历史原文保留已完成；外链检查和只读手动workflow已落地，当前24个外部HTTP目的地可达，远程fragment/内容时效性不在该检查范围。
 - 站点交互：中英教程从canonical POM/Java/TSX原生导入完整源码；两种语言五种代码的实际键盘复制/可见焦点、搜索Enter/Ctrl-K/Escape和关闭焦点恢复已补验。见 [交互验收](verification/documentation-site-interactions.json)。
 - 未创建空正文，未将 D3/D4全部标记完成；真实tag版本快照待实际稳定版本发布时验收；公开API契约随源码维护并由严格检查保护。
-- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages已成功部署fd6ab5a；维护者已确认启用GitHub私密报告渠道。后续页底精简与安全入口修订另行记录于实施台账，需再次发布。
+- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages已成功部署fb0b870，页底精简与正式安全入口已在公开站核实；维护者已确认启用GitHub私密报告渠道。本轮全量中文扩展另行记录于实施台账，尚需发布。
 
 命令、验收边界及证据见 [文档实施台账](09-documentation-implementation.md)。

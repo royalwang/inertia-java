@@ -7,7 +7,7 @@
     "additional": [
       "zh-CN"
     ],
-    "translationPolicy": "D4 priority journeys; translations track canonical page IDs and reviewed version.",
+    "translationPolicy": "Complete Chinese guide library; every canonical page has a reviewed translation with matching source revision.",
     "translationPriority": [
       "home",
       "getting-started/overview",
@@ -22,14 +22,14 @@
       "troubleshooting/startup"
     ],
     "translationRevision": "sha256 of canonical English Markdown bytes; changes require human review",
-    "priorityStatus": "11 priority pages locally verified; canonical English revisions, locale navigation and search checked"
+    "translationCoverage": "all"
   },
   "site": {
     "engine": "VitePress",
     "candidateVersion": "1.6.4",
     "root": "inertia-java/docs",
     "defaultBase": "/inertia-java/",
-    "deploymentStatus": "manual-workflow-prepared-not-deployed",
+    "deploymentStatus": "published-fb0b870; complete Chinese expansion pending publication",
     "implementedVersion": "1.6.4",
     "buildStatus": "local-verified-preview",
     "hostingDecision": "GitHub Pages repository root /inertia-java/ (maintainer confirmed)",
@@ -57,7 +57,7 @@
       "registeredReleases": 0,
       "policy": "Actual origin tag, stable matching Maven/catalog/pages, immutable source commit and verified archive SHA-256; no synthetic published releases"
     },
-    "hostingObserved": "GitHub repository API has_pages=false; connected app pull=true, push/admin=false; no deployment or settings mutation"
+    "hostingObserved": "GitHub Pages deployment 37966591198 succeeded at fb0b870; live home/security/tutorial HTTP 200, source footer absent and private-report link present. New full Chinese coverage has not been published."
   },
   "sections": [
     {
@@ -1187,7 +1187,7 @@
       "path": "zh/index.md",
       "title": "Inertia Java 中文文档",
       "status": "reviewed",
-      "sourceRevision": "e867a2e5eb79f901674327ebb9158ce749eb1a15a441293247df1baf0c4165a0"
+      "sourceRevision": "6d7da52d4372b23a53abed8fbfa4b5a8b879b1153083c880bfbb4d646e3b174b"
     },
     {
       "id": "getting-started/overview",
@@ -1222,12 +1222,92 @@
       "sourceRevision": "9fcd82a56dc63aab8bcc3382fc4931a2aab8720ee56a68eae65c16b2f46dd0d6"
     },
     {
+      "id": "getting-started/development",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/development.md",
+      "title": "开发工作流",
+      "status": "reviewed",
+      "sourceRevision": "f01f2fabf066509df26d64ae7fd8195759f079f22ec1f18b1e0c17868e970e88"
+    },
+    {
+      "id": "getting-started/project-structure",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/project-structure.md",
+      "title": "项目与模块结构",
+      "status": "reviewed",
+      "sourceRevision": "a4fd9086a55a63dcd1c332d4cb1dbd43ad627c22e962efe411505c9f15ff606b"
+    },
+    {
+      "id": "getting-started/compatibility",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/compatibility.md",
+      "title": "支持版本与分发状态",
+      "status": "reviewed",
+      "sourceRevision": "b25ea90281722db0cca3dc09a61f469728a50009613ba2f446d9f50e6371a5bc"
+    },
+    {
       "id": "concepts/request-lifecycle",
       "locale": "zh-CN",
       "path": "zh/concepts/request-lifecycle.md",
       "title": "请求与响应生命周期",
       "status": "reviewed",
       "sourceRevision": "b0f99e20923e9d9a41a66ae15abc8f85c74c5c640fbd5e3d2b431b85743c218e"
+    },
+    {
+      "id": "concepts/protocol",
+      "locale": "zh-CN",
+      "path": "zh/concepts/protocol.md",
+      "title": "Inertia 协议",
+      "status": "reviewed",
+      "sourceRevision": "9afce1dd7a97079af5d73041b3b805d4417c941242486f0f0d51ba78720bec29"
+    },
+    {
+      "id": "concepts/ownership",
+      "locale": "zh-CN",
+      "path": "zh/concepts/ownership.md",
+      "title": "状态、身份与所有权",
+      "status": "reviewed",
+      "sourceRevision": "2c5beb536483084fed31bf0460d4ca2eddfc35d5ff04b48d913e31e970cb3cc3"
+    },
+    {
+      "id": "concepts/rendering",
+      "locale": "zh-CN",
+      "path": "zh/concepts/rendering.md",
+      "title": "SSR、hydration 与 CSR",
+      "status": "reviewed",
+      "sourceRevision": "09c8d1bc05adf0a64123bef63265f771bb67dd3a1dbf287aad00b48b563d3b44"
+    },
+    {
+      "id": "concepts/versioning",
+      "locale": "zh-CN",
+      "path": "zh/concepts/versioning.md",
+      "title": "构建与资源版本",
+      "status": "reviewed",
+      "sourceRevision": "2d89efc0f220c2c7ffd1b878fc20300f0f6b0e10519501dcbc6b57ef43428825"
+    },
+    {
+      "id": "guide/pages",
+      "locale": "zh-CN",
+      "path": "zh/guide/pages.md",
+      "title": "页面、控制器与组件",
+      "status": "reviewed",
+      "sourceRevision": "4268d8b3c1b0836529fbb8b0834536b09805b2d1223e92f4956b8acbde3d61f4"
+    },
+    {
+      "id": "guide/responses",
+      "locale": "zh-CN",
+      "path": "zh/guide/responses.md",
+      "title": "响应、状态码与请求头",
+      "status": "reviewed",
+      "sourceRevision": "175a2b05b0af72d33719b17baa41e88ae9f260efcde9a326081d690abf1a5be1"
+    },
+    {
+      "id": "guide/shared-data",
+      "locale": "zh-CN",
+      "path": "zh/guide/shared-data.md",
+      "title": "共享数据与覆盖",
+      "status": "reviewed",
+      "sourceRevision": "2a23f5fcb468c521559516b8e3540a08f36fddc91be5cb795a1f75bd9de937bd"
     },
     {
       "id": "guide/forms-validation",
@@ -1238,12 +1318,244 @@
       "sourceRevision": "a3f7d1df18c6d91c39b7848816c8efddf256bc3165f144e922a60ea982466d82"
     },
     {
+      "id": "guide/flash-session",
+      "locale": "zh-CN",
+      "path": "zh/guide/flash-session.md",
+      "title": "Flash 与会话交付",
+      "status": "reviewed",
+      "sourceRevision": "8d8b0bd379fe8986c476c2aba4b86dbdeceba2596eb79f7d205c35c592519290"
+    },
+    {
+      "id": "guide/authentication",
+      "locale": "zh-CN",
+      "path": "zh/guide/authentication.md",
+      "title": "认证与授权",
+      "status": "reviewed",
+      "sourceRevision": "a27191ef4b950e144effbd31ff93238730a48c03d4048b83af443dfbcfa05eb8"
+    },
+    {
+      "id": "guide/csrf",
+      "locale": "zh-CN",
+      "path": "zh/guide/csrf.md",
+      "title": "CSRF 与 cookie 处理",
+      "status": "reviewed",
+      "sourceRevision": "52d87f2be6f8cf613d14a98992e890fe4ba98a57d0b8691ea3991db01027f593"
+    },
+    {
+      "id": "guide/errors",
+      "locale": "zh-CN",
+      "path": "zh/guide/errors.md",
+      "title": "异常处理与错误页面",
+      "status": "reviewed",
+      "sourceRevision": "5dffad354cd264b4f66b520e3f8863dbbe96b30636fad33a4d3c3a44fca8834c"
+    },
+    {
+      "id": "guide/history-bigint",
+      "locale": "zh-CN",
+      "path": "zh/guide/history-bigint.md",
+      "title": "历史状态与精确整数",
+      "status": "reviewed",
+      "sourceRevision": "3a5e32a566e74b0f8fd84e9cc49c993af8d2cdaa1cb59f9b9fe588270d275b57"
+    },
+    {
+      "id": "props/basics",
+      "locale": "zh-CN",
+      "path": "zh/props/basics.md",
+      "title": "值、嵌套 props 与路径",
+      "status": "reviewed",
+      "sourceRevision": "ab7e449b540495cf51055bbe4d2753d1510a7a9f93db4dc13bd087e32ade8ab0"
+    },
+    {
+      "id": "props/loading",
+      "locale": "zh-CN",
+      "path": "zh/props/loading.md",
+      "title": "Lazy、optional 与 always props",
+      "status": "reviewed",
+      "sourceRevision": "c21e052d3efc3d5c60b2ec342b79dec1a214573df7d642417f89f688977210f2"
+    },
+    {
+      "id": "props/partial-reloads",
+      "locale": "zh-CN",
+      "path": "zh/props/partial-reloads.md",
+      "title": "局部重载",
+      "status": "reviewed",
+      "sourceRevision": "d0c968602a08c915255b3cf9ca5a440b58f6715a03f1df31d9ae7a855676cd2d"
+    },
+    {
+      "id": "props/deferred",
+      "locale": "zh-CN",
+      "path": "zh/props/deferred.md",
+      "title": "Deferred props 与 rescue",
+      "status": "reviewed",
+      "sourceRevision": "6a3e065174ae1aba23782a7ae2759d294f37ac3897a4b1d7cb3c910cb6e1fa55"
+    },
+    {
+      "id": "props/async-concurrency",
+      "locale": "zh-CN",
+      "path": "zh/props/async-concurrency.md",
+      "title": "异步 props、预算与取消",
+      "status": "reviewed",
+      "sourceRevision": "184cb379c0b9b945895fb1658c4cc6b3a5aa8cbc9f24f3f170fe09e1e120efae"
+    },
+    {
+      "id": "props/merging",
+      "locale": "zh-CN",
+      "path": "zh/props/merging.md",
+      "title": "追加、前插与深度合并",
+      "status": "reviewed",
+      "sourceRevision": "373571973df1c40d217075fef1dbbc1e94fed364307a2e8fe8c799d143cb3c7b"
+    },
+    {
+      "id": "props/once",
+      "locale": "zh-CN",
+      "path": "zh/props/once.md",
+      "title": "Once props、到期与刷新",
+      "status": "reviewed",
+      "sourceRevision": "69bd2df7db6c004c7466ff9dc196659e0f4b0422e0f712fd0f8f4b49ff0fe3e0"
+    },
+    {
+      "id": "props/scroll",
+      "locale": "zh-CN",
+      "path": "zh/props/scroll.md",
+      "title": "无限滚动与分页元数据",
+      "status": "reviewed",
+      "sourceRevision": "138c3a8917413f0908f4450b65c668172cb6048d8f3e4a0628614f8031fafe1a"
+    },
+    {
+      "id": "props/diagnostics",
+      "locale": "zh-CN",
+      "path": "zh/props/diagnostics.md",
+      "title": "Prop 错误与覆盖诊断",
+      "status": "reviewed",
+      "sourceRevision": "c05365abf103eebed29b83b85d8d48e6722d984ae47f5e7e0d54e0facd520ae6"
+    },
+    {
       "id": "ssr/setup",
       "locale": "zh-CN",
       "path": "zh/ssr/setup.md",
       "title": "设置 React 与 Node SSR",
       "status": "reviewed",
       "sourceRevision": "7829141a632cf94645034811ce7349e70f2fbab88e52c21b17a053b63eb1042a"
+    },
+    {
+      "id": "ssr/vite-assets",
+      "locale": "zh-CN",
+      "path": "zh/ssr/vite-assets.md",
+      "title": "Vite 资源与 manifest",
+      "status": "reviewed",
+      "sourceRevision": "c77d5940e9f6c2b7c7d82c882173284316a3882a9bb8634dc33970ae03d720a6"
+    },
+    {
+      "id": "ssr/root-template",
+      "locale": "zh-CN",
+      "path": "zh/ssr/root-template.md",
+      "title": "根模板与 CSP",
+      "status": "reviewed",
+      "sourceRevision": "dc97ab2a85e0041e0d7c0a3e991ff102495f301f133a91dbf4beff3717b795a9"
+    },
+    {
+      "id": "ssr/gateway",
+      "locale": "zh-CN",
+      "path": "zh/ssr/gateway.md",
+      "title": "HTTP SSR 网关",
+      "status": "reviewed",
+      "sourceRevision": "a9b63b32260237c1bc8ec3d966e446eb545d45e8beb6b1a0688f3fa7151ed368"
+    },
+    {
+      "id": "ssr/fallback",
+      "locale": "zh-CN",
+      "path": "zh/ssr/fallback.md",
+      "title": "CSR 降级与必需 SSR",
+      "status": "reviewed",
+      "sourceRevision": "3532db1b56af7185f7ecc544b17118f18eebd3b714d349d14a43cf66d61ac150"
+    },
+    {
+      "id": "ssr/health",
+      "locale": "zh-CN",
+      "path": "zh/ssr/health.md",
+      "title": "渲染器健康与恢复",
+      "status": "reviewed",
+      "sourceRevision": "14e5181b8363ab695aa9244852dafb3979d8d7a00ce53f24a749ab8d669770f4"
+    },
+    {
+      "id": "integrations/spring-boot",
+      "locale": "zh-CN",
+      "path": "zh/integrations/spring-boot.md",
+      "title": "Spring Boot starter",
+      "status": "reviewed",
+      "sourceRevision": "11659e32c2bfb544d6b731a61bf01cbf5ef33853ffe3942c0bbd050f9045086a"
+    },
+    {
+      "id": "integrations/spring-mvc",
+      "locale": "zh-CN",
+      "path": "zh/integrations/spring-mvc.md",
+      "title": "独立 Spring MVC",
+      "status": "reviewed",
+      "sourceRevision": "0f1f92de5780fd5133c26d13eaa7bc1055887e3c7e513e53e59592e196e4db6d"
+    },
+    {
+      "id": "integrations/custom-adapter",
+      "locale": "zh-CN",
+      "path": "zh/integrations/custom-adapter.md",
+      "title": "自定义 HTTP 适配器",
+      "status": "reviewed",
+      "sourceRevision": "e313d256dc9862a44cf06e2dbec09fd0a290f4d35c994d9f152582e6a24ff652"
+    },
+    {
+      "id": "integrations/custom-session",
+      "locale": "zh-CN",
+      "path": "zh/integrations/custom-session.md",
+      "title": "自定义会话存储",
+      "status": "reviewed",
+      "sourceRevision": "b3848429839cd4bf0bc453dbba17f776cd8cc25c686553cc0ea6bf5286d7b69e"
+    },
+    {
+      "id": "integrations/observability",
+      "locale": "zh-CN",
+      "path": "zh/integrations/observability.md",
+      "title": "日志与 Micrometer",
+      "status": "reviewed",
+      "sourceRevision": "0fe384f7e0fca7bfb65641973282bf6e7af97ddcdf57a3715aa98ed81c340cdc"
+    },
+    {
+      "id": "deployment/build-release",
+      "locale": "zh-CN",
+      "path": "zh/deployment/build-release.md",
+      "title": "构建不可变发布物",
+      "status": "reviewed",
+      "sourceRevision": "3382577c8bf201fc2fa9d4af656954e237d3f84e04ca90fd638163e2821a521a"
+    },
+    {
+      "id": "deployment/processes",
+      "locale": "zh-CN",
+      "path": "zh/deployment/processes.md",
+      "title": "运行 Java 与 Node",
+      "status": "reviewed",
+      "sourceRevision": "5072a9539dfe48b23fe24613fb873f0530a9552c86a7e9642e9022a1df08b62a"
+    },
+    {
+      "id": "deployment/proxy-security",
+      "locale": "zh-CN",
+      "path": "zh/deployment/proxy-security.md",
+      "title": "代理、TLS 与私有页面",
+      "status": "reviewed",
+      "sourceRevision": "a7368833417214a0a247a590a8b541cb647f29bd85b6d7efaf9cfd3ecf691222"
+    },
+    {
+      "id": "deployment/rolling-upgrades",
+      "locale": "zh-CN",
+      "path": "zh/deployment/rolling-upgrades.md",
+      "title": "发布切换与回滚",
+      "status": "reviewed",
+      "sourceRevision": "94a7c2a91ddbcdc76476f9b6d5cf6f7d3a8869bab3484374a0516a533610f40a"
+    },
+    {
+      "id": "deployment/operations",
+      "locale": "zh-CN",
+      "path": "zh/deployment/operations.md",
+      "title": "生产运维检查清单",
+      "status": "reviewed",
+      "sourceRevision": "c2399dcd0da5887989364ba2603151e6c4fff76c5dd2273d2e94c78a691db805"
     },
     {
       "id": "reference/configuration",
@@ -1254,6 +1566,38 @@
       "sourceRevision": "872de03bf52dab3aee162b2d05ddfb46a634a0f6590dcccb01a63239c6f4063a"
     },
     {
+      "id": "reference/core-api",
+      "locale": "zh-CN",
+      "path": "zh/reference/core-api.md",
+      "title": "Core API 地图",
+      "status": "reviewed",
+      "sourceRevision": "9754a831e5e90a070d50f57af813aa586d590beeabbff08b3bfea57768c10ff1"
+    },
+    {
+      "id": "reference/spring-api",
+      "locale": "zh-CN",
+      "path": "zh/reference/spring-api.md",
+      "title": "Spring API 地图",
+      "status": "reviewed",
+      "sourceRevision": "44ca84ea97d42b78e7352cf1d2c5e56e6435e140b92a3a4b08ab8126b79febbd"
+    },
+    {
+      "id": "reference/ssr-vite-api",
+      "locale": "zh-CN",
+      "path": "zh/reference/ssr-vite-api.md",
+      "title": "SSR 与 Vite API 地图",
+      "status": "reviewed",
+      "sourceRevision": "3fe10c286277e0d787c689365ca81ac30d6b904a1c4593f2f7a6918f54535dbe"
+    },
+    {
+      "id": "reference/protocol-metadata",
+      "locale": "zh-CN",
+      "path": "zh/reference/protocol-metadata.md",
+      "title": "请求头与 Page 元数据",
+      "status": "reviewed",
+      "sourceRevision": "2983d27fba22ff13d20e66b67bef84c5584078ca7450ef8ff09660566739434c"
+    },
+    {
       "id": "reference/errors",
       "locale": "zh-CN",
       "path": "zh/reference/errors.md",
@@ -1262,12 +1606,140 @@
       "sourceRevision": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354"
     },
     {
+      "id": "reference/metrics",
+      "locale": "zh-CN",
+      "path": "zh/reference/metrics.md",
+      "title": "指标参考",
+      "status": "reviewed",
+      "sourceRevision": "b20fc76fb58580fa7edd7620fa9583a9e7b42eeac09c5e9477fa60ab16f27393"
+    },
+    {
+      "id": "reference/javadoc",
+      "locale": "zh-CN",
+      "path": "zh/reference/javadoc.md",
+      "title": "生成的 Javadoc",
+      "status": "reviewed",
+      "sourceRevision": "36f552ef1d505f3fa4bd9009b9287410f4273d7fa9af750674108fbfceef00a5"
+    },
+    {
+      "id": "testing/assertable-page",
+      "locale": "zh-CN",
+      "path": "zh/testing/assertable-page.md",
+      "title": "Page 断言",
+      "status": "reviewed",
+      "sourceRevision": "a292eaac31fce74540fcabb959cbb9bb2430e7d5ab5fb75422ccf128bb42b640"
+    },
+    {
+      "id": "testing/spring-tests",
+      "locale": "zh-CN",
+      "path": "zh/testing/spring-tests.md",
+      "title": "Spring 集成测试",
+      "status": "reviewed",
+      "sourceRevision": "d98cddf826b72ff5821340a64ba7e792fa6e2f1b31615b46d146c7cfb9e90a7a"
+    },
+    {
+      "id": "testing/browser-tests",
+      "locale": "zh-CN",
+      "path": "zh/testing/browser-tests.md",
+      "title": "官方客户端验收",
+      "status": "reviewed",
+      "sourceRevision": "21e186ed2b11f2b2250e8c328e0cc5d47b431545209844957b3c9f7ff8269d51"
+    },
+    {
+      "id": "testing/fixtures",
+      "locale": "zh-CN",
+      "path": "zh/testing/fixtures.md",
+      "title": "Rust 兼容 fixture",
+      "status": "reviewed",
+      "sourceRevision": "47e1532eeac4e84247c96f647c6aca278154652018f935652aa7bce4c7667323"
+    },
+    {
       "id": "troubleshooting/startup",
       "locale": "zh-CN",
       "path": "zh/troubleshooting/startup.md",
       "title": "启动与依赖排错",
       "status": "reviewed",
       "sourceRevision": "a62a23cbc48f5911fcf8d400c6c531c9ea5918ea2173f2ca1bd710fc76ad61ad"
+    },
+    {
+      "id": "troubleshooting/ssr-hydration",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/ssr-hydration.md",
+      "title": "SSR 缺失与 hydration 不匹配",
+      "status": "reviewed",
+      "sourceRevision": "cadcb92eb0a4605665311a29f123ba2b63f173d68384594a2ab9fa3b453d4592"
+    },
+    {
+      "id": "troubleshooting/assets-versions",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/assets-versions.md",
+      "title": "资源缺失与重复刷新",
+      "status": "reviewed",
+      "sourceRevision": "8a546ee3bd04aaa5f55401921fd4ae2b2b24a709aec79c923a859319375ac260"
+    },
+    {
+      "id": "troubleshooting/forms-session",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/forms-session.md",
+      "title": "Flash 与校验错误丢失",
+      "status": "reviewed",
+      "sourceRevision": "b26c73395b258386bc1290b4a671cf17625c6b9f3b97871c66f21c956f6a7be7"
+    },
+    {
+      "id": "troubleshooting/performance",
+      "locale": "zh-CN",
+      "path": "zh/troubleshooting/performance.md",
+      "title": "慢请求与过载",
+      "status": "reviewed",
+      "sourceRevision": "2dba3f9797a2d7b7e24c2fd0c97bba1aae1dd3c24fce8b78ed29a10e56d1fa6b"
+    },
+    {
+      "id": "community/contributing",
+      "locale": "zh-CN",
+      "path": "zh/community/contributing.md",
+      "title": "参与贡献",
+      "status": "reviewed",
+      "sourceRevision": "eac8190196f4c47f6b64049ce7c07612c12e992ab7581b0fafab33c5246665bd"
+    },
+    {
+      "id": "community/support",
+      "locale": "zh-CN",
+      "path": "zh/community/support.md",
+      "title": "获取帮助与报告问题",
+      "status": "reviewed",
+      "sourceRevision": "d295430090446b1c891e78c60e485dde4fc4a329a6150333a11fca42d83ef248"
+    },
+    {
+      "id": "community/security",
+      "locale": "zh-CN",
+      "path": "zh/community/security.md",
+      "title": "报告安全问题",
+      "status": "reviewed",
+      "sourceRevision": "f70555ed4140ea5c60597ff988feb9eeeb9e1f65948f76b1dcbd5629580feeac"
+    },
+    {
+      "id": "community/releases",
+      "locale": "zh-CN",
+      "path": "zh/community/releases.md",
+      "title": "发布与升级",
+      "status": "reviewed",
+      "sourceRevision": "418daff99c8f2e1782b6d2a8c4bcf85eceb3afe544036e3e6bd7ea57ded44e0d"
+    },
+    {
+      "id": "community/license",
+      "locale": "zh-CN",
+      "path": "zh/community/license.md",
+      "title": "许可证与署名",
+      "status": "reviewed",
+      "sourceRevision": "9c2b165a53c3a44658043263bc86e0721d8e4106d1360d6030cbf365fb33188a"
+    },
+    {
+      "id": "legacy-api-guide",
+      "locale": "zh-CN",
+      "path": "zh/api-guide.md",
+      "title": "Java API 指南",
+      "status": "reviewed",
+      "sourceRevision": "e4c9be60cb2944e901c684ccff67eea7f4a72916aeaeb4567e86c60288f11d34"
     }
   ]
 }

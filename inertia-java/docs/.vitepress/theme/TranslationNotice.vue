@@ -13,7 +13,7 @@ const route = path => withBase('/' + path.replace(/(?:^|\/)index\.md$/, '/').rep
       <p>中文译文 · 英文为规范正文 · <a :href="route(frontmatter.translation.source)">查看对应英文</a></p>
     </template>
     <p v-else-if="translation"><a :href="route(translation.path)">阅读本页中文译文</a> · English is the canonical source.</p>
-    <p v-else>English canonical page. <a :href="withBase('/zh/')">中文优先文档</a> currently covers selected journeys; this page has no Chinese translation.</p>
+    <p v-else><a :href="withBase('/zh/')">简体中文文档</a></p>
   </aside>
 </template>
 

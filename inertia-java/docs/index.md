@@ -44,6 +44,6 @@ The library handles the Inertia transport and rendering contract. Your applicati
 
 ## Documentation languages
 
-English is the canonical documentation. The [Chinese documentation](zh/index.md) covers getting started and selected application guides. Pages without a Chinese translation link to the English version and are marked accordingly in the Chinese sidebar.
+English is the canonical documentation. The [Chinese documentation](zh/index.md) covers the complete guide library, including getting started, application features, API guides, deployment and community information. Switch languages using the page’s counterpart link. API names, commands and executable examples remain consistent across both languages.
 
 Inertia Java is licensed under [Apache-2.0](community/license.md).

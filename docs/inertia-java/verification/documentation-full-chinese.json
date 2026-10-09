@@ -1,0 +1,265 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T17:59:29.727875+00:00",
+  "scope": "All 70 canonical guide articles have Chinese translations; generated Javadoc and upstream resources retain their original language. Local acceptance of the new site; no deployment of this expansion.",
+  "source": {
+    "head": "fb0b87021f73e7bf8e03ab551b74db75d5e799c4",
+    "uncommitted": true
+  },
+  "coverage": {
+    "canonicalEnglishPages": 70,
+    "reviewedChinesePages": 70,
+    "newChinesePages": 59,
+    "missingCanonicalIds": [],
+    "catalogPolicy": "Every canonical page requires a reviewed Chinese translation",
+    "canonicalRevision": "Exact SHA-256 of English Markdown; reviewed Chinese source/version/evidence and executable fences/imports/API tokens checked"
+  },
+  "verification": {
+    "checkLog": "/tmp/inertia-full-zh-check.log",
+    "markdownFiles": 141,
+    "nodeContracts": 23,
+    "pythonContracts": 10,
+    "buildLog": "/tmp/inertia-full-zh-build.log",
+    "siteReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-3Dzcxu/summary.json",
+    "sitePhases": [
+      {
+        "name": "keyboard-search",
+        "enterOpens": true,
+        "controlKOpens": true,
+        "inputReceivesFocus": true,
+        "escapeClosesAndRestoresFocus": true
+      },
+      {
+        "name": "canonical-code-and-clipboard",
+        "copies": [
+          {
+            "route": "getting-started/first-application",
+            "language": "xml",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "getting-started/first-application",
+            "language": "java",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "getting-started/first-application",
+            "language": "tsx",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "reference/configuration",
+            "language": "yaml",
+            "canonicalSourceExceptTerminalNewline": false,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "getting-started/first-application",
+            "language": "sh",
+            "canonicalSourceExceptTerminalNewline": false,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "zh/getting-started/first-application",
+            "language": "xml",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "zh/getting-started/first-application",
+            "language": "java",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "zh/getting-started/first-application",
+            "language": "tsx",
+            "canonicalSourceExceptTerminalNewline": true,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "zh/reference/configuration",
+            "language": "yaml",
+            "canonicalSourceExceptTerminalNewline": false,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          },
+          {
+            "route": "zh/getting-started/first-application",
+            "language": "sh",
+            "canonicalSourceExceptTerminalNewline": false,
+            "keyboardCopy": true,
+            "clipboardMatchesRenderedText": true,
+            "visibleFocus": true
+          }
+        ]
+      },
+      {
+        "name": "tutorial-source-links",
+        "languages": [
+          "en",
+          "zh-CN"
+        ],
+        "canonicalRepositoryPath": true
+      },
+      {
+        "name": "direct-page-loads",
+        "pages": 70
+      },
+      {
+        "name": "local-search",
+        "terms": [
+          "flash",
+          "deferred",
+          "requireSsr",
+          "session-namespace"
+        ]
+      },
+      {
+        "name": "application-search-navigation",
+        "journeys": [
+          {
+            "term": "CSRF",
+            "route": "guide/csrf"
+          },
+          {
+            "term": "deep merge",
+            "route": "props/merging"
+          },
+          {
+            "term": "once",
+            "route": "props/once"
+          },
+          {
+            "term": "renderer health",
+            "route": "ssr/health"
+          },
+          {
+            "term": "response-timeout",
+            "route": "reference/configuration"
+          },
+          {
+            "term": "inertia.ssr_http",
+            "route": "reference/metrics"
+          },
+          {
+            "term": "private",
+            "route": "community/security"
+          }
+        ]
+      },
+      {
+        "name": "canonical-source-downloads",
+        "byteIdentical": true
+      },
+      {
+        "name": "generated-javadoc",
+        "modules": 7,
+        "publicTypes": 71,
+        "memberAnchors": 496,
+        "entryAndAttributionBytes": true,
+        "representativeMethodNavigation": true
+      },
+      {
+        "name": "bilingual-rendered-links",
+        "pages": 140,
+        "sameLocaleChineseLinks": true,
+        "actualHeadingAnchors": true
+      },
+      {
+        "name": "complete-chinese-guides",
+        "pages": 70,
+        "perPageEnglishCounterparts": true,
+        "allSidebarLinksChinese": true,
+        "chineseSearchNavigation": [
+          "校验",
+          "预算",
+          "会话",
+          "生命周期",
+          "深度合并",
+          "渲染器健康",
+          "私密"
+        ],
+        "canonicalSourceDownload": true,
+        "javadocEntries": 7,
+        "privateSecurityReportLink": true
+      },
+      {
+        "name": "chinese-mobile-navigation",
+        "horizontalOverflow": false
+      },
+      {
+        "name": "mobile-navigation-and-console",
+        "errors": []
+      }
+    ],
+    "versionReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-version-navigation-gsZDmG/summary.json",
+    "registeredReleaseJourneys": 0,
+    "publicationSelectionContract": {
+      "command": "node --test inertia-java/deploy/documentation.test.mjs",
+      "passed": 1
+    },
+    "payloadReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-HsKtg9/summary.json",
+    "payloadCanonicalFiles": 146,
+    "payloadBytesMatchSources": true,
+    "privateToolingExcluded": true,
+    "runtimeMatrixRerun": false,
+    "runtimeSourceChanged": false
+  },
+  "resolvedFindings": [
+    {
+      "failureReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-Gez6Br/summary.json",
+      "finding": "GitHub slugger removed Chinese punctuation while VitePress retained it.",
+      "resolution": "Static site heading checks use the pinned VitePress parser; Chinese API fragment corrected; rendered anchor checks pass."
+    },
+    {
+      "failureReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-OQWAoN/summary.json",
+      "finding": "Broad session search no longer lists the old lifecycle page among first results after full expansion.",
+      "resolution": "Actual results inspected; generic session query opens Flash/session guide and lifecycle query opens lifecycle guide. No search algorithm replacement."
+    },
+    {
+      "failureReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-FPhc43/summary.json",
+      "finding": "New Chinese Javadoc assertion expected an absolute href although the valid source link was relative.",
+      "resolution": "Check resolved browser pathname, matching English API entry verification; all seven entries pass."
+    }
+  ],
+  "publicSite": {
+    "deploymentRun": "https://github.com/royalwang/inertia-java/actions/runs/37966591198",
+    "deploymentCommit": "fb0b87021f73e7bf8e03ab551b74db75d5e799c4",
+    "conclusion": "success",
+    "observedRoutes": [
+      "zh/",
+      "community/security",
+      "zh/getting-started/quick-start"
+    ],
+    "httpStatus": 200,
+    "sourceFooterAbsent": true,
+    "privateReportLinkPresent": true,
+    "completeChineseExpansionPublished": false
+  },
+  "limitations": [
+    "No real stable release tag is registered; fixture/empty-registry checks are not tagged-release acceptance.",
+    "Translation contracts verify provenance and structure; semantic correctness remains a review responsibility.",
+    "Java runtime/consumer/browser matrices were not rerun for this documentation change."
+  ]
+}

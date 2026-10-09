@@ -110,4 +110,4 @@ java -jar target/first-inertia-app-1.0.0-SNAPSHOT.jar --server.address=127.0.0.1
 
 移动/重命名 Java package 时，同步修改 Boot plugin 的 `mainClass`。有意识地替换 demo 路由与组件注册，保持 root view、codec、SSR root ID、build receipt 和静态资源挂载一致。受保护数据上线前，加入真实认证授权、持久化与生产 session/cookie 策略。
 
-[所有权模型（英文）](../../concepts/ownership.md)说明共享与请求专属对象，[API 指南（英文）](../../api-guide.md)介绍配置替换和扩展点。
+[所有权模型](../concepts/ownership.md)说明共享与请求专属对象，[API 指南](../api-guide.md)介绍配置替换和扩展点。

@@ -65,13 +65,13 @@ inertia:
 | `exposeSharedPropKeys` | 是否列出 shared keys 元数据；不删除实际值 |
 | `urlResolver` | Page URL；非空白、<=8192 字符、不含控制字符 |
 
-`withAllErrors`、`withSharedPropKeys`、`withUrlResolver` 返回不可变副本。请求的 `encryptHistory(...)` 覆盖本次响应默认值，不通过重定向持久化。见 [Boot 配置所有权（英文）](../../integrations/spring-boot.md)。
+`withAllErrors`、`withSharedPropKeys`、`withUrlResolver` 返回不可变副本。请求的 `encryptHistory(...)` 覆盖本次响应默认值，不通过重定向持久化。见 [Boot 配置所有权](../integrations/spring-boot.md)。
 
 ## 组件参数与生命周期
 
 `HttpSsrGateway` 构造器接收 endpoint、connect/render duration、codec、build verification，以及可选 root verification/byte/concurrency limits。这些是构造参数，不是通用 Boot 属性。示例显式使用 200ms connect、1s render、2MiB response 和 16 个并行 transport；gateway 应在应用生命周期内复用，当前没有公开 `close()` 方法；独立拥有的健康监测器才提供显式关闭契约。
 
-`SsrHealthMonitor` 独立接收 endpoint/connect/timeout/interval/codec；示例为 200ms/1s/5s，并在关闭时释放 monitor。`ViteBuild`/`ViteAssets` 读取实际 frontend output 和开发 hot-file，不根据 URL 猜测兼容构建。见 [SSR/Vite API（英文）](../../reference/ssr-vite-api.md)。
+`SsrHealthMonitor` 独立接收 endpoint/connect/timeout/interval/codec；示例为 200ms/1s/5s，并在关闭时释放 monitor。`ViteBuild`/`ViteAssets` 读取实际 frontend output 和开发 hot-file，不根据 URL 猜测兼容构建。见 [SSR/Vite API](ssr-vite-api.md)。
 
 ## 示例专用开关
 
@@ -88,6 +88,6 @@ inertia:
 
 其他示例环境开关包括 `inertia.ssr-except`（默认空，支持精确/尾部 `*` 规则）、`inertia.ssr-health-enabled`、`inertia.benchmark-observations`、`inertia.demo-auth`、`inertia.demo-failures`、`inertia.demo-history-enabled` 和 `inertia.csp.enabled`（布尔开关默认 false）。`inertia.demo-password` 没有安全的内置密码，demo 认证要求至少 12 字符；`INERTIA_DEMO_PASSWORD` 通过 Spring Environment 映射。
 
-Node 使用 `SSR_PORT`（13714）和 `SSR_ROOT_ID`（`app`）；`INERTIA_DEV_APP_ORIGIN` 控制示例 Vite 开发 CORS origin。发布 launcher 环境见[进程配置（英文）](../../deployment/processes.md)。文档工具的 `INERTIA_DOCS_BASE`、`INERTIA_DOCS_OUTPUT`、`INERTIA_BROWSER_CHANNEL` 不属于业务应用配置。
+Node 使用 `SSR_PORT`（13714）和 `SSR_ROOT_ID`（`app`）；`INERTIA_DEV_APP_ORIGIN` 控制示例 Vite 开发 CORS origin。发布 launcher 环境见[进程配置](../deployment/processes.md)。文档工具的 `INERTIA_DOCS_BASE`、`INERTIA_DOCS_OUTPUT`、`INERTIA_BROWSER_CHANNEL` 不属于业务应用配置。
 
 非法预算/名称会使启动失败。缺少 custom bean 或 renderer build 不匹配，应修正相应输入，不能靠放宽超时修复。override tests 区分未设置与显式 false。

@@ -7,8 +7,8 @@ import { checkTranslations } from './translations.mjs'
 const root = fileURLToPath(new URL('..', import.meta.url))
 const catalog = JSON.parse(readFileSync(resolve(root, '../../docs/inertia-java/open-source-docs-catalog.json')))
 const read = path => readFileSync(resolve(root, path), 'utf8')
-test('priority translations match actual canonical revisions and executable fences', () => {
-  assert.match(checkTranslations(catalog, read), /11 reviewed Chinese pages/)
+test('all canonical pages have reviewed translations with matching revisions and executable fences', () => {
+  assert.match(checkTranslations(catalog, read), /70 reviewed Chinese pages/)
 })
 test('an English edit requires translation review', () => {
   assert.throws(() => checkTranslations(catalog, path => read(path) + (path === 'index.md' ? '\nChanged English.\n' : '')), /Stale English revision/)
@@ -22,7 +22,7 @@ test('a translated code import must use the same canonical file', () => {
 test('priority pages cannot be replaced by missing or unreviewed translations', () => {
   const missing = structuredClone(catalog)
   missing.translations = missing.translations.filter(entry => entry.id !== 'getting-started/overview')
-  assert.throws(() => checkTranslations(missing, read), /Missing priority translation/)
+  assert.throws(() => checkTranslations(missing, read), /Missing Chinese translation/)
   const pending = structuredClone(catalog)
   pending.translations[0].status = 'needs-review'
   assert.throws(() => checkTranslations(pending, read), /Translation needs review/)
@@ -35,4 +35,10 @@ test('revision metadata must agree in the catalog and page', () => {
 })
 test('translated property names and default literals cannot disappear', () => {
   assert.throws(() => checkTranslations(catalog, path => path === 'zh/reference/configuration.md' ? read(path).replace('`inertia.props-timeout`', '`inertia.future-timeout`') : read(path)), /Missing canonical API\/configuration token/)
+})
+
+test('non-priority guides cannot silently lose their Chinese translation', () => {
+  const missing = structuredClone(catalog)
+  missing.translations = missing.translations.filter(entry => entry.id !== 'props/merging')
+  assert.throws(() => checkTranslations(missing, read), /Missing Chinese translation: props\/merging/)
 })

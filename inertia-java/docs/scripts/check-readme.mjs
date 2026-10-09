@@ -6,6 +6,7 @@ import assert from 'node:assert/strict'
 import MarkdownIt from 'markdown-it'
 import GithubSlugger from 'github-slugger'
 import matter from 'gray-matter'
+import { siteHeadings } from './markdown-headings.mjs'
 
 const root = resolve(fileURLToPath(new URL('../../..', import.meta.url)))
 const java = resolve(root, 'inertia-java'), file = resolve(java, 'README.md')
@@ -44,6 +45,6 @@ for (const token of md.parse(current, {})) for (const child of token.children ??
   const [path, anchor] = decodeURIComponent(href).split('#')
   const target = resolve(dirname(file), path || 'README.md')
   assert.ok(target.startsWith(root + '/') && existsSync(target), 'Broken README target: ' + href)
-  if (anchor && target.endsWith('.md')) assert.ok(headings(readFileSync(target, 'utf8')).some(item => item.anchor === anchor), 'Broken README fragment: ' + href)
+  if (anchor && target.endsWith('.md')) assert.ok((target.startsWith(resolve(java, 'docs') + '/') ? siteHeadings(readFileSync(target, 'utf8'), target) : headings(readFileSync(target, 'utf8')).map(item => item.anchor)).includes(anchor), 'Broken README fragment: ' + href)
 }
 console.log(`README migration: ${mapping.topics.length} original headings/anchors retained; all topic destinations written; historical bytes verified`)

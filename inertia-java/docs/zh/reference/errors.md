@@ -58,4 +58,4 @@ verification:
 
 transport 事件对 connection/response-limit 的区分，可能比公开 fallback 字符串更细。未知字符串归为 `UNKNOWN`，不能当作渲染成功。session abort 清理失败在适用时保留为原始异常的 suppressed cause。存储结果未知时，需要按后端语义对账，不能盲目重放。
 
-使用 [SSR 排查（英文）](../../troubleshooting/ssr-hydration.md)或[session 排查（英文）](../../troubleshooting/forms-session.md)，修复后通过实际请求和受影响阶段的验证证明恢复。
+使用 [SSR 排查](../troubleshooting/ssr-hydration.md)或[session 排查](../troubleshooting/forms-session.md)，修复后通过实际请求和受影响阶段的验证证明恢复。

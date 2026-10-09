@@ -35,6 +35,7 @@ export function checkTranslations(catalog, readPage) {
     for (const token of inline(english)) assert.ok(translatedTokens.has(token), 'Missing canonical API/configuration token: ' + key + ' / ' + token)
     assert.match(matter(translated).content, /[\u3400-\u9fff]/, 'Translation is not Chinese: ' + key)
   }
+  if (catalog.language.translationCoverage === 'all') for (const page of catalog.pages) assert.ok(keys.has('zh-CN:' + page.id), 'Missing Chinese translation: ' + page.id)
   for (const id of catalog.language.translationPriority ?? []) assert.ok(keys.has('zh-CN:' + id), 'Missing priority translation: ' + id)
   return `${keys.size} reviewed Chinese pages; exact English revisions, versions, evidence, executable fences and canonical imports checked`
 }

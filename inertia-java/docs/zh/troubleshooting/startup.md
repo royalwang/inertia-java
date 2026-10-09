@@ -41,4 +41,4 @@ handler 检查失败时，把受适配器管理的路由改成普通 controller 
 
 修正输入后重新启动，确认 Java 存活、初始 HTML、带当前版本的 JSON，以及启用 SSR 时真实同构建首屏。修改集成代码后运行相应启动/override/handler 合同。
 
-报告问题时附上脱敏的首个错误、版本、最小配置和复现命令，遵循[支持说明（英文）](../../community/support.md)。不要把生产 cookie、token 或个人 Page 数据放入公开报告。
+报告问题时附上脱敏的首个错误、版本、最小配置和复现命令，遵循[支持说明](../community/support.md)。不要把生产 cookie、token 或个人 Page 数据放入公开报告。

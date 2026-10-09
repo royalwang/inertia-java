@@ -62,4 +62,4 @@ Page 渲染已经完成交付和页面策略；此后再调用 `commitRedirect()
 
 session completion 发生在 HTTP body 写出之前。后续网络写出失败不能回滚已经完成的会话事务，也无法证明浏览器看到了 flash。观测事件分别记录 render 和 response-write 尝试，都不构成分布式“恰好交付一次”保证。
 
-共享对象或把 callback 移到 executor 前，阅读[所有权（英文）](../../concepts/ownership.md)；实现其他 HTTP 适配器前，阅读[协议（英文）](../../concepts/protocol.md)。
+共享对象或把 callback 移到 executor 前，阅读[所有权](ownership.md)；实现其他 HTTP 适配器前，阅读[协议](protocol.md)。
