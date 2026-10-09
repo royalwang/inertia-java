@@ -16,6 +16,8 @@
 
 8. [首版验收逐项审查](07-acceptance-audit.md)：原始要求、可定位证据与明确缺口。
 
+9. [英文 Java API 指南](../../inertia-java/docs/api-guide.md)：实际调用方式、生命周期和随发布物分发的可编译示例。
+
 ## 主要决策
 
 - Java 负责业务路由、鉴权、数据查询、Page 对象、Inertia 协议和根 HTML；JavaScript 运行时负责 React/Vue/Svelte SSR。保持现有 Inertia 客户端，无需另建客户端路由或同用途 REST API。

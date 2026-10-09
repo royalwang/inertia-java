@@ -554,3 +554,32 @@ npm初次官方sbom命令因示例缺version报EINVALIDPURLTYPE；仅为private�
 
 
 提交前最终完整验证：17阶段全部exit0，Java291项零failures/errors/skipped；八配置浏览器包含Advanced两项新流程均通过，SSR故障、CSP/root/history、A→B发布切换与独立部署通过。证据：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-V9MTC1/summary.json`；日志 `/tmp/inertia-precommit-aggregate.log`。本次仅在执行期间补充说明文档，产品与测试源码保持稳定。验收审查已关闭上述deepMerge/except/命名bag浏览器缺口；远端CI和正式分发/目标环境资格仍未据本地成功关闭。
+
+
+## 英文 API 指南与随制品分发的可编译示例
+
+新增 `inertia-java/docs/api-guide.md`：依赖选择、独立adapter生命周期、Page/Context调用、props加载/受控异步、merge/once/scroll/bigint、session/error bags、MVC advice、Boot替换bean及SSR/Vite/root使用边界。提供完整 `CoreApiExample.java`、`SpringApiExample.java`，不是仅有无法编译的片段；README与设计索引提供入口。
+
+发布打包复制整个 `inertia-java/docs/` 并纳入不可变release inventory，部署验证冻结输入时同样包含docs。独立Maven消费脚本从实际发布目录原样复制这两个源码，记录SHA256，在仓库外使用private Maven repository/cache解析七个库后编译。core示例实际检查PUT303、当前props与redirect flash一次交付；真实Spring/Tomcat检查HTML、JSON、optional partial选择、stale409、PUT303、命名profile bag、成功flash和无重放，以及带stale Inertia头的普通REST。没有用reactor class目录作为消费classpath。
+
+本轮 `verify-maven-consumer.py` 全部预期结果通过，sources/Javadoc解析与缺core拒绝/恢复也通过；缺core阶段exit1是预期负例。证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-qsy71nfy/summary.json`，日志 `/tmp/inertia-api-guide-consumer.log`。仅复用旧private cache的第三方/plugin依赖，明确排除io.inertia，当前库通过新的fixture repository重新解析并逐jar比字节。
+
+`node inertia-java/deploy/verify-release.mjs` 同时通过，证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-PyCTjI/summary.json`；实际release `d499533eb2ea5ce9abd770220e1f78a07a6b852be9c4516459db0b729dcb7b43` 包含指南与两例hash，SSR/CSR、Node断开Java存活、优雅停止、篡改拒绝和恢复全部通过。此次未修改运行库/前端源码，未重跑完整17阶段或Java291合同；使用前次已构建库加本轮实际消费/部署证据，不能称远端CI通过。本轮新增改动未提交，默认服务未重启。J7英文API使用指南交付已有证据；正式许可证/分发、签名/版本及目标环境资格仍未关闭，整体目标继续。
+
+
+## CI 接入独立消费与英文指南例
+
+`.github/workflows/inertia-java.yml` 在完整aggregate之后增加独立Maven消费步骤，包含指南两例的编译/执行和真实Spring HTTP合同。证据归档保留consumer summary、命令日志、独立POM与实际复制源码；不上传private cache或重复release目录。缓存只种入第三方/plugin依赖，io.inertia仍在隔离fixture repository重新解析。
+
+`verify-maven-consumer.py` 新增可选 `INERTIA_CONSUMER_OUTPUT`，只接受新目录/空目录；未设置继续创建独立临时目录。summary增加当前HEAD/dirty与verifier SHA256。以CI同一入口运行成功：`/tmp/inertia-java-api-ci-consumer-20261009/summary.json`；九阶段全部得到预期结果（缺core拒绝exit1为负例），当前七库及两例hash均记录。独立负例实际给出非空目录sentinel，命令拒绝且目录字节/清单未变。PyYAML解析workflow七步骤成功；这是语法/本地入口证据，不是Actions远端执行证据。
+
+尝试只读GitHub Actions API获取当前远端结果，返回HTTP403 rate limit exceeded；不将查询失败解读为CI失败，也未宣称dirty工作区已在远端运行。当前待用户明确Java许可证、版权主体与年份：Rust Cargo.toml有MIT声明但仓库没有LICENSE正文，Java没有自有license声明。已提出该问题，继续保留分发资格未关闭；未自行编造版权或授予许可。本轮不修改库/前端运行源码，不重复前轮17阶段/291合同；新增CI、消费者入口和文档改动未提交。
+
+
+## 原验收要求补强：真实禁用 JavaScript 的首屏与导航
+
+原计划04 §3明确写了JS禁用检查；此前只读HTML response验证SSR内容，再在启用JS的浏览器做hydration。虽然能证明HTML包含内容，这不是同一个浏览器模式。本轮新增flows.spec实际 `browser.newContext({ javaScriptEnabled: false })`：可见heading/list Ada、Linus/精确大整数文本；deferred停在首屏占位且没有stats；点击About走document navigation，返回text/html与SSR内容，页面title/link可见，全程没有X-Inertia请求。每个SSR配置保留no-javascript.png；未把禁用JS模式描述为可完成依赖JS的表单/deferred操作。
+
+按新增CI顺序在稳定工作区连续执行：17阶段aggregate → 独立Maven consumer。aggregate证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-2Dzjat/summary.json` success=true，17阶段全exit0；Java291项零failures/errors/skipped；八配置browser全部通过，六个SSR配置实际运行No-JS用例，两个CSR配置明确skip。SSR faults、CSP/custom-root/history、A→B和带英文guide的独立deployment同时通过。消费者证据 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-ds66qusp/summary.json` success=true，九阶段预期结果全部满足（缺core拒绝exit1）。日志 `/tmp/inertia-java-final-ci-order.log`。执行期间未改产品、测试或发布包输入，仅在完成后追加本记录。
+
+这些是当前工作区的本地完整证据；没有以此冒充远端Actions/Linux/systemd/正式分发资格。Java版权/许可证问题仍待用户回答，未自行添加许可证。前轮和本轮改动尚未提交；默认服务未重启，整体目标保持进行中。

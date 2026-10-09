@@ -15,14 +15,14 @@
 | J4 lazy/optional/always/partial/deferred/并发/失败 | `PropsResolver`、`CoreContractTest`、`PropsOverloadTest`、`CancellationContractTest`、`SessionFailureTest`；Users deferred browser | 核心规划/回调/队列/取消/权限失败有证据；生产数据库和容量归应用部署资格，不等同库内并发合同 |
 | J5 SSR/Vite/完整首屏/hydration/Node断开 | SSR failure tests、ViteBuild/ViteAssets tests；browser matrix、build-integrity、SSR-failures、release-switch/deployment scripts | 实际React/Node证据存在；开发模式历史记录可定位，生产当前aggregate另归档；真实Linux/proxy/storage未认证 |
 | J6 merge/deep/prepend/once/scroll/history/bigint | `AdvancedPropsTest`、Rust Page fixtures、Feed/History/onceTTL/auth browser | scroll append/prepend/reset、once与history/bigint有客户端证据；新增Advanced页面及advanced.spec：deepMerge实际保留字段、按ID更新/去重与reset已通过八配置浏览器 |
-| J7 CI/打包/部署/兼容/英文API/许可证 | workflow、release/runtime/systemd、classifier/consumer verifier、README/Javadoc、dependency-inventory | 打包/本地独立消费/部署演练已有证据；本轮新增依赖/许可证声明清单；自有许可证、正式版本/签名与目标环境等发布资格未关闭，当前dirty工作区不能引用旧CI为当前CI |
+| J7 CI/打包/部署/兼容/英文API/许可证 | workflow、release/runtime/systemd、classifier/consumer verifier、README/Javadoc、docs/api-guide.md与编译示例、dependency-inventory | 打包/本地独立消费/部署演练已有证据；英文API指南与两例随release分发且实际编译/HTTP验证；依赖/许可证声明清单已有证据；自有许可证、正式版本/签名与目标环境等发布资格未关闭，当前dirty工作区不能引用旧CI为当前CI |
 
 ## 原始用户验收矩阵逐行检查
 
 | 原验收场景 | 具体证据 | 当前边界/缺口 |
 |---|---|---|
 | 普通访问与点击导航 | flows首屏/hydrate/Link网络JSON，MockMvc | 已验证 |
-| SSR正常，JS前有内容且可交互 | first document内容、SSR marker、hydration/表单，部署独立pair | 已验证实际内容与交互；非仅200 |
+| SSR正常，JS前有内容且可交互 | 真实javaScriptEnabled:false浏览器首屏/HTML导航，加启用JS的hydration/表单，部署独立pair | 已验证无JS可见首屏/完整document导航及启用JS后的交互；六SSR配置有截图，deferred占位不冒称无JS加载 |
 | SSR断开/慢响应/非法JSON/null | `HttpSsrFailureTest`、mock peers、SSR-failures/CSR浏览器 | core/gateway异常分类与有界fallback已验证；不把所有fault组合均称浏览器覆盖 |
 | stale version不调controller且flash保留 | MVC observations/request lifecycle、core session/HTTP parity | 已有对应层合同 |
 | mutation redirect/fragment/prefetch | 45 HTTP oracle合同；MVC outcome advice PUT303 | 方法、状态、body、多值headers与明确Java差异有证据 |
@@ -45,8 +45,8 @@
 |---|---|---|
 | Maven reactor、npm ci/typecheck/双build、独立peers | `node inertia-java/scripts/verify.mjs` | 当前命令增加dependency-inventory成为17阶段；最终结果必须读取summary，不用历史16阶段结果替代 |
 | Rust oracle freshness | `node inertia-java/compatibility/verify-fixtures.mjs` | 实际export，正常Java构建只读fixture；fixture生成需独立Rust工具链 |
-| classifier source/Javadoc | `verify-library-artifacts.py`、隔离负例脚本 | 21 jar字节/内容检查，不等同完整英文API教程覆盖与发布授权 |
-| 仓库外Maven消费 | `verify-maven-consumer.py` | 独立POM/private repo/cache，14 classifier与缺core拒绝；本轮未重跑，旧证据仅说明其当时jar |
+| classifier source/Javadoc | `verify-library-artifacts.py`、隔离负例脚本 | 21 jar字节/内容检查；另有英文API使用指南和真实编译/HTTP示例，不等同发布授权 |
+| 仓库外Maven消费 | `verify-maven-consumer.py` | 本轮独立POM/private repo/cache重新解析当前七库与14 classifier，缺core拒绝/恢复；新增从release复制的两例编译与真实HTTP验证 |
 | 发布bundle/部署模板/旧资源保留 | `deploy/release.mjs`、`verify-release.mjs`、runtime/systemd | 当轮实际macOS/loopback资格；Linux模板不能仅凭存在宣称在systemd目标可运行 |
 | 性能基线P50/P95/P99/并发/props/DB/资源 | [本地HTTP基线](06-local-http-benchmark.md) | 数据库负载明确0；SSR/CSR/refused/stalled有数据，不据此承诺业务生产容量 |
 | 依赖/许可证检查 | `scripts/dependency-inventory.py`，原始CycloneDX/npm SBOM、实际Boot jar匹配、LICENSE/NOTICE hashes | 技术清单完整性与声明收集门槛；不生成自有许可证、不把多许可证列表自动解释为OR、不提供法律批准或漏洞清零结论 |
@@ -54,7 +54,7 @@
 ## 下一步按明确缺口推进
 
 1. J6 deepMerge/partial except与命名error bags的上述浏览器缺口已补齐；继续按原要求审查剩余制品/分发资格。
-2. 完成英文API及正式分发所需的许可证/归属与制品资格；依赖清单里未决项需实际审查。
+2. 英文API指南与可编译示例已交付并验证；正式分发所需的许可证/归属与制品资格、依赖清单里未决项仍需实际审查。
 3. 对最终提交运行对应CI；目标Linux/proxy/storage与正式签名/namespace资格保留独立证据，不以本地演练替代。
 
 本文提供审查结果，不删除或弱化原始设计要求；未证明项继续保持未完成。
@@ -66,3 +66,12 @@
 
 
 提交前最终完整验证：17阶段全部exit0，Java291项零failures/errors/skipped；八配置浏览器包含Advanced两项新流程均通过，SSR故障、CSP/root/history、A→B发布切换与独立部署通过。证据：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-V9MTC1/summary.json`；日志 `/tmp/inertia-precommit-aggregate.log`。本次仅在执行期间补充说明文档，产品与测试源码保持稳定。验收审查已关闭上述deepMerge/except/命名bag浏览器缺口；远端CI和正式分发/目标环境资格仍未据本地成功关闭。
+
+
+英文API指南与分发验证补充：`inertia-java/docs/api-guide.md`、两例完整Java源码纳入release manifest；独立消费实测 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-qsy71nfy/summary.json` 和独立部署 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-PyCTjI/summary.json` 均success=true。指南示例实际检查HTML/JSON/optional partial/version/redirect/error bag/flash/REST；不把无浏览器的最小API例当成SSR页面证据，真实SSR/CSR由发布示例验证。完整细节见第五篇最新记录。
+
+
+CI入口补充：workflow已加入独立消费与API指南验证，并归档summary/logs/POM/复制源码；同一命令本地成功证据 `/tmp/inertia-java-api-ci-consumer-20261009/summary.json`。输出目录非空拒绝也实际验证。GitHub API只读查询因限流HTTP403未能确认远端结果，故当前远端CI仍未证明。Java许可证/版权主体与年份已向用户询问，尚未替用户指定；分发资格保持未关闭。
+
+
+当前工作区按CI顺序完整执行通过：17阶段aggregate `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-2Dzjat/summary.json`，随后独立消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-ds66qusp/summary.json`。原04 §3的真实JS禁用浏览器检查已补齐，六SSR配置检查可见列表、大整数、deferred占位与完整HTML导航；CSR配置跳过该SSR合同。Java291项零failures/errors/skipped。该本地顺序执行结果不替代远端CI或许可证/目标环境资格。

@@ -11,11 +11,23 @@ import sys
 import tempfile
 import xml.etree.ElementTree as ET
 root = pathlib.Path(__file__).resolve().parents[1]
-output = pathlib.Path(tempfile.mkdtemp(prefix='inertia-maven-consumer-'))
+configured_output = os.environ.get('INERTIA_CONSUMER_OUTPUT')
+if configured_output:
+    output = pathlib.Path(configured_output).resolve()
+    if output.exists() and (not output.is_dir() or any(output.iterdir())):
+        raise ValueError('INERTIA_CONSUMER_OUTPUT must be a new or empty directory')
+    output.mkdir(parents=True, exist_ok=True)
+else:
+    output = pathlib.Path(tempfile.mkdtemp(prefix='inertia-maven-consumer-'))
 ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
 version = ET.parse(root / 'pom.xml').getroot().findtext('m:version', namespaces=ns)
 print('External Maven consumer workspace: ' + str(output), flush=True)
 report = {'format': 1, 'success': False, 'version': version, 'output': str(output), 'phases': []}
+report['source'] = {
+    'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
+    'dirty': bool(subprocess.check_output(['git', 'status', '--porcelain=v1'], cwd=root, text=True).strip()),
+    'verifierSha256': hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
+}
 def run(name, args, cwd=root, expected=0):
     with (output / (name + '.log')).open('w') as log:
         child = subprocess.run(args, cwd=cwd, stdout=log, stderr=subprocess.STDOUT, timeout=600)
@@ -107,6 +119,64 @@ public class Consumer {
   }
 }
 ''')
+    # Compile the distributed guide sources unchanged, alongside this independent consumer.
+    guide = consumer / 'src/main/java/io/inertia/guide'
+    guide.mkdir(parents=True)
+    report['guideExamples'] = []
+    for name in ['CoreApiExample.java', 'SpringApiExample.java']:
+        original = release / 'docs/examples' / name
+        assert original.read_bytes() == (root / 'docs/examples' / name).read_bytes()
+        shutil.copyfile(original, guide / name)
+        report['guideExamples'].append({'file': name, 'sha256': hashlib.sha256(original.read_bytes()).hexdigest()})
+    (consumer / 'src/main/java/consumer/GuideSmoke.java').write_text('''package consumer;
+import io.inertia.core.PageCodec;
+import io.inertia.guide.SpringApiExample;
+import java.net.*;
+import java.net.http.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+public class GuideSmoke {
+  public static void main(String[] args) throws Exception {
+    try (var app = (ServletWebServerApplicationContext) SpringApplication.run(SpringApiExample.class,
+        "--server.address=127.0.0.1", "--server.port=0")) {
+      var client = HttpClient.newBuilder().cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL)).build();
+      var base = "http://127.0.0.1:" + app.getWebServer().getPort();
+      var codec = new PageCodec();
+      var html = client.send(HttpRequest.newBuilder(URI.create(base + "/guide")).build(), HttpResponse.BodyHandlers.ofString());
+      if (html.statusCode() != 200 || !html.body().contains("data-page")) throw new AssertionError("Guide HTML failed");
+      var partial = client.send(HttpRequest.newBuilder(URI.create(base + "/guide"))
+          .header("X-Inertia", "true").header("X-Inertia-Version", "guide-v1")
+          .header("X-Inertia-Partial-Component", "Home").header("X-Inertia-Partial-Data", "details")
+          .build(), HttpResponse.BodyHandlers.ofString());
+      var selected = codec.read(partial.body());
+      if (!selected.at("/props/details/enabled").asBoolean() || selected.path("props").has("message")) throw new AssertionError("Guide partial failed");
+      var stale = client.send(HttpRequest.newBuilder(URI.create(base + "/guide"))
+          .header("X-Inertia", "true").header("X-Inertia-Version", "stale").build(), HttpResponse.BodyHandlers.ofString());
+      if (stale.statusCode() != 409 || !stale.headers().firstValue("X-Inertia-Location").orElse("").endsWith("/guide")) throw new AssertionError("Guide stale version failed");
+      for (var name : new String[] {"", "Ada"}) {
+        var saved = client.send(HttpRequest.newBuilder(URI.create(base + "/guide"))
+            .header("X-Inertia", "true").header("Content-Type", "application/json")
+            .PUT(HttpRequest.BodyPublishers.ofString("{\\"name\\":\\"" + name + "\\"}")).build(), HttpResponse.BodyHandlers.ofString());
+        if (saved.statusCode() != 303 || !saved.headers().firstValue("Location").orElse("").equals("/guide")) throw new AssertionError("Guide redirect failed");
+        for (int visit = 0; visit < 2; visit++) {
+          var response = client.send(HttpRequest.newBuilder(URI.create(base + "/guide"))
+              .header("X-Inertia", "true").header("X-Inertia-Version", "guide-v1")
+              .header("X-Inertia-Error-Bag", "profile").build(), HttpResponse.BodyHandlers.ofString());
+          var page = codec.read(response.body());
+          if (response.statusCode() != 200 || !page.path("component").asText().equals("Home") || page.path("props").has("details")) throw new AssertionError("Guide JSON failed");
+          if (name.isEmpty() && visit == 0 && !page.at("/props/errors/profile/name").asText().equals("Required")) throw new AssertionError("Guide named bag failed");
+          if (!name.isEmpty() && visit == 0 && !page.at("/flash/toast").asText().equals("Saved (demo only)")) throw new AssertionError("Guide flash failed");
+          if (visit == 1 && (page.has("flash") || !page.at("/props/errors").isEmpty())) throw new AssertionError("Guide delivery replayed");
+        }
+      }
+      var rest = client.send(HttpRequest.newBuilder(URI.create(base + "/guide-api"))
+          .header("X-Inertia", "true").header("X-Inertia-Version", "stale").build(), HttpResponse.BodyHandlers.ofString());
+      if (rest.statusCode() != 200 || rest.headers().firstValue("X-Inertia").isPresent() || !codec.read(rest.body()).path("message").asText().equals("Ordinary REST")) throw new AssertionError("Guide REST changed");
+      System.out.println("GUIDE_SPRING_VERIFIED HTML PARTIAL OPTIONAL VERSION REDIRECT NAMED_BAG FLASH REST");
+    }
+  }
+}
+''')
     cache = output / 'maven-cache'
     dependency_cache = os.environ.get('INERTIA_CONSUMER_DEPENDENCY_CACHE')
     if dependency_cache:
@@ -129,6 +199,14 @@ public class Consumer {
     assert str(root) not in classpath, 'Reactor classpath leaked into consumer'
     run('consumer-http', ['java', '-cp', str(consumer / 'target/classes') + os.pathsep + classpath, 'consumer.Consumer'], consumer)
     assert 'EXTERNAL_CONSUMER_VERIFIED' in (output / 'consumer-http.log').read_text()
+    run('guide-core', ['java', '-cp', str(consumer / 'target/classes') + os.pathsep + classpath, 'io.inertia.guide.CoreApiExample'], consumer)
+    guide_output = (output / 'guide-core.log').read_text().splitlines()
+    assert guide_output[0] == 'redirect=303'
+    guide_first, guide_next = map(json.loads, guide_output[1:])
+    assert guide_first['flash']['toast'] == 'Saved' and 'flash' not in guide_next
+    assert guide_first['props']['application'] == 'Guide' and 'details' not in guide_first['props']
+    run('guide-spring-http', ['java', '-cp', str(consumer / 'target/classes') + os.pathsep + classpath, 'consumer.GuideSmoke'], consumer)
+    assert 'GUIDE_SPRING_VERIFIED' in (output / 'guide-spring-http.log').read_text()
     # Resolve classifiers through Maven as consumers do, not by copying them into the cache.
     for classifier in ['sources', 'javadoc']:
         run('resolve-' + classifier, maven + ['org.apache.maven.plugins:maven-dependency-plugin:3.8.1:resolve', '-Dclassifier=' + classifier, '-DincludeGroupIds=io.inertia'], consumer)

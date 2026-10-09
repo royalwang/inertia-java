@@ -60,7 +60,7 @@ try {
   // when a developer edits documentation or builds a different release concurrently.
   const inputs = resolve(output, 'inputs')
   const version = readFileSync(resolve(root, 'pom.xml'), 'utf8').match(/<version>([^<]+)<\/version>/)?.[1]
-  const paths = ['pom.xml', 'README.md', 'deploy/runtime.mjs', 'deploy/README.md', 'deploy/systemd',
+  const paths = ['pom.xml', 'README.md', 'docs', 'deploy/runtime.mjs', 'deploy/README.md', 'deploy/systemd',
     'examples/spring-react/frontend/dist', 'examples/spring-react/frontend/package.json',
     'examples/spring-react/frontend/package-lock.json', `examples/spring-react/target/spring-react-${version}.jar`]
   for (const module of ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']) {

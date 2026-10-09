@@ -42,6 +42,10 @@ jobs:
         env:
           INERTIA_VERIFY_OUTPUT: ${{ runner.temp }}/inertia-java-verification
         run: node inertia-java/scripts/verify.mjs
+      - name: Verify external Maven consumption and API guide examples
+        env:
+          INERTIA_CONSUMER_OUTPUT: ${{ runner.temp }}/inertia-java-consumer
+        run: INERTIA_CONSUMER_DEPENDENCY_CACHE="$HOME/.m2/repository" python3 inertia-java/scripts/verify-maven-consumer.py
       - name: Retain verification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -51,4 +55,8 @@ jobs:
           if-no-files-found: warn
           path: |
             ${{ runner.temp }}/inertia-java-verification
+            ${{ runner.temp }}/inertia-java-consumer/summary.json
+            ${{ runner.temp }}/inertia-java-consumer/*.log
+            ${{ runner.temp }}/inertia-java-consumer/consumer/pom.xml
+            ${{ runner.temp }}/inertia-java-consumer/consumer/src
             inertia-java/**/target/surefire-reports

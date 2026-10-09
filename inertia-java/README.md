@@ -2,6 +2,10 @@
 
 Framework-independent Inertia v3 server adapter with Spring MVC integration, a pooled Node SSR gateway, and a React example. Implementation is in progress; see the [implementation ledger](../docs/inertia-java/05-implementation-status.md) for verified capabilities and remaining work.
 
+## API guide
+
+Read the [English Java API guide](docs/api-guide.md) for dependency selection, complete core/Spring examples, prop selection, lifecycle, sessions, validation, overrides and SSR/Vite integration. The independent Maven consumer compiles the distributed examples unchanged and exercises their HTTP behavior.
+
 ## Observation SPI
 
 Core provides an opt-in `InertiaObserver` for props, render, SSR success/fallback, and session begin/complete/abort/merge. Pass it to both the `PropsResolver` and `ResponseRenderer` constructors; standalone redirect contexts accept it in their constructor. Existing constructors use a no-op observer. `LoggingInertiaObserver` emits JSON through `System.Logger`; `InertiaObserver.combine` composes observers. Observers run inline and must be fast and nonblocking. Runtime exceptions from an observer are isolated from the business result; fatal JVM errors are not swallowed.
@@ -483,3 +487,10 @@ Visit `/advanced` from the About page. The sample sends a nested profile delta w
 This adapter preserves the repository's Rust selection rules: an except-only partial visit selects every non-excluded prop, including optional callbacks. The demo's optional query therefore runs during the except visit and again when explicitly requested with `only`. It remains absent on a full visit. Applications that want to skip it in an except visit must include it in `except`.
 
 Two demo forms share the field name `name` and send distinct `profile`/`team` error bags. Each form displays its own errors; a successful submission clears that form's errors, delivers one flash message and leaves the other form's local errors intact. These forms validate demo input without persisting business data. Browser contracts check request headers, response metadata and actual rendered state in SSR and CSR modes.
+
+
+### API guide verification in CI
+
+The Java workflow runs the aggregate gate, then the separate external Maven consumer (including the distributed API guide examples). CI retains its summary, command logs, consumer POM and copied sources alongside the aggregate evidence; private Maven caches and full duplicate release directories are not uploaded.
+
+For a stable evidence location, set `INERTIA_CONSUMER_OUTPUT=/absolute/new-or-empty-directory` when invoking `scripts/verify-maven-consumer.py`. Existing nonempty output is refused before writing. When omitted, the command creates a unique temporary workspace. The summary records source HEAD/dirty state, verifier hash, example source hashes and resolved jar hashes. `INERTIA_CONSUMER_DEPENDENCY_CACHE` may seed third-party/plugin artifacts only; owned `io.inertia` coordinates are always resolved afresh from the newly packaged fixture repository. A successful local run does not establish the outcome of a remote Actions run.

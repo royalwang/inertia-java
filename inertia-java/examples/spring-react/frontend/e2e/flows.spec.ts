@@ -30,6 +30,35 @@ test('SSR hydration, navigation, deferred data, validation and flash', async ({ 
   expect(errors).toEqual([])
 })
 
+test('SSR content and document navigation work with JavaScript disabled', async ({ browser, baseURL }) => {
+  test.skip(process.env.INERTIA_EXPECT_CSR === 'true', 'This contract requires server-rendered HTML')
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false })
+  try {
+    const page = await context.newPage()
+    const inertiaRequests: string[] = []
+    page.on('request', request => {
+      if (request.headers()['x-inertia']) inertiaRequests.push(request.url())
+    })
+    const response = await page.goto('/users')
+    expect(response!.status()).toBe(200)
+    await expect(page.getByRole('heading', { name: 'Inertia Java', exact: true })).toBeVisible()
+    await expect(page.getByRole('listitem')).toHaveText(['Ada', 'Linus'])
+    await expect(page.getByTestId('large-id')).toHaveText('Exact ID: 9007199254740993')
+    await expect(page.getByText('Loading statistics…', { exact: true })).toBeVisible()
+    await expect(page.getByTestId('stats')).toHaveCount(0)
+    await page.screenshot({ path: `${process.env.INERTIA_E2E_OUTPUT ?? '/tmp/inertia-java-e2e'}/no-javascript.png`, fullPage: true })
+    const navigation = page.waitForResponse(r => r.url().endsWith('/about') && r.request().isNavigationRequest())
+    await page.getByRole('link', { name: 'About this app', exact: true }).click()
+    const document = await navigation
+    expect(document.status()).toBe(200)
+    expect(document.headers()['content-type']).toContain('text/html')
+    expect(await document.text()).toContain('data-server-rendered="true"')
+    await expect(page).toHaveTitle('About')
+    await expect(page.getByRole('link', { name: 'Back to users', exact: true })).toBeVisible()
+    expect(inertiaRequests).toEqual([])
+  } finally { await context.close() }
+})
+
 test('CSR fallback mounts and can navigate when SSR is disconnected', async ({ page }) => {
   test.skip(process.env.INERTIA_EXPECT_CSR !== 'true', 'Run against Java with an unavailable SSR endpoint')
   const errors: string[] = []
