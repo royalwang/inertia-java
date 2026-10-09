@@ -4,9 +4,9 @@ This policy covers the development version `0.1.0-SNAPSHOT`. A stable security s
 
 ## Private reporting
 
-A private security reporting channel has not yet been published for this module. Until one is available, keep sensitive details private. Do not publish exploit details, production credentials, cookies, tokens or personal Page data in public issues or pull requests.
+Report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/royalwang/inertia-java/security/advisories/new). Sign in to GitHub to submit a private report. Do not publish exploit details, production credentials, cookies, tokens or personal Page data in public issues or pull requests.
 
-When a reporting channel becomes available, include the affected version or revision, prerequisites, impact, a minimal sanitized reproduction and any known mitigation. Use synthetic data rather than production credentials or user datasets.
+Include the affected version or revision, prerequisites, impact, a minimal sanitized reproduction and any known mitigation. Use synthetic data rather than production credentials or user datasets.
 
 ## Application responsibilities
 

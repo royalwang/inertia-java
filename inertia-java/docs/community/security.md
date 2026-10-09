@@ -1,6 +1,6 @@
 ---
 title: "Reporting security issues"
-description: "Find the current private reporting status and prepare a sanitized security report."
+description: "Report vulnerabilities privately through GitHub and prepare a sanitized security report."
 version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/README.md
@@ -15,15 +15,15 @@ verification:
 
 Do not publish credentials, cookies, personal Page data or a sensitive exploit reproduction in a public issue or pull request.
 
-## Current reporting status
+## Report a vulnerability
 
-A private security reporting channel has not yet been published for this module. Refer to [the security policy](https://github.com/royalwang/inertia-java/blob/main/inertia-java/SECURITY.md) for reporting information.
+Use [GitHub private vulnerability reporting](https://github.com/royalwang/inertia-java/security/advisories/new) to send a report to the repository maintainers. Sign in to GitHub, complete the report form and submit it privately. Refer to [the security policy](https://github.com/royalwang/inertia-java/blob/main/inertia-java/SECURITY.md) for reporting information.
 
-Until a private reporting channel is available, keep sensitive details private.
+Keep sensitive details in the private report rather than a public issue or pull request.
 
 ## Prepare a private report
 
-When a verified channel becomes available, include affected source/artifact versions, the trust boundary, prerequisites, impact and a minimal sanitized reproduction. Describe any mitigation and whether information is already public. Do not attach production credentials or user datasets; use synthetic data and privately coordinate disclosure with maintainers.
+Include affected source/artifact versions, the trust boundary, prerequisites, impact and a minimal sanitized reproduction. Describe any mitigation and whether information is already public. Do not attach production credentials or user datasets; use synthetic data and privately coordinate disclosure with maintainers.
 
 ## Application responsibilities
 

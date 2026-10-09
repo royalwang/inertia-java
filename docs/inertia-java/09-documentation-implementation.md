@@ -231,3 +231,9 @@ fe7c26e已与origin/main一致；该次远端文档运行37941891079的site job�
 同时核实[发布运行37944965858](https://github.com/royalwang/inertia-java/actions/runs/37944965858)已成功部署fd6ab5a，其文档CI与Java完整验证均success。真实Pages中文首页已移除旧维护说明，中英文教程源码链接均保留canonical仓库路径；公开站81篇路由/搜索/代码复制/下载/Javadoc与新增教程链接检查通过，本机结果为inertia-docs-public-smoke-IVv8fV/summary.json。本节页底组件移除发生在该部署之后，尚需再次发布才在公开站生效。
 
 页底移除通过docs:check、严格docs:build、81篇docs:smoke及空release registry下docs:smoke-versions；299份生成HTML（含Javadoc）均无source-notes展示块。已在实际预览页确认默认页脚和上下篇导航，截图保留于本机/tmp/inertia-docs-clean-footer.jpg。空registry验收不冒充真实tag版本导航。
+
+## GitHub私密漏洞报告入口
+
+维护者明确确认已启用GitHub Private vulnerability reporting。模块SECURITY.md和站点安全页已改为正式私密提交入口，说明登录、报告内容及敏感信息处理；未声明未经约定的响应时限。新增.github/SECURITY.md作为GitHub可识别的仓库安全政策入口，并链接模块政策。启用状态依据维护者确认；未提交测试漏洞报告或读取任何私密报告。
+
+报告入口修订通过docs:check、严格docs:build和81篇docs:smoke；日志为本机/tmp/inertia-security-channel-{check,build,smoke}.log。公开站仍需重新运行发布workflow以展示本次安全入口及先前页底精简。
