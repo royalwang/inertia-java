@@ -11,6 +11,8 @@
 3. [实施细节设计](03-implementation-design.md)：请求生命周期、props、会话、Spring、SSR 与资源。
 4. [实施计划与验收](04-delivery-plan.md)：工作包、依赖、验收用例、发布门槛。
 5. [实施状态与验证](05-implementation-status.md)：当前代码、测试证据与未完成项。
+6. [本地 HTTP 性能基线](06-local-http-benchmark.md)：可复现命令、SSR/CSR与故障实测及测量限制。
+7. [发布打包与部署手册](../../inertia-java/deploy/README.md)：独立发布目录、校验启动、主机模板与验收边界。
 
 ## 主要决策
 

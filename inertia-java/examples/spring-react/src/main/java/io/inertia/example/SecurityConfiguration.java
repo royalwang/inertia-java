@@ -14,12 +14,20 @@ import org.springframework.util.StringUtils;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfiguration {
   @Bean
-  SecurityFilterChain security(HttpSecurity http) throws Exception {
+  SecurityFilterChain security(
+      HttpSecurity http,
+      io.inertia.core.PageCodec codec,
+      io.inertia.boot.InertiaProperties properties)
+      throws Exception {
     return http.authorizeHttpRequests(routes -> routes.anyRequest().permitAll())
         .csrf(
             csrf ->
                 csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new BrowserCsrfHandler()))
+        .exceptionHandling(
+            errors ->
+                errors.accessDeniedHandler(
+                    new BrowserCsrfFailureHandler(codec, properties.sessionNamespace())))
         .formLogin(login -> login.disable())
         .httpBasic(basic -> basic.disable())
         .build();

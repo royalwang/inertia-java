@@ -66,6 +66,7 @@ try {
       INERTIA_HEALTH_OUTPUT: resolve(output, name), INERTIA_E2E_OUTPUT: resolve(output, name, 'e2e'),
     })
   }
+  await run('deployment', process.execPath, [resolve(root, 'deploy/verify-release.mjs')], root, { INERTIA_DEPLOY_OUTPUT: resolve(output, 'deployment') })
 } catch (error) {
   failure = error.message
   process.exitCode = 1

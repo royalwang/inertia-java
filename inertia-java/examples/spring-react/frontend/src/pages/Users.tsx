@@ -3,11 +3,14 @@ export default function Users({ users, largeId, stats }: { users: { id: number; 
   const form = useForm({ name: '' })
   const page = usePage()
   const nameErrors = Array.isArray(form.errors.name) ? form.errors.name : form.errors.name ? [form.errors.name] : []
+  const csrfError = (page.props.errors as Record<string, string | string[]>)._csrf
+  const csrfMessage = Array.isArray(csrfError) ? csrfError[0] : csrfError
   const toast = (page.flash as { toast?: string }).toast
   return <main><Head title="Users" /><h1>Inertia Java</h1><p>Java routes, React pages, Node rendering.</p>
     <nav><Link href="/about">About this app</Link></nav>
     {toast && <p role="status">{toast}</p>}
     <form onSubmit={event => { event.preventDefault(); form.post('/users') }}>
+      {csrfMessage && <p role="alert">{csrfMessage}</p>}
       <label htmlFor="name">Name</label><input id="name" value={form.data.name} onChange={event => form.setData('name',event.target.value)} />
       {nameErrors.length > 0 && <div role="alert"><ul>{nameErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></div>}
       <button disabled={form.processing}>Save demo name</button>

@@ -46,6 +46,14 @@ public class Application {
   }
 
   @Bean
+  @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+      name = "inertia.benchmark-observations",
+      havingValue = "true")
+  InertiaObserver benchmarkObserver() {
+    return new LoggingInertiaObserver();
+  }
+
+  @Bean
   InertiaConfig config(
       PageCodec codec,
       org.springframework.beans.factory.ObjectProvider<InertiaObserver> observers,
@@ -69,7 +77,8 @@ public class Application {
             frontend.resolve(".inertia/hot"),
             frontend.resolve("dist/ssr/ssr.js"),
             development,
-            List.of());
+            Arrays.asList(
+                environment.getProperty("inertia.ssr-except", String[].class, new String[0])));
     var gateway =
         new HttpSsrGateway(
             endpoints,

@@ -18,9 +18,9 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4，共 154 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 37、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4、CSRF recovery 3、config presentation 3、MVC config presentation 3，共 199 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
-| Rust → Java Page parity | 八组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件、default/named/scoped/first/all/重复字段 errors |
+| Rust → Java Page parity | 37组 fixture 完整 JSON 比较通过 | 原8组及merge/once/deferred rescue/scroll/history/bigint/shared组合，详见兼容矩阵 |
 | npm typecheck | 通过 | 当前示例 TypeScript |
 | npm client + SSR build | 通过 | 生产双 bundle |
 | 实际 Node `/render` | 返回 head/body、一个 Page script 和一个 app root；含 server-rendered 标记 | 默认/custom root、Page 裸请求体、bigint 精确呈现 |
@@ -39,14 +39,14 @@
 
 | 工作包 | 尚需完成 |
 |---|---|
-| J0 | 更多跨语言 fixtures、客户端版本完整兼容清单 |
-| J1 | 完整配置与错误策略的剩余边界审查；已补齐定义来源/父子路径冲突诊断，明确同名覆盖与errors替换策略、提供有界观察和开发者报告 |
+| J0 | 已有37组Page对照及明确客户端/运行时矩阵；时间相关TTL、HTTP policy/headers与更多跨语言失败边界仍待验收 |
+| J1 | 完整配置与错误策略的剩余边界审查；已补齐Page URL resolver/shared-key元数据开关及错误页集成，已补齐定义来源/父子路径冲突诊断，明确同名覆盖与errors替换策略、提供有界观察和开发者报告 |
 | J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
-| J3 | namespace 与 fail-closed 失效/写失败策略已落地；示例身份策略与 CSRF 过期恢复的进一步验收仍待处理 |
-| J4 | 性能基线及更广的并发边界；已验收跨请求全局queue拒绝/取消槽位恢复、async持有请求许可、unrescued失败立即终止与合法deferred rescue隔离。基础 MVC→render→props/SSR 取消链、结构化事件、HTTP transport原因细分类、Boot/Micrometer 与 MVC write/version-conflict 观察已落实 |
+| J3 | namespace、fail-closed 失效/写失败及示例cookie-CSRF缺失/失配后的显式重提恢复已验收；示例身份策略及登录/注销/会话失效与CSRF联动仍待处理 |
+| J4 | 更广的并发/业务负载边界；已完成本地HTTP初始性能基线（数据库查询0），真实业务/部署容量仍待资格验证；已验收跨请求全局queue拒绝/取消槽位恢复、async持有请求许可、unrescued失败立即终止与合法deferred rescue隔离。基础 MVC→render→props/SSR 取消链、结构化事件、HTTP transport原因细分类、Boot/Micrometer 与 MVC write/version-conflict 观察已落实 |
 | J5 | 基础 SSR/Vite 与本地两版切换已验收；真实部署存储/路由资格并入 J7 |
 | J6 | 扩展边界组合、更多 history/SSR override 边界组合（基础合同及官方浏览器链路已验收）；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
-| J7 | 可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、实际部署环境演练和性能基线；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
+| J7 | 已有独立发布打包/校验运行入口及macOS外置目录演练；剩余正式库发布metadata/source/javadoc/签名、英文 API 示例扩展、许可证/依赖审查、目标Linux/代理/会话/存储演练和部署性能资格；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
 
 另：WebFlux/集群 Session/Vue/Svelte/Precognition 继续按原设计放在首版之外。Rust 库实现未改动，新增 `examples/java_contract_fixtures.rs` 导出器，Java 工程本次交付作为首个实施增量，尚未关闭的工作包见上表。当前 demo 用户保存仅展示 flash，不访问数据库。
 
@@ -304,3 +304,60 @@ getter优化后的最终全量spotless:check verify146项、0 failures/errors/sk
 ## 2026-10-09 提交批次
 
 本次提交收录前述 Boot/Micrometer 与 MVC 观察、SSR HTTP 传输细分类、props 定义来源/覆盖诊断及过载快速失败修复，覆盖以上三轮“尚未提交”的历史记录。提交前复核 aggregate summary 为 success、14 阶段 exit0，当前 Surefire 报告合计154项、0 failures/errors/skipped；最后追加的 metrics 断言已有专项验证。性能基线尚未实施，其他剩余项仍按上表推进。该批次的远端 CI 必须依据推送后对应提交的实际运行确认。
+
+## 2026-10-09 本地 HTTP 性能基线
+
+新增npm run benchmark，独立端口/拥有的进程，比较真实SSR、主动排除、连接拒绝和headers后body停滞四模式，记录并发、零数据库负载、props数量/大小、SSR比例、分组P50/P95/P99、SSR/client超时及采样RSS/CPU。示例增加可选日志observer和路径排除配置，默认不开启。最终12阶段全部通过、共1224请求均200，client失败0；SIGTERM失败记录/清理另已演练。最后一轮证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-benchmark-HlrLtc/summary.json，可持久审阅的摘要和测量限制见[性能基线](06-local-http-benchmark.md)。
+
+Maven reactor/Spotless verify154项、0 failures/errors/skipped，node语法检查与git diff check通过。frontend bundle不变，本轮未重复全套浏览器验收；结果不能代表数据库、浏览器首屏或生产部署容量。本批文件尚未提交，目标保持进行中。
+
+## 2026-10-09 独立发布目录与部署入口
+
+新增 deploy/release.mjs，将已构建的example jar、7个库jar/8个POM（含parent）、client/SSR/receipt、package/lock、当前版assets、release-local runtime、RUNBOOK/systemd模板打成可独立运行的版本目录。完整inventory核对frontend receipt，staging→同filesystem rename发布；相同已构建输入产生同payload ID，支持已安装node_modules后的幂等发布，拒绝覆盖损坏版本。不是源码build的bit-reproducibility承诺，也不是signed Maven repository。runtime启动前校验完整payload（node_modules单独由locked npm ci部署），manifest哈希是完整性约束，不是来源签名或运行后防篡改。
+
+runtime check/java/ssr/pair支持仓库外启动、同root/版本、固定或pair临时端口和外部资产归档。pair以真实同版本SSR页面判就绪；renderer在就绪后终止，Java继续CSR；SIGTERM父进程转发给owned children，5s Java shutdown-phase预算/8s等待后可能强制停止，不能承诺任意长请求均drain。独立systemd模板使用immutable release ID、同env固定port配对，Wants/order与独立restart保留CSR故障策略；Type=exec不是应用readiness，目标Linux执行/语法资格尚未完成。没有安装unit、上传artifact或操作外部主机。
+
+verify-release.mjs实际将payload放在仓库外带空格路径，npm ci --omit=dev --ignore-scripts，确认部署树无Vite/Playwright；用repo里的浏览器fixture访问外置服务，两项官方客户端流程分别通过SSR hydration/navigation/deferred/validation/flash与Node死亡后的CSR导航/表单/flash。校验READY build/release ID、Java liveness、owned Java终止；损坏jar使preflight失败且重新publisher拒绝覆盖，恢复后通过。完整payload、日志、screenshots/traces位于临时证据目录，摘要随文档保存。
+
+首次浏览器grep未命中实际标题，验证入口按失败退出且清理；修正为既有SSR/CSR测试并要求输出1 passed，避免空测试/skip冒充通过。加入systemd模板后safe路径规则补充@字符，仍拒绝dot traversal/symlink。统一验证入口新增deployment阶段，最终aggregate15阶段全部exit0、clean Maven/Spotless154项（0 failures/errors/skipped）、publisher3项、browser matrix/build integrity/SSR故障/CSP/custom-root/history/A→B以及独立发布全部通过。aggregate证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-o9LpaW/summary.json。该轮浏览器使用本机Chrome154.0.8037.99；CI配置仍是paired Chromium。
+
+随后仅澄清README/RUNBOOK措辞，当前完整payload重新通过10个发布验收阶段；证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-xbXnUS/summary.json。持久摘要见[本地发布记录](deployments/2026-10-09-local-release-summary.json)，操作与模板见[部署手册](../../inertia-java/deploy/README.md)。Node语法与git diff check通过。J7基础打包/运行脚本已落地，签名/发布metadata/许可证、目标Linux与真实ingress/storage/session资格仍未关闭。性能与本发布增量尚未提交，完整目标保持进行中。
+
+## 2026-10-09 示例 CSRF 拒绝反馈与恢复
+
+SecurityConfiguration接入example-only BrowserCsrfFailureHandler：只处理POST /users、X-Inertia:true的CsrfException；CsrfFilter仍拒绝原写，controller不执行。固定同应用/users的303/no-store/Vary，namespaced InertiaContext提交一次性default bag _csrf error，UI展示通用反馈并保留输入，GET后由用户明确再次提交；不自动replay，Referer/header token/表单值不复制到反馈。其他路径/方法/普通请求与权限deny仍403，存储失败500且无Location。该filter阶段响应不伪装成MVC write观察。
+
+保持CookieCsrfTokenRepository：cookie缺失会签发新token、header与cookie不一致被拒绝；不能把HttpSession失效本身等同这种cookie token的过期。身份/登录/注销和session-backed CSRF expiry策略仍由后续示例/应用定义；恢复限定当前默认bag表单，不由starter改变应用SecurityFilterChain。参考[Spring Security6.5 CSRF](https://docs.spring.io/spring-security/reference/6.5/servlet/exploits/csrf.html)及[Inertia CSRF反馈](https://inertiajs.com/docs/v3/security/csrf-protection)。
+
+新增3项Java合同：真实Security filter拒绝、恶意Referer不改变target、namespace一次性error/no success toast、缺cookie返回fresh token且显式重提成功、非CSRF/其他路径403不建session、incompatible存储500拒绝redirect。fixture的成功POST恢复沿用既有302，拒绝反馈为明确303；未改变协议的POST redirect策略。浏览器新增missing-cookie/stale-header两项，在SSR/all-errors/failures/namespace/CSR五配置共10次真实验收：一个被拒绝POST、输入Grace和按钮状态保留、通用error、无saved toast，用户第二次click才出现第二POST并正常flash，无pageerror。
+
+首次aggregate在deployment失败：运行过程中README变化使live source publisher生成新的合法release ID，fixture却把它当作“corrupt被覆盖”。修复verify-release先复制jar/POM/dist/lock/runtime/文档等构建输入到独立snapshot，所有幂等/篡改发布检查使用同一冻结sourceRoot；中途源变更不会偷换测试目标，payload仍实际在仓库外运行。该变化是验收隔离，不放宽publisher完整性或篡改拒绝。
+
+修正后完整aggregate15阶段exit0，clean Maven/Spotless157项、0 failures/errors/skipped，publisher3项，扩展browser matrix/build integrity/SSR故障/CSP/custom-root/history/A→B/deployment均通过；证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-AOW6bj/summary.json。部署summary包含冻结inputSnapshot，README接口已更新。
+
+默认本地Java18080/Node13714已由先前owned PID26153/63779切换到61044/61043；session15562/56842，SSR build fdb9eeb3cb327bbafd90c79a97d9b34e5957e579f5512bcc2096b6704b10b771。实际/users为200、SSR/version匹配；使用独立cookie jar在默认服务验收失配303固定目标/无成功toast、明确第二POST后flash成功，不记录token内容。旧版client assets仍保留。git diff check通过，本CSRF/验收快照与前两轮性能/发布增量均未提交；完整目标继续。
+
+## 2026-10-09 扩展 Rust→Java Page 对照
+
+从原8组扩展到34组，新增26个输入场景。描述独立放在examples/java_contract_cases.json；Rust exporter调用真实Config/Inertia/Prop/into_page，只记录Rust产生的expectedPage，不用Java结果构造oracle。Rust src/Cargo.toml/Cargo.lock仍与6667d8d1be314067af989eb049ba419a07fcd412一致；仅example exporter/输入改变。原8组expectedPage完全相同，新export重复生成的JSON树也相同。
+
+新增merge full/partial/reset/child-only及match路径、once default/custom/excluded/fresh/child-only、deferred分组/merge/once/rescue、scroll append/prepend/reset/cursor/自定义wrapper/字面量及computed deferred、config→request→response history优先级/clear/fragment、props及flash bigint边界与覆盖、config→request→page共享顺序、nested deferred与always/partial-except。滚动DTO仅覆盖wrapper/data及metadata，不伪称Rust完整Paginator API；时间相关TTL不硬编码成稳定JSON样本。
+
+Java parity改为34个具名DynamicTest，逐场景独立executor/config/request/response，用完整Page树比较数组顺序、字段省略、null和数据。对象key顺序不被tree equality证明，同组deferred数组与sharedProps数组顺序已比较。34场景全部通过；完整Maven reactor/Spotless verify190项、0 failures/errors/skipped（原循环1项改成34项，所以总数增加33，而新输入增加26）。Rust cargo test --all-features仍为69项含doctest，全部通过；Rust/Cargo1.96.0，未声明已验证1.88 MSRV。
+
+新增node inertia-java/compatibility/verify-fixtures.mjs maintainer gate，用cargo --locked再次真实导出并比较已跟踪JSON，不自动覆写预期，检查场景数与唯一name。该gate实际通过；普通Maven/现Java CI读取存储fixtures，不强制Java消费者安装Rust，也未宣称CI在线重新生成Rust预期。
+
+[兼容矩阵](../../inertia-java/compatibility/README.md)列出34场景及明确React3.8/Java21/Boot3.5.7/已运行浏览器边界、Vue/Svelte/WebFlux未验与session/路径冲突/fail-fast/rescue政策差异。Rust的config URL resolver/shared-key exposure与Java剩余配置、HTTP policy/headers、TTL及更多失败组合仍需后续处理，不把Page对照等同完整规范或部署资格。
+
+本轮产品代码与frontend bundle未变化，未重复浏览器全量；前轮15阶段含CSRF/发布验收的记录保持其当时scope。验证日志 /tmp/inertia-java-rust-parity-expanded.log、/tmp/inertia-java-parity-full-verify.log、/tmp/inertia-rust-parity-expanded-tests.log；freshness gate、node语法、git diff check通过。当前Rust exporter/fixtures/Java测试及前几轮增量尚未提交，整体目标继续进行。
+
+
+## Page 展示配置与本批提交验证
+
+新增 InertiaConfig.withUrlResolver / withSharedPropKeys，保留原8、9参数构造的默认行为；withAllErrors复制时保留新选项。URL resolver每次渲染调用一次，只改变Page.url，不改变路由、授权、版本冲突Location或redirect目标。null、空白、控制字符和超过8192字符的结果在props/SSR/root调用前失败，并恢复已预留会话数据。callback为受信同步配置，必须快速且不阻塞。shared-key开关仅省略sharedProps元数据，共享值及errors仍按既有规则输出。
+
+新增3项core及3项真实MockMvc合同，覆盖默认/复制语义、共享值保留、一次调用、非法URL零查询与会话恢复、Boot all-errors覆盖、错误页再次解析及安全500回退、版本冲突/REST共存。新增3组真实Rust导出使对照达到37组，先前34组保持一致。
+
+最终聚合验证15阶段全部exit0，clean Maven/Spotless verify为199项、0 failures/errors/skipped；typecheck/build、浏览器五配置matrix、资产合同、SSR故障、CSP/custom root/history、两版切换及独立发布演练全部通过。证据：/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-UoMTgC/summary.json。运行使用本机Chrome；此证据对应提交前工作树，不代表远端CI或Linux生产部署验收。
+
+本批提交范围包括性能基线、独立发布工具、CSRF显式恢复、扩展Rust对照及展示配置。整体J0–J7仍在进行中，未关闭项见本页表格；默认本地服务的运行状态沿用前次记录，不据本次构建宣称已经重启。

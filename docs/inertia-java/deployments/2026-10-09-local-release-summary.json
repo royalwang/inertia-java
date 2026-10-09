@@ -1,0 +1,105 @@
+{
+  "format": 1,
+  "success": true,
+  "startedAt": "2026-10-09T02:43:52.386Z",
+  "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-xbXnUS",
+  "phases": [
+    {
+      "name": "preflight",
+      "exit": 0,
+      "log": "preflight.log"
+    },
+    {
+      "name": "production-dependencies",
+      "exit": 0,
+      "log": "production-dependencies.log"
+    },
+    {
+      "name": "idempotent-after-install",
+      "success": true
+    },
+    {
+      "name": "browser-ssr",
+      "exit": 0,
+      "log": "browser-ssr.log"
+    },
+    {
+      "name": "browser-csr",
+      "exit": 0,
+      "log": "browser-csr.log"
+    },
+    {
+      "name": "renderer-down-keeps-java",
+      "success": true,
+      "rendererPid": 46098
+    },
+    {
+      "name": "graceful-shutdown",
+      "exit": 143
+    },
+    {
+      "name": "tampered-preflight",
+      "exit": 1,
+      "log": "tampered-preflight.log"
+    },
+    {
+      "name": "corrupt-publish-refused",
+      "success": true
+    },
+    {
+      "name": "restored-preflight",
+      "exit": 0,
+      "log": "restored-preflight.log"
+    }
+  ],
+  "release": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-xbXnUS/release store/46870701254173d1073b5adca3eb262d0b243bb4bedb4eedbe10f2373a1a2074",
+  "manifest": {
+    "format": 1,
+    "version": "0.1.0-SNAPSHOT",
+    "buildId": "e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476",
+    "files": {
+      "README.md": "90fe9c65afd9ebea43978561e39b440282f7c26802bdf27fccd3f4a1db52c441",
+      "RUNBOOK.md": "575f3bce0b6563f3cb32c83c2d05d8b1ab5de89380901a26e9782f3962f6aaaf",
+      "app.jar": "71212a54dc0a2c684a7d46e8d2d7bdabdddeb526a733c0f3adbcfa9454538c90",
+      "assets/e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476/.vite/manifest.json": "85402b9d92844cd21339e83659815641bb21fc984d25578b34c25afa452ae020",
+      "assets/e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476/assets/app-m_QUKOSV.css": "1710fc04e8050986b8d6dab2dbadb7fc2730ff026fb62bffcc9ab54f45ac71ee",
+      "assets/e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476/assets/app-rgxG1GpP.js": "a1024b7ce454530a8c1808cc145ab7376b6da3d93742c10108a6cb91b70fdf4b",
+      "frontend/dist/build.json": "5e60ddd2d42b5a83e8c15fc97ec4bc177401dbbea3bc0477d7b52c404e64b8d1",
+      "frontend/dist/client/.vite/manifest.json": "85402b9d92844cd21339e83659815641bb21fc984d25578b34c25afa452ae020",
+      "frontend/dist/client/assets/app-m_QUKOSV.css": "1710fc04e8050986b8d6dab2dbadb7fc2730ff026fb62bffcc9ab54f45ac71ee",
+      "frontend/dist/client/assets/app-rgxG1GpP.js": "a1024b7ce454530a8c1808cc145ab7376b6da3d93742c10108a6cb91b70fdf4b",
+      "frontend/dist/ssr/ssr.js": "fe030d1bde9fba8b95ea1edc9fe34779dba6b9fd124b8f177f6d7fec55c5f1c3",
+      "frontend/dist/ssr/ssr.js.map": "cd0ac93e5344c10581778bd0380bd7301bcda049ddbfe58dc254e45db6e5986a",
+      "frontend/package-lock.json": "7b5988f48fe6dbddc72a3d8d9016571abf6766028189e9a4fa249dc805d9c09d",
+      "frontend/package.json": "6bd4b05fcdc2edd1213ed477e2a7d787bef2c92a704bd90da28efbd187aceec7",
+      "maven/io/inertia/inertia-core/0.1.0-SNAPSHOT/inertia-core-0.1.0-SNAPSHOT.jar": "6a7c155f0b743e5a0433b615640a3f6ebf285185cf84a665c096d92f71fb8da3",
+      "maven/io/inertia/inertia-core/0.1.0-SNAPSHOT/inertia-core-0.1.0-SNAPSHOT.pom": "67d1d85016e34597b73517a90ec4cac1072b46c99f877d6b74ac7ad3d32db199",
+      "maven/io/inertia/inertia-java/0.1.0-SNAPSHOT/inertia-java-0.1.0-SNAPSHOT.pom": "f7110d43518e544416fae52104395f3b59f688f82d6da64f4f664ab235ef3bdd",
+      "maven/io/inertia/inertia-spring-boot-autoconfigure/0.1.0-SNAPSHOT/inertia-spring-boot-autoconfigure-0.1.0-SNAPSHOT.jar": "fc755b5732e99d162dd027f3245a1c549b07843a973ba2ec75f12c3f10944277",
+      "maven/io/inertia/inertia-spring-boot-autoconfigure/0.1.0-SNAPSHOT/inertia-spring-boot-autoconfigure-0.1.0-SNAPSHOT.pom": "870f257601d0d5807d19c5736fd3bb34e1536aed9c6e814f648b7f77c2afbeb2",
+      "maven/io/inertia/inertia-spring-boot-starter/0.1.0-SNAPSHOT/inertia-spring-boot-starter-0.1.0-SNAPSHOT.jar": "ed8f50d2a1fc4555e3a543dda781e6fc13128318da62ae9c43a39718dbca02ee",
+      "maven/io/inertia/inertia-spring-boot-starter/0.1.0-SNAPSHOT/inertia-spring-boot-starter-0.1.0-SNAPSHOT.pom": "425d01869f8dadeda32db7556c557e4ccfb7effb85c55146874f3a60d75ae9af",
+      "maven/io/inertia/inertia-spring-webmvc/0.1.0-SNAPSHOT/inertia-spring-webmvc-0.1.0-SNAPSHOT.jar": "e84b1e60e8f2e3b3c9e3ac52610d1ca35559f942e7151fe8e575074f010fc961",
+      "maven/io/inertia/inertia-spring-webmvc/0.1.0-SNAPSHOT/inertia-spring-webmvc-0.1.0-SNAPSHOT.pom": "da60cea9636a6f37234fc7f9143b8612f3b62c9c7e8b2e8e387255f867e12c63",
+      "maven/io/inertia/inertia-ssr-http/0.1.0-SNAPSHOT/inertia-ssr-http-0.1.0-SNAPSHOT.jar": "6628d069d505713d689f3bfb19b60486e1116f4c9c835fe8e9dac93d6a89d2c4",
+      "maven/io/inertia/inertia-ssr-http/0.1.0-SNAPSHOT/inertia-ssr-http-0.1.0-SNAPSHOT.pom": "ade27be35a908c75f15390dacd9e6048609039d99d1666c4b2767303896c56ca",
+      "maven/io/inertia/inertia-testing/0.1.0-SNAPSHOT/inertia-testing-0.1.0-SNAPSHOT.jar": "ba1e176d2e53777c841498e1a53fa32c8a2ec39efa2ed7d65599235347ce98ef",
+      "maven/io/inertia/inertia-testing/0.1.0-SNAPSHOT/inertia-testing-0.1.0-SNAPSHOT.pom": "72efb6c5c0a4e8da0c4b22435435e6847f040f0cdfdee8688a1b787270d86dfc",
+      "maven/io/inertia/inertia-vite/0.1.0-SNAPSHOT/inertia-vite-0.1.0-SNAPSHOT.jar": "824392a19bb1b840274493a6e5348443c82c7bf9d16bae6755c43e98bebdb6ab",
+      "maven/io/inertia/inertia-vite/0.1.0-SNAPSHOT/inertia-vite-0.1.0-SNAPSHOT.pom": "cd3f176ddd95219726a02ef1fd28a54e204dc199799b0b0e0d83f600bdd084e9",
+      "operations/systemd/inertia-java@.service": "dd697b478a458b79fb57489af36fda35fdffc3223c48ded55d4e88cffc020978",
+      "operations/systemd/inertia-ssr@.service": "1167dd3f236077e64af72fcf8402225f76835ff38b9e763c1d82a5e4906e2108",
+      "operations/systemd/release.env.example": "1374399182832f623725284370823e93b35a63a37c846b4ee85140e9b229cc72",
+      "runtime.mjs": "2531134eeb58b47534bd23241439f12fb3daad9033df09327e5114984dddbbef"
+    },
+    "releaseId": "46870701254173d1073b5adca3eb262d0b243bb4bedb4eedbe10f2373a1a2074"
+  },
+  "ready": {
+    "releaseId": "46870701254173d1073b5adca3eb262d0b243bb4bedb4eedbe10f2373a1a2074",
+    "buildId": "e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476",
+    "javaPort": 51311,
+    "rendererPort": 51286,
+    "rootId": "app"
+  },
+  "finishedAt": "2026-10-09T02:44:05.225Z"
+}

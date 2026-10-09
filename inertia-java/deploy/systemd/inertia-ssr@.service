@@ -1,0 +1,25 @@
+[Unit]
+Description=Inertia renderer release %i
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=exec
+User=inertia
+Group=inertia
+WorkingDirectory=/opt/inertia/releases/%i
+EnvironmentFile=/etc/inertia/%i.env
+ExecStart=/usr/bin/node /opt/inertia/releases/%i/runtime.mjs ssr
+Restart=on-failure
+RestartSec=2
+SuccessExitStatus=130 143
+KillMode=mixed
+TimeoutStopSec=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

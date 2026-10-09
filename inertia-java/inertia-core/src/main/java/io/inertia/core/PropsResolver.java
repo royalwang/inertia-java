@@ -49,6 +49,15 @@ public final class PropsResolver {
 
   public CompletionStage<Resolved> resolve(
       InertiaRequest request, String component, Props shared, Props props) {
+    return resolve(request, component, shared, props, true);
+  }
+
+  public CompletionStage<Resolved> resolve(
+      InertiaRequest request,
+      String component,
+      Props shared,
+      Props props,
+      boolean exposeSharedPropKeys) {
     var span =
         Observations.start(observer, InertiaObserver.Operation.PROPS, request, component, "none");
     var scope = new CancellationScope();
@@ -78,10 +87,12 @@ public final class PropsResolver {
                 request.requestId(),
                 component,
                 "none"));
-      var sharedKeys =
-          codec.value(
-              shared.entries().keySet().stream().map(k -> k.split("\\.")[0]).distinct().toList());
-      if (!sharedKeys.isEmpty()) state.metadata.set("sharedProps", sharedKeys);
+      if (exposeSharedPropKeys) {
+        var sharedKeys =
+            codec.value(
+                shared.entries().keySet().stream().map(k -> k.split("\\.")[0]).distinct().toList());
+        if (!sharedKeys.isEmpty()) state.metadata.set("sharedProps", sharedKeys);
+      }
       state
           .level(all, "", false)
           .whenComplete(

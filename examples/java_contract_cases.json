@@ -1,0 +1,970 @@
+[
+  {
+    "name": "full-basic",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "user",
+        "kind": "literal",
+        "value": {
+          "name": "Ada",
+          "role": "reader"
+        }
+      },
+      {
+        "key": "stats",
+        "kind": "deferred",
+        "value": 7
+      },
+      {
+        "key": "billing",
+        "kind": "optional",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "name": "partial-nested",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "user.name"
+    },
+    "definitions": [
+      {
+        "key": "user",
+        "kind": "literal",
+        "value": {
+          "name": "Ada",
+          "role": "reader"
+        }
+      },
+      {
+        "key": "stats",
+        "kind": "lazy",
+        "value": 7
+      }
+    ]
+  },
+  {
+    "name": "partial-deferred",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "stats"
+    },
+    "definitions": [
+      {
+        "key": "user",
+        "kind": "literal",
+        "value": {
+          "name": "Ada"
+        }
+      },
+      {
+        "key": "stats",
+        "kind": "deferred",
+        "value": 7
+      }
+    ]
+  },
+  {
+    "name": "different-component",
+    "headers": {
+      "x-inertia-partial-component": "Other",
+      "x-inertia-partial-data": "nothing"
+    },
+    "definitions": [
+      {
+        "key": "user.name",
+        "kind": "literal",
+        "value": "Ada"
+      },
+      {
+        "key": "stats",
+        "kind": "lazy",
+        "value": 7
+      },
+      {
+        "key": "optional",
+        "kind": "optional",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "name": "errors-default-scoped-and-mixed",
+    "headers": {
+      "x-inertia-error-bag": "createUser"
+    },
+    "definitions": [],
+    "errors": [
+      {
+        "default": {
+          "name": [
+            "Required",
+            "Too short"
+          ]
+        },
+        "login": {
+          "email": [
+            "Invalid"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "errors-default-all",
+    "headers": {},
+    "definitions": [],
+    "allErrors": true,
+    "errors": [
+      {
+        "default": {
+          "name": [
+            "Required",
+            "Too short"
+          ],
+          "empty": []
+        },
+        "login": {
+          "email": [
+            "Invalid"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "errors-named-first",
+    "headers": {
+      "x-inertia-error-bag": "ignored"
+    },
+    "definitions": [],
+    "errors": [
+      {
+        "login": {
+          "email": [
+            "Required",
+            "Invalid"
+          ]
+        },
+        "register": {
+          "name": [
+            "Too short"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "errors-named-all-merge",
+    "headers": {},
+    "definitions": [],
+    "allErrors": true,
+    "errors": [
+      {
+        "login": {
+          "email": [
+            "Required"
+          ]
+        }
+      },
+      {
+        "login": {
+          "email": [
+            "Invalid"
+          ],
+          "password": [
+            "Use a symbol"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "merge-full",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "append",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 1
+          }
+        ],
+        "merge": "merge",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "prepend",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "merge": "prepend",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "deep",
+        "kind": "literal",
+        "value": {
+          "nested": {
+            "x": 1
+          }
+        },
+        "merge": "deep"
+      },
+      {
+        "key": "paths",
+        "kind": "literal",
+        "value": {
+          "items": [
+            1
+          ],
+          "previous": [
+            0
+          ]
+        },
+        "appendAt": [
+          "items"
+        ],
+        "prependAt": [
+          "previous"
+        ],
+        "matchOn": [
+          "items.id"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "merge-partial",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "append,prepend,deep,paths"
+    },
+    "definitions": [
+      {
+        "key": "append",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 1
+          }
+        ],
+        "merge": "merge",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "prepend",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "merge": "prepend",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "deep",
+        "kind": "literal",
+        "value": {
+          "nested": {
+            "x": 1
+          }
+        },
+        "merge": "deep"
+      },
+      {
+        "key": "paths",
+        "kind": "literal",
+        "value": {
+          "items": [
+            1
+          ],
+          "previous": [
+            0
+          ]
+        },
+        "appendAt": [
+          "items"
+        ],
+        "prependAt": [
+          "previous"
+        ],
+        "matchOn": [
+          "items.id"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "merge-reset",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "append,prepend,deep,paths",
+      "x-inertia-reset": "append,paths"
+    },
+    "definitions": [
+      {
+        "key": "append",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 1
+          }
+        ],
+        "merge": "merge",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "prepend",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "merge": "prepend",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "deep",
+        "kind": "literal",
+        "value": {
+          "nested": {
+            "x": 1
+          }
+        },
+        "merge": "deep"
+      },
+      {
+        "key": "paths",
+        "kind": "literal",
+        "value": {
+          "items": [
+            1
+          ],
+          "previous": [
+            0
+          ]
+        },
+        "appendAt": [
+          "items"
+        ],
+        "prependAt": [
+          "previous"
+        ],
+        "matchOn": [
+          "items.id"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "merge-child-only",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "paths.items"
+    },
+    "definitions": [
+      {
+        "key": "append",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 1
+          }
+        ],
+        "merge": "merge",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "prepend",
+        "kind": "literal",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "merge": "prepend",
+        "matchOn": [
+          "id"
+        ]
+      },
+      {
+        "key": "deep",
+        "kind": "literal",
+        "value": {
+          "nested": {
+            "x": 1
+          }
+        },
+        "merge": "deep"
+      },
+      {
+        "key": "paths",
+        "kind": "literal",
+        "value": {
+          "items": [
+            1
+          ],
+          "previous": [
+            0
+          ]
+        },
+        "appendAt": [
+          "items"
+        ],
+        "prependAt": [
+          "previous"
+        ],
+        "matchOn": [
+          "items.id"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "once-full",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "catalog",
+        "kind": "lazy",
+        "value": {
+          "id": 1
+        },
+        "once": "catalog-cache"
+      },
+      {
+        "key": "plans",
+        "kind": "literal",
+        "value": [
+          1,
+          2
+        ],
+        "once": true
+      },
+      {
+        "key": "fresh",
+        "kind": "lazy",
+        "value": 3,
+        "once": "fresh-cache",
+        "fresh": true
+      }
+    ]
+  },
+  {
+    "name": "once-loaded",
+    "headers": {
+      "x-inertia-except-once-props": "catalog-cache,plans,fresh-cache"
+    },
+    "definitions": [
+      {
+        "key": "catalog",
+        "kind": "lazy",
+        "value": {
+          "id": 1
+        },
+        "once": "catalog-cache"
+      },
+      {
+        "key": "plans",
+        "kind": "literal",
+        "value": [
+          1,
+          2
+        ],
+        "once": true
+      },
+      {
+        "key": "fresh",
+        "kind": "lazy",
+        "value": 3,
+        "once": "fresh-cache",
+        "fresh": true
+      }
+    ]
+  },
+  {
+    "name": "once-partial",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "catalog",
+      "x-inertia-except-once-props": "catalog-cache"
+    },
+    "definitions": [
+      {
+        "key": "catalog",
+        "kind": "lazy",
+        "value": {
+          "id": 1
+        },
+        "once": "catalog-cache"
+      },
+      {
+        "key": "plans",
+        "kind": "literal",
+        "value": [
+          1,
+          2
+        ],
+        "once": true
+      },
+      {
+        "key": "fresh",
+        "kind": "lazy",
+        "value": 3,
+        "once": "fresh-cache",
+        "fresh": true
+      }
+    ]
+  },
+  {
+    "name": "once-child-only",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "auth.user.id"
+    },
+    "definitions": [
+      {
+        "key": "auth",
+        "kind": "literal",
+        "value": {
+          "user": {
+            "id": 1
+          }
+        },
+        "once": "auth-cache"
+      }
+    ]
+  },
+  {
+    "name": "deferred-groups",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "stats",
+        "kind": "deferred",
+        "value": 7,
+        "group": "dashboard",
+        "merge": "merge",
+        "once": "stats-cache"
+      },
+      {
+        "key": "billing",
+        "kind": "deferred",
+        "value": 9,
+        "group": "dashboard"
+      },
+      {
+        "key": "audit",
+        "kind": "deferred",
+        "value": 10,
+        "group": "audit"
+      }
+    ]
+  },
+  {
+    "name": "deferred-selected",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "stats,billing"
+    },
+    "definitions": [
+      {
+        "key": "stats",
+        "kind": "deferred",
+        "value": 7,
+        "group": "dashboard",
+        "merge": "merge",
+        "once": "stats-cache"
+      },
+      {
+        "key": "billing",
+        "kind": "deferred",
+        "value": 9,
+        "group": "dashboard"
+      },
+      {
+        "key": "audit",
+        "kind": "deferred",
+        "value": 10,
+        "group": "audit"
+      }
+    ]
+  },
+  {
+    "name": "deferred-rescued",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "bad,good"
+    },
+    "definitions": [
+      {
+        "key": "bad",
+        "kind": "failure",
+        "value": null,
+        "loading": "deferred",
+        "rescue": true
+      },
+      {
+        "key": "good",
+        "kind": "deferred",
+        "value": 7
+      }
+    ]
+  },
+  {
+    "name": "scroll-append",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "scroll": {
+          "pageName": "page",
+          "previousPage": 1,
+          "nextPage": 3,
+          "currentPage": 2
+        }
+      }
+    ]
+  },
+  {
+    "name": "scroll-prepend",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "items",
+      "x-inertia-infinite-scroll-merge-intent": "prepend"
+    },
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "scroll": {
+          "pageName": "page",
+          "previousPage": 1,
+          "nextPage": 3,
+          "currentPage": 2
+        }
+      }
+    ]
+  },
+  {
+    "name": "scroll-reset",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "items",
+      "x-inertia-reset": "items"
+    },
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "scroll": {
+          "pageName": "page",
+          "previousPage": 1,
+          "nextPage": 3,
+          "currentPage": 2
+        }
+      }
+    ]
+  },
+  {
+    "name": "scroll-cursor-wrapper",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll",
+        "value": [
+          {
+            "id": 1
+          }
+        ],
+        "wrapper": "rows",
+        "scroll": {
+          "pageName": "cursor",
+          "previousPage": null,
+          "nextPage": "next-token",
+          "currentPage": "current-token"
+        }
+      }
+    ]
+  },
+  {
+    "name": "scroll-deferred",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "scroll": {
+          "pageName": "page",
+          "previousPage": 1,
+          "nextPage": 3,
+          "currentPage": 2
+        },
+        "loading": "deferred",
+        "group": "feed"
+      }
+    ]
+  },
+  {
+    "name": "scroll-deferred-selected",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "items"
+    },
+    "definitions": [
+      {
+        "key": "items",
+        "kind": "scroll-lazy",
+        "value": [
+          {
+            "id": 2
+          }
+        ],
+        "scroll": {
+          "pageName": "page",
+          "previousPage": 1,
+          "nextPage": 3,
+          "currentPage": 2
+        },
+        "loading": "deferred",
+        "group": "feed"
+      }
+    ]
+  },
+  {
+    "name": "history-config",
+    "headers": {},
+    "definitions": [],
+    "configEncrypt": true
+  },
+  {
+    "name": "history-request-opt-out",
+    "headers": {},
+    "definitions": [],
+    "configEncrypt": true,
+    "requestEncrypt": false
+  },
+  {
+    "name": "history-response-wins",
+    "headers": {},
+    "definitions": [],
+    "configEncrypt": false,
+    "requestEncrypt": true,
+    "responseEncrypt": false,
+    "clearHistory": true,
+    "preserveFragment": true
+  },
+  {
+    "name": "history-response-opt-in",
+    "headers": {},
+    "definitions": [],
+    "requestEncrypt": false,
+    "responseEncrypt": true
+  },
+  {
+    "name": "bigint-props-flash",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "large",
+        "kind": "literal",
+        "value": {
+          "positive": 9007199254740993,
+          "negative": -9007199254740993,
+          "boundary": 9007199254740991,
+          "array": [
+            9007199254740993,
+            1
+          ]
+        }
+      }
+    ],
+    "configBigint": true,
+    "requestFlash": {
+      "source": "request",
+      "large": 9007199254740993
+    },
+    "responseFlash": {
+      "source": "response"
+    }
+  },
+  {
+    "name": "bigint-response-opt-out",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "large",
+        "kind": "literal",
+        "value": 9007199254740993
+      }
+    ],
+    "configBigint": true,
+    "responseBigint": false
+  },
+  {
+    "name": "shared-overrides",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "label",
+        "kind": "literal",
+        "value": "page"
+      }
+    ],
+    "configShared": [
+      {
+        "key": "label",
+        "kind": "literal",
+        "value": "config"
+      },
+      {
+        "key": "app",
+        "kind": "literal",
+        "value": "Application"
+      }
+    ],
+    "requestShared": [
+      {
+        "key": "label",
+        "kind": "literal",
+        "value": "request"
+      },
+      {
+        "key": "tenant",
+        "kind": "literal",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "nested-deferred",
+    "headers": {},
+    "definitions": [
+      {
+        "key": "dashboard",
+        "kind": "nested",
+        "value": null,
+        "definitions": [
+          {
+            "key": "stats",
+            "kind": "deferred",
+            "value": 7,
+            "group": "dashboard"
+          },
+          {
+            "key": "name",
+            "kind": "literal",
+            "value": "Ada"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "partial-except-always",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-except": "name,auth"
+    },
+    "definitions": [
+      {
+        "key": "name",
+        "kind": "literal",
+        "value": "Ada"
+      },
+      {
+        "key": "auth",
+        "kind": "literal",
+        "value": {
+          "id": 1
+        },
+        "always": true
+      },
+      {
+        "key": "optional",
+        "kind": "optional",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "name": "custom-url",
+    "headers": {},
+    "definitions": [],
+    "resolvedUrl": "/canonical?page=2"
+  },
+  {
+    "name": "shared-keys-hidden",
+    "headers": {},
+    "definitions": [],
+    "exposeShared": false,
+    "configShared": [
+      {
+        "key": "app",
+        "kind": "literal",
+        "value": "Application"
+      }
+    ]
+  },
+  {
+    "name": "url-and-shared-hidden-partial",
+    "headers": {
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "name"
+    },
+    "definitions": [
+      {
+        "key": "name",
+        "kind": "literal",
+        "value": "Ada"
+      }
+    ],
+    "resolvedUrl": "/canonical",
+    "exposeShared": false
+  }
+]

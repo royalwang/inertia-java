@@ -72,6 +72,7 @@ public final class ResponseRenderer {
         });
     try {
       var stored = context.begin();
+      String pageUrl = config.pageUrl(request);
       var initial = context.pending();
       var errors =
           ErrorBags.fromJson(stored.get(InertiaContext.ERRORS))
@@ -88,7 +89,12 @@ public final class ResponseRenderer {
       var resolving =
           scope.track(
               resolver
-                  .resolve(request, response.component(), shared, response.props())
+                  .resolve(
+                      request,
+                      response.component(),
+                      shared,
+                      response.props(),
+                      config.exposeSharedPropKeys())
                   .toCompletableFuture());
       resolving
           .thenCompose(
@@ -110,7 +116,7 @@ public final class ResponseRenderer {
                 json.set(
                     "props",
                     preserveBigIntegers ? codec.bigIntegers(resolved.props()) : resolved.props());
-                json.put("url", request.url());
+                json.put("url", pageUrl);
                 json.put("version", config.version().get());
                 json.setAll(resolved.metadata());
                 if (preserveBigIntegers) json.put("preserveBigIntegers", true);

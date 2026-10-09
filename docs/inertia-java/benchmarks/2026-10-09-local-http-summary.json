@@ -1,0 +1,897 @@
+{
+  "format": 1,
+  "success": true,
+  "startedAt": "2026-10-09T02:26:26.937Z",
+  "output": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-benchmark-HlrLtc",
+  "runtime": {
+    "node": "v22.22.2",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "cpu": "Apple M1 Pro",
+    "logicalCpus": 8,
+    "totalMemoryBytes": 17179869184,
+    "initialLoadAverage": [
+      5.3896484375,
+      7.42529296875,
+      12.16015625
+    ],
+    "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+  },
+  "settings": {
+    "requests": 128,
+    "slowRequests": 24,
+    "concurrency": [
+      1,
+      8,
+      32
+    ],
+    "warmupRequests": 8,
+    "slowWarmupRequests": 2,
+    "clientDeadlineMs": 10000,
+    "ssrDeadlineMs": 1000,
+    "ssrPermits": 16,
+    "route": "/users",
+    "databaseQueries": 0,
+    "userRows": 2
+  },
+  "build": {
+    "receipt": {
+      "format": 1,
+      "files": {
+        "client/.vite/manifest.json": "85402b9d92844cd21339e83659815641bb21fc984d25578b34c25afa452ae020",
+        "client/assets/app-m_QUKOSV.css": "1710fc04e8050986b8d6dab2dbadb7fc2730ff026fb62bffcc9ab54f45ac71ee",
+        "client/assets/app-rgxG1GpP.js": "a1024b7ce454530a8c1808cc145ab7376b6da3d93742c10108a6cb91b70fdf4b",
+        "ssr/ssr.js": "fe030d1bde9fba8b95ea1edc9fe34779dba6b9fd124b8f177f6d7fec55c5f1c3",
+        "ssr/ssr.js.map": "cd0ac93e5344c10581778bd0380bd7301bcda049ddbfe58dc254e45db6e5986a"
+      },
+      "buildId": "e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476"
+    },
+    "jarSha256": "54c330e02eb1e307b4238fe2a495ec659443422838dcce1a109e92e8a9d4e93a"
+  },
+  "phases": [
+    {
+      "mode": "ssr",
+      "concurrency": 1,
+      "effectiveConcurrency": 1,
+      "requests": 128,
+      "wallMs": 615.0410000000002,
+      "requestsPerSecond": 208.1162068870205,
+      "latencyMs": {
+        "min": 3.265875000000051,
+        "p50": 4.6365420000001905,
+        "p95": 6.458124999999654,
+        "p99": 8.568332999999711,
+        "max": 9.965041999999812
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 128,
+      "csrResponses": 0,
+      "ssrRatio": 1,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 128,
+          "p50": 4.6365420000001905,
+          "p95": 6.458124999999654,
+          "p99": 8.568332999999711
+        },
+        {
+          "kind": "csr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        }
+      ],
+      "responseBytes": {
+        "min": 1467,
+        "max": 1468
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "NONE": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 3,
+          "maxSampledRssBytes": 240828416,
+          "maxReportedCpuPercent": 205.4
+        },
+        {
+          "role": "node",
+          "samples": 3,
+          "maxSampledRssBytes": 105709568,
+          "maxReportedCpuPercent": 20.3
+        },
+        {
+          "role": "driver",
+          "samples": 3,
+          "maxSampledRssBytes": 115638272,
+          "maxReportedCpuPercent": 22
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "concurrency": 8,
+      "effectiveConcurrency": 8,
+      "requests": 128,
+      "wallMs": 136.23341699999992,
+      "requestsPerSecond": 939.5638956923475,
+      "latencyMs": {
+        "min": 4.166208000000097,
+        "p50": 7.926124999999956,
+        "p95": 12.096250000000055,
+        "p99": 13.272917000000234,
+        "max": 13.357916999999816
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 128,
+      "csrResponses": 0,
+      "ssrRatio": 1,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 128,
+          "p50": 7.926124999999956,
+          "p95": 12.096250000000055,
+          "p99": 13.272917000000234
+        },
+        {
+          "kind": "csr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        }
+      ],
+      "responseBytes": {
+        "min": 1468,
+        "max": 1468
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "NONE": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 242647040,
+          "maxReportedCpuPercent": 184.8
+        },
+        {
+          "role": "node",
+          "samples": 1,
+          "maxSampledRssBytes": 106987520,
+          "maxReportedCpuPercent": 26.5
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 119275520,
+          "maxReportedCpuPercent": 24.1
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "concurrency": 32,
+      "effectiveConcurrency": 32,
+      "requests": 128,
+      "wallMs": 77.59270800000013,
+      "requestsPerSecond": 1649.6395511805024,
+      "latencyMs": {
+        "min": 3.0363330000000133,
+        "p50": 14.503499999999804,
+        "p95": 41.45987500000001,
+        "p99": 54.26125000000002,
+        "max": 54.8840409999998
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 72,
+      "csrResponses": 56,
+      "ssrRatio": 0.5625,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 72,
+          "p50": 22.685167000000092,
+          "p95": 49.479207999999744,
+          "p99": 54.8840409999998
+        },
+        {
+          "kind": "csr",
+          "count": 56,
+          "p50": 8.701125000000047,
+          "p95": 19.23854100000017,
+          "p99": 21.92674999999963
+        }
+      ],
+      "responseBytes": {
+        "min": 1034,
+        "max": 1468
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "NONE": 72,
+        "OVERLOADED": 56
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 246644736,
+          "maxReportedCpuPercent": 220.1
+        },
+        {
+          "role": "node",
+          "samples": 1,
+          "maxSampledRssBytes": 109002752,
+          "maxReportedCpuPercent": 58.5
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 124485632,
+          "maxReportedCpuPercent": 44.1
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 1,
+      "effectiveConcurrency": 1,
+      "requests": 128,
+      "wallMs": 318.3514580000001,
+      "requestsPerSecond": 402.0713484528787,
+      "latencyMs": {
+        "min": 1.3289999999997235,
+        "p50": 2.3024169999998776,
+        "p95": 3.8823749999992287,
+        "p99": 4.543999999999869,
+        "max": 4.878292000000329
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 2.3024169999998776,
+          "p95": 3.8823749999992287,
+          "p99": 4.543999999999869
+        }
+      ],
+      "responseBytes": {
+        "min": 1033,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "EXCLUDED_OR_UNAVAILABLE": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 2,
+          "maxSampledRssBytes": 248152064,
+          "maxReportedCpuPercent": 280.1
+        },
+        {
+          "role": "node",
+          "samples": 2,
+          "maxSampledRssBytes": 62455808,
+          "maxReportedCpuPercent": 0
+        },
+        {
+          "role": "driver",
+          "samples": 2,
+          "maxSampledRssBytes": 126664704,
+          "maxReportedCpuPercent": 14.3
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 8,
+      "effectiveConcurrency": 8,
+      "requests": 128,
+      "wallMs": 60.009415999999874,
+      "requestsPerSecond": 2132.998594753868,
+      "latencyMs": {
+        "min": 1.4382080000004862,
+        "p50": 3.3851250000006985,
+        "p95": 7.019166000000041,
+        "p99": 9.644792000000052,
+        "max": 9.807291000000077
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 3.3851250000006985,
+          "p95": 7.019166000000041,
+          "p99": 9.644792000000052
+        }
+      ],
+      "responseBytes": {
+        "min": 1034,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "EXCLUDED_OR_UNAVAILABLE": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 249659392,
+          "maxReportedCpuPercent": 190.1
+        },
+        {
+          "role": "node",
+          "samples": 1,
+          "maxSampledRssBytes": 62455808,
+          "maxReportedCpuPercent": 0
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 128679936,
+          "maxReportedCpuPercent": 29.9
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 32,
+      "effectiveConcurrency": 32,
+      "requests": 128,
+      "wallMs": 55.12700000000041,
+      "requestsPerSecond": 2321.9112231755594,
+      "latencyMs": {
+        "min": 3.253958000000239,
+        "p50": 10.709375000000364,
+        "p95": 35.12016700000004,
+        "p99": 48.93562500000007,
+        "max": 49.284709000000475
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 10.709375000000364,
+          "p95": 35.12016700000004,
+          "p99": 48.93562500000007
+        }
+      ],
+      "responseBytes": {
+        "min": 1034,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "EXCLUDED_OR_UNAVAILABLE": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 248184832,
+          "maxReportedCpuPercent": 163.1
+        },
+        {
+          "role": "node",
+          "samples": 1,
+          "maxSampledRssBytes": 64471040,
+          "maxReportedCpuPercent": 0
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 131809280,
+          "maxReportedCpuPercent": 29.2
+        }
+      ]
+    },
+    {
+      "mode": "connection-refused",
+      "concurrency": 1,
+      "effectiveConcurrency": 1,
+      "requests": 128,
+      "wallMs": 436.4272089999995,
+      "requestsPerSecond": 293.2906046194754,
+      "latencyMs": {
+        "min": 2.1789580000004207,
+        "p50": 3.2867910000004485,
+        "p95": 4.6507500000006985,
+        "p99": 5.321250000000873,
+        "max": 6.2222079999992275
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 3.2867910000004485,
+          "p95": 4.6507500000006985,
+          "p99": 5.321250000000873
+        }
+      ],
+      "responseBytes": {
+        "min": 1033,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "CONNECTION": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 3,
+          "maxSampledRssBytes": 238338048,
+          "maxReportedCpuPercent": 232.1
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 3,
+          "maxSampledRssBytes": 135446528,
+          "maxReportedCpuPercent": 23.5
+        }
+      ]
+    },
+    {
+      "mode": "connection-refused",
+      "concurrency": 8,
+      "effectiveConcurrency": 8,
+      "requests": 128,
+      "wallMs": 90.93891699999949,
+      "requestsPerSecond": 1407.5382050129397,
+      "latencyMs": {
+        "min": 2.4274999999997817,
+        "p50": 5.42987500000163,
+        "p95": 8.57208300000093,
+        "p99": 11.290333000000828,
+        "max": 15.3453329999993
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 5.42987500000163,
+          "p95": 8.57208300000093,
+          "p99": 11.290333000000828
+        }
+      ],
+      "responseBytes": {
+        "min": 1034,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "CONNECTION": 128
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 238747648,
+          "maxReportedCpuPercent": 115.3
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 135757824,
+          "maxReportedCpuPercent": 12.7
+        }
+      ]
+    },
+    {
+      "mode": "connection-refused",
+      "concurrency": 32,
+      "effectiveConcurrency": 32,
+      "requests": 128,
+      "wallMs": 69.53200000000106,
+      "requestsPerSecond": 1840.8790197318938,
+      "latencyMs": {
+        "min": 3.649250000000393,
+        "p50": 13.776458000000275,
+        "p95": 39.19495800000004,
+        "p99": 46.28720799999974,
+        "max": 46.79087499999878
+      },
+      "statuses": {
+        "200": 128
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 128,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 128,
+          "p50": 13.776458000000275,
+          "p95": 39.19495800000004,
+          "p99": 46.28720799999974
+        }
+      ],
+      "responseBytes": {
+        "min": 1034,
+        "max": 1034
+      },
+      "httpObservations": 128,
+      "httpReasons": {
+        "CONNECTION": 90,
+        "OVERLOADED": 38
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 1,
+          "maxSampledRssBytes": 242352128,
+          "maxReportedCpuPercent": 160.9
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 1,
+          "maxSampledRssBytes": 137379840,
+          "maxReportedCpuPercent": 22.5
+        }
+      ]
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 1,
+      "effectiveConcurrency": 1,
+      "requests": 24,
+      "wallMs": 24344.278,
+      "requestsPerSecond": 0.9858579498640296,
+      "latencyMs": {
+        "min": 1006.762791000001,
+        "p50": 1011.7647499999985,
+        "p95": 1017.8391670000019,
+        "p99": 1067.9050419999985,
+        "max": 1067.9050419999985
+      },
+      "statuses": {
+        "200": 24
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 24,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 1,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 24,
+          "p50": 1011.7647499999985,
+          "p95": 1017.8391670000019,
+          "p99": 1067.9050419999985
+        }
+      ],
+      "responseBytes": {
+        "min": 1032,
+        "max": 1033
+      },
+      "httpObservations": 24,
+      "httpReasons": {
+        "TIMEOUT": 24
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 109,
+          "maxSampledRssBytes": 230604800,
+          "maxReportedCpuPercent": 10.7
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 109,
+          "maxSampledRssBytes": 117653504,
+          "maxReportedCpuPercent": 13.1
+        }
+      ]
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 8,
+      "effectiveConcurrency": 8,
+      "requests": 24,
+      "wallMs": 3047.944666999996,
+      "requestsPerSecond": 7.874158694495758,
+      "latencyMs": {
+        "min": 1011.1296660000007,
+        "p50": 1014.3297919999968,
+        "p95": 1019.8653330000016,
+        "p99": 1020.8247499999998,
+        "max": 1020.8247499999998
+      },
+      "statuses": {
+        "200": 24
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 24,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 1,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 24,
+          "p50": 1014.3297919999968,
+          "p95": 1019.8653330000016,
+          "p99": 1020.8247499999998
+        }
+      ],
+      "responseBytes": {
+        "min": 1033,
+        "max": 1033
+      },
+      "httpObservations": 24,
+      "httpReasons": {
+        "TIMEOUT": 24
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 14,
+          "maxSampledRssBytes": 122470400,
+          "maxReportedCpuPercent": 22.6
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 14,
+          "maxSampledRssBytes": 64487424,
+          "maxReportedCpuPercent": 5.9
+        }
+      ]
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 32,
+      "effectiveConcurrency": 24,
+      "requests": 24,
+      "wallMs": 1029.5043339999975,
+      "requestsPerSecond": 23.312189378311118,
+      "latencyMs": {
+        "min": 18.847333999998227,
+        "p50": 1017.3883330000026,
+        "p95": 1027.495167000001,
+        "p99": 1027.7767499999973,
+        "max": 1027.7767499999973
+      },
+      "statuses": {
+        "200": 24
+      },
+      "clientErrors": {},
+      "ssrResponses": 0,
+      "csrResponses": 24,
+      "ssrRatio": 0,
+      "rendererTimeoutRatio": 0.6666666666666666,
+      "clientTimeoutRatio": 0,
+      "latencyByResponseMs": [
+        {
+          "kind": "ssr",
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        {
+          "kind": "csr",
+          "count": 24,
+          "p50": 1017.3883330000026,
+          "p95": 1027.495167000001,
+          "p99": 1027.7767499999973
+        }
+      ],
+      "responseBytes": {
+        "min": 1033,
+        "max": 1033
+      },
+      "httpObservations": 24,
+      "httpReasons": {
+        "OVERLOADED": 8,
+        "TIMEOUT": 16
+      },
+      "resources": [
+        {
+          "role": "java",
+          "samples": 5,
+          "maxSampledRssBytes": 142360576,
+          "maxReportedCpuPercent": 30.4
+        },
+        {
+          "role": "node",
+          "samples": 0,
+          "maxSampledRssBytes": null,
+          "maxReportedCpuPercent": null
+        },
+        {
+          "role": "driver",
+          "samples": 5,
+          "maxSampledRssBytes": 65880064,
+          "maxReportedCpuPercent": 2.7
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "same-host closed-loop HTTP measurement; no browser paint/hydration or database",
+    "logging observer enabled; logging overhead included",
+    "RSS is sampled, not exact peak; ps CPU is process-lifetime reported percentage, not interval utilization",
+    "no cookies retained: independent initial HTML visits; existing JVM reused within each mode",
+    "stress permits overload fallback; no production capacity or throughput guarantee"
+  ],
+  "source": {
+    "head": "e8e7383aeba1e41dea9dbcac04926ed18bc6c588",
+    "dirty": true,
+    "status": "M inertia-java/README.md\n M inertia-java/examples/spring-react/frontend/package.json\n M inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java\n?? inertia-java/examples/spring-react/frontend/scripts/benchmark.mjs"
+  },
+  "page": {
+    "component": "Users/Index",
+    "propsKeys": [
+      "errors",
+      "appName",
+      "catalog",
+      "users",
+      "largeId"
+    ],
+    "propsJsonBytes": 156,
+    "version": "e8813ba29b3d6a4f3e6dd025858104c5a8938077d309dd969ef873a413010476"
+  },
+  "finishedAt": "2026-10-09T02:27:15.106Z"
+}

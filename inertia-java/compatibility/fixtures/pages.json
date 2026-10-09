@@ -314,6 +314,1451 @@
           "errors"
         ]
       }
+    },
+    {
+      "name": "merge-full",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "append",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 1
+            }
+          ],
+          "merge": "merge",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "prepend",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "merge": "prepend",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "deep",
+          "kind": "literal",
+          "value": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "merge": "deep"
+        },
+        {
+          "key": "paths",
+          "kind": "literal",
+          "value": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          },
+          "appendAt": [
+            "items"
+          ],
+          "prependAt": [
+            "previous"
+          ],
+          "matchOn": [
+            "items.id"
+          ]
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "append": [
+            {
+              "id": 1
+            }
+          ],
+          "prepend": [
+            {
+              "id": 2
+            }
+          ],
+          "deep": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "paths": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "append",
+          "paths.items"
+        ],
+        "prependProps": [
+          "prepend",
+          "paths.previous"
+        ],
+        "deepMergeProps": [
+          "deep"
+        ],
+        "matchPropsOn": [
+          "append.id",
+          "prepend.id",
+          "paths.items.id"
+        ]
+      }
+    },
+    {
+      "name": "merge-partial",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "append,prepend,deep,paths"
+      },
+      "definitions": [
+        {
+          "key": "append",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 1
+            }
+          ],
+          "merge": "merge",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "prepend",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "merge": "prepend",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "deep",
+          "kind": "literal",
+          "value": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "merge": "deep"
+        },
+        {
+          "key": "paths",
+          "kind": "literal",
+          "value": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          },
+          "appendAt": [
+            "items"
+          ],
+          "prependAt": [
+            "previous"
+          ],
+          "matchOn": [
+            "items.id"
+          ]
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "append": [
+            {
+              "id": 1
+            }
+          ],
+          "prepend": [
+            {
+              "id": 2
+            }
+          ],
+          "deep": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "paths": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "append",
+          "paths.items"
+        ],
+        "prependProps": [
+          "prepend",
+          "paths.previous"
+        ],
+        "deepMergeProps": [
+          "deep"
+        ],
+        "matchPropsOn": [
+          "append.id",
+          "prepend.id",
+          "paths.items.id"
+        ]
+      }
+    },
+    {
+      "name": "merge-reset",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "append,prepend,deep,paths",
+        "x-inertia-reset": "append,paths"
+      },
+      "definitions": [
+        {
+          "key": "append",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 1
+            }
+          ],
+          "merge": "merge",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "prepend",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "merge": "prepend",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "deep",
+          "kind": "literal",
+          "value": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "merge": "deep"
+        },
+        {
+          "key": "paths",
+          "kind": "literal",
+          "value": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          },
+          "appendAt": [
+            "items"
+          ],
+          "prependAt": [
+            "previous"
+          ],
+          "matchOn": [
+            "items.id"
+          ]
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "append": [
+            {
+              "id": 1
+            }
+          ],
+          "prepend": [
+            {
+              "id": 2
+            }
+          ],
+          "deep": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "paths": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "prependProps": [
+          "prepend"
+        ],
+        "deepMergeProps": [
+          "deep"
+        ],
+        "matchPropsOn": [
+          "prepend.id"
+        ]
+      }
+    },
+    {
+      "name": "merge-child-only",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "paths.items"
+      },
+      "definitions": [
+        {
+          "key": "append",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 1
+            }
+          ],
+          "merge": "merge",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "prepend",
+          "kind": "literal",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "merge": "prepend",
+          "matchOn": [
+            "id"
+          ]
+        },
+        {
+          "key": "deep",
+          "kind": "literal",
+          "value": {
+            "nested": {
+              "x": 1
+            }
+          },
+          "merge": "deep"
+        },
+        {
+          "key": "paths",
+          "kind": "literal",
+          "value": {
+            "items": [
+              1
+            ],
+            "previous": [
+              0
+            ]
+          },
+          "appendAt": [
+            "items"
+          ],
+          "prependAt": [
+            "previous"
+          ],
+          "matchOn": [
+            "items.id"
+          ]
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "paths": {
+            "items": [
+              1
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "once-full",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "catalog",
+          "kind": "lazy",
+          "value": {
+            "id": 1
+          },
+          "once": "catalog-cache"
+        },
+        {
+          "key": "plans",
+          "kind": "literal",
+          "value": [
+            1,
+            2
+          ],
+          "once": true
+        },
+        {
+          "key": "fresh",
+          "kind": "lazy",
+          "value": 3,
+          "once": "fresh-cache",
+          "fresh": true
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "catalog": {
+            "id": 1
+          },
+          "plans": [
+            1,
+            2
+          ],
+          "fresh": 3
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "onceProps": {
+          "catalog-cache": {
+            "prop": "catalog",
+            "expiresAt": null
+          },
+          "plans": {
+            "prop": "plans",
+            "expiresAt": null
+          },
+          "fresh-cache": {
+            "prop": "fresh",
+            "expiresAt": null
+          }
+        }
+      }
+    },
+    {
+      "name": "once-loaded",
+      "headers": {
+        "x-inertia-except-once-props": "catalog-cache,plans,fresh-cache"
+      },
+      "definitions": [
+        {
+          "key": "catalog",
+          "kind": "lazy",
+          "value": {
+            "id": 1
+          },
+          "once": "catalog-cache"
+        },
+        {
+          "key": "plans",
+          "kind": "literal",
+          "value": [
+            1,
+            2
+          ],
+          "once": true
+        },
+        {
+          "key": "fresh",
+          "kind": "lazy",
+          "value": 3,
+          "once": "fresh-cache",
+          "fresh": true
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "fresh": 3
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "onceProps": {
+          "catalog-cache": {
+            "prop": "catalog",
+            "expiresAt": null
+          },
+          "plans": {
+            "prop": "plans",
+            "expiresAt": null
+          },
+          "fresh-cache": {
+            "prop": "fresh",
+            "expiresAt": null
+          }
+        }
+      }
+    },
+    {
+      "name": "once-partial",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "catalog",
+        "x-inertia-except-once-props": "catalog-cache"
+      },
+      "definitions": [
+        {
+          "key": "catalog",
+          "kind": "lazy",
+          "value": {
+            "id": 1
+          },
+          "once": "catalog-cache"
+        },
+        {
+          "key": "plans",
+          "kind": "literal",
+          "value": [
+            1,
+            2
+          ],
+          "once": true
+        },
+        {
+          "key": "fresh",
+          "kind": "lazy",
+          "value": 3,
+          "once": "fresh-cache",
+          "fresh": true
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "catalog": {
+            "id": 1
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "onceProps": {
+          "catalog-cache": {
+            "prop": "catalog",
+            "expiresAt": null
+          }
+        }
+      }
+    },
+    {
+      "name": "once-child-only",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "auth.user.id"
+      },
+      "definitions": [
+        {
+          "key": "auth",
+          "kind": "literal",
+          "value": {
+            "user": {
+              "id": 1
+            }
+          },
+          "once": "auth-cache"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "auth": {
+            "user": {
+              "id": 1
+            }
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "deferred-groups",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "stats",
+          "kind": "deferred",
+          "value": 7,
+          "group": "dashboard",
+          "merge": "merge",
+          "once": "stats-cache"
+        },
+        {
+          "key": "billing",
+          "kind": "deferred",
+          "value": 9,
+          "group": "dashboard"
+        },
+        {
+          "key": "audit",
+          "kind": "deferred",
+          "value": 10,
+          "group": "audit"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "stats"
+        ],
+        "deferredProps": {
+          "dashboard": [
+            "stats",
+            "billing"
+          ],
+          "audit": [
+            "audit"
+          ]
+        },
+        "onceProps": {
+          "stats-cache": {
+            "prop": "stats",
+            "expiresAt": null
+          }
+        }
+      }
+    },
+    {
+      "name": "deferred-selected",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "stats,billing"
+      },
+      "definitions": [
+        {
+          "key": "stats",
+          "kind": "deferred",
+          "value": 7,
+          "group": "dashboard",
+          "merge": "merge",
+          "once": "stats-cache"
+        },
+        {
+          "key": "billing",
+          "kind": "deferred",
+          "value": 9,
+          "group": "dashboard"
+        },
+        {
+          "key": "audit",
+          "kind": "deferred",
+          "value": 10,
+          "group": "audit"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "stats": 7,
+          "billing": 9
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "stats"
+        ],
+        "onceProps": {
+          "stats-cache": {
+            "prop": "stats",
+            "expiresAt": null
+          }
+        }
+      }
+    },
+    {
+      "name": "deferred-rescued",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "bad,good"
+      },
+      "definitions": [
+        {
+          "key": "bad",
+          "kind": "failure",
+          "value": null,
+          "loading": "deferred",
+          "rescue": true
+        },
+        {
+          "key": "good",
+          "kind": "deferred",
+          "value": 7
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "good": 7
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "rescuedProps": [
+          "bad"
+        ]
+      }
+    },
+    {
+      "name": "scroll-append",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "scroll": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "items": {
+            "data": [
+              {
+                "id": 2
+              }
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "items.data"
+        ],
+        "scrollProps": {
+          "items": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2,
+            "reset": false
+          }
+        }
+      }
+    },
+    {
+      "name": "scroll-prepend",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "items",
+        "x-inertia-infinite-scroll-merge-intent": "prepend"
+      },
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "scroll": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "items": {
+            "data": [
+              {
+                "id": 2
+              }
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "prependProps": [
+          "items.data"
+        ],
+        "scrollProps": {
+          "items": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2,
+            "reset": false
+          }
+        }
+      }
+    },
+    {
+      "name": "scroll-reset",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "items",
+        "x-inertia-reset": "items"
+      },
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "scroll": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "items": {
+            "data": [
+              {
+                "id": 2
+              }
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "scrollProps": {
+          "items": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2,
+            "reset": true
+          }
+        }
+      }
+    },
+    {
+      "name": "scroll-cursor-wrapper",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll",
+          "value": [
+            {
+              "id": 1
+            }
+          ],
+          "wrapper": "rows",
+          "scroll": {
+            "pageName": "cursor",
+            "previousPage": null,
+            "nextPage": "next-token",
+            "currentPage": "current-token"
+          }
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "items": {
+            "rows": [
+              {
+                "id": 1
+              }
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "items.rows"
+        ],
+        "scrollProps": {
+          "items": {
+            "pageName": "cursor",
+            "previousPage": null,
+            "nextPage": "next-token",
+            "currentPage": "current-token",
+            "reset": false
+          }
+        }
+      }
+    },
+    {
+      "name": "scroll-deferred",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "scroll": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2
+          },
+          "loading": "deferred",
+          "group": "feed"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "items"
+        ],
+        "deferredProps": {
+          "feed": [
+            "items"
+          ]
+        }
+      }
+    },
+    {
+      "name": "scroll-deferred-selected",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "items"
+      },
+      "definitions": [
+        {
+          "key": "items",
+          "kind": "scroll-lazy",
+          "value": [
+            {
+              "id": 2
+            }
+          ],
+          "scroll": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2
+          },
+          "loading": "deferred",
+          "group": "feed"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "items": {
+            "data": [
+              {
+                "id": 2
+              }
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "mergeProps": [
+          "items.data"
+        ],
+        "scrollProps": {
+          "items": {
+            "pageName": "page",
+            "previousPage": 1,
+            "nextPage": 3,
+            "currentPage": 2,
+            "reset": false
+          }
+        }
+      }
+    },
+    {
+      "name": "history-config",
+      "headers": {},
+      "definitions": [],
+      "configEncrypt": true,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "encryptHistory": true
+      }
+    },
+    {
+      "name": "history-request-opt-out",
+      "headers": {},
+      "definitions": [],
+      "configEncrypt": true,
+      "requestEncrypt": false,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "history-response-wins",
+      "headers": {},
+      "definitions": [],
+      "configEncrypt": false,
+      "requestEncrypt": true,
+      "responseEncrypt": false,
+      "clearHistory": true,
+      "preserveFragment": true,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "clearHistory": true,
+        "preserveFragment": true
+      }
+    },
+    {
+      "name": "history-response-opt-in",
+      "headers": {},
+      "definitions": [],
+      "requestEncrypt": false,
+      "responseEncrypt": true,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "encryptHistory": true
+      }
+    },
+    {
+      "name": "bigint-props-flash",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "large",
+          "kind": "literal",
+          "value": {
+            "positive": 9007199254740993,
+            "negative": -9007199254740993,
+            "boundary": 9007199254740991,
+            "array": [
+              9007199254740993,
+              1
+            ]
+          }
+        }
+      ],
+      "configBigint": true,
+      "requestFlash": {
+        "source": "request",
+        "large": 9007199254740993
+      },
+      "responseFlash": {
+        "source": "response"
+      },
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "large": {
+            "positive": {
+              "$bigint": "9007199254740993"
+            },
+            "negative": {
+              "$bigint": "-9007199254740993"
+            },
+            "boundary": 9007199254740991,
+            "array": [
+              {
+                "$bigint": "9007199254740993"
+              },
+              1
+            ]
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "preserveBigIntegers": true,
+        "flash": {
+          "source": "response",
+          "large": {
+            "$bigint": "9007199254740993"
+          }
+        }
+      }
+    },
+    {
+      "name": "bigint-response-opt-out",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "large",
+          "kind": "literal",
+          "value": 9007199254740993
+        }
+      ],
+      "configBigint": true,
+      "responseBigint": false,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "large": 9007199254740993
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "shared-overrides",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "label",
+          "kind": "literal",
+          "value": "page"
+        }
+      ],
+      "configShared": [
+        {
+          "key": "label",
+          "kind": "literal",
+          "value": "config"
+        },
+        {
+          "key": "app",
+          "kind": "literal",
+          "value": "Application"
+        }
+      ],
+      "requestShared": [
+        {
+          "key": "label",
+          "kind": "literal",
+          "value": "request"
+        },
+        {
+          "key": "tenant",
+          "kind": "literal",
+          "value": 1
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "label": "page",
+          "app": "Application",
+          "tenant": 1
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors",
+          "label",
+          "app",
+          "tenant"
+        ]
+      }
+    },
+    {
+      "name": "nested-deferred",
+      "headers": {},
+      "definitions": [
+        {
+          "key": "dashboard",
+          "kind": "nested",
+          "value": null,
+          "definitions": [
+            {
+              "key": "stats",
+              "kind": "deferred",
+              "value": 7,
+              "group": "dashboard"
+            },
+            {
+              "key": "name",
+              "kind": "literal",
+              "value": "Ada"
+            }
+          ]
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "dashboard": {
+            "name": "Ada"
+          }
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ],
+        "deferredProps": {
+          "dashboard": [
+            "dashboard.stats"
+          ]
+        }
+      }
+    },
+    {
+      "name": "partial-except-always",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-except": "name,auth"
+      },
+      "definitions": [
+        {
+          "key": "name",
+          "kind": "literal",
+          "value": "Ada"
+        },
+        {
+          "key": "auth",
+          "kind": "literal",
+          "value": {
+            "id": 1
+          },
+          "always": true
+        },
+        {
+          "key": "optional",
+          "kind": "optional",
+          "value": 9
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "auth": {
+            "id": 1
+          },
+          "optional": 9
+        },
+        "url": "/users?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "custom-url",
+      "headers": {},
+      "definitions": [],
+      "resolvedUrl": "/canonical?page=2",
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {}
+        },
+        "url": "/canonical?page=2",
+        "version": "v1",
+        "sharedProps": [
+          "errors"
+        ]
+      }
+    },
+    {
+      "name": "shared-keys-hidden",
+      "headers": {},
+      "definitions": [],
+      "exposeShared": false,
+      "configShared": [
+        {
+          "key": "app",
+          "kind": "literal",
+          "value": "Application"
+        }
+      ],
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "app": "Application"
+        },
+        "url": "/users?page=2",
+        "version": "v1"
+      }
+    },
+    {
+      "name": "url-and-shared-hidden-partial",
+      "headers": {
+        "x-inertia-partial-component": "Home",
+        "x-inertia-partial-data": "name"
+      },
+      "definitions": [
+        {
+          "key": "name",
+          "kind": "literal",
+          "value": "Ada"
+        }
+      ],
+      "resolvedUrl": "/canonical",
+      "exposeShared": false,
+      "expectedPage": {
+        "component": "Home",
+        "props": {
+          "errors": {},
+          "name": "Ada"
+        },
+        "url": "/canonical",
+        "version": "v1"
+      }
     }
   ]
 }

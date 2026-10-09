@@ -126,3 +126,41 @@ test('safe error page preserves status, hydrates or mounts, and recovers by navi
   expect(await forbidden.text()).not.toContain('Demo denial')
   expect(errors).toEqual([])
 })
+
+for (const scenario of ['missing-cookie', 'stale-header']) {
+  test(`CSRF ${scenario} rejects once, preserves input and recovers on explicit resubmit`, async ({ page, context }) => {
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await page.goto('/users')
+    await expect(page.getByTestId('stats')).toHaveText('Total: 2')
+    await page.getByLabel('Name', { exact: true }).fill('Grace')
+    let posts = 0
+    page.on('request', request => {
+      if (request.method() === 'POST' && request.url().endsWith('/users')) posts++
+    })
+    if (scenario === 'missing-cookie') await context.clearCookies({ name: 'XSRF-TOKEN' })
+    else {
+      let rejected = false
+      await page.route('**/users', async route => {
+        if (!rejected && route.request().method() === 'POST') {
+          rejected = true
+          await route.continue({ headers: { ...route.request().headers(), 'x-xsrf-token': 'stale-demo-token' } })
+        } else await route.continue()
+      })
+    }
+    const rejection = page.waitForResponse(response => response.request().method() === 'POST' && response.url().endsWith('/users'))
+    await page.getByRole('button', { name: 'Save demo name' }).click()
+    expect((await rejection).status()).toBe(303)
+    await expect(page.getByRole('alert')).toHaveText('Your security token changed. Review your form and submit again.')
+    await expect(page.getByLabel('Name', { exact: true })).toHaveValue('Grace')
+    await expect(page.getByRole('button', { name: 'Save demo name' })).toBeEnabled()
+    await expect(page.getByRole('status')).toHaveCount(0)
+    expect(posts).toBe(1)
+    expect(Boolean((await context.cookies()).find(cookie => cookie.name === 'XSRF-TOKEN')?.value)).toBe(true)
+    await page.getByRole('button', { name: 'Save demo name' }).click()
+    await expect(page.getByRole('status')).toHaveText('Saved Grace (demo only)')
+    await expect(page.getByRole('alert')).toHaveCount(0)
+    expect(posts).toBe(2)
+    expect(errors).toEqual([])
+  })
+}
