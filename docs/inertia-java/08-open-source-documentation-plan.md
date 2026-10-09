@@ -215,6 +215,6 @@ D1是可上手预览，D3才可称完整首版开源文档库。每页完成需�
 - 文档工具清单：独立npm CycloneDX/lock核对、实际许可证文件与review项已落地，覆盖300个锁路径/291个组件；五项拒绝合同和本地站点验收通过。清单收集不是静态捆绑归属批准；README的44个专题迁移对应、原锚点及历史原文保留已完成；外链检查和只读手动workflow已落地，当前24个外部HTTP目的地可达，远程fragment/内容时效性不在该检查范围。
 - 站点交互：中英教程从canonical POM/Java/TSX原生导入完整源码；两种语言五种代码的实际键盘复制/可见焦点、搜索Enter/Ctrl-K/Escape和关闭焦点恢复已补验。见 [交互验收](verification/documentation-site-interactions.json)。
 - 未创建空正文，未将 D3/D4全部标记完成；真实tag版本快照和正式托管继续推进；公开API契约随源码维护并由严格检查保护。
-- 本地验收与远端状态分别记录：专用 workflow 已写入，未据此宣称远端 Actions 成功；公开 Pages 尚未配置或发布。当前变更尚未提交/推送。
+- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages尚未配置或发布，私密安全渠道仍待确认。
 
 命令、验收边界及证据见 [文档实施台账](09-documentation-implementation.md)。

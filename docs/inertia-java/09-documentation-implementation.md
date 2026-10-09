@@ -192,8 +192,14 @@ runner目录修复已在 `a6721ee` 推送。GitHub随后通过actionlint、Javad
 
 四个入口统一直接传递chromium channel，与已有应用browser verifier一致；真实tag构建也复用修正后的入口。保留no-shell安装方式。固定Playwright配对Chromium已在本地实际启动，81篇站点/搜索/键盘复制等回归通过；版本导航命令在空registry下只验证next入口，不冒充真实历史版本导航。远端再次验收结果另行追加。
 
+### 远端CI验收结果
+
+修复Chromium选择的 `adcbb87` 已推送；[GitHub Actions run 37937779692](https://github.com/royalwang/inertia-java/actions/runs/37937779692)完成且success，site/examples两个job均success。site覆盖完整Javadoc分类、actionlint、30项文档合同、独立工具清单、严格静态构建、81篇中英页面/搜索/键盘复制/移动导航验收；examples完成291项Maven测试且无失败/错误/跳过、实际前端构建、外部Maven消费、仓库外First application与干净源码Quick start浏览器验收。Java完整aggregate在同一运行源码的先前 `495b67e` 提交也已远端success。
+
+两份GitHub站点/教程证据artifact已生成，机器记录保留ID、GitHub报告的digest和到期时间。本机取得的临时下载引用返回403，未宣称已下载审查ZIP内容或自行验证artifact digest。各历史失败保留，不回写为成功。验收输入SHA与明确边界见 [documentation-remote-ci.json](verification/documentation-remote-ci.json)。此次没有触发手动Pages发布、真实tag快照或外链workflow；站点CI通过不代表公开部署成功。
+
 ## 后续阶段
 
 D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已完成本地验收；D4优先中文路径和revision对应已落地，版本快照工具已实现本地合同，真实tag快照仍待验收。当前英文目录没有planned占位页。
 
-尚未执行这些文档变更的远端 Actions、公开 Pages 配置、域名修改或网站部署。目录与正文已随首次推送交付；后续修复状态以对应Git提交与远端验收记录为准。D3公开托管与实际维护联系渠道需要按当时仓库配置核实，不能预设已有站点或安全邮箱。
+远端文档与Java验证Actions已通过；尚未执行公开 Pages 配置、域名修改或网站部署。目录与正文已随首次推送交付；后续修复状态以对应Git提交与远端验收记录为准。D3公开托管与实际维护联系渠道需要按当时仓库配置核实，不能预设已有站点或安全邮箱。

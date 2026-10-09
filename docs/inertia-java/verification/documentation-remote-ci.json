@@ -1,0 +1,244 @@
+{
+  "format": 1,
+  "scope": "Remote GitHub documentation CI acceptance; public Pages not deployed",
+  "testedCommit": "adcbb87ae63ff8b2d6e7a2e363285f1774a432e4",
+  "run": {
+    "id": 37937779692,
+    "url": "https://github.com/royalwang/inertia-java/actions/runs/37937779692",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 113844092544,
+      "name": "site",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set runner evidence directories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate documentation workflow expressions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Select executable-example checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build actual API classifiers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install documentation tools and browser",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify publication selection",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check and build documentation",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain offline site and browser evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 113845016901,
+      "name": "examples",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set runner evidence directories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build local library artifacts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build application frontend for distribution checks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install documentation acceptance tools",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify canonical API examples and external browser application",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain example evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11619047815,
+      "name": "inertia-java-docs-37937779692-1",
+      "digest": "sha256:cf946417a48b9d3cf56242217fd98aeb30e4695a05a06d31c34ffd4c22075911",
+      "expired": false,
+      "expiresAt": "2026-10-23T13:36:25Z"
+    },
+    {
+      "id": 11618789706,
+      "name": "inertia-java-docs-examples-37937779692-1",
+      "digest": "sha256:e5ced4404bd3983d6ef6950709c6c160be3a3b52de9d8739bee7e514791ba165",
+      "expired": false,
+      "expiresAt": "2026-10-23T13:39:48Z"
+    }
+  ],
+  "artifactArchiveLocallyVerified": false,
+  "artifactBoundary": "GitHub-reported artifact digests retained; signed download references were not accessible from this host (HTTP 403); no archive contents or digest verification claimed.",
+  "maven": {
+    "testClasses": 47,
+    "tests": 291,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runtimeAggregate": {
+    "commit": "495b67e575e696153e266971fc1e007248712759",
+    "runId": 37917401389,
+    "conclusion": "success",
+    "url": "https://github.com/royalwang/inertia-java/actions/runs/37917401389"
+  },
+  "earlierFailures": [
+    {
+      "commit": "495b67e575e696153e266971fc1e007248712759",
+      "runId": 37917397282,
+      "reason": "runner context unavailable in job env; workflow rejected before jobs"
+    },
+    {
+      "commit": "a6721ee",
+      "runId": 37937326508,
+      "reason": "headless shell selected although only Chromium was installed"
+    }
+  ],
+  "localEvidence": {
+    "workflowReplay": "/private/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-workflow-lint-d4r530h0/summary.json",
+    "pairedChromiumSite": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-f5ygAh/summary.json",
+    "nextVersionNavigation": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-version-navigation-nDgZec/summary.json",
+    "checkLog": "/tmp/inertia-docs-ci-fix-check.log"
+  },
+  "remaining": [
+    "Pages configuration/administration and public deployment",
+    "Maintainer-approved private security reporting channel",
+    "Real stable-tag snapshot acceptance when an actual release exists"
+  ],
+  "observedAt": "2026-10-09T13:41:32.266959+00:00",
+  "inputs": {
+    ".github/workflows/inertia-java-docs-deploy.yml": "e244a89137fef8117dd01612fedf1ffa0786d5be413c46f323043b2ea5cc6a81",
+    ".github/workflows/inertia-java-docs-links.yml": "f7ebbb80a67903aff40df70f90f1235bbdc3849e96991571bef9b01c7550776b",
+    ".github/workflows/inertia-java-docs-snapshot.yml": "4bb4f6c504fa128d1baaa226239f75fcab6c54187e20f170200eb6a30a8f22a4",
+    ".github/workflows/inertia-java-docs.yml": "67da75b5f8f6b177e49bcfacde85f01e4b2d2634be52ccdf3a3e8fd9e533b48e",
+    "inertia-java/docs/scripts/smoke-versions.mjs": "a616df9976eaf59729fa668e55d3e9af447be0e325f406087d1040f552bf57f6",
+    "inertia-java/docs/scripts/smoke.mjs": "c06db0c867c19de5fba4f3c55d71321d5c06df11da3e0a6be4845ff53e8865e8",
+    "inertia-java/docs/scripts/verify-first-application.mjs": "9609cbf64c2575222389c60d9d682a20acd91e6294817ff92a33c080458a3f0c",
+    "inertia-java/docs/scripts/verify-quick-start.mjs": "579101bfe758a56c90a7dd06cb4abce4d594dd92a321edd38dfc2e76d0338028"
+  }
+}
