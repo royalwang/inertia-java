@@ -1,0 +1,239 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T18:16:06.386190+00:00",
+  "sourceCommit": "56d26053e7f1203d49c0a8122d2a15ff418a8ba6",
+  "scope": "Representative light/dark documentation text contrast and verified remote acceptance status; no UI/runtime change and no public deployment.",
+  "contrast": {
+    "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-contrast-8frc7O/summary.json",
+    "success": true,
+    "sampleCount": 12,
+    "minimumNormalTextRatio": 4.5,
+    "phases": [
+      {
+        "mode": "light",
+        "dark": false,
+        "samples": [
+          {
+            "selector": ".vp-doc p",
+            "foreground": [
+              60,
+              60,
+              67
+            ],
+            "background": [
+              255,
+              255,
+              255
+            ],
+            "ratio": 10.940207996567228
+          },
+          {
+            "selector": ".vp-doc a",
+            "foreground": [
+              52,
+              81,
+              178
+            ],
+            "background": [
+              255,
+              255,
+              255
+            ],
+            "ratio": 7.080588362631287
+          },
+          {
+            "selector": ".translation-notice p",
+            "foreground": [
+              103,
+              103,
+              108
+            ],
+            "background": [
+              255,
+              255,
+              255
+            ],
+            "ratio": 5.624968859416265
+          },
+          {
+            "selector": ".translation-notice a",
+            "foreground": [
+              52,
+              81,
+              178
+            ],
+            "background": [
+              255,
+              255,
+              255
+            ],
+            "ratio": 7.080588362631287
+          },
+          {
+            "selector": "#VPSidebarNav a",
+            "foreground": [
+              60,
+              60,
+              67
+            ],
+            "background": [
+              246,
+              246,
+              247
+            ],
+            "ratio": 10.12956619740644
+          },
+          {
+            "selector": ".version-menu select",
+            "foreground": [
+              60,
+              60,
+              67
+            ],
+            "background": [
+              255,
+              255,
+              255
+            ],
+            "ratio": 10.940207996567228
+          }
+        ]
+      },
+      {
+        "mode": "dark",
+        "dark": true,
+        "samples": [
+          {
+            "selector": ".vp-doc p",
+            "foreground": [
+              223,
+              223,
+              214
+            ],
+            "background": [
+              27,
+              27,
+              31
+            ],
+            "ratio": 12.805893471499829
+          },
+          {
+            "selector": ".vp-doc a",
+            "foreground": [
+              168,
+              177,
+              255
+            ],
+            "background": [
+              27,
+              27,
+              31
+            ],
+            "ratio": 8.500777685995264
+          },
+          {
+            "selector": ".translation-notice p",
+            "foreground": [
+              152,
+              152,
+              159
+            ],
+            "background": [
+              27,
+              27,
+              31
+            ],
+            "ratio": 5.990228066460756
+          },
+          {
+            "selector": ".translation-notice a",
+            "foreground": [
+              168,
+              177,
+              255
+            ],
+            "background": [
+              27,
+              27,
+              31
+            ],
+            "ratio": 8.500777685995264
+          },
+          {
+            "selector": "#VPSidebarNav a",
+            "foreground": [
+              223,
+              223,
+              214
+            ],
+            "background": [
+              22,
+              22,
+              24
+            ],
+            "ratio": 13.479137314209238
+          },
+          {
+            "selector": ".version-menu select",
+            "foreground": [
+              223,
+              223,
+              214
+            ],
+            "background": [
+              27,
+              27,
+              31
+            ],
+            "ratio": 12.805893471499829
+          }
+        ]
+      }
+    ],
+    "limitation": "Representative standard-theme text, links, sidebar, translation notice and version selector; not a comprehensive WCAG audit or generated Javadoc contrast audit."
+  },
+  "remote": {
+    "documentation": {
+      "run": 37970849511,
+      "commit": "56d26053e7f1203d49c0a8122d2a15ff418a8ba6",
+      "siteJob": {
+        "id": 113956776986,
+        "conclusion": "success",
+        "nodeContracts": 23,
+        "pythonContracts": 10
+      },
+      "examplesJob": {
+        "id": 113957762209,
+        "status": "in_progress",
+        "activeStep": "Install documentation acceptance tools",
+        "successClaimed": false
+      }
+    },
+    "java": {
+      "run": 37970183858,
+      "commit": "cd138c9a9b28b301de4e168553928bd10c9557f2",
+      "job": 113954527144,
+      "conclusion": "success",
+      "mavenTests": 291,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "verificationStages": 18
+    }
+  },
+  "remaining": [
+    "Existing independent tutorial job must reach a terminal state; keep observing the same live job.",
+    "Authenticated maintainer must publish the full Chinese/sitemap site through the existing manual Pages workflow.",
+    "Real stable tag/archive registration/navigation acceptance is unverified; origin has no tags and versions.json releases is empty."
+  ],
+  "observedPublicationAccess": {
+    "githubCli": "not logged in",
+    "browser": "Sign in to view logs; Pages workflow has Sign in and no Run workflow control",
+    "connector": "read-only workflow access"
+  },
+  "publicChecks": {
+    "zh/api-guide": 404,
+    "sitemap.xml": 404,
+    "meaning": "Latest full Chinese expansion and sitemap are not yet published; existing deployment remains fb0b870."
+  }
+}

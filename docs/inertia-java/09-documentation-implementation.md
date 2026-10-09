@@ -261,3 +261,12 @@ fe7c26e已与origin/main一致；该次远端文档运行37941891079的site job�
 本地docs:check（141份Markdown、23项Node与10项Python）、严格构建和140篇浏览器回归全部通过。新增验收实际获取并解析sitemap.xml，检查完整URL清单、唯一性、规范origin/base和双向语言对应；其余搜索、复制、下载、Javadoc、中文链接和移动导航继续通过。发布payload的146个canonical文件逐字节一致，私有工具仍排除。sitemap.xml是生成输出，不提交到Git。证据见[双语sitemap验收](verification/documentation-sitemap.json)。
 
 核对51项运行源码/POM仍与完整Javadoc验收一致，独立教程/consumer输入相对已通过远端验收的adcbb87无差异。cd138c9的远端site job已success，examples及Java aggregate在采集时仍为in_progress；保留其具体运行ID，不把等待当成成功。当前gh未登录，连接器没有workflow dispatch能力。全量中文及sitemap公开发布、真实稳定tag快照与历史版本导航仍未证明，不将整体目标标为完成；也不为文档验收自行创建正式版本。
+
+
+## 远端验收与可读性复核
+
+56d2605的远端site job 113956776986已success，日志确认23项Node、10项Python合同、实际构建和站点浏览器脚本通过。cd138c9的Java aggregate 37970183858已success；实际日志中的六个Maven汇总合计291项，无失败/错误/跳过，18个运行验收阶段完成。独立教程job 113957762209仍在Install documentation acceptance tools阶段，未判定成功、取消或重启。
+
+补查默认主题浅/深色可读性：从实际浏览器计算正文、链接、翻译提示、侧栏和版本选择器的前景/背景组合，对12个代表性样本计算对比度。浅色最低5.62497、深色最低5.99023，均高于本次采用的普通文本4.5门槛；未修改样式。这是代表性主题检查，不是完整WCAG或生成Javadoc的审计。
+
+公开站新增中文API页和sitemap仍HTTP404。浏览器显示Sign in，CLI也未登录，无法代为触发手动Pages发布；origin仍无tag，版本registry为空。上述外部条件与尚在运行的具体教程任务分别记录，不把任务等待当作发布成功。证据见[验收补充](verification/documentation-verification-followup.json)。
