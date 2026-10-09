@@ -46,7 +46,11 @@ public class Application {
   }
 
   @Bean
-  InertiaConfig config(PageCodec codec) throws Exception {
+  InertiaConfig config(
+      PageCodec codec,
+      org.springframework.beans.factory.ObjectProvider<InertiaObserver> observers,
+      org.springframework.core.env.Environment environment)
+      throws Exception {
     Path frontend = Path.of(System.getProperty("inertia.frontend", "frontend")).toAbsolutePath();
     boolean development = Boolean.getBoolean("inertia.development");
     String rootId = InertiaConfig.requireRootId(System.getProperty("inertia.root-id", "app"));
@@ -75,7 +79,9 @@ public class Application {
             16,
             codec,
             !development,
-            rootId);
+            rootId,
+            observers.getIfAvailable(() -> InertiaObserver.NOOP),
+            environment.getProperty("inertia.ssr-endpoint-id", "renderer"));
     var catalogLoads = new java.util.concurrent.atomic.AtomicInteger();
     return new InertiaConfig(
         development ? assets::version : build::buildId,

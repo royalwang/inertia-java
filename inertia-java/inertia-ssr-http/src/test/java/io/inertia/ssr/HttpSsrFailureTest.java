@@ -241,6 +241,7 @@ class HttpSsrFailureTest {
             (selected.equals("oversize") ? "x".repeat(256) : "{").getBytes(StandardCharsets.UTF_8));
         output.flush();
         entered.countDown();
+        if (selected.equals("truncated")) return;
         if (input.read() == -1) closed.countDown();
       } catch (SocketException disconnected) {
         closed.countDown();

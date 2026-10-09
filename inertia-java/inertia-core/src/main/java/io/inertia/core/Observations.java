@@ -40,6 +40,7 @@ public final class Observations {
         current != null && visited.add(current);
         current = current.getCause()) {
       if (current instanceof CancellationException) return Reason.CANCELLED;
+      if (current instanceof PropDefinitionException) return Reason.PROP_DEFINITION;
       if (current instanceof TimeoutException) return Reason.TIMEOUT;
       if (current instanceof RejectedExecutionException) return Reason.OVERLOADED;
     }

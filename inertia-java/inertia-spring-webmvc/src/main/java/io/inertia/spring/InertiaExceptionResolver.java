@@ -38,13 +38,13 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
       InertiaMvcConfigurer.abort(request);
     } catch (RuntimeException cleanupFailure) {
       log.warn("Inertia session cleanup failed: type=" + cleanupFailure.getClass().getName());
-      return plain(response, 500);
+      return plain(request, response, 500);
     }
     int status = status(failure);
     log.warn("Inertia page failed: status=" + status + ", type=" + failure.getClass().getName());
-    if (request.getAttribute(ATTEMPT) != null) return plain(response, 500);
+    if (request.getAttribute(ATTEMPT) != null) return plain(request, response, 500);
     request.setAttribute(ATTEMPT, Boolean.TRUE);
-    if (errorPage == null) return plain(response, status);
+    if (errorPage == null) return plain(request, response, status);
     try {
       var snapshot = InertiaMvcConfigurer.snapshot(request);
       var page =
@@ -69,11 +69,12 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
         throw error;
       }
       clean(response);
-      InertiaMvcConfigurer.write(response, outcome);
+      InertiaMvcConfigurer.writeObserved(
+          request, response, outcome, renderer.observer(), page.component());
       return new ModelAndView();
     } catch (Exception error) {
       log.warn("Inertia error page failed: type=" + error.getClass().getName());
-      return response.isCommitted() ? null : plain(response, 500);
+      return response.isCommitted() ? null : plain(request, response, 500);
     }
   }
 
@@ -110,7 +111,7 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
             "Content-Length")) response.setHeader(header, null);
   }
 
-  private static ModelAndView plain(HttpServletResponse response, int status) {
+  private ModelAndView plain(HttpServletRequest request, HttpServletResponse response, int status) {
     try {
       clean(response);
       var outcome =
@@ -119,7 +120,7 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
               .withHeader("Content-Type", "text/plain; charset=utf-8")
               .withHeader("Cache-Control", "private, no-store")
               .vary();
-      InertiaMvcConfigurer.write(response, outcome);
+      InertiaMvcConfigurer.writeObserved(request, response, outcome, renderer.observer(), "");
       return new ModelAndView();
     } catch (Exception writeFailure) {
       return null;

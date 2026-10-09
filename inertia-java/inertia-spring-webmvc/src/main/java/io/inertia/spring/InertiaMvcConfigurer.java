@@ -62,9 +62,22 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               return true;
             InertiaHandlerValidator.validate(method);
             var snapshot = snapshot(request);
+            long versionStarted = System.nanoTime();
             var early = ProtocolPolicy.before(snapshot, config.version().get());
             if (early.isPresent()) {
-              write(response, early.get());
+              Observations.publish(
+                  renderer.observer(),
+                  new InertiaObserver.Event(
+                      InertiaObserver.Operation.VERSION_CONFLICT,
+                      InertiaObserver.Outcome.CONFLICT,
+                      InertiaObserver.Reason.VERSION_MISMATCH,
+                      System.nanoTime() - versionStarted,
+                      early.get().status(),
+                      Observations.responseKind(early.get()),
+                      snapshot.requestId(),
+                      "",
+                      "none"));
+              writeObserved(request, response, early.get(), renderer.observer(), "");
               return false;
             }
             if (request.getAttribute(CONTEXT) == null)
@@ -192,7 +205,12 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               outcome = ProtocolPolicy.after(snapshot, response);
               ((InertiaContext) request.getAttribute(CONTEXT)).commitRedirect();
             } else throw new IllegalStateException("Inertia handler returned null");
-            write(webRequest.getNativeResponse(HttpServletResponse.class), outcome);
+            writeObserved(
+                request,
+                webRequest.getNativeResponse(HttpServletResponse.class),
+                outcome,
+                renderer.observer(),
+                value instanceof InertiaResponse page ? page.component() : "");
             container.setRequestHandled(true);
           }
         });
@@ -205,5 +223,30 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
         .headers()
         .forEach((name, values) -> values.forEach(value -> response.addHeader(name, value)));
     response.getWriter().write(outcome.body());
+  }
+
+  /** Reports an adapter write attempt, not browser receipt or successful business status. */
+  static void writeObserved(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      HttpOutcome outcome,
+      InertiaObserver observer,
+      String component)
+      throws Exception {
+    Observations.Span span = null;
+    try {
+      span =
+          Observations.start(
+              observer, InertiaObserver.Operation.RESPONSE, snapshot(request), component, "none");
+    } catch (RuntimeException ignored) {
+      // A rejected request snapshot must not prevent the safe plaintext error response.
+    }
+    try {
+      write(response, outcome);
+      if (span != null) span.success(outcome);
+    } catch (Exception | Error failure) {
+      if (span != null) span.failure(failure);
+      throw failure;
+    }
   }
 }

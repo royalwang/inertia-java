@@ -80,9 +80,11 @@ public final class ResponseRenderer {
           errors.toProp(request.header("x-inertia-error-bag"), config.allErrors());
       Props shared =
           Props.overlay(
-              Props.builder().put("errors", Prop.always(deliveredErrors)).build(),
-              config.shared().apply(request),
-              context.shared());
+              Props.from(
+                  Props.Source.INTERNAL_ERRORS,
+                  Props.builder().put("errors", Prop.always(deliveredErrors)).build()),
+              Props.from(Props.Source.CONFIG_SHARED, config.shared().apply(request)),
+              Props.from(Props.Source.REQUEST_SHARED, context.shared()));
       var resolving =
           scope.track(
               resolver

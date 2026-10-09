@@ -9,6 +9,7 @@ public interface InertiaObserver {
 
   enum Operation {
     PROPS,
+    PROP_OVERRIDE,
     SSR,
     SSR_HTTP,
     RENDER,
@@ -32,6 +33,9 @@ public interface InertiaObserver {
   enum Reason {
     NONE,
     ERROR,
+    PROP_DEFINITION,
+    PROP_OVERRIDE,
+    ERRORS_OVERRIDE,
     TIMEOUT,
     CANCELLED,
     OVERLOADED,

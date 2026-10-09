@@ -1,1 +1,2 @@
 io.inertia.boot.InertiaAutoConfiguration
+io.inertia.boot.InertiaMetricsAutoConfiguration

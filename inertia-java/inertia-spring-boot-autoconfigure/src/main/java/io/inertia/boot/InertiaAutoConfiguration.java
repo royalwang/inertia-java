@@ -2,6 +2,7 @@ package io.inertia.boot;
 
 import io.inertia.core.*;
 import io.inertia.spring.*;
+import java.time.Clock;
 import java.util.concurrent.*;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 @AutoConfiguration
 @EnableConfigurationProperties(InertiaProperties.class)
@@ -55,19 +57,32 @@ public class InertiaAutoConfiguration {
   public PropsResolver inertiaPropsResolver(
       PageCodec codec,
       @Qualifier("inertiaPropsExecutor") ExecutorService inertiaPropsExecutor,
-      InertiaProperties properties) {
+      InertiaProperties properties,
+      ObjectProvider<InertiaObserver> observers) {
     return new PropsResolver(
-        codec, inertiaPropsExecutor, properties.propsTimeout(), properties.propsConcurrency());
+        codec,
+        inertiaPropsExecutor,
+        properties.propsTimeout(),
+        properties.propsConcurrency(),
+        Clock.systemUTC(),
+        observers.getIfAvailable(() -> InertiaObserver.NOOP));
   }
 
   @Bean
   @ConditionalOnMissingBean
   public ResponseRenderer inertiaRenderer(
-      InertiaConfig config, PageCodec codec, PropsResolver resolver, InertiaProperties properties) {
+      InertiaConfig config,
+      PageCodec codec,
+      PropsResolver resolver,
+      InertiaProperties properties,
+      ObjectProvider<InertiaObserver> observers,
+      Environment environment) {
     return new ResponseRenderer(
         properties.allErrors() == null ? config : config.withAllErrors(properties.allErrors()),
         codec,
-        resolver);
+        resolver,
+        observers.getIfAvailable(() -> InertiaObserver.NOOP),
+        environment.getProperty("inertia.ssr-endpoint-id", "renderer"));
   }
 
   @Bean

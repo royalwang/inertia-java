@@ -51,8 +51,10 @@ public final class PropsResolver {
       InertiaRequest request, String component, Props shared, Props props) {
     var span =
         Observations.start(observer, InertiaObserver.Operation.PROPS, request, component, "none");
-    var state = new State(request, request.isPartial(component));
-    var result = new OperationFuture<Resolved>(state.scope, () -> {}, error -> {});
+    var scope = new CancellationScope();
+    var result = new OperationFuture<Resolved>(scope, () -> {}, error -> {});
+    var state =
+        new State(request, request.isPartial(component), scope, result::completeExceptionally);
     result.whenComplete(
         (value, error) -> {
           if (error == null) span.success();
@@ -60,7 +62,22 @@ public final class PropsResolver {
         });
     result.orTimeout(deadline.toNanos(), TimeUnit.NANOSECONDS);
     try {
-      var all = Props.overlay(shared, props);
+      var all = Props.overlay(shared, Props.from(Props.Source.PAGE, props));
+      for (var override : all.overrides())
+        Observations.publish(
+            observer,
+            new InertiaObserver.Event(
+                InertiaObserver.Operation.PROP_OVERRIDE,
+                InertiaObserver.Outcome.SUCCESS,
+                override.path().equals("errors")
+                    ? InertiaObserver.Reason.ERRORS_OVERRIDE
+                    : InertiaObserver.Reason.PROP_OVERRIDE,
+                0,
+                0,
+                InertiaObserver.ResponseKind.NONE,
+                request.requestId(),
+                component,
+                "none"));
       var sharedKeys =
           codec.value(
               shared.entries().keySet().stream().map(k -> k.split("\\.")[0]).distinct().toList());
@@ -92,11 +109,18 @@ public final class PropsResolver {
     final boolean partial;
     final ObjectNode metadata = codec.object();
     final Semaphore permits = new Semaphore(maxConcurrency);
-    final CancellationScope scope = new CancellationScope();
+    final CancellationScope scope;
+    final java.util.function.Consumer<Throwable> failure;
 
-    State(InertiaRequest request, boolean partial) {
+    State(
+        InertiaRequest request,
+        boolean partial,
+        CancellationScope scope,
+        java.util.function.Consumer<Throwable> failure) {
       this.request = request;
       this.partial = partial;
+      this.scope = scope;
+      this.failure = failure;
     }
 
     boolean matches(String path) {
@@ -127,6 +151,7 @@ public final class PropsResolver {
       if (scope.stopped()) return CompletableFuture.failedFuture(new CancellationException());
       var plans = new ArrayList<Plan>();
       for (var entry : props.entries().entrySet()) {
+        if (scope.stopped()) return CompletableFuture.failedFuture(new CancellationException());
         String path = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
         Prop prop = entry.getValue();
         if (partial && !inheritedAlways && !prop.always() && !matches(path)) continue;
@@ -148,6 +173,17 @@ public final class PropsResolver {
                       literalValue.scroll()));
         } else future = null;
 
+        if (future != null)
+          future.whenComplete(
+              (value, error) -> {
+                if (error != null && !prop.rescued())
+                  failure.accept(new PropResolutionException(path, error));
+                else if (error == null && prop.scroll() && value.scroll() == null)
+                  failure.accept(
+                      new PropResolutionException(
+                          path,
+                          new IllegalArgumentException("Scroll prop must return ScrollPage")));
+              });
         plans.add(new Plan(path, prop, future, false));
       }
       var pending =

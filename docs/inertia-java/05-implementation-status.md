@@ -1,6 +1,6 @@
 # Java 实施状态与验证记录
 
-更新：2026-10-08。工程目录：`inertia-java/`。目标仍在进行中，以下状态依据实际代码和本轮命令，不代表整个 J0–J7 完成。
+更新：2026-10-09。工程目录：`inertia-java/`。目标仍在进行中，以下状态依据实际代码和本轮命令，不代表整个 J0–J7 完成。
 
 ## 已落地
 
@@ -18,7 +18,7 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1，共 127 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 1、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4，共 154 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
 | Rust → Java Page parity | 八组 fixture 完整 JSON 比较通过 | 初始、nested partial、deferred partial、异组件、default/named/scoped/first/all/重复字段 errors |
 | npm typecheck | 通过 | 当前示例 TypeScript |
@@ -40,13 +40,13 @@
 | 工作包 | 尚需完成 |
 |---|---|
 | J0 | 更多跨语言 fixtures、客户端版本完整兼容清单 |
-| J1 | 共享/页面冲突诊断、完整配置与错误策略、边界审查 |
+| J1 | 完整配置与错误策略的剩余边界审查；已补齐定义来源/父子路径冲突诊断，明确同名覆盖与errors替换策略、提供有界观察和开发者报告 |
 | J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
 | J3 | namespace 与 fail-closed 失效/写失败策略已落地；示例身份策略与 CSRF 过期恢复的进一步验收仍待处理 |
-| J4 | 更多并发/过载组合、结构化观察和压测；基础 MVC→render→props/SSR 取消链已落实。请求内许可耗尽拒绝；全局 executor 使用有界队列，取消排队任务释放队列槽位 |
+| J4 | 性能基线及更广的并发边界；已验收跨请求全局queue拒绝/取消槽位恢复、async持有请求许可、unrescued失败立即终止与合法deferred rescue隔离。基础 MVC→render→props/SSR 取消链、结构化事件、HTTP transport原因细分类、Boot/Micrometer 与 MVC write/version-conflict 观察已落实 |
 | J5 | 基础 SSR/Vite 与本地两版切换已验收；真实部署存储/路由资格并入 J7 |
 | J6 | 扩展边界组合、更多 history/SSR override 边界组合（基础合同及官方浏览器链路已验收）；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
-| J7 | CI 远端执行（workflow/本地入口已落地）、可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、实际部署环境演练和性能基线 |
+| J7 | 可重现部署脚本、英文 API 示例扩展、许可证/依赖审查、实际部署环境演练和性能基线；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
 
 另：WebFlux/集群 Session/Vue/Svelte/Precognition 继续按原设计放在首版之外。Rust 库实现未改动，新增 `examples/java_contract_fixtures.rs` 导出器，Java 工程本次交付作为首个实施增量，尚未关闭的工作包见上表。当前 demo 用户保存仅展示 flash，不访问数据库。
 
@@ -250,3 +250,57 @@ computed/async factory统一由FutureTask在props executor执行，跟踪真正�
 本批提交前重新运行 aggregate：macOS/Playwright Chromium156.0.8078.4，14阶段全部exit0；clean Maven/Spotless verify131项、0 failures/errors/skipped，publisher3项，五配置browser matrix、build integrity、SSR faults、CSP、custom root、history、release-switch通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-3OGa9c/summary.json。随后仅为新观察测试加入callback同步，再运行该4项合同及格式化通过，产品代码未变化。actionlint1.7.7与git diff check通过。
 
 本次提交收录以上history/CI/取消链及观察SPI增量，覆盖前文“尚未提交”的历史记录。远端GitHub workflow结果需以推送后实际运行记录为准，不能用本地成功代替；完整J0–J7目标仍在进行中。
+
+## Boot/Micrometer 与 MVC 观察集成
+
+starter 默认 props resolver/renderer 使用应用的单一/primary InertiaObserver；没有 observer 时 NOOP。新增独立 InertiaMetricsAutoConfiguration，在 Servlet 应用、Micrometer 存在、单一/primary MeterRegistry 且没有自定义 observer 时创建 MicrometerInertiaObserver；按 Boot Metrics/Composite/Simple registry 自动装配顺序执行。Micrometer-core 为 optional 依赖，使用 Boot3.5.7 BOM 的1.15.5；不将 Actuator/registry/HTTP metrics/security 设置强加给应用。示例打包 jar 实际只含 micrometer-observation/commons，没有 micrometer-core 或 Actuator，完整运行验证了可选依赖缺失路径。
+
+Timer 记录事件次数和耗时（纳秒输入），名称 inertia.<operation>。标签仅 outcome/reason/response/status：枚举和100–599/0；变化的 requestId/component/endpointId 不创建新时序。原始 request ID 仍用于事件关联，endpoint log 标识通过 inertia.ssr-endpoint-id 配置 safe token，默认 renderer。应用自定义 observer 优先，需同时日志/指标时显式 combine；应用替换 resolver/renderer 后自行注入。
+
+MVC 在控制器前版本冲突时发布 VERSION_CONFLICT，并对 early response、正常 HTML/JSON/redirect、安全错误页/plaintext 发布 RESPONSE。错误页沿用请求快照的 server request ID，REST 不参与。RESPONSE 是写出尝试：success/status500 表示错误响应写出成功，并非业务成功；writer failure 单独计失败，plaintext retry 是另一尝试，不等同浏览器已收到或完整HTTP耗时。无效 request snapshot 不妨碍安全纯文本输出，也不伪造关联事件。观察器 RuntimeException 的隔离仍由共享 publisher 保证。
+
+新增6项自动装配/metrics合同，涵盖无registry/缺库、custom observer、primary/ambiguous registry、实际Actuator自动装配顺序、非Servlet、unsafe endpoint启动拒绝，200组变化标识仍仅5个meter。新增4项实际MockMvc/writer合同，涵盖409时controller零调用/session不创建、HTML/JSON/redirect/REST、失败页与错误页同request ID、安全plaintext、writer异常无原因泄漏、invalid snapshot仍写出。异步事件测试等待callback完成，不依赖future返回时callback全部结束。
+
+完整 aggregate 本轮实际通过：14阶段全部exit0，clean Maven/Spotless verify141项、0 failures/errors/skipped，Nodepublisher3项、配套Chromium五配置matrix、build integrity、SSR faults、CSP、custom root、history、release-switch全通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-qmMuX3/summary.json。API示例及语义已更新到 inertia-java/README.md；参考 [Micrometer timers](https://docs.micrometer.io/micrometer/reference/concepts/timers.html) 和 [Boot3.5自动装配](https://docs.spring.io/spring-boot/3.5/reference/features/developing-auto-configuration.html)。HTTP transport细分类/性能与其他J0–J7门槛仍继续；本增量尚未提交。
+
+## 已确认的首次远端 CI
+
+GitHub CLI 未登录且connector未连接，但公开运行页可读取状态；此前“远端尚未确认”的记录在此更新。[run37764719794](https://github.com/royalwang/inertia-omega/actions/runs/37764719794) 对应已推送的6967fd52cfc57e3c1e46eabf3d490e8079ace5f9，push/main、Success，总3m38s，verify job3m35s，产出一个339KB evidence artifact。网页不允许匿名查看日志/下载artifact，未宣称读过其中结果。远端成功是该提交的Ubuntu/Java21/Node22/Chromium workflow证据，不覆盖本轮未提交代码或真实生产部署。
+
+该run有两项action升级annotation：所固定的Node20 action被runner强制以Node24执行；setup-java v4已弃用建议v5。job已成功，但后续应核对官方新action版本并更新pin后再以远端job验收；不将warning视为通过升级的证据。
+
+默认Java18080已重启到本轮141合同的jar，实际GET/users返回200、SSR标记存在、HTML版本与当前frontend receipt相符；Node13714维持同一frontend release。git diff check通过。新增/修改共11个文件均属本增量，尚未提交；整体目标保持进行中。
+
+## SSR HTTP 传输观察细分类
+
+HttpSsrGateway 新增 URI/resolver 两种 observer/endpointId 构造，旧构造继续 NOOP。每次调用最多一个 SSR_HTTP 终结事件：成功、excluded/unavailable、overloaded、超时、连接失败、响应超限、其他transport失败、主动cancel，以及 HTTP status/warming/invalid JSON/invalid response/build/root mismatch。细分类通过异常类型及有界枚举确定，不解析异常message或正文；公开fallback字符串保持兼容，包括transport-or-timeout。
+
+处理超时仍返回fallback，因此是 outcome=FALLBACK/reason=TIMEOUT；主动取消为 CANCELLED/CANCELLED。只有完整response解码后记 upstream HTTP status，否则0；不把 Java 响应状态或错误message推断为renderer状态。HTTP与SSR是不同阶段，不叠加为请求数/总时延。主动cancel先取消bounded/transport并释放许可，再调用应用observer；late transport不发布第二事件，observer RuntimeException仍隔离。异常解码以exceptional completion结束，避免意外runtime failure使结果悬挂。
+
+示例Config显式将应用observer和inertia.ssr-endpoint-id传给gateway，与Boot renderer一致；库不自动改写应用自建gateway。使用已有Page.component()读取组件，不为诊断deep-copy整份props。API文档已补充 inertia.ssr_http、构造注入、分类/状态及阶段语义。
+
+新增5项真实HTTP合同：stalled body TIMEOUT与超限 RESPONSE_LIMIT区别且取消连接/许可恢复；拒绝连接 CONNECTION、503 HTTP_STATUS、敏感URL/props/cookie/exception/body不入事件；overload零额外dispatch、cancel只上报一次且恢复；截断body TRANSPORT无retry，以及5组解码fallback；excluded不发HTTP和unsafe endpoint拒绝。既有外层render→HTTP cancellation/flash恢复合同仍通过。Java全量146项、0 failures/errors/skipped。
+
+完整aggregate实际14阶段全部exit0，配套Chromium五配置matrix、build integrity、SSR faults、CSP、custom root、history、release-switch均通过，publisher3项通过；证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-JaTflX/summary.json。该次aggregate期间只将诊断组件读取改为既有getter，随后相关core/SSR模块重验通过；首次spotless:check发现参数行格式变化，经spotless:apply修复。最终全量验证记录另附。本增量与上一轮观察集成仍未提交，整体目标继续进行中，下一步继续并发/性能及剩余J0–J7资格。
+
+getter优化后的最终全量spotless:check verify146项、0 failures/errors/skipped，全部module SUCCESS。默认Java18080已更新为该jar，实际/users返回200、SSR标记存在且version与receipt匹配；Node维持同一frontend release。git diff check通过，目前合计15个相关修改/新文件未提交（包含上一轮观察集成）。
+
+## 2026-10-09 定义来源、覆盖诊断与过载失败反馈
+
+新增PropDefinitionException（仍是IllegalArgumentException），提供INVALID_PATH/PARENT_CHILD_CONFLICT及路径/来源字段；Props.from标注DECLARED/INTERNAL_ERRORS/CONFIG_SHARED/REQUEST_SHARED/PAGE，overlay保留不可变origins/overrides报告及原声明顺序。父子冲突在supplier执行前拒绝，异常包含schema路径但不含值。报告不进入Page/metadata；应用若使用敏感动态key需自行保护开发者诊断。
+
+保留同名key的既有优先级：内置errors→config shared→request share→page，未命中supplier零执行。errors允许覆盖，可替换验证数据和always行为；应用需要内置验证时应保留该key。根定义规划为覆盖发布有界PROP_OVERRIDE事件（PROP_OVERRIDE/ERRORS_OVERRIDE原因），不含key/value；定义错误分类PROP_DEFINITION。Props.overrides供程序检查来源；builder内重复put继续原覆盖行为，报告针对Props组合，nested报告可由其自身Props读取。覆盖事件duration/status为0，是schema诊断次数，不是请求/查询次数；即便partial后来排除key仍发布。
+
+新增4项合同验证typed invalid/冲突来源与值不泄漏、immutable报告/顺序/早先组合保留、实际shared/request/page优先级和原supplier零调用、errors覆盖安全观察、跨层冲突零callback且session flash恢复。现有Micrometer合同追加zero-duration覆盖事件count=1/totalTime=0与四个固定标签，实际6项metrics合同通过。
+
+新增过载场景首次暴露真实问题：一个async源未结束时，另一个已被请求许可拒绝的prop仍等待allOf，直到总deadline。修复为每个未rescued未来的异常立即终结owned操作并取消兄弟；规划循环检查停止标记，避免继续查询/序列化；非法scroll返回也提前终结。成功结果/metadata依声明顺序，多个fatal failure由最先观察到的终结获胜，不承诺按声明顺序选异常。
+
+新增4项并发合同：不同请求占满全局worker/queue后第三render拒绝且SSR/root零调用，取消排队请求只释放自身槽位并使后续请求恢复；未结束async保留请求许可、兄弟拒绝快速返回并取消原源；非法scroll不等待未结束兄弟；合法deferred rescue失败不取消健康async且metadata正确。首个rescue fixture错误使用eager来源，按已有rescue仅支持deferred的约束修正为真实partial deferred请求，未扩大rescue范围。底层不可取消操作的物理停止仍不在Future保证内。
+
+完整aggregate实际14阶段全部exit0，clean Maven/Spotless verify154项、0 failures/errors/skipped，publisher3项、Chromium五配置matrix、build integrity、SSR faults、CSP、custom root、history、release-switch全通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-cCrYl5/summary.json。随后仅补充既有metrics测试的zero-duration断言，再执行6项metrics测试及格式化通过，产品代码未变化。J1定义诊断/覆盖语义已补齐，完整配置/错误策略边界、J4性能基线和其他J0–J7资格继续；本增量与前两轮观察集成尚未提交。
+
+默认Java18080已重启到154合同对应jar，实际/users为200、SSR标记存在且version匹配当前receipt，Node维持同一frontend release。git diff check通过，目前累计23个相关修改/新文件未提交。目标保持进行中。
+
+## 2026-10-09 提交批次
+
+本次提交收录前述 Boot/Micrometer 与 MVC 观察、SSR HTTP 传输细分类、props 定义来源/覆盖诊断及过载快速失败修复，覆盖以上三轮“尚未提交”的历史记录。提交前复核 aggregate summary 为 success、14 阶段 exit0，当前 Surefire 报告合计154项、0 failures/errors/skipped；最后追加的 metrics 断言已有专项验证。性能基线尚未实施，其他剩余项仍按上表推进。该批次的远端 CI 必须依据推送后对应提交的实际运行确认。
