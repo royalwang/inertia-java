@@ -178,8 +178,16 @@ D0–D2阶段检查未覆盖完整 API 符号。D3新增官方JDK搜索索引驱
 
 机器证据见 [documentation-site-interactions.json](verification/documentation-site-interactions.json)。这些是本地验收；不是全面WCAG审计或远端Pages成功证明。公开托管仍需可管理Pages的维护者身份及正式部署，私密安全联系渠道仍待维护者确认；真实稳定tag快照待实际发布时验收。当前文档工作未提交、未推送。
 
+## 首次推送与远端 workflow 修复
+
+完整文档库已在 `495b67e` 提交并推送至canonical仓库main，203个文件变更；推送后本地HEAD与远端SHA一致，工作区干净。此前各验收JSON的uncommitted字段保留其采集时事实，不回写历史记录。
+
+首次远端检查发现四份文档workflow均因job级env引用runner.temp被GitHub拒绝，尚未运行job。普通YAML解析与Actions固定SHA检查没有覆盖表达式上下文可用性。原始文档验证失败见 [Actions run 37917397282](https://github.com/royalwang/inertia-java/actions/runs/37917397282)。
+
+修复将runner派生的证据目录放到可执行step，通过RUNNER_TEMP与GITHUB_ENV设置后续步骤环境；保留原证据位置和上传路径。加入固定版本actionlint1.7.7校验四份文档workflow表达式。实际回放确认原始四份被拒绝、修复四份通过；shellcheck/pyflakes未启用，不将此项宣称为脚本行为验证。对应远端重新验收另行记录，不以本地lint代替GitHub执行。
+
 ## 后续阶段
 
 D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已完成本地验收；D4优先中文路径和revision对应已落地，版本快照工具已实现本地合同，真实tag快照仍待验收。当前英文目录没有planned占位页。
 
-尚未执行这些文档变更的远端 Actions、公开 Pages 配置、域名修改或网站部署。目录与正文仍属当前工作区变更，尚未提交或推送。D3公开托管与实际维护联系渠道需要按当时仓库配置核实，不能预设已有站点或安全邮箱。
+尚未执行这些文档变更的远端 Actions、公开 Pages 配置、域名修改或网站部署。目录与正文已随首次推送交付；后续修复状态以对应Git提交与远端验收记录为准。D3公开托管与实际维护联系渠道需要按当时仓库配置核实，不能预设已有站点或安全邮箱。

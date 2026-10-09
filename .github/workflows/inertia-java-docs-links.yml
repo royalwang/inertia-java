@@ -12,9 +12,10 @@ jobs:
     if: github.repository == 'royalwang/inertia-java' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    env:
-      INERTIA_DOCS_OUTPUT: ${{ runner.temp }}/inertia-docs-links
     steps:
+      - name: Set runner evidence directories
+        run: |
+          printf '%s\n' "INERTIA_DOCS_OUTPUT=$RUNNER_TEMP/inertia-docs-links" >> "$GITHUB_ENV"
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
