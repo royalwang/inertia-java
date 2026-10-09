@@ -23,6 +23,7 @@ const chineseSidebar = catalog.sections.map(section => ({
     return translated ? { text: translated.title, link: link(translated) } : { text: page.title + '（英文）', link: link(page) }
   }),
 })).filter(section => section.items.length)
+const sitemapRoutes = new Set([...available, ...translations].map(page => page.path.replace(/(?:^|\/)index\.md$/, '/').replace(/\.md$/, '').replace(/^\//, '')))
 const context = siteContext(root, catalog)
 const { base, version, sourceRef, sourceLabel, snapshot, versionMenu } = context
 const sourceRoot = 'https://github.com/royalwang/inertia-java'
@@ -54,6 +55,10 @@ export default defineConfig({
   },
   head: [['link', { rel: 'icon', href: 'data:,' }]],
   base,
+  sitemap: {
+    hostname: 'https://royalwang.github.io' + base,
+    transformItems: items => items.filter(item => sitemapRoutes.has(item.url)),
+  },
   srcExclude: ['README.md', 'node_modules/**', 'scripts/**', 'examples/**'],
   cleanUrls: true,
   lastUpdated: true,

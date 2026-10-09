@@ -252,3 +252,12 @@ fe7c26e已与origin/main一致；该次远端文档运行37941891079的site job�
 最终docs:check通过141份Markdown、70对翻译修订/代码契约、23项Node和10项Python合同；严格docs:build及140篇docs:smoke通过，覆盖中英对应、中文侧栏/正文链接/真实锚点、七个中文搜索任务、键盘复制/焦点、原始源码下载、Javadoc和移动导航。真实Java发布payload包含146个canonical文档文件且逐字节一致，私有工具和生成站点仍排除。没有修改Java运行源码或重跑运行时矩阵。空registry版本检查仅证明next入口，真实稳定tag验收仍随实际发布进行。
 
 核实公开Pages发布37966591198已成功部署fb0b870：首页/教程/安全页HTTP200、旧源码页底清单已消失、正式私密报告链接存在。本轮全量中文尚未部署，提交推送后需维护者重新运行现有手动Pages工作流；不将本地验收或Git推送当作公开更新。完整证据及早期失败见[全量中文验收](verification/documentation-full-chinese.json)。
+
+
+## 完成核对补充：双语 sitemap
+
+按规划逐项核对时发现站点尚未生成sitemap。使用固定版本VitePress内置生成器，hostname取规范GitHub Pages origin和当前base，按已存在的目录页面过滤条目；不另造生成服务。140个中英文URL逐一对应目录，每页保留en-US/zh-CN两个alternate链接。工程README、工具、占位页及未注册历史版本不加入。版本快照构建仍使用其实际version base，不把历史页面指向next路径。
+
+本地docs:check（141份Markdown、23项Node与10项Python）、严格构建和140篇浏览器回归全部通过。新增验收实际获取并解析sitemap.xml，检查完整URL清单、唯一性、规范origin/base和双向语言对应；其余搜索、复制、下载、Javadoc、中文链接和移动导航继续通过。发布payload的146个canonical文件逐字节一致，私有工具仍排除。sitemap.xml是生成输出，不提交到Git。证据见[双语sitemap验收](verification/documentation-sitemap.json)。
+
+核对51项运行源码/POM仍与完整Javadoc验收一致，独立教程/consumer输入相对已通过远端验收的adcbb87无差异。cd138c9的远端site job已success，examples及Java aggregate在采集时仍为in_progress；保留其具体运行ID，不把等待当成成功。当前gh未登录，连接器没有workflow dispatch能力。全量中文及sitemap公开发布、真实稳定tag快照与历史版本导航仍未证明，不将整体目标标为完成；也不为文档验收自行创建正式版本。

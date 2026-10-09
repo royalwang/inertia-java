@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T18:04:46.213892+00:00",
+  "scope": "Completion audit follow-up: native bilingual sitemap and current source/evidence continuity; not full goal completion or public publication.",
+  "source": {
+    "head": "cd138c9a9b28b301de4e168553928bd10c9557f2",
+    "uncommitted": true
+  },
+  "sitemap": {
+    "implementation": "Pinned VitePress built-in sitemap generator; catalog-filtered available routes",
+    "canonicalOrigin": "https://royalwang.github.io",
+    "base": "/inertia-java/",
+    "pages": 140,
+    "english": 70,
+    "chinese": 70,
+    "uniqueUrls": 140,
+    "alternateLinksPerPage": 2,
+    "excludesEngineeringReadmeAndPlaceholders": true,
+    "sha256": "0e44b3c6be90924f7bd660e9bc7dd88e3a7333bd64f27637e00a4facc4730a20",
+    "generatedFileCommitted": false
+  },
+  "verification": {
+    "checkLog": "/tmp/inertia-sitemap-check.log",
+    "nodeContracts": 23,
+    "pythonContracts": 10,
+    "markdownFiles": 141,
+    "buildLog": "/tmp/inertia-sitemap-build.log",
+    "siteReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-OqN7hx/summary.json",
+    "siteSuccess": true,
+    "sitemapPhase": {
+      "name": "bilingual-sitemap",
+      "pages": 140,
+      "exactCatalogManifest": true,
+      "languageCounterparts": true,
+      "canonicalOriginAndConfiguredBase": true
+    },
+    "browserAcceptancePhases": 13,
+    "runtimeSourceAndPomInputsCompared": 51,
+    "changedSinceJavadocAcceptance": [],
+    "independentTutorialAndConsumerInputs": "No diff from adcbb87 for docs/examples, runnable example, independent first-application/quick-start/examples runners, deploy or compatibility sources",
+    "payloadReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-srfThw/summary.json",
+    "payloadCanonicalFiles": 146,
+    "payloadByteIdentical": true,
+    "privateToolingExcluded": true
+  },
+  "remoteObserved": {
+    "testedCommit": "cd138c9a9b28b301de4e168553928bd10c9557f2",
+    "documentationRun": 37970183861,
+    "siteJob": "success",
+    "examplesJob": "in_progress",
+    "aggregateJavaRun": 37970183858,
+    "aggregateJavaStatus": "in_progress",
+    "githubCliAuthenticated": false,
+    "connectorWorkflowDispatchAvailable": false
+  },
+  "remainingRequirements": [
+    {
+      "item": "Publish and verify full Chinese expansion and sitemap on GitHub Pages",
+      "state": "Not published; existing manual workflow needs authenticated maintainer dispatch",
+      "evidence": "Latest verified deployment remains fb0b870, with 11 Chinese pages; local 70-page expansion is not public hosting proof."
+    },
+    {
+      "item": "Real stable tag snapshot/archive registration and retained-version navigation",
+      "state": "Unverified: origin has no tags and versions.json releases is empty",
+      "evidence": "Stable version selection and actual release infrastructure are required; do not create a synthetic release solely to close the documentation goal."
+    },
+    {
+      "item": "Remote verification of this sitemap follow-up",
+      "state": "Pending commit/push at evidence collection",
+      "evidence": "All local checks/build/140-page browser acceptance passed; earlier commit site CI succeeded, other jobs remain live."
+    }
+  ]
+}

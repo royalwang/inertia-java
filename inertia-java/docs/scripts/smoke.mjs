@@ -30,6 +30,29 @@ try {
   const versionMenu = page.getByRole('combobox', { name: 'Documentation version' })
   assert.equal(await versionMenu.inputValue(), base)
   assert.ok((await versionMenu.locator('option').allTextContents()).some(text => text.includes(catalog.site.javadoc.version)))
+  const sitemapResponse = await fetch(url + 'sitemap.xml')
+  assert.equal(sitemapResponse.status, 200, 'Missing generated sitemap')
+  const sitemap = await page.evaluate(xml => {
+    const document = new DOMParser().parseFromString(xml, 'application/xml')
+    if (document.querySelector('parsererror')) throw new Error('Invalid sitemap XML')
+    return [...document.getElementsByTagName('url')].map(entry => ({
+      url: entry.getElementsByTagName('loc')[0].textContent,
+      languages: [...entry.getElementsByTagNameNS('http://www.w3.org/1999/xhtml', 'link')].map(link => ({ language: link.getAttribute('hreflang'), url: link.getAttribute('href') })),
+    }))
+  }, await sitemapResponse.text())
+  const productionRoot = 'https://royalwang.github.io' + base
+  const sitemapRoute = path => path.replace(/(?:^|\/)index\.md$/, '/').replace(/\.md$/, '').replace(/^\//, '')
+  const sitemapPages = [...catalog.pages.filter(item => item.status !== 'planned'), ...(catalog.translations ?? [])]
+  assert.deepEqual(sitemap.map(entry => entry.url).sort(), sitemapPages.map(item => productionRoot + sitemapRoute(item.path)).sort(), 'Sitemap differs from available guide manifest')
+  for (const translation of catalog.translations ?? []) {
+    const original = catalog.pages.find(item => item.id === translation.id)
+    const expected = [
+      { language: 'en-US', url: productionRoot + sitemapRoute(original.path) },
+      { language: 'zh-CN', url: productionRoot + sitemapRoute(translation.path) },
+    ].sort((a, b) => a.language.localeCompare(b.language))
+    for (const target of expected) assert.deepEqual(sitemap.find(entry => entry.url === target.url).languages.sort((a, b) => a.language.localeCompare(b.language)), expected, 'Sitemap language counterparts: ' + translation.id)
+  }
+  check.evidence.phases.push({ name: 'bilingual-sitemap', pages: sitemap.length, exactCatalogManifest: true, languageCounterparts: true, canonicalOriginAndConfiguredBase: true })
   const searchButton = page.getByRole('button', { name: /Search/ }).first()
   await searchButton.focus()
   await page.keyboard.press('Enter')

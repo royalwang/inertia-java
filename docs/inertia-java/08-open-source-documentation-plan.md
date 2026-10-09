@@ -59,7 +59,7 @@
 
 依据：[稳定版入门](https://vuejs.github.io/vitepress/v1/guide/getting-started)、[本地搜索](https://vuejs.github.io/vitepress/v1/reference/default-theme-search)、[部署](https://vuejs.github.io/vitepress/v1/guide/deploy)、[国际化](https://vuejs.github.io/vitepress/v1/guide/i18n)。2026-10-09 核对。推荐是本项目的工程选择，不代表框架已经在此仓库完成构建验证。
 
-拟定结构如下；本轮只创建规划和文档索引，不创建空文章或伪造站点配置：
+以下为初始规划拟定结构；当前实现与验收范围见第10节。仅登记计划而尚无正文的文章不生成公开页面：
 
 ```text
 inertia-java/
@@ -204,7 +204,7 @@ D1是可上手预览，D3才可称完整首版开源文档库。每页完成需�
 
 初始规划完成现状盘点、用户路径、70条目录清单、站点/版本/语言策略、配置/API设计、示例迁移、CI/托管和D0–D4验收设计。此后按用户要求开始撰写标准文档，当前交付为：
 
-- D0：独立 VitePress 1.6.4 工具链、锁文件、可用页面驱动的导航、全文搜索、严格构建、Markdown/目录/内部链接/来源检查、非根 base 浏览器验收和专用预览 CI 配置。
+- D0：独立 VitePress 1.6.4 工具链、锁文件、可用页面驱动的导航、全文搜索、严格构建、Markdown/目录/内部链接/来源检查、非根 base 浏览器验收和专用预览 CI 配置。完成核对另补VitePress内置sitemap，按可用目录过滤140个中英文URL及互为alternate链接，使用真实Pages origin和当前base，工程README与占位项不进入清单。
 - D0 发布边界：Java 发布与 frozen inputs 使用同一文档复制策略，排除根文档工具、依赖和生成站点，保留正文及 canonical 示例；真实 consumer/deployment 回归通过。
 - D1：Home、Getting started 7页、Concepts 5页，共13篇新正文；既有 API guide 保持原路径。每页记录版本、源码和验证入口。完整仓库外 Spring 应用教程包含独立 POM、Java/React 示例与自动化实测；快速上手也从干净源文件副本重新构建验证。
 - D2：新增 Application guides 9篇、Props 9篇、SSR 6篇、Integrations 5篇，共29篇；各页提供任务步骤、来源、验证和明确边界。该阶段目录为43篇可读页面、27篇待写页面。八种真实浏览器场景、renderer健康恢复、43页导航/搜索与发布内容边界验证通过；保留为D2历史证据。
