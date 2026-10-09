@@ -1,0 +1,283 @@
+{
+  "format": 1,
+  "qualification": "Java first-release implementation and local acceptance; public publication and production-host qualification remain separate",
+  "aggregate": {
+    "format": 1,
+    "startedAt": "2026-10-09T06:23:58.684Z",
+    "finishedAt": "2026-10-09T06:28:44.956Z",
+    "source": {
+      "head": "f85ec2658efc193a27c5ae3ccdd7aa3b9f72087f",
+      "dirty": true
+    },
+    "node": "v22.22.2",
+    "browserChannel": "chrome",
+    "success": true,
+    "stages": [
+      {
+        "name": "java-runtime",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 39
+      },
+      {
+        "name": "npm-runtime",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 122
+      },
+      {
+        "name": "maven",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 29553
+      },
+      {
+        "name": "library-artifacts",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 242
+      },
+      {
+        "name": "npm-ci",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 1699
+      },
+      {
+        "name": "typecheck",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 4158
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 3169
+      },
+      {
+        "name": "dependency-inventory",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 4106
+      },
+      {
+        "name": "asset-contracts",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 234
+      },
+      {
+        "name": "development",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 10569
+      },
+      {
+        "name": "browser-matrix",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 148344
+      },
+      {
+        "name": "build-integrity",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 7145
+      },
+      {
+        "name": "ssr-failures",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12996
+      },
+      {
+        "name": "csp",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12758
+      },
+      {
+        "name": "custom-root",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12713
+      },
+      {
+        "name": "history",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 17737
+      },
+      {
+        "name": "release-switch",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 8867
+      },
+      {
+        "name": "deployment",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 11770
+      }
+    ],
+    "receipt": "build.json"
+  },
+  "aggregateReport": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-1xEHYv/summary.json",
+  "javaTests": {
+    "tests": 291,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "browserMatrix": {
+    "all-errors": {
+      "passed": 9,
+      "skipped": 7,
+      "failed": 0
+    },
+    "auth-expiry": {
+      "passed": 11,
+      "skipped": 5,
+      "failed": 0
+    },
+    "ssr": {
+      "passed": 8,
+      "skipped": 8,
+      "failed": 0
+    },
+    "csr-failures": {
+      "passed": 9,
+      "skipped": 7,
+      "failed": 0
+    },
+    "namespace": {
+      "passed": 11,
+      "skipped": 5,
+      "failed": 0
+    },
+    "auth": {
+      "passed": 10,
+      "skipped": 6,
+      "failed": 0
+    },
+    "failures": {
+      "passed": 11,
+      "skipped": 5,
+      "failed": 0
+    },
+    "auth-csr": {
+      "passed": 8,
+      "skipped": 8,
+      "failed": 0
+    }
+  },
+  "development": {
+    "format": 1,
+    "success": true,
+    "stages": [
+      {
+        "name": "vite-ssr-html",
+        "success": true
+      },
+      {
+        "name": "development-browser",
+        "code": 0,
+        "signal": null
+      }
+    ],
+    "finishedAt": "2026-10-09T06:24:52.610Z"
+  },
+  "libraryArtifacts": {
+    "count": 21,
+    "report": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-1xEHYv/library-artifacts.json"
+  },
+  "dependencyInventory": {
+    "success": true,
+    "publicationQualified": false,
+    "counts": {
+      "mavenGraph": 89,
+      "javaRuntimeJars": 44,
+      "npmAllPlatformLock": 81,
+      "nodeProductionLock": 4,
+      "installedNpmPackagesObserved": 38
+    },
+    "reviewItemCount": 31,
+    "report": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-1xEHYv/dependencies/summary.json"
+  },
+  "independentConsumer": {
+    "success": true,
+    "source": {
+      "head": "f85ec2658efc193a27c5ae3ccdd7aa3b9f72087f",
+      "dirty": true,
+      "verifierSha256": "68a3db808f556d5d1f4f9cd8052d844e5885f0dbfd4990786475aaad0baff8cf"
+    },
+    "phases": [
+      {
+        "name": "artifact-content",
+        "exit": 0
+      },
+      {
+        "name": "consumer-build",
+        "exit": 0
+      },
+      {
+        "name": "consumer-http",
+        "exit": 0
+      },
+      {
+        "name": "guide-core",
+        "exit": 0
+      },
+      {
+        "name": "guide-spring-http",
+        "exit": 0
+      },
+      {
+        "name": "resolve-sources",
+        "exit": 0
+      },
+      {
+        "name": "resolve-javadoc",
+        "exit": 0
+      },
+      {
+        "name": "missing-core-refused",
+        "exit": 1
+      },
+      {
+        "name": "restored-consumer",
+        "exit": 0
+      }
+    ],
+    "guideExamples": [
+      {
+        "file": "CoreApiExample.java",
+        "sha256": "731a242530bc2ae0be60f2c957e00e52c2a1d98ced0640ab85756135a7547e38"
+      },
+      {
+        "file": "SpringApiExample.java",
+        "sha256": "4999e0af7caf0be4dfbce249112a865939d4f24bc801a4afa6c0c4982ea5fda7"
+      }
+    ],
+    "report": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-e3ad0vhg/summary.json"
+  },
+  "deploymentReport": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-1xEHYv/deployment/inertia-java-deploy-W7au3w/summary.json",
+  "rustFreshness": {
+    "pageCases": 37,
+    "httpCases": 45,
+    "liveTtlCases": 9,
+    "log": "/tmp/inertia-java-final-fixtures.log",
+    "ttlReport": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-ttl-yivf94/summary.json"
+  },
+  "buildId": "a47cd112ae8b49d1ea0d410140df2f56e6e248e0fedd38deeedc4329a3793696",
+  "license": "Apache-2.0",
+  "copyright": "Copyright (c) 2026 royalwang",
+  "priorCi": {
+    "commit": "f85ec2658efc193a27c5ae3ccdd7aa3b9f72087f",
+    "url": "https://github.com/royalwang/inertia-omega/actions/runs/37892386224",
+    "status": "success",
+    "scope": "17 stages plus independent consumer before final development/schema increment"
+  }
+}

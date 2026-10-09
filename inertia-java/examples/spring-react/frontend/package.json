@@ -22,7 +22,8 @@
     "test:assets": "node --test scripts/release-assets.test.mjs",
     "test:custom-root": "node scripts/verify-custom-root.mjs",
     "test:history": "node scripts/verify-history.mjs",
-    "test:browser-matrix": "node scripts/verify-browser-matrix.mjs"
+    "test:browser-matrix": "node scripts/verify-browser-matrix.mjs",
+    "test:development": "node scripts/verify-development.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "3.8.0",

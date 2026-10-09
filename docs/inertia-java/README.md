@@ -1,8 +1,8 @@
 # Inertia Java 服务端适配与 SSR 项目设计
 
-日期：2026-10-08。状态：设计完成，Java 工程实施中。
+日期：2026-10-08。状态：J0–J7 首版实施及本地验收完成。
 
-目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已有可运行 Java + React/Node 示例，完成范围见实施记录。
+目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已交付七个可复用 Java 模块及完整 React/Node 示例，开发与生产模式均通过实际验收；完成范围和正式发布边界见第八项逐项审查。
 
 ## 阅读顺序
 

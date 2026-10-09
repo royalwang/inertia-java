@@ -496,6 +496,16 @@ The Java workflow runs the aggregate gate, then the separate external Maven cons
 For a stable evidence location, set `INERTIA_CONSUMER_OUTPUT=/absolute/new-or-empty-directory` when invoking `scripts/verify-maven-consumer.py`. Existing nonempty output is refused before writing. When omitted, the command creates a unique temporary workspace. The summary records source HEAD/dirty state, verifier hash, example source hashes and resolved jar hashes. `INERTIA_CONSUMER_DEPENDENCY_CACHE` may seed third-party/plugin artifacts only; owned `io.inertia` coordinates are always resolved afresh from the newly packaged fixture repository. A successful local run does not establish the outcome of a remote Actions run.
 
 
+## SSR input contract
+
+The example validates the decoded Page envelope before invoking React: registered own component name, object props, string URL, string/null version, object flash when present, and boolean presentation flags. Inherited names such as `toString`, `constructor` and `__proto__` are rejected. Invalid envelopes return an empty SSR result with `invalidPage: true`; the Java gateway classifies that empty body as an invalid response and falls back. The health verifier sends 14 invalid decoded inputs and then renders a valid Error page to prove rejection does not stop the renderer. HTTP parsing and bigint revival remain owned by the locked official SSR server; this callback is not a replacement HTTP server.
+
+## Development acceptance
+
+After Maven packaging and `npm ci`, run `npm run test:development` in `examples/spring-react/frontend`. This starts owned Java and Vite processes on independent loopback ports, verifies actual development SSR and the Vite client URL, then runs the official-client flows and Advanced browser cases. It includes JavaScript-disabled HTML navigation, hydration, deferred data, validation/flash, CSRF recovery, scroll/once, deep merge and named error bags. The verifier refuses an existing hot file and cleans up its own processes and hot file. `INERTIA_DEV_APP_ORIGIN` limits Vite CORS to the verifier application origin; normal manual development keeps the documented default origins.
+
+The aggregate `node scripts/verify.mjs` now has 18 stages, including development acceptance in addition to the production browser matrix. Stage summaries, logs, screenshots and traces are retained under the aggregate output.
+
 ## License
 
 Original project code, documentation and examples under `inertia-java/` are licensed under the [Apache License, Version 2.0](LICENSE). Third-party dependencies retain their own licenses and notices. This declaration does not change the Rust package's existing license metadata. Maven modules inherit the parent license declaration; binary/source jars, Javadoc jars and the deployment payload carry the license text and [copyright notice](NOTICE).

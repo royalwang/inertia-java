@@ -594,3 +594,10 @@ Maven resources把LICENSE带入binary/source `META-INF/LICENSE`；Javadoc资源�
 实际验证：Maven clean verify成功，Java291项零failures/errors/skipped（`/tmp/inertia-apache-build.log`）；npm ci/双build成功，lock JSON对照证明仅package根license变化、所有dependency versions/resolved/integrities未变；21jar验证 `/tmp/inertia-apache-library-artifacts.json` 通过。独立Maven消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-zxeefhxq/summary.json` 与部署SSR/CSR/Node断开/完整性 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-5bu5N2/summary.json` 均success=true，release manifest含LICENSE正确hash。依赖清单 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-dependencies-z7uvtb66/summary.json` 成功，十个owned parent/module/frontend声明均为Apache-2.0；第三方review剩31项，未伪称获得法律批准或public publicationQualified=true。
 
 自有许可证选择和正文缺失已解决，不再以版权署名信息阻塞Java实施。实际发行的第三方归属/notice和目标环境资格仍按其真实范围记录，开发和本地验证可以继续。此次未重跑17阶段aggregate；做的是与许可证打包相关的完整Maven、前端build、制品/依赖清单、独立消费和发布部署验证。默认服务未重启。
+
+
+## J0–J7 首版收尾验收（2026-10-09）
+
+补齐原04要求的可重复开发模式验收：新增test:development与独立Java/Vite端口，hot文件写实际监听端口，CORS限定该Java origin；JS禁用首屏、hydration、表单、once/scroll/deepMerge/named bags实际8项通过。该门槛纳入aggregate第18阶段。Node端增加decoded Page envelope校验，组件registry使用Object.hasOwn；14项无效输入拒绝后合法Error页面仍能渲染。首轮恢复断言未考虑React文本分隔注释，修正为读取去HTML标签的文本后通过，未修改组件以迁就断言。
+
+最终完整18阶段及独立Maven消费通过；Java291项零failures/errors/skipped。最新[逐项审查](07-acceptance-audit.md)覆盖原J0–J7、17行用户矩阵和02/03实施约束；[归档摘要](acceptance/2026-10-09-final-local-summary.json)保存命令结果与源状态。Java Apache-2.0与royalwang/2026版权声明已按用户决定落地。原任务的发布准备已交付；公开上传/正式签名、第三方最终归属批准及具体生产主机认证为独立后续事项，不新增为本实施任务阻塞。

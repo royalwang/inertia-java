@@ -1,83 +1,89 @@
 # 首版实施验收逐项审查
 
-审查基线：2026-10-09 当前工作区。原始要求来自 [实施计划与验收](04-delivery-plan.md) 与 [实施细节设计](03-implementation-design.md)，不以测试总数代替要求覆盖。初始设计文档是历史快照；最新执行证据见 [实施记录](05-implementation-status.md)。
+审查日期：2026-10-09。要求来源为 [架构规划](02-java-architecture.md)、[实施细节设计](03-implementation-design.md) 和 [实施计划与验收](04-delivery-plan.md)。这些文件保留初始设计快照；本文件按实际交付审查，历史增量和失败修复记录见 [实施记录](05-implementation-status.md)。
 
-“已有证据”仅支持表内写明的范围；不代表所有输入、部署环境和组合均已认证。以下审查保留原 J0–J7 范围，当前整体完成仍未证明。
+状态：J0–J7 首版实施及本地验收完成。逐项证据如下；正式对外发布和具体生产环境资格保留独立边界，不以测试总数代替行为覆盖。
 
-## 工作包与可定位证据
+## J0–J7 工作包
 
-| 原要求 | 当前实现/证据入口 | 审查结论 |
+| 要求 | 已交付实现与可定位证据 | 资格范围 |
 |---|---|---|
-| J0 版本、官方客户端、script/root/SSR/bigint spike | `inertia-java/compatibility/README.md`；37 Page +45 HTTP Rust exporter；实时TTL gate；frontend lockfile；SSR/root browser harness | 已有实际 Rust oracle 和官方客户端证据，差异明确；不是所有非法输入的跨语言等价证明，也未认证 Rust MSRV1.88 |
-| J1 Maven/core/HTML/JSON/409/303/Vary/安全JSON | core 模块、`CoreContractTest`、`RustHttpParityTest`、`ConfigPresentationTest`；本轮加入 `/failures/payload` DOM probe | 基础协议和配置有证据；DOM probe结果随本轮aggregate归档 |
-| J2 MVC/starter/直访/点击/404/REST | MVC configurer/validator/resolver；`MvcContractTest`、`MvcErrorPageTest`、`InertiaHandlerValidatorTest`、`MvcAdviceContractTest`、`MvcOutcomeAdviceContractTest`、`InertiaOverridesTest` | 有实际Spring/Boot集成；wrapped/async Page明确不支持，普通Spring async transfer另验收 |
-| J3 session/form/验证桥接 | session/core/MVC failure tests、validation bridge、flows/auth browser矩阵 | 原定首版单节点路径已验收，含namespace、失败恢复、身份与真实idle expiry；不扩展为集群session保证 |
-| J4 lazy/optional/always/partial/deferred/并发/失败 | `PropsResolver`、`CoreContractTest`、`PropsOverloadTest`、`CancellationContractTest`、`SessionFailureTest`；Users deferred browser | 核心规划/回调/队列/取消/权限失败有证据；生产数据库和容量归应用部署资格，不等同库内并发合同 |
-| J5 SSR/Vite/完整首屏/hydration/Node断开 | SSR failure tests、ViteBuild/ViteAssets tests；browser matrix、build-integrity、SSR-failures、release-switch/deployment scripts | 实际React/Node证据存在；开发模式历史记录可定位，生产当前aggregate另归档；真实Linux/proxy/storage未认证 |
-| J6 merge/deep/prepend/once/scroll/history/bigint | `AdvancedPropsTest`、Rust Page fixtures、Feed/History/onceTTL/auth browser | scroll append/prepend/reset、once与history/bigint有客户端证据；新增Advanced页面及advanced.spec：deepMerge实际保留字段、按ID更新/去重与reset已通过八配置浏览器 |
-| J7 CI/打包/部署/兼容/英文API/许可证 | workflow、release/runtime/systemd、classifier/consumer verifier、README/Javadoc、docs/api-guide.md与编译示例、dependency-inventory | 打包/本地独立消费/部署演练已有证据；英文API指南与两例随release分发且实际编译/HTTP验证；依赖/许可证声明清单已有证据；自有Apache-2.0声明/正文/分类jar与发布payload携带已验证；第三方归属review、正式版本/签名与目标环境等分发资格仍独立记录，当前dirty工作区不能引用旧CI为当前CI |
+| J0 锁定版本、官方 SSR、协议 fixture | parent POM、frontend package-lock；compatibility/README；Rust exporter 与 Java RustParityTest/RustHttpParityTest/OnceTtlContractTest | 37 Page、45 HTTP、9 live TTL；React3.8.0/Java21/Boot3.5.7 的已锁定组合。四项 HTTP 差异显式声明 |
+| J1 Maven/config/request/page/codec/response/policy | inertia-core；CoreContractTest、ConfigPresentationTest、RustHttpParityTest | HTML/JSON、409/303、Vary、多值业务头、安全 JSON、状态保留 |
+| J2 MVC starter | InertiaMvcConfigurer/HandlerValidator；MvcContractTest、MvcErrorPageTest、InertiaHandlerValidatorTest、InertiaOverridesTest | 专用同步返回值、直访/点击/404、自动装配、普通 REST 共存；wrapped/async Page 启动拒绝 |
+| J3 会话与表单 | SessionStore/HttpSessionStore/InertiaContext、ValidationBridge；SessionContractTest、SessionFailureTest、MvcSessionFailureTest、flows/advanced/auth browser | 单节点预留、一次领取、失败恢复、并发不覆盖新数据、default/named bags、成功 flash |
+| J4 props | Props/Prop/PropsResolver、bounded executor；CoreContractTest、PropsOverloadTest、CancellationContractTest、PropDefinitionDiagnosticTest | lazy/optional/always/partial/deferred、规划后求值、并发/过载/deadline/取消、rescue、权限失败不转 SSR fallback |
+| J5 SSR/Vite | HttpSsrGateway、SsrEndpointResolver、ViteBuild/ViteAssets、app.tsx/ssr.tsx；gateway tests、development/browser-matrix/SSR-failures/CSP/custom-root | 开发/生产实际 SSR、JS 禁用首屏、hydration/表单、Node 不可用 CSR；同 build、root 和 bigint |
+| J6 扩展能力 | AdvancedPropsTest、HistoryOverridesTest、OnceTtlContractTest、Page fixtures；flows/advanced/history/auth browser | append/prepend/deepMerge/matchOn/reset/scroll/once/TTL/fresh、历史加密/清除、大整数；真实客户端状态验证 |
+| J7 发布准备 | GitHub workflow、release/runtime/systemd、compatibility matrix、英文 API guide 与两例、classifier/consumer/dependency verifier、LICENSE/NOTICE | jar/source/Javadoc、完整示例/lockfile、独立消费/部署、旧资源保留、故障演练与依赖声明检查。正式对外发布另有资格事项 |
 
-## 原始用户验收矩阵逐行检查
+七个库模块和独立 Spring Boot + React 示例均位于 `inertia-java/`；core 的生产依赖仅 Jackson，未混入 Spring、Servlet、Node 或业务应用。SSR/Vite 为独立可选模块。发布 bundle 包含英文 API 指南和可直接编译的 CoreApiExample/SpringApiExample。
 
-| 原验收场景 | 具体证据 | 当前边界/缺口 |
+## 原始用户验收矩阵
+
+| 原要求 | 对应实现与验证 | 已证明的可观察结果 |
 |---|---|---|
-| 普通访问与点击导航 | flows首屏/hydrate/Link网络JSON，MockMvc | 已验证 |
-| SSR正常，JS前有内容且可交互 | 真实javaScriptEnabled:false浏览器首屏/HTML导航，加启用JS的hydration/表单，部署独立pair | 已验证无JS可见首屏/完整document导航及启用JS后的交互；六SSR配置有截图，deferred占位不冒称无JS加载 |
-| SSR断开/慢响应/非法JSON/null | `HttpSsrFailureTest`、mock peers、SSR-failures/CSR浏览器 | core/gateway异常分类与有界fallback已验证；不把所有fault组合均称浏览器覆盖 |
-| stale version不调controller且flash保留 | MVC observations/request lifecycle、core session/HTTP parity | 已有对应层合同 |
-| mutation redirect/fragment/prefetch | 45 HTTP oracle合同；MVC outcome advice PUT303 | 方法、状态、body、多值headers与明确Java差异有证据 |
-| partial only/except、异组件完整、未命中零调用 | core/parity、Feed only/reload | advanced.spec在八配置浏览器验证except请求头、响应排除、昂贵回调零执行和always越过排除；optional沿Rust的except-only选择规则执行 |
-| deferred group首屏metadata与后续取值 | core/parity、Users Deferred | 已验证首屏与真实后续加载；更多组合不据此外推 |
-| callback failure/rescue | core overload/cancel/rescue、MVC安全错误页 | default失败与允许rescue有核心/适配合同 |
-| flash/error bag一次展示和目标bag | core errors/parity，browser default/all-errors/form | advanced.spec双表单同名字段、profile/team请求bag、错误隔离/成功清错/无重放已通过八配置浏览器 |
-| 同会话并发/失败恢复/不覆盖新flash | SessionContract/Failure、HttpSessionStore、MVC session failure | 单节点预留语义已验证；网络exactly-once与集群不作保证 |
-| merge/reset/scroll UI | Feed actual InfiniteScroll追加/前插/去重/reset | Feed验证scroll路径；Advanced另验证nested deepMerge/matchOn/reset实际UI状态 |
-| once/TTL/fresh | Rust实时TTL、Java Clock、官方client expiry-1ms/exact expiry、Feed refresh | 已验证；浏览器Date控制不用于服务端session过期 |
-| 大整数与恶意字符串/Unicode | CoreContract安全JSON、Users bigint、CSP probe；本轮固定payload DOM probe | bigint实际精度已有证据；本轮补独立于CSP的实际Page script边界与显示检查 |
-| headers/status/errors/无递归 | MVC error/advice/requiredSSR、404 browser、header tests | 已有对应层证据 |
-| 多应用/多请求auth/props/flash隔离 | MVC isolation、HttpSessionStore namespace；auth SSR/CSR/多tab/idle | 单节点应用边界已有证据；不声称完整多租户生产身份资格 |
-| Vite发布切换与旧hash可用 | release-switch、immutable asset archive、independent deployment | 本地实际A→B/CSR/rollback输入完整性有证据；真实目标路由/存储待资格 |
-| 非Inertia REST/上传/下载 | 原REST合同；本轮 `NonInertiaTransferTest` | 两项实际MockMvc合同新增multipart和StreamingResponseBody：stale Inertia头不触发409、字节/业务headers保留、无session、async由Spring处理 |
+| 普通访问/点击导航 | MvcContractTest；flows SSR/CSR | 首次 HTML，Link 后 JSON；URL/标题/页面正确 |
+| SSR 正常、JS 前有内容/启动后交互 | flows 的 javaScriptEnabled:false 与 hydration case；development；部署 verifier | Ada/Linus、大整数和 deferred 占位在无 JS 时可见；HTML document 导航；开启 JS 后表单/Link 可用且无 hydration console 错误 |
+| SSR 断开/慢响应/非法 JSON/null | HttpSsrGatewayTest/HttpSsrFailureTest、SSR-failures、CSR browser | 有界 fallback 与原因区分；实际 CSR 挂载和导航/表单 |
+| stale version | core/HTTP fixtures、MVC lifecycle/observation tests | controller 零调用，409 原 URL，未消费 flash |
+| mutation redirect/fragment/prefetch | 45 HTTP oracle cases；MVC typed HttpOutcome advice | PUT/PATCH/DELETE302→303、POST 保持，fragment/prefetch 和多值头按合同处理 |
+| partial only/except/异组件/未命中零查询 | CoreContractTest、Page fixtures；Feed/Advanced browser | 同组件过滤、异组件完整；expensive 排除零调用；always 保留；optional 的 except-only 选择沿 Rust 规则 |
+| deferred group | CoreContractTest、Page fixtures；Users browser | 首屏省略值并公告 group，后续官方客户端请求得到值 |
+| callback failure/rescue | core overload/cancel/rescue、MVC error page tests | 默认安全失败；显式允许的 deferred rescue 省略并公告 metadata；不吞业务权限错误 |
+| flash/error bag | SessionContractTest、ErrorDeliveryTest；flows/advanced browser | 一次展示；profile/team 同名字段隔离、成功清错、无重放 |
+| 同 session 并发与失败恢复 | SessionContractTest/SessionFailureTest/HttpSessionStoreTest/MvcSessionFailureTest | 独占领取，不覆盖后来写入；准备失败恢复，不宣称网络 exactly-once |
+| merge/reset/scroll | AdvancedPropsTest、Rust Page fixtures；Feed/Advanced browser | 实际追加/前插/ID 去重/deepMerge 字段保留与更新、reset 替换状态 |
+| once/TTL/fresh | live Rust gate、Java Clock tests；flows TTL/refresh | loaded key 免查询，expiry-1ms 复用，exact expiry 和显式刷新重新查询 |
+| 大整数与恶意字符串 | PageCodec/CoreContractTest、Page fixtures；Users/payload DOM/CSP browser | props/flash bigint markers、客户端精确 ID；script 结束标记/Unicode 不破坏文档或执行脚本，payload case 不依赖 CSP |
+| status/headers/errors/不递归 | CoreContractTest、MvcErrorPageTest/MvcAdviceContractTest/MvcOutcomeAdviceContractTest/InertiaExceptionResolverTest | 404 状态/业务头保留；安全错误页最多一次，失败转纯文本 |
+| 多应用/请求 auth/props/flash 隔离 | MvcIsolationTest、namespace session tests；auth SSR/CSR/多 tab/真实 idle expiry | 请求 DTO/props/flash 不串；namespace 隔离；登录轮换、登出清理、容器过期后重新鉴权 |
+| Vite A→B 发布切换 | ViteBuildTest/ViteAssetsTest；release-switch、deployment | client/SSR/manifest build 一致；旧 hash 字节保留，409 刷新，新资源和回滚可运行 |
+| 非 Inertia REST/上传/下载 | NonInertiaTransferTest、普通 MVC REST contracts | multipart/StreamingResponseBody 字节和头不变，普通 async 交给 Spring，无协议重写/session 副作用 |
 
-## 命令、产物与额外门槛
+浏览器验收使用锁定的官方 Inertia React 客户端。没有用手工 fetch 代替 hydration；独立 HTTP 请求只用于网络/网关合同。开发模式与生产模式各自启动自有 Java/Vite/Node，生产矩阵包含 SSR、all-errors、failures、namespace、auth、auth-expiry、csr-failures、auth-csr 八种配置。
 
-| 要求 | 当前入口 | 审查边界 |
-|---|---|---|
-| Maven reactor、npm ci/typecheck/双build、独立peers | `node inertia-java/scripts/verify.mjs` | 当前命令增加dependency-inventory成为17阶段；最终结果必须读取summary，不用历史16阶段结果替代 |
-| Rust oracle freshness | `node inertia-java/compatibility/verify-fixtures.mjs` | 实际export，正常Java构建只读fixture；fixture生成需独立Rust工具链 |
-| classifier source/Javadoc | `verify-library-artifacts.py`、隔离负例脚本 | 21 jar字节/内容检查；另有英文API使用指南和真实编译/HTTP示例，不等同发布授权 |
-| 仓库外Maven消费 | `verify-maven-consumer.py` | 本轮独立POM/private repo/cache重新解析当前七库与14 classifier，缺core拒绝/恢复；新增从release复制的两例编译与真实HTTP验证 |
-| 发布bundle/部署模板/旧资源保留 | `deploy/release.mjs`、`verify-release.mjs`、runtime/systemd | 当轮实际macOS/loopback资格；Linux模板不能仅凭存在宣称在systemd目标可运行 |
-| 性能基线P50/P95/P99/并发/props/DB/资源 | [本地HTTP基线](06-local-http-benchmark.md) | 数据库负载明确0；SSR/CSR/refused/stalled有数据，不据此承诺业务生产容量 |
-| 依赖/许可证检查 | `scripts/dependency-inventory.py`，原始CycloneDX/npm SBOM、实际Boot jar匹配、LICENSE/NOTICE hashes | 技术清单完整性与声明收集门槛；不生成自有许可证、不把多许可证列表自动解释为OR、不提供法律批准或漏洞清零结论 |
+## 架构与实施细节中的约束
 
-## 下一步按明确缺口推进
+| 设计要求 | 当前证据与实际 API |
+|---|---|
+| 应用不可变配置、请求快照、一次 render/commit | InertiaConfig/InertiaRequest records、InertiaContext/OperationFuture；InertiaRequestLifecycleTest、CancellationContractTest。普通 @Controller 的专用同步返回类型决定启用范围 |
+| MVC before 在 controller 前，异常 advice 先于安全 fallback | InertiaMvcConfigurer/InertiaExceptionResolver；MVC version/error/advice/outcome contracts。实际重定向/location 使用 HttpOutcome，不另造草案中的两个类 |
+| 安全 codec、omitted/null、顶层 metadata、headers 所有权 | PageCodec/HttpOutcome/ProtocolPolicy；完整 Page/HTTP oracle 和 CoreContractTest；受保护协议头不能由业务覆盖 |
+| 共享优先级、dot 冲突、literal/computed 过滤、顺序 | Props/PropsResolver；CoreContractTest、PropDefinitionDiagnosticTest、AdvancedPropsTest、RustParityTest。点号父子冲突在查询前拒绝；数组不提供下标 partial |
+| worker 预算、异步工厂、取消和晚到 effect | bounded executor、CancellationScope；PropsOverloadTest/CancellationContractTest。关闭 context 后拒绝 pending 写；重复 callback flash key 拒绝，不依赖抢锁顺序 |
+| 事务/身份/locale 不假定 ThreadLocal 自动传播 | MvcIsolationTest 在请求线程捕获公开身份 DTO 后调度；API 指南说明 callback 显式捕获 immutable data/service，事务由业务服务负责 |
+| session namespace/SPI/恢复/validation/history 优先级 | HttpSessionStore/SessionStore/ErrorBags/ValidationBridge；session/failure/history/error tests。单节点原子预留；消息不带 rejected password；浏览器负责历史加密 |
+| SSR 最终 Page、内部可信 endpoint、无凭证/重试/redirect | HttpSsrGateway/SsrEndpointResolver；gateway/failure/endpoint tests。JSON visits/withoutSsr/except 不发 SSR；单 HttpClient、响应大小与 deadline/concurrency 有界 |
+| Node Page schema 与组件注册表 | ssr.tsx 的 decoded envelope guard；pages.ts Object.hasOwn；health verifier 14 个无效输入拒绝后正常渲染。HTTP JSON 解析/bigint revival 保留官方 server 所有权 |
+| health、指标、脱敏日志和独立 Java liveness | SsrHealthMonitor、InertiaObserver/LoggingInertiaObserver、MicrometerInertiaObserver；observation/metrics/health tests 和真实 Node stop/recover。固定低基数 tags，不记录 props/Cookie/响应正文 |
+| dev hot/refresh，prod manifest/imports/路径/nonce | ViteAssets/ViteBuild；ViteAssetsTest/ViteBuildTest；development/CSP/custom-root/build-integrity。hot file 写实际监听端口，prod 忽略 hot，CSP nonce 来自服务端 attribute |
+| 模板、CSRF、同源 back、代理与个性化缓存 | RootView SPI/PageCodec；CspNonceTest、safeBack HTTP differences、Spring Security/CSRF recovery/auth tests。可信 SSR 片段可 raw，业务模板负责用户 view data 转义；代理信任由主机配置；页面使用 private/no-store |
+| 同 build 两进程、禁止请求内 build、静态资源保留 | release/runtime/systemd 模板、immutable receipt/inventory；build-integrity/release-switch/deployment。Java HTTP 请求不执行 npm 或临时启动 renderer |
 
-1. J6 deepMerge/partial except与命名error bags的上述浏览器缺口已补齐；继续按原要求审查剩余制品/分发资格。
-2. 英文API指南与可编译示例已交付并验证；正式分发所需的许可证/归属与制品资格、依赖清单里未决项仍需实际审查。
-3. 对最终提交运行对应CI；目标Linux/proxy/storage与正式签名/namespace资格保留独立证据，不以本地演练替代。
+## 命令与制品
 
-本文提供审查结果，不删除或弱化原始设计要求；未证明项继续保持未完成。
+- `./inertia-java/mvnw -f inertia-java/pom.xml clean spotless:check verify`：完整 reactor、291 tests、编译、格式、binary/source/Javadoc 打包。
+- `node inertia-java/compatibility/verify-fixtures.mjs`：真实 Rust 重新导出 37 Page、45 HTTP；九项 live TTL 的时间窗口/回调 trace；不覆盖写回 oracle。
+- `node inertia-java/scripts/verify.mjs`：18 阶段，包含 npm ci/typecheck/client+SSR build、依赖声明清单、开发模式、生产八配置、资源/故障/CSP/root/history/A→B/独立部署。
+- `python3 inertia-java/scripts/verify-library-artifacts-test.py`：隔离副本的有效包、源码篡改、缺 API 文档/class、缺 classifier、恢复六种检查，不污染构建结果。
+- `python3 inertia-java/scripts/verify-maven-consumer.py`：仓库外 private repository/cache，七库与14 classifier 重新解析，指南两例编译和真实 HTTP，缺 core 拒绝后恢复。
+- `npm run benchmark`：手动性能入口。[基线](06-local-http-benchmark.md) 已记录并发1/8/32、DB负载0、props 数量/字节、SSR比例、P50/P95/P99、超时和资源，包含 SSR/CSR/refused/stalled；不把它当生产容量保证。
 
+Java 自有材料使用 Apache-2.0；`NOTICE` 精确为 `Copyright (c) 2026 royalwang`。binary/source jar 的 META-INF、Javadoc resources、Boot jar及release payload携带 LICENSE/NOTICE，verifier逐字节检查。第三方依赖保留原有条款；清单完整性和声明收集检查不等同法律批准。
 
-## 本轮执行结果
+## 完成范围与独立发布资格
 
-最终17阶段aggregate全部exit0，Java291项零failures/errors/skipped。新增transfer两项与无CSP的payload DOM SSR/CSR用例实际通过，依赖清单完整性通过但publicationQualified=false。证据：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-OVdppl/summary.json`；同目录`dependencies/`含原SBOM、44 runtime jar对照、license文本与47项review。该次运行时J6/bag仍有缺口；后续Advanced验收补齐这两项，发布资格继续保持未完成。
+本次目标是按原计划实现 Java 库及完整示例，J7 是发布准备。公开上传 Maven 仓库、正式版本/tag、签名与仓库 namespace/凭证、第三方最终归属审批，以及具体生产 Linux/proxy/CDN/session/storage 部署认证，仍为后续正式发布/上线事项；本次没有执行或宣称完成这些操作，也不把它们追加为原实施任务的阻塞门槛。
 
+首版原定不包含 WebFlux、Redis/Spring Session 集群原子存储、Vue/Svelte SSR 示例、Precognition 或内嵌 JS 引擎。保留这些原始边界；不宣称对所有版本/环境/输入组合或 Rust MSRV 的完整资格。
 
-提交前最终完整验证：17阶段全部exit0，Java291项零failures/errors/skipped；八配置浏览器包含Advanced两项新流程均通过，SSR故障、CSP/root/history、A→B发布切换与独立部署通过。证据：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-V9MTC1/summary.json`；日志 `/tmp/inertia-precommit-aggregate.log`。本次仅在执行期间补充说明文档，产品与测试源码保持稳定。验收审查已关闭上述deepMerge/except/命名bag浏览器缺口；远端CI和正式分发/目标环境资格仍未据本地成功关闭。
+## 最终执行证据
 
+最终18阶段完整通过：`/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-1xEHYv/summary.json`；包含新增开发模式与 Node schema/registry 检查。Java291项零failures/errors/skipped，开发模式8项passed、5项模式限定skip；生产八配置均通过，Node输入14项拒绝后恢复、故障/CSP/root/history/A→B与仓库外部署通过。源码在验证时以f85ec26为基线且dirty，随后整体提交；不伪装为验证了尚未生成的commit。
 
-英文API指南与分发验证补充：`inertia-java/docs/api-guide.md`、两例完整Java源码纳入release manifest；独立消费实测 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-qsy71nfy/summary.json` 和独立部署 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-deploy-PyCTjI/summary.json` 均success=true。指南示例实际检查HTML/JSON/optional partial/version/redirect/error bag/flash/REST；不把无浏览器的最小API例当成SSR页面证据，真实SSR/CSR由发布示例验证。完整细节见第五篇最新记录。
+独立消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-e3ad0vhg/summary.json` success=true；缺core的exit1为明确期望负例，恢复成功。Rust新鲜导出37 Page/45 HTTP和9 live TTL通过；日志`/tmp/inertia-java-final-fixtures.log`。依赖清单完整性通过，31项第三方review仍单独列出。Apache/NOTICE随21库jar、Boot jar和release携带。
 
+[归档验收摘要](acceptance/2026-10-09-final-local-summary.json) 保存阶段退出码、运行环境、source HEAD/dirty、浏览器各模式计数、独立消费、依赖/构建与原始证据路径；[性能基线摘要](benchmarks/2026-10-09-local-http-summary.json) 是明确记录早期构建的性能起点，不冒称当前产品或生产容量测量。
 
-CI入口补充：workflow已加入独立消费与API指南验证，并归档summary/logs/POM/复制源码；同一命令本地成功证据 `/tmp/inertia-java-api-ci-consumer-20261009/summary.json`。输出目录非空拒绝也实际验证。GitHub API只读查询因限流HTTP403未能确认远端结果，故当前远端CI仍未证明。Java许可证/版权主体与年份已向用户询问，尚未替用户指定；分发资格保持未关闭。
-
-
-当前工作区按CI顺序完整执行通过：17阶段aggregate `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-2Dzjat/summary.json`，随后独立消费 `/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-ds66qusp/summary.json`。原04 §3的真实JS禁用浏览器检查已补齐，六SSR配置检查可见列表、大整数、deferred占位与完整HTML导航；CSR配置跳过该SSR合同。Java291项零failures/errors/skipped。该本地顺序执行结果不替代远端CI或许可证/目标环境资格。
-
-
-用户已明确Java采用Apache-2.0。`inertia-java/LICENSE`、parent POM及frontend metadata已落地；21 binary/source/Javadoc jar及Boot jar和release payload实际携带正文，逐字节验证通过。Maven291项、独立消费、发布SSR/CSR及新依赖清单均通过，见第五篇最新Apache-2.0记录。十个owned声明已识别为Apache-2.0，剩31项为第三方review；不再以缺自有许可证/版权主体回答作为实施阻塞。
-
-
-用户已明确版权声明为 `Copyright (c) 2026 royalwang`，现已写入 `inertia-java/NOTICE` 与 README。Apache-2.0 正文保持原样；21 个 binary/source/Javadoc jar、Boot jar及部署bundle均携带逐字节匹配的NOTICE。Maven clean verify通过，291项零failures/errors/skipped；六项隔离制品校验通过。制品报告：`/tmp/inertia-java-copyright-artifacts.json`；构建日志：`/tmp/inertia-java-copyright-build.log`。此次声明仅适用于自有Java材料，第三方依赖保留原有声明。
+版权提交 `f85ec2658efc193a27c5ae3ccdd7aa3b9f72087f` 的 [远端 CI](https://github.com/royalwang/inertia-omega/actions/runs/37892386224) 已 success，覆盖当时17阶段和独立消费。新增代码提交后的18阶段及消费结果以 [工作流对应commit的run](https://github.com/royalwang/inertia-omega/actions/workflows/inertia-java.yml) 为准；远端结果在推送后核查，不能用此前CI替代。

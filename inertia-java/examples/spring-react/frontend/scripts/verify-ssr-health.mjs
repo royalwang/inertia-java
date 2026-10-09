@@ -97,11 +97,30 @@ try {
   await browserHistory(port)
   const mismatched = await fetch(`http://127.0.0.1:${rendererPort}/render`, {
     method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ component: 'NotRegistered', props: {}, url: '/', version: 'different-release' }),
+    body: JSON.stringify({ component: 'Error', props: { status: 404 }, url: '/', version: 'different-release' }),
   })
   const rejected = await mismatched.json()
   if (rejected.body !== '' || !rejected.buildId || rejected.buildId === 'different-release') throw new Error('Node did not reject mismatched Page before component resolution')
   console.log('Verified Node rejects mismatched Page before rendering')
+  const validPage = { component: 'Error', props: { status: 404 }, url: '/missing', version: rejected.buildId }
+  for (const invalid of [null, [], false,
+    ...['toString', 'constructor', '__proto__', '../Users', 'NotRegistered'].map(component => ({ ...validPage, component })),
+    { ...validPage, props: [] }, { ...validPage, props: null },
+    { ...validPage, url: 1 }, { ...validPage, version: 1 },
+    { ...validPage, flash: [] }, { ...validPage, encryptHistory: 'true' },
+  ]) {
+    const response = await fetch(`http://127.0.0.1:${rendererPort}/render`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(invalid),
+    })
+    const result = await response.json()
+    if (!response.ok || result.invalidPage !== true || result.body !== '') throw new Error('Node accepted invalid decoded Page')
+  }
+  const validRender = await fetch(`http://127.0.0.1:${rendererPort}/render`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(validPage),
+  })
+  const renderedPage = await validRender.json()
+  if (!validRender.ok || !renderedPage.body?.replace(/<[^>]*>/g, '').includes('Error 404')) throw new Error('Node failed valid Page after invalid input')
+  console.log('Verified decoded Page schema, own-component registry and valid rendering after rejection')
   writeFileSync(entry, bundle)
   await wait('bundle restart', () => renderer.transcript.split('SSR build verified:').length >= 3)
   await wait('restarted renderer health', async () => (await fetch(`http://127.0.0.1:${rendererPort}/health`)).ok)

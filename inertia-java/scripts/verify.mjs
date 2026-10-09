@@ -59,7 +59,8 @@ try {
   copyFileSync(resolve(frontend, 'dist/build.json'), resolve(output, 'build.json'))
   receipt = 'build.json'
   for (const [name, script] of [
-    ['asset-contracts', 'test:assets'], ['browser-matrix', 'test:browser-matrix'],
+    ['asset-contracts', 'test:assets'], ['development', 'test:development'],
+    ['browser-matrix', 'test:browser-matrix'],
     ['build-integrity', 'test:build-integrity'], ['ssr-failures', 'test:ssr-failures'],
     ['csp', 'test:csp'], ['custom-root', 'test:custom-root'],
     ['history', 'test:history'], ['release-switch', 'test:release-switch'],

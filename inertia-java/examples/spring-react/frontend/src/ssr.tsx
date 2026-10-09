@@ -1,7 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react'
 import createServer from '@inertiajs/react/server'
 import { renderToString } from 'react-dom/server'
-import { resolve } from './pages'
+import { resolve, isSsrPage } from './pages'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 
@@ -21,6 +21,7 @@ if (import.meta.env.PROD) {
 }
 const renderer = createInertiaApp({ id: rootId, resolve })
 createServer(async page => {
+  if (!isSsrPage(page)) return { head: [], body: '', buildId, rootId, invalidPage: true }
   if (buildId && page.version !== buildId) return { head: [], body: '', buildId, rootId }
   const render = await renderer
   if (typeof render !== "function") throw new Error("SSR renderer unavailable")
