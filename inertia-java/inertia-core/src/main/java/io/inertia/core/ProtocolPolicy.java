@@ -17,7 +17,7 @@ public final class ProtocolPolicy {
   }
 
   public static HttpOutcome redirect(String url) {
-    return HttpOutcome.empty(302).withHeader("Location", url);
+    return HttpOutcome.empty(302).withHeader("Location", url).vary();
   }
 
   public static HttpOutcome location(InertiaRequest request, String url) {

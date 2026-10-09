@@ -64,7 +64,8 @@ try {
     'examples/spring-react/frontend/dist', 'examples/spring-react/frontend/package.json',
     'examples/spring-react/frontend/package-lock.json', `examples/spring-react/target/spring-react-${version}.jar`]
   for (const module of ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']) {
-    paths.push(`${module}/pom.xml`, `${module}/target/${module}-${version}.jar`)
+    paths.push(`${module}/pom.xml`)
+    for (const classifier of ["", "-sources", "-javadoc"]) paths.push(`${module}/target/${module}-${version}${classifier}.jar`)
   }
   for (const path of paths) {
     const dest = resolve(inputs, path)

@@ -29,6 +29,7 @@ public class DemoFailures {
         session.invalidate();
         yield new InertiaResponse("Users/Index", Props.empty());
       }
+      case "required-ssr" -> new InertiaResponse("About", Props.empty()).requireSsr();
       case "forbidden" -> throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Demo denial");
       default ->
           throw new ResponseStatusException(

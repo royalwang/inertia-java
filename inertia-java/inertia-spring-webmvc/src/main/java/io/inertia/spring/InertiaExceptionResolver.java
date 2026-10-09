@@ -50,6 +50,7 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
       var page =
           Objects.requireNonNull(
               errorPage.create(snapshot, status), "Error page factory returned null");
+      if (requiredSsrFailure(failure)) page.withoutSsr();
       page.status(status).withHeader("Cache-Control", "private, no-store");
       // A failed ordinary page's reservation is restored, not consumed by its error page.
       var context = new InertiaContext(snapshot, null, new PageCodec());
@@ -78,11 +79,20 @@ final class InertiaExceptionResolver implements HandlerExceptionResolver {
     }
   }
 
+  private static boolean requiredSsrFailure(Throwable failure) {
+    var visited = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
+    for (var current = failure;
+        current != null && visited.add(current);
+        current = current.getCause()) if (current instanceof SsrRequiredException) return true;
+    return false;
+  }
+
   private static int status(Throwable failure) {
     var visited = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
     for (Throwable current = failure;
         current != null && visited.add(current);
         current = current.getCause()) {
+      if (current instanceof SsrRequiredException) return 503;
       if (current instanceof org.springframework.beans.ConversionNotSupportedException) return 500;
       if (current instanceof org.springframework.beans.TypeMismatchException
           || current instanceof org.springframework.http.converter.HttpMessageNotReadableException

@@ -164,3 +164,62 @@ for (const scenario of ['missing-cookie', 'stale-header']) {
     expect(errors).toEqual([])
   })
 }
+
+test('once TTL reuses before expiry and queries at the exact client expiry boundary', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  // Change Date only: normal browser timers, network, deferred work and animations keep running.
+  await page.clock.setFixedTime(new Date())
+  await page.goto('/feed?page=2')
+  await expect(page).toHaveTitle('Feed')
+  const firstCatalog = await page.getByTestId('catalog').textContent()
+  const initial = JSON.parse((await page.locator('script[data-page="app"]').textContent())!)
+  const expiry = initial.onceProps['feed-catalog'].expiresAt
+  expect(Number.isSafeInteger(expiry)).toBe(true)
+  expect(expiry % 1000).toBe(0)
+  expect(expiry).toBeGreaterThan(await page.evaluate(() => Date.now()))
+  await page.clock.setFixedTime(new Date(expiry - 1))
+  const warm = page.waitForResponse(response => new URL(response.url()).pathname === '/about' && response.request().headers()['x-inertia'] === 'true')
+  await page.getByRole('link', { name: 'About this app' }).click()
+  const warmResponse = await warm
+  expect(warmResponse.request().headers()['x-inertia-except-once-props'].split(',')).toContain('feed-catalog')
+  expect((await warmResponse.json()).props).not.toHaveProperty('catalog')
+  await page.getByRole('link', { name: 'Explore feed' }).click()
+  await expect(page.getByTestId('catalog')).toHaveText(firstCatalog!)
+  // The official client retains the original cached expiry, despite metadata in warm responses.
+  await page.clock.setFixedTime(new Date(expiry))
+  const expired = page.waitForResponse(response => new URL(response.url()).pathname === '/about' && response.request().headers()['x-inertia'] === 'true')
+  await page.getByRole('link', { name: 'About this app' }).click()
+  const expiredResponse = await expired
+  const loadedKeys = expiredResponse.request().headers()['x-inertia-except-once-props']?.split(',') ?? []
+  expect(loadedKeys).not.toContain('feed-catalog')
+  expect((await expiredResponse.json()).props.catalog.load).toBeGreaterThan(initial.props.catalog.load)
+  await page.getByRole('link', { name: 'Explore feed' }).click()
+  await expect(page.getByTestId('catalog')).not.toHaveText(firstCatalog!)
+  expect(errors).toEqual([])
+})
+
+
+test('required SSR rejects unavailable HTML and recovers through ordinary client navigation', async ({ page }) => {
+  test.skip(process.env.INERTIA_EXPECT_FAILURES !== 'true', 'Required SSR route is an opt-in fault demo')
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  const response = await page.goto('/failures/required-ssr')
+  const html = await response!.text()
+  if (process.env.INERTIA_EXPECT_CSR === 'true') {
+    expect(response!.status()).toBe(503)
+    expect(response!.headers()['cache-control']).toBe('private, no-store')
+    expect(html).not.toContain('data-server-rendered="true"')
+    await expect(page.getByRole('heading', { name: 'Error 503' })).toBeVisible()
+    await expect(page).toHaveTitle('Error 503')
+    await page.getByRole('link', { name: 'Back to users' }).click()
+    await expect(page).toHaveTitle('Users')
+    await expect(page.getByTestId('stats')).toHaveText('Total: 2')
+  } else {
+    expect(response!.status()).toBe(200)
+    expect(html).toContain('data-server-rendered="true"')
+    await expect(page).toHaveTitle('About')
+  }
+  expect(html).not.toContain('Required server rendering is unavailable')
+  expect(errors).toEqual([])
+})

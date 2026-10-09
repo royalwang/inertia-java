@@ -160,8 +160,16 @@ public final class ResponseRenderer {
                       config.gateway() != null && response.ssr()
                           ? config.gateway().render(page, request)
                           : CompletableFuture.completedFuture(new SsrGateway.Fallback("disabled"));
+                  if (rendering == null && response.ssrRequired())
+                    throw new SsrRequiredException(InertiaObserver.Reason.INVALID_RESPONSE);
+                  Objects.requireNonNull(rendering, "SSR gateway returned no completion stage");
                 } catch (Throwable error) {
                   ssrSpan.failure(error);
+                  if (response.ssrRequired()
+                      && error instanceof RuntimeException
+                      && !(error instanceof SsrRequiredException)
+                      && Observations.failureReason(error) != InertiaObserver.Reason.CANCELLED)
+                    throw new SsrRequiredException(Observations.failureReason(error), error);
                   throw error;
                 }
                 rendering.whenComplete(
@@ -169,11 +177,32 @@ public final class ResponseRenderer {
                       if (error != null) ssrSpan.failure(error);
                       else if (value instanceof SsrGateway.Fallback fallback)
                         ssrSpan.fallback(fallback.reason());
-                      else ssrSpan.success();
+                      else if (value instanceof SsrGateway.Rendered) ssrSpan.success();
+                      else ssrSpan.fallback("invalid-response");
                     });
                 scope.track(rendering.toCompletableFuture());
                 if (result.settled())
                   return CompletableFuture.failedFuture(new CancellationException());
+                if (response.ssrRequired())
+                  rendering =
+                      rendering.handle(
+                          (value, error) -> {
+                            if (error != null) {
+                              if (Observations.failureReason(error)
+                                  == InertiaObserver.Reason.CANCELLED)
+                                throw new CompletionException(error);
+                              if (error instanceof Error) throw (Error) error;
+                              throw new SsrRequiredException(
+                                  Observations.failureReason(error), error);
+                            }
+                            if (value instanceof SsrGateway.Fallback fallback)
+                              throw new SsrRequiredException(
+                                  Observations.fallbackReason(fallback.reason()));
+                            if (!(value instanceof SsrGateway.Rendered))
+                              throw new SsrRequiredException(
+                                  InertiaObserver.Reason.INVALID_RESPONSE);
+                            return value;
+                          });
                 return rendering.thenApply(
                     renderedResult -> {
                       if (result.settled()) throw new CancellationException();

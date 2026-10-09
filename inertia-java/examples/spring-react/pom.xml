@@ -8,6 +8,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>spring-react</artifactId>
+  <properties><inertia.documentation.skip>true</inertia.documentation.skip><inertia.javadoc.skip>true</inertia.javadoc.skip></properties>
   <dependencies>
     <dependency>
       <groupId>io.inertia</groupId>

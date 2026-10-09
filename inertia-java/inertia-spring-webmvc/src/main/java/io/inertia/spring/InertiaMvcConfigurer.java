@@ -19,6 +19,8 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
   public static final String CSP_NONCE_ATTRIBUTE = InertiaMvcConfigurer.class.getName() + ".nonce";
   private static final String CONTEXT = InertiaMvcConfigurer.class.getName() + ".context";
   private final PageCodec codec = new PageCodec();
+  private static final String ADVICE_CONTEXT =
+      InertiaMvcConfigurer.class.getName() + ".advice-context";
   private static final String REQUEST = InertiaMvcConfigurer.class.getName() + ".request";
   private final InertiaConfig config;
   private final ResponseRenderer renderer;
@@ -134,6 +136,20 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
     resolvers.add(position, new InertiaExceptionResolver(renderer, deadline, errorPage));
   }
 
+  /** Typed application error pages get a fresh sessionless context, like the library error page. */
+  private void prepareAdviceContext(MethodParameter parameter, HttpServletRequest request) {
+    var method = parameter.getMethod();
+    if (method == null
+        || method.getReturnType() != InertiaResponse.class
+        || !org.springframework.core.annotation.AnnotatedElementUtils.hasAnnotation(
+            method, org.springframework.web.bind.annotation.ExceptionHandler.class)
+        || request.getAttribute(REQUEST) == null
+        || request.getAttribute(ADVICE_CONTEXT) != null) return;
+    abort(request);
+    request.setAttribute(CONTEXT, new InertiaContext(snapshot(request), null, codec));
+    request.setAttribute(ADVICE_CONTEXT, Boolean.TRUE);
+  }
+
   private static boolean supports(MethodParameter parameter) {
     return InertiaResponse.class.equals(parameter.getParameterType())
         || HttpOutcome.class.equals(parameter.getParameterType());
@@ -153,6 +169,7 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               ModelAndViewContainer container,
               NativeWebRequest request,
               org.springframework.web.bind.support.WebDataBinderFactory factory) {
+            prepareAdviceContext(parameter, request.getNativeRequest(HttpServletRequest.class));
             var value =
                 request
                     .getNativeRequest(HttpServletRequest.class)
@@ -181,6 +198,7 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               NativeWebRequest webRequest)
               throws Exception {
             var request = webRequest.getNativeRequest(HttpServletRequest.class);
+            prepareAdviceContext(parameter, request);
             var snapshot = (InertiaRequest) request.getAttribute(REQUEST);
             if (snapshot == null)
               throw new IllegalStateException("Missing Inertia request snapshot");

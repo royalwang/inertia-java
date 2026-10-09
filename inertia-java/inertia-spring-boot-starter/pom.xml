@@ -8,6 +8,13 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>inertia-spring-boot-starter</artifactId>
+  <properties><inertia.javadoc.skip>true</inertia.javadoc.skip></properties>
+  <build><plugins><plugin>
+    <groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.4.2</version>
+    <executions><execution><id>starter-documentation</id><phase>package</phase><goals><goal>jar</goal></goals>
+      <configuration><classifier>javadoc</classifier><classesDirectory>${project.basedir}/src/main/javadoc</classesDirectory></configuration>
+    </execution></executions>
+  </plugin></plugins></build>
   <dependencies>
     <dependency>
       <groupId>io.inertia</groupId>

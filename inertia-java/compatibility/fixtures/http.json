@@ -1,0 +1,1342 @@
+{
+  "format": 1,
+  "rustSourceBaseline": "6667d8d1be314067af989eb049ba419a07fcd412",
+  "cases": [
+    {
+      "name": "before-stale",
+      "operation": "before",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "x-inertia-version": "old"
+      },
+      "version": "v2",
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-location": [
+            "https://app.test/users?page=2"
+          ],
+          "vary": [
+            "X-Inertia"
+          ],
+          "x-inertia-version": [
+            "v2"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "before-matching",
+      "operation": "before",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "x-inertia-version": "v2"
+      },
+      "version": "v2",
+      "expectedRust": null
+    },
+    {
+      "name": "before-missing",
+      "operation": "before",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "version": "v2",
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-location": [
+            "https://app.test/users?page=2"
+          ],
+          "vary": [
+            "X-Inertia"
+          ],
+          "x-inertia-version": [
+            "v2"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "before-empty-version",
+      "operation": "before",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "version": "",
+      "expectedRust": null
+    },
+    {
+      "name": "before-post-stale",
+      "operation": "before",
+      "method": "POST",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "x-inertia-version": "old"
+      },
+      "version": "v2",
+      "expectedRust": null
+    },
+    {
+      "name": "before-head-stale",
+      "operation": "before",
+      "method": "HEAD",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "version": "v2",
+      "expectedRust": null
+    },
+    {
+      "name": "before-plain",
+      "operation": "before",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "version": "v2",
+      "expectedRust": null
+    },
+    {
+      "name": "mutation-get",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "mutation-post",
+      "operation": "after",
+      "method": "POST",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "mutation-put",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "mutation-patch",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "mutation-delete",
+      "operation": "after",
+      "method": "DELETE",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "mutation-head",
+      "operation": "after",
+      "method": "HEAD",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/saved"
+        ],
+        "x-business": [
+          "keep"
+        ],
+        "set-cookie": [
+          "a=1; Path=/",
+          "b=2; Path=/"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/saved"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "set-cookie": [
+            "a=1; Path=/",
+            "b=2; Path=/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-201",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 201,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-301",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 301,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-302",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 302,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-303",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 303,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-307",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 307,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-308",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 308,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "fragment-status-200",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-status-304",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 304,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 304,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-status-404",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 404,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 404,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-prefetch-purpose",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "purpose": "PrEfEtCh"
+      },
+      "status": 302,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-prefetch-sec-purpose",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "sec-purpose": "PrEfEtCh"
+      },
+      "status": 302,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-prefetch-x-moz",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "x-moz": "PrEfEtCh"
+      },
+      "status": 302,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "fragment-non-prefetch",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "purpose": "prerender"
+      },
+      "status": 302,
+      "body": "body",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ]
+      },
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-redirect": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "vary-absent",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "vary-other",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "x-business": [
+          "keep"
+        ],
+        "vary": [
+          "Accept-Encoding"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "Accept-Encoding",
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "vary-existing",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "x-business": [
+          "keep"
+        ],
+        "vary": [
+          "Accept, x-INERTIA"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "Accept, x-INERTIA"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "vary-multiple",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "x-business": [
+          "keep"
+        ],
+        "vary": [
+          "Accept",
+          "X-Inertia"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "Accept",
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "vary-wildcard",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "body",
+      "responseHeaders": {
+        "x-business": [
+          "keep"
+        ],
+        "vary": [
+          "*"
+        ]
+      },
+      "javaExpected": {
+        "status": 200,
+        "headers": {
+          "vary": [
+            "*"
+          ],
+          "x-business": [
+            "keep"
+          ]
+        },
+        "body": "body"
+      },
+      "difference": "Java treats Vary: * as already varying on all request fields; Rust additionally appends X-Inertia.",
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "*",
+            "X-Inertia"
+          ]
+        },
+        "body": "body"
+      }
+    },
+    {
+      "name": "empty-get",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "/users/edit"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {
+        "x-business": [
+          "discard"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/users/edit"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-put",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "/users/edit"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {
+        "x-business": [
+          "discard"
+        ]
+      },
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/users/edit"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-post",
+      "operation": "after",
+      "method": "POST",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "/users/edit"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {
+        "x-business": [
+          "discard"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/users/edit"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-no-referer",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {},
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-external-referer",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "https://other.test/phish"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {},
+      "javaExpected": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      },
+      "difference": "Java safeBack rejects cross-origin Referer; Rust forwards it. Same-origin validation is an intentional Java redirect safety policy.",
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "https://other.test/phish"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-absolute-same-origin",
+      "operation": "after",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "https://app.test/edit?x=1"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {},
+      "javaExpected": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/edit?x=1"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      },
+      "difference": "Java canonicalizes an accepted same-origin back URL to path/query; Rust preserves the absolute Referer.",
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "https://app.test/edit?x=1"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "empty-fragment",
+      "operation": "after",
+      "method": "PATCH",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true",
+        "referer": "/edit#top"
+      },
+      "status": 200,
+      "body": "",
+      "responseHeaders": {},
+      "javaExpected": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/edit"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      },
+      "difference": "Java safeBack removes the Referer fragment before redirect; Rust returns the fragment unchanged from the empty-response branch.",
+      "expectedRust": {
+        "status": 303,
+        "headers": {
+          "location": [
+            "/edit#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "plain-empty",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "status": 200,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 200,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "plain-fragment",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "status": 302,
+      "body": "",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "plain-not-found",
+      "operation": "after",
+      "method": "PUT",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "status": 404,
+      "body": "missing",
+      "responseHeaders": {
+        "location": [
+          "/users#top"
+        ],
+        "x-business": [
+          "keep"
+        ]
+      },
+      "expectedRust": {
+        "status": 404,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "x-business": [
+            "keep"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": "missing"
+      }
+    },
+    {
+      "name": "location-inertia",
+      "operation": "location",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "target": "https://external.test/path#top",
+      "expectedRust": {
+        "status": 409,
+        "headers": {
+          "x-inertia-location": [
+            "https://external.test/path#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "location-plain",
+      "operation": "location",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "target": "/users#top",
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "redirect-inertia",
+      "operation": "redirect",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {
+        "x-inertia": "true"
+      },
+      "target": "https://external.test/path#top",
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "https://external.test/path#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    },
+    {
+      "name": "redirect-plain",
+      "operation": "redirect",
+      "method": "GET",
+      "url": "https://app.test/users?page=2",
+      "headers": {},
+      "target": "/users#top",
+      "expectedRust": {
+        "status": 302,
+        "headers": {
+          "location": [
+            "/users#top"
+          ],
+          "vary": [
+            "X-Inertia"
+          ]
+        },
+        "body": ""
+      }
+    }
+  ]
+}

@@ -51,6 +51,7 @@ try {
   await run('java-runtime', 'java', ['-version'], root)
   await run('npm-runtime', 'npm', ['--version'])
   await run('maven', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', 'clean', 'spotless:check', 'verify'], root)
+  await run('library-artifacts', 'python3', [resolve(root, 'scripts/verify-library-artifacts.py'), resolve(output, 'library-artifacts.json')], root)
   await run('npm-ci', 'npm', ['ci'])
   await run('typecheck', 'npm', ['run', 'typecheck'])
   await run('build', 'npm', ['run', 'build'])

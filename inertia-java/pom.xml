@@ -5,9 +5,20 @@
   <artifactId>inertia-java</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>Inertia Java</name>
+  <description>Framework-independent Inertia server adapter with Spring MVC, Vite and HTTP SSR integration.</description>
+  <url>https://github.com/royalwang/inertia-omega/tree/main/inertia-java</url>
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+    <connection>scm:git:https://github.com/royalwang/inertia-omega.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/royalwang/inertia-omega.git</developerConnection>
+    <url>https://github.com/royalwang/inertia-omega</url>
+    <tag>HEAD</tag>
+  </scm>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <inertia.documentation.skip>false</inertia.documentation.skip>
+    <inertia.javadoc.skip>false</inertia.javadoc.skip>
     <spring-boot.version>3.5.7</spring-boot.version>
   </properties>
   <modules>
@@ -40,6 +51,20 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-source-plugin</artifactId><version>3.3.1</version>
+        <configuration><skipSource>${inertia.documentation.skip}</skipSource></configuration>
+        <executions><execution><id>library-sources</id><phase>package</phase><goals><goal>jar-no-fork</goal></goals></execution></executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId><version>3.7.0</version>
+        <configuration>
+          <skip>${inertia.javadoc.skip}</skip><failOnError>true</failOnError>
+          <doclint>all,-missing</doclint><notimestamp>true</notimestamp>
+          <detectJavaApiLink>false</detectJavaApiLink><detectLinks>false</detectLinks>
+        </configuration>
+        <executions><execution><id>library-javadoc</id><phase>package</phase><goals><goal>jar</goal></goals></execution></executions>
+      </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId><artifactId>spotless-maven-plugin</artifactId><version>2.43.0</version>
         <configuration><java><googleJavaFormat><version>1.24.0</version></googleJavaFormat></java></configuration>

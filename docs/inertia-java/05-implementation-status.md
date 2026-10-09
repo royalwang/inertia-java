@@ -18,9 +18,11 @@
 
 | 验证 | 本轮结果 | 覆盖边界 |
 |---|---|---|
-| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 37、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4、CSRF recovery 3、config presentation 3、MVC config presentation 3，共 199 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
+| Maven reactor `verify` | 通过；core 12、CSP core 4、session 6、session failure 6、advanced props 4、error delivery 4、Rust parity 37、SSR 19、Vite 12、自动装配 6、MVC 5、MVC timeout 1、MVC error pages 4、MVC session failure 5、MVC isolation 1、Validation bridges 2、HttpSessionStore 5、启动诊断 9、resolver 4、request lifecycle 2、CSP filter 1，history override 3、cancellation 10、outer HTTP cancellation 1、core observations 4、metrics wiring 6、MVC observations 4、HTTP observations 5、definition diagnostics 4、props overload/fail-fast 4、CSRF recovery 3、config presentation 3、MVC config presentation 3、Rust HTTP policy 45、once TTL 11、required SSR core 5、MVC required SSR 2、MVC advice lifecycle 4，共 266 项 | Java 合同、会话失败恢复、适配器 wiring；未覆盖所有设计矩阵 |
 | Rust `cargo test --all-features` | 通过，69 项（包含 doctest） | 现有库回归，新增 exporter 不修改库逻辑 |
 | Rust → Java Page parity | 37组 fixture 完整 JSON 比较通过 | 原8组及merge/once/deferred rescue/scroll/history/bigint/shared组合，详见兼容矩阵 |
+| Rust → Java HTTP policy | 45项通过：41项直接对照，4项明确Java策略差异 | status、全部多值headers与body；纯policy，非真实代理/网络行为 |
+| once/TTL | Java 11项、Rust实时9场景、Chrome五配置到期边界通过 | 秒精度与callback trace、fresh/partial/loaded、负数/overflow恢复；非所有极端/嵌套TTL组合 |
 | npm typecheck | 通过 | 当前示例 TypeScript |
 | npm client + SSR build | 通过 | 生产双 bundle |
 | 实际 Node `/render` | 返回 head/body、一个 Page script 和一个 app root；含 server-rendered 标记 | 默认/custom root、Page 裸请求体、bigint 精确呈现 |
@@ -39,14 +41,14 @@
 
 | 工作包 | 尚需完成 |
 |---|---|
-| J0 | 已有37组Page对照及明确客户端/运行时矩阵；时间相关TTL、HTTP policy/headers与更多跨语言失败边界仍待验收 |
+| J0 | 已有37组Page与45项HTTP policy合同及明确客户端/运行时矩阵；已验证秒精度TTL实时/固定Clock语义及官方客户端到期边界；HTTP非法输入/失败组合与更多跨语言边界仍待验收 |
 | J1 | 完整配置与错误策略的剩余边界审查；已补齐Page URL resolver/shared-key元数据开关及错误页集成，已补齐定义来源/父子路径冲突诊断，明确同名覆盖与errors替换策略、提供有界观察和开发者报告 |
-| J2 | 已落地专用响应、启动诊断和一次安全错误页；发布前仍需覆盖更多应用 advice / 自动装配替换组合 |
+| J2 | 已落地专用响应、启动诊断、一次安全错误页与typed应用Page advice隔离Context；仍需更多HttpOutcome advice、注解/自动装配替换组合 |
 | J3 | namespace、fail-closed 失效/写失败及示例cookie-CSRF缺失/失配后的显式重提恢复已验收；示例身份策略及登录/注销/会话失效与CSRF联动仍待处理 |
 | J4 | 更广的并发/业务负载边界；已完成本地HTTP初始性能基线（数据库查询0），真实业务/部署容量仍待资格验证；已验收跨请求全局queue拒绝/取消槽位恢复、async持有请求许可、unrescued失败立即终止与合法deferred rescue隔离。基础 MVC→render→props/SSR 取消链、结构化事件、HTTP transport原因细分类、Boot/Micrometer 与 MVC write/version-conflict 观察已落实 |
-| J5 | 基础 SSR/Vite 与本地两版切换已验收；真实部署存储/路由资格并入 J7 |
+| J5 | 基础 SSR/Vite、本地两版切换及逐页requireSsr成功/503失败策略已验收；真实部署存储/路由资格并入 J7 |
 | J6 | 扩展边界组合、更多 history/SSR override 边界组合（基础合同及官方浏览器链路已验收）；现已通过四项高级 props 核心合同，Feed 浏览器验收结果另见本页追加记录 |
-| J7 | 已有独立发布打包/校验运行入口及macOS外置目录演练；剩余正式库发布metadata/source/javadoc/签名、英文 API 示例扩展、许可证/依赖审查、目标Linux/代理/会话/存储演练和部署性能资格；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
+| J7 | 已有独立发布打包/校验运行入口及macOS外置目录演练；已具备name/description/URL/SCM元数据、21个binary/source/Javadoc产物与内容门槛，仓库外Maven消费/HTTP/classifier解析及缺产物拒绝已验收；剩余正式版本/tag/签名、英文 API 说明扩展、许可证/依赖审查、目标Linux/代理/会话/存储演练和部署性能资格；基础远端 CI 已确认通过，后续改动仍须运行对应提交的 CI |
 
 另：WebFlux/集群 Session/Vue/Svelte/Precognition 继续按原设计放在首版之外。Rust 库实现未改动，新增 `examples/java_contract_fixtures.rs` 导出器，Java 工程本次交付作为首个实施增量，尚未关闭的工作包见上表。当前 demo 用户保存仅展示 flash，不访问数据库。
 
@@ -361,3 +363,91 @@ Java parity改为34个具名DynamicTest，逐场景独立executor/config/request
 最终聚合验证15阶段全部exit0，clean Maven/Spotless verify为199项、0 failures/errors/skipped；typecheck/build、浏览器五配置matrix、资产合同、SSR故障、CSP/custom root/history、两版切换及独立发布演练全部通过。证据：/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-UoMTgC/summary.json。运行使用本机Chrome；此证据对应提交前工作树，不代表远端CI或Linux生产部署验收。
 
 本批提交范围包括性能基线、独立发布工具、CSRF显式恢复、扩展Rust对照及展示配置。整体J0–J7仍在进行中，未关闭项见本页表格；默认本地服务的运行状态沿用前次记录，不据本次构建宣称已经重启。
+
+
+## HTTP policy 的真实 Rust 对照
+
+新增 examples/java_http_contract_cases.json 与独立 Rust exporter，直接调用实际 protocol::before/after/redirect/location；after先应用Rust返回的replacement，否则记录mutated parts与原body。生成 compatibility/fixtures/http.json，header名称小写、所有值保留有序数组，包含多条Set-Cookie/Vary。before允许继续控制器时记录null。没有用Java输出生成expectedRust。
+
+Java新增45项具名动态合同，41项完整匹配Rust status/headers/body；4项单独声明Java期望与差异理由，并拒绝无理由或已经收敛的override。覆盖版本、method、各redirect状态、三个prefetch头、fragment、empty200、业务头/多cookie、Vary与普通请求及helper。差异为同源back限制、绝对back规范化为path/query、Referer fragment移除、Vary星号已覆盖全部字段。Rust empty200的back分支早返回，Java策略不被伪装成相同实现。
+
+发现并补齐Java独立ProtocolPolicy.redirect缺少Vary的遗漏：helper直接返回302/Location/Vary；adapter.after仍处理303/fragment，不重复附加既有Vary。未改变Rust库；src/Cargo.toml/Cargo.lock与分析基线diff为空。
+
+node inertia-java/compatibility/verify-fixtures.mjs真实重新导出两类oracle：37 Page与45 HTTP全部一致；Maven Spotless/verify全量244项、0 failures/errors/skipped，Rust cargo test --all-features全量69项含doctest通过。日志 /tmp/inertia-http-java-verify.log、/tmp/inertia-http-rust-tests.log；targeted HTTP/core另有57项通过。新产品改动仅helper的Vary，完整MVC回归已通过；本轮未重跑浏览器/部署聚合，前次15阶段证据不冒充本轮证据。
+
+该批代码与文档未提交。J0还需时间相关TTL与额外非法输入/失败合同；代理信任、真实网络头序列化、Linux/生产发布与其他J0–J7项不被纯policy fixture证明，完整目标继续。默认本地服务未重启，不以本次构建证明其加载了新helper。
+
+
+## once/TTL 的时间语义与官方客户端到期边界
+
+新增9个共享输入 examples/java_once_ttl_cases.json，Rust独立exporter实际执行Prop/into_page，采集每次解析前后毫秒时间、完整Page与callback次数；不把真实时钟输出保存为固定oracle。verify-once-ttl.mjs对秒精度expiresAt执行实测窗口检查，验证缓存key/path、值/metadata是否存在、callback trace；freshness入口追加此实时门槛。成功证据带source HEAD/dirty和输入sha256，输出唯一临时summary。Rust loaded once场景实测仍带metadata但不执行查询；最初描述中的metadata=false与真实行为不符，已依据运行结果修正，未修改Rust库。
+
+Java固定Clock读同9个输入，明确分别截断Clock/TTL小数秒：1700000000999ms下，0/999ms TTL为1700000000000，1500ms为1700000001000，60s为1700000060000。无TTL为null；loaded跳过查询/值但保留metadata；fresh与显式partial重新查询，excluded partial零查询且无once metadata。另2项Java合同验证负数拒绝、极大TTL算术溢出安全失败与reserved flash恢复/root零调用，不宣称Rust unsigned Duration/溢出边界相同。共11项全部通过。
+
+新增真实官方客户端浏览器流程：初始Feed→固定Date为原expiresAt-1ms→About请求携带once排除key且JSON省略catalog→Feed仍复用原值→固定Date为原expiresAt→About请求不携带key并获得更大load计数→Feed显示新值。暖请求新metadata不会延长客户端原缓存deadline。初次使用setSystemTime仍会走时，点击前已跨过1ms边界而失败；改为setFixedTime仅固定Date，常规timer/network继续运行。没有放宽边界或用手工fetch替代导航。五配置ssr/all-errors/failures/namespace/csr-failures均通过新场景，无pageerror。
+
+实时Rust9场景门槛与既有37 Page/45 HTTP freshness全部通过；Rust全量69项含doctest通过。TTL实时证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-ttl-Zlmgaf/summary.json。Java全量255项零failure/error/skipped。clock边界为受控客户端验收，不是60s等待或分布式时钟认证；当前正epoch时间与这9种组合不覆盖所有嵌套/deferred/极端TTL。once只是client复用指令，服务端不能从loaded-key header验证缓存时间，不能替代路由授权或业务失效策略。
+
+最终聚合验证15阶段全部exit0，clean Maven/Spotless255项通过；typecheck/build、资产合同/完整性、五配置浏览器、SSR故障/CSP/custom root/history、A→B切换与独立发布演练均通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-wzRKP6/summary.json，Chrome154.0.8037.99。失败的旧run5dHw2G保留为失败证据，不被覆盖；最终通过为修正Date控制后的独立run。
+
+本轮TTL与前轮HTTP增量尚未提交，完整J0–J7继续；默认服务未重启，远端CI/目标Linux资格仍待对应版本验收。
+
+
+## 可复用库的 source/Javadoc 产物
+
+parent POM新增name/description、实际仓库URL和SCM连接，保持0.1.0-SNAPSHOT/HEAD；禁止SCM子模块追加路径。package阶段用固定source3.3.1与javadoc3.7.0为可复用模块附加sources/javadoc，示例可执行包明确跳过。六个API模块生成公开类文档；dependency-only starter最初Javadoc因没有public/protected类而失败，现用真实英文模块HTML说明构建classifier，不添加无用途的公开类，也不全局忽略Javadoc错误。source jar保留其package说明。doclint仅排除missing-comment类，不把页面存在等同完整注释质量。
+
+verify-library-artifacts.py检查实际7×3=21个jar的CRC、重复/安全路径、source逐文件字节与resources、公开API class/HTML清单、非空index及Node/示例隔离。标准库Python3为该门槛所需运行时，aggregate增加library-artifacts阶段；report记录大小/hash并明确publicationQualified=false及未关闭的法律/版本/签名/namespace门槛。独立发布packager要求并携带全部classifier；release验收先冻结三类jar，随后篡改/幂等检查仍针对同一输入。
+
+新增隔离artifact-contract命令，在临时副本完成6项实际验证：完整产物通过、源码字节变化拒绝、API文档缺失拒绝、binary公开class缺失拒绝、classifier文件缺失拒绝、恢复后通过。源码/当前target未被负例修改。当前21产物门槛与6项负例检查均通过；Java全量仍255项，0 failures/errors/skipped。
+
+仓库Rust manifest虽声明MIT，但本轮没有虚构Java版权主体、发布授权或许可证文本；法律归属/attribution、release version/tag、签名及仓库namespace/credentials仍需发布资格确认。没有向外部制品仓库部署；hash完整性不是来源认证。
+
+最终aggregate16阶段全部exit0（新增library-artifacts）；clean Maven/Spotless255项，npm typecheck/build、五配置真实浏览器、构建/SSR故障/CSP/root/history/两版切换、独立发布演练全通过。发布payload实际47文件，其中source/Javadoc各7个；runtime前置hash检查和发布幂等/篡改拒绝仍通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-HYr7VN/summary.json，artifact细节同目录library-artifacts.json，发布同目录deployment/inertia-java-deploy-qfcAGQ/summary.json。
+
+额外检查实际core effective POM，SCM connection/url保持实际仓库地址，未追加子模块路径；日志 /tmp/inertia-java-effective-pom.log，输出 /tmp/inertia-java-effective-core-pom.xml。本轮及前两轮HTTP/TTL改动尚未提交，完整目标继续；默认服务没有因此重启，未宣称新版本已通过远端CI或Linux/生产资格。
+
+
+## 逐页面必须 SSR 的失败策略
+
+实现 InertiaResponse.requireSsr：document请求必须获得SsrGateway.Rendered；missing/disabled/excluded/fallback/null结果或stage、同步/异步gateway异常均使当前Page失败，不生成其CSR body，也不调用其RootView。默认仍允许CSR，JSON访问仍不发SSR。requireSsr/withoutSsr按最后调用选择，避免同时“required/disabled”的矛盾状态。prop/授权错误仍保留原有失败策略。
+
+新增SsrRequiredException，固定安全message、固定枚举reason；未知fallback值归UNKNOWN，原始fallback字符串不进入异常message。SSR span保留原fallback/failure，RENDER失败保留分类；null结果上报invalid-response。gateway预算、并发控制与dispatch次数不变。wrapped cancellation不改为service-unavailable，取消仍向原gateway future传播并恢复session reservation。
+
+MVC将typed失败识别为503/private,no-store。一次safe error-page渲染显式withoutSsr，不再对同一故障renderer重试；原有错误页sessionless context保留，因此业务Page abort恢复的flash/errors不被错误页消耗。应用advice仍先于库resolver；错误页自身失败仍按原有最终安全500。此策略为Java增强，不冒充Rust完全相同实现。readiness/routing由应用决定，Java liveness不绑定renderer。
+
+新增5个core合同覆盖成功/JSON/CSR/调用覆盖、bounded fallback与未知原因、missing/null/同步异步故障、scope取消及wrapped cancellation；2个真实MockMvc合同覆盖503、安全错误页零第二SSR、默认CSR与JSON行为。后续强化同2个MVC/5个core用例：真实HttpSession的flash在503后仍可交付一次，第二次JSON不重放；null completion stage与null Result均失败。targeted7项通过，日志 /tmp/inertia-required-ssr-boundaries.log。产品代码不因强化测试再次变化。
+
+opt-in demo-failures新增/failures/required-ssr，返回About.requireSsr。真实Chrome浏览器在renderer正常时验证200/SSR/标题，在断开时验证503/no SSR marker/Error503实际mount，再经官方Link回Users/deferred恢复。没有手工fetch替代访问。完整Java/Spotless已为262项零failure/error/skipped；生成的source/Javadoc包含新增API。
+
+最终aggregate16阶段全部exit0，包含library-artifacts、全量Maven、五配置browser、构建完整性/故障/CSP/root/history、A→B与独立发布。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-xts7bU/summary.json，Chrome154.0.8037.99。强化测试发生在aggregate的Maven之后，仅修改断言/边界输入；同7项重新执行通过，当前产品与构建产物未改变，未重复整套browser。默认服务未重启。本轮required-SSR与前轮HTTP/TTL/库产物改动仍未提交；完整J0–J7继续，不宣称远端CI或目标生产部署完成。
+
+
+## 仓库外独立 Maven 消费验证
+
+新增 scripts/verify-maven-consumer.py，先运行21产物内容门槛，再从真实packageRelease产物的maven子树复制临时fixture repository。只在复制件增加untimestamped SNAPSHOT metadata和sha1/sha256，严格checksumPolicy；没有修改immutable release、global Maven缓存或远端仓库。外置consumer拥有独立POM、空settings和private cache，未使用reactor parent/源码/classpath。starter+testing实际解析全部七个库jar，逐个与发布字节比较，运行classpath拒绝当前checkout路径。
+
+外置Java程序实际启动随机loopback Tomcat，通过HTML/JSON、302/Vary、缺SSR的required页面503/no-store，以及503之后flash保留/一次交付/无重放。自动装配从jar内imports/resource生效；程序结束实际graceful shutdown，没有访问现有默认端口。source/Javadoc使用Maven dependency classifier resolve下载，并逐jar比较发布字节，不用预填缓存假装依赖可解析。
+
+第一轮cache全空，从公共仓库重新下载third-party/plugin依赖；5个阶段全部exit0，独立消费编译/HTTP及14个classifier成功。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-8fsfokmp/summary.json。该轮运行中补充的负例不被倒算成该轮通过。
+
+最终完整脚本另跑独立fixture，允许复制前轮third-party/plugin缓存以缩短重复下载，明确排除所有io/inertia坐标、记录seed；仍从新fixture repository解析七个库。7阶段如期完成，missing-core-refused为预期exit1，其余exit0：删除fixture/core jar与private/core缓存导致Maven拒绝，而恢复并清理negative缓存后compile成功。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-0fn9vw3o/summary.json，EXTERNAL_CONSUMER_VERIFIED在consumer-http.log。完整脚本源码/POM/日志/cache保留在唯一临时目录，失败summary明确success=false。
+
+这是独立本地artifact consumption验收，非公共repo规范、namespace/签名/许可证认证；这里Java smoke无Node gateway、使用CSR，真实React/Node证据仍由此前browser/deployment覆盖。该新gate为独立发布命令，不加入每轮16阶段aggregate；本轮仅脚本与文档变化，未重跑产品Java/browser全量，先前262项/16阶段保持其当时scope。本轮与前轮增量尚未提交，完整目标继续。
+
+
+## 应用 typed exception Page 的 Context 生命周期
+
+新增4项真实MockMvc合同审查应用advice/库内error resolver的优先级。初次执行实测发现typed controller error advice直接使用普通Page Context，会消费本应留给成功业务页的flash；原代码对props失败也沿用已经FAILED的Context。修复 InertiaMvcConfigurer：ExceptionHandler方法直接返回InertiaResponse且已有Inertia request snapshot时，在argument或return处理前abort原context、只创建一次新的sessionless advice context。带InertiaContext参数和无此参数的local handler均覆盖。
+
+新error context沿用immutable request snapshot、nonce/URL，允许advice设置自己的safe shares/props；不复制已失败请求的pending/shared副作用，也不pull会话delivery。原储存flash/errors保留在会话；ordinary成功页面下一次领取。正常映射、ResponseEntity与REST advice不触发该typed Page路径。库error resolver依旧在Spring应用异常resolver之后；advice的Page再次失败时落入一次安全库errorPage，无递归。
+
+合同通过：直接controller/异步props错误优先由应用Page处理、应用status418和shares保留且库factory零调用；两者flash保护；local typed Page（无context参数）的HTML/JSON及普通ResponseEntity advice；advice Page props再次失败时一次safe Error500、secret不入响应；普通REST advice422不添加Inertia头/Vary、不调用Page factory。typed advice需普通ControllerAdvice且synchronous/unwrapped；未把HttpOutcome advice的会话写入/重定向与更多注解组合宣称完成。
+
+Java全量Spotless/verify266项零failures/errors/skipped，初始失败 /tmp/inertia-mvc-advice-initial.log、修复targeted /tmp/inertia-mvc-advice-fixed.log、HTML扩展 /tmp/inertia-mvc-advice-html.log、全量 /tmp/inertia-mvc-advice-java.log。新public-API源码内容未扩展，生成source/Javadoc含最新MVC实现。
+
+最终aggregate16阶段全部exit0、clean Java266项通过；source/Javadoc内容、五配置browser、build/SSR故障、CSP/root/history、A→B切换与独立发布通过。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-java-verify-FXnoVK/summary.json。
+
+随后独立Maven consumer模板加入真实controller-local typed advice（InertiaContext.share、418 Page），先seed flash，再advice不领flash，再required503、正常JSON一次交付/无重放。新fixture七个阶段按预期通过，缺core为预期exit1；runtime从新jar/private repository解析，third-party seed明确排除io/inertia。证据 /var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-8hx4e2al/summary.json，HTTP标记包含ADVICE。这是同新jar的外置应用验证，不冒充已在前轮consumer执行该场景。
+
+本轮MVC advice与前轮增量尚未提交；整体目标继续，更多HttpOutcome advice/注解/自动装配组合、身份策略和发布/生产资格仍待完成。默认服务未重启，远端CI未因本地通过而宣称当前代码已验证。

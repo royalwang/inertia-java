@@ -8,6 +8,7 @@ public final class InertiaResponse {
   private final Props props;
   private int status = 200;
   private boolean ssr = true;
+  private boolean ssrRequired;
   private final Map<String, List<String>> headers = new LinkedHashMap<>();
   private final Map<String, Object> viewData = new LinkedHashMap<>();
   private boolean claimed;
@@ -73,6 +74,11 @@ public final class InertiaResponse {
     return ssr;
   }
 
+  /** Whether HTML rendering must succeed through the SSR gateway. JSON visits do not use SSR. */
+  public boolean ssrRequired() {
+    return ssrRequired;
+  }
+
   public Map<String, List<String>> headers() {
     return Map.copyOf(headers);
   }
@@ -88,6 +94,14 @@ public final class InertiaResponse {
 
   public InertiaResponse withoutSsr() {
     ssr = false;
+    ssrRequired = false;
+    return this;
+  }
+
+  /** Require server-rendered HTML; overrides an earlier withoutSsr call. */
+  public InertiaResponse requireSsr() {
+    ssr = true;
+    ssrRequired = true;
     return this;
   }
 

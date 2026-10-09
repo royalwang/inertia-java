@@ -39,6 +39,7 @@ public final class Observations {
     for (var current = error;
         current != null && visited.add(current);
         current = current.getCause()) {
+      if (current instanceof SsrRequiredException required) return required.reason();
       if (current instanceof CancellationException) return Reason.CANCELLED;
       if (current instanceof PropDefinitionException) return Reason.PROP_DEFINITION;
       if (current instanceof TimeoutException) return Reason.TIMEOUT;

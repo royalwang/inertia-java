@@ -17,6 +17,7 @@
   <build>
     <testResources>
       <testResource><directory>${project.basedir}/../compatibility/fixtures</directory><targetPath>compatibility</targetPath></testResource>
+      <testResource><directory>${project.basedir}/../../examples</directory><targetPath>compatibility</targetPath><includes><include>java_once_ttl_cases.json</include></includes></testResource>
     </testResources>
   </build>
 </project>

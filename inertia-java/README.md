@@ -349,7 +349,7 @@ Resources are sampled with `ps` about every 200ms: max sampled RSS and the proce
 
 After building Maven and both frontend bundles, run `node deploy/release.mjs /absolute/release-store` from this directory. The resulting payload includes the executable example, seven library jars/POMs, client/SSR/receipt, production lock files, current versioned assets, a manifest and a release-local runtime. Install only production npm dependencies inside its `frontend/`, then use `node runtime.mjs check|ssr|java|pair` from the release directory. Payload verification precedes either service launch. Repeated publication does not overwrite existing content; corruption fails closed.
 
-See [deployment runbook](deploy/README.md) for same-host independent supervision, readiness, graceful stop, retained shared assets, release switching and rollback. `node deploy/verify-release.mjs` rehearses the actual payload outside the checkout using production-only dependencies, real SSR/CSR browser flows and tamper rejection. It is included as a deployment stage in the aggregate verifier. Linux systemd units are supplied as target-host templates; macOS rehearsal does not qualify them or a production reverse proxy/session/storage environment. Public Maven publication, signatures, source/javadoc artifacts and dependency/license review remain separate release gates.
+See [deployment runbook](deploy/README.md) for same-host independent supervision, readiness, graceful stop, retained shared assets, release switching and rollback. `node deploy/verify-release.mjs` rehearses the actual payload outside the checkout using production-only dependencies, real SSR/CSR browser flows and tamper rejection. It is included as a deployment stage in the aggregate verifier. Linux systemd units are supplied as target-host templates; macOS rehearsal does not qualify them or a production reverse proxy/session/storage environment. Binary/source/Javadoc artifacts are built and content-checked; public Maven publication, signatures and dependency/license review remain separate release gates.
 
 
 ## Example CSRF recovery
@@ -378,3 +378,59 @@ InertiaConfig config() {
 ```
 
 The snippet is application configuration, not a Spring property binding. The example function drops query parameters; use an application-specific rule if pagination/filter state must be retained. Core and real MVC contracts cover shared values/errors, Boot's all-errors override, safe error pages, callback failure restoration and unchanged REST/version-conflict behavior. Three additional Rust exports compare canonical URL/shared-key suppression Pages exactly.
+
+
+### HTTP policy compatibility
+
+`ProtocolPolicy.redirect(url)` prepares a 302 with Location and `Vary: X-Inertia`, including standalone helper use. `ProtocolPolicy.after` remains responsible for mutation 303 conversion and fragment redirects; existing Vary entries and business/multiple-cookie headers survive unless the protocol replaces the entire response. Apply these rules only within enabled Inertia routes. Back URLs use Java's same-origin policy.
+
+The [compatibility matrix](compatibility/README.md#http-policy-contracts) describes 45 real Rust policy exports: 41 direct comparisons and four named Java policy differences. Run `node compatibility/verify-fixtures.mjs` from this directory to check both Page and HTTP exports (requires the Rust toolchain); ordinary Maven consumers only need stored JSON. These are pure HTTP policy contracts, separate from MVC dispatch and actual browser/network qualification.
+
+
+### Once expiry and invalidation
+
+`Prop.onceAs(key).until(duration)` sends a client reuse deadline: `(epochSecond + ttlSeconds) * 1000`, with wall-clock and Duration fractional seconds truncated independently. Zero or subsecond TTL may be expired immediately; no TTL sends null. The injected `PropsResolver` Clock supports deterministic application tests. Negative durations fail construction; excessive TTL arithmetic fails the render transaction rather than wrapping, restoring reserved delivery state.
+
+Full visits whose official client already holds a key skip its supplier and omit its value, but retain once metadata. The official client preserves the original cached expiry across warm visits and stops sending the key at that expiry. Explicit selected partial reload and `.fresh()` bypass reuse. Run the [live TTL gate](compatibility/README.md#time-dependent-oncettl-semantics) with `node compatibility/verify-once-ttl.mjs`; `verify-fixtures.mjs` includes it. The example browser matrix exercises the exact expiry boundary in SSR and CSR modes.
+
+Once remains a client hint; an arbitrary requester can send a loaded-key header after expiry. It must never skip route authorization or act as a server cache. Applications own business invalidation and clock synchronization.
+
+
+### Library documentation artifacts
+
+Normal `./mvnw verify` attaches `-sources.jar` and `-javadoc.jar` to all seven reusable library modules. Six modules use generated public API Javadoc; the dependency-only starter packages an English module guide under that classifier because it has no public Java API. The executable example intentionally skips these classifiers. Source archives include owned main Java/resources and exclude tests and Node/browser bundles. Project name, description, source URL and SCM connections are declared in the parent POM; child SCM connections retain the repository URL. The current version/tag are explicitly snapshot/HEAD.
+
+Run `python3 scripts/verify-library-artifacts.py /absolute/path/report.json` after Maven to compare actual source bytes, public class/API-page inventory and all 21 archive structures. This gate is included in the aggregate verifier and requires Python3's standard library. Run `python3 scripts/verify-library-artifacts-test.py` for six isolated positive/tamper/missing-artifact checks; it copies inputs and preserves the checkout outputs. The independent release packager requires and includes all classifiers.
+
+Javadoc fails on syntax/link/doclint errors while missing-comment warnings are excluded: artifact generation proves API-page availability, not comprehensive prose documentation. The starter's HTML is maintained module documentation, not generated API coverage. Plugins are pinned: [Maven Source 3.3.1 lifecycle goal](https://maven.apache.org/plugins-archives/maven-source-plugin-3.3.1/usage.html), [Maven Javadoc 3.7.0 jar goal](https://maven.apache.org/plugins-archives/maven-javadoc-plugin-3.7.0/jar-mojo.html).
+
+This is artifact staging, not public publication. The repository's Rust manifest declares MIT, but no license text/attribution review for the Java distribution has been completed. No developer identity, copyright holder or licensing approval is fabricated in the POM. Release-version/tag policy, legal attribution, namespace ownership, signing and repository credentials remain publication gates; SHA256 payload integrity is not publisher authentication.
+
+
+### Required SSR pages
+
+Use `new InertiaResponse("About", props).requireSsr()` when the initial HTML document must contain a successful server render. The default still allows CSR fallback. A required HTML response fails with `SsrRequiredException` when the gateway is missing/disabled/excluded or returns fallback/invalid output; synchronous and asynchronous gateway exceptions also fail rather than mounting the intended component through CSR. The typed exception has a fixed safe message and a bounded observation reason. Required rendering uses the same gateway budgets and does not retry or start a renderer. Props/authorization failures keep their existing error semantics.
+
+Servlet MVC maps this typed failure to 503 with private/no-store. Its one-time error-page attempt uses `withoutSsr()` so it can display the safe Error page without a second gateway call; a missing factory produces safe plaintext. Failure of the error page itself retains the existing final 500 fallback. The business page's session reservation is restored, and the error page uses a sessionless context, so reserved flash/errors remain for a later successful ordinary page. Application exception advice still precedes this resolver.
+
+This policy applies to document rendering only: official-client JSON visits continue to receive Page JSON and do not dispatch SSR. `.requireSsr()` overrides an earlier `.withoutSsr()`; `.withoutSsr()` clears a prior requirement. Cancellation preserves cancellation classification and propagates to the owned gateway future, not a synthetic service-unavailable error. Unknown fallback strings are classified as UNKNOWN and are not included in the exception message.
+
+The opt-in `--inertia.demo-failures=true` route `/failures/required-ssr` demonstrates successful About SSR or a safe 503 Error page when Node is disconnected. The browser matrix checks both states and recovery navigation. This is a Java adapter policy extension, not a claim of identical Rust behavior (Rust continues to allow CSR fallback). Applications own whether required pages should affect readiness/routing; Java liveness remains independent of renderer health.
+
+
+### Independent Maven consumer rehearsal
+
+After the normal Maven/frontend builds, run `python3 scripts/verify-maven-consumer.py`. It packages the current immutable release, copies its Maven subtree into a temporary fixture repository, adds isolated untimestamped SNAPSHOT metadata/checksums, and creates a new consumer outside the checkout. The consumer uses an independent POM (no reactor parent), empty user settings and a private empty Maven cache; initial public dependency/plugin downloads can take longer than warm builds. It requires Python3, Node, Java21 and Maven-wrapper network access. The command does not install into your normal Maven cache or publish remotely. For repeated rehearsals, `INERTIA_CONSUMER_DEPENDENCY_CACHE=/absolute/previous/cache` optionally copies third-party/plugin cache entries; all `io.inertia` coordinates are explicitly excluded and must resolve again from the new fixture repository. The summary records that seed when used.
+
+The consumer resolves starter/testing and all seven runtime library jars, compares each resolved jar with the packaged bytes and rejects checkout paths in its runtime classpath. It starts a real loopback Servlet MVC app and checks HTML/JSON, protocol redirects, required-SSR 503 and one-shot session flash. Source/Javadoc classifiers are resolved through Maven rather than copied into the cache. The command also removes core from its isolated repository/cache to require build refusal, then restores it and rebuilds. Unique output retains the consumer POM/source, logs, private caches and final success/failure summary. Each owned process has a bounded timeout.
+
+The generated fixture metadata/checksums qualify local artifact consumption, not a public repository release format, cryptographic signature or namespace ownership. This example deliberately uses CSR with no Node gateway; actual React/Node SSR is exercised by the separate deployment/browser gates. The consumer rehearsal is a separate release command, so routine aggregate verification retains its current scope.
+
+
+### Application exception pages
+
+Application exception handlers retain precedence over the library error-page resolver. A synchronous, unwrapped `InertiaResponse` from an ordinary `@ControllerAdvice` or a controller-local `@ExceptionHandler` uses the page adapter. For an existing typed Inertia request, the adapter aborts the original context and creates one fresh sessionless error context before resolving Inertia arguments or rendering the advice's return value. This also handles a props failure after the original context has already closed. Advice can set its own safe props via the new context; failed request shares/pending effects and reserved session deliveries are not copied into it. Stored flash/errors remain available to the next successful business page.
+
+The application chooses the error component, status, cache policy and SSR policy. Use registered components and normal `@ControllerAdvice` without `@ResponseBody` for typed Page returns; ordinary `ResponseEntity`/REST advice keeps Spring's native behavior and does not gain the Inertia wire protocol. Scope advice appropriately to page controllers. This error-context replacement applies to typed Page advice, not a new session-backed redirect/validation API for advice returning `HttpOutcome`; those remaining combinations require separate acceptance.
+
+If the advice's Page fails, Spring falls through to the existing one-time safe library error page, with no recursive advice loop. Contracts exercise direct controller and asynchronous prop exceptions, shared advice context, controller-local advice without context arguments, HTML/JSON, plain ResponseEntity handling, original flash recovery, a failed advice Page and unrelated REST advice.

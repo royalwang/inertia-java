@@ -6,6 +6,7 @@ From the repository root, regenerate and review the diff:
 
 ```sh
 cargo run --locked --quiet --no-default-features --example java_contract_fixtures > inertia-java/compatibility/fixtures/pages.json
+cargo run --locked --quiet --no-default-features --example java_http_contract_fixtures > inertia-java/compatibility/fixtures/http.json
 node inertia-java/compatibility/verify-fixtures.mjs
 ```
 
@@ -28,6 +29,36 @@ Java `RustParityTest` independently builds props/config/request/response from th
 
 The scroll exporter uses a small serializable DTO implementing the Rust `ProvidesScrollMetadata` interface. It is equivalent to Java `ScrollPage`'s wrapper/data payload and metadata; it does not claim Java provides Rust's full length-aware `Paginator` JSON fields or collection helper API. Deferred/always combinations use the public Java Prop record's loading flags while preserving sources, since builder ergonomics differ.
 
+## HTTP policy contracts
+
+`fixtures/http.json` adds 45 named contracts exported by `examples/java_http_contract_fixtures.rs` from the actual Rust `protocol::before/after/redirect/location` functions. Input descriptors are in `examples/java_http_contract_cases.json`. The exporter applies any replacement returned by Rust `after`; otherwise it records the mutated response parts and original body. Header names are lowercase, values remain ordered arrays (including separate Set-Cookie and Vary lines). Expected status, every header value and body are compared exactly, and a null `before` result means the handler is allowed to proceed. No HTTP server or proxy is simulated by this pure policy export.
+
+`RustHttpParityTest` performs 41 direct Rust comparisons and four explicit Java-policy comparisons. It rejects a missing explanation or an override that has converged with Rust. The freshness gate re-exports both Page and HTTP files without overwriting either oracle; `expectedRust` always comes from Rust, while `javaExpected` is visibly declared in the input only for intentional differences.
+
+| Area | Covered contract |
+|---|---|
+| Before | Stale/matching/missing/empty versions, GET versus POST/HEAD, ordinary requests, exact absolute refresh URL |
+| Mutation redirects | GET/POST/PUT/PATCH/DELETE/HEAD, 302→303, business headers and multiple Set-Cookie values preserved |
+| Fragments | Statuses 201/301/302/303/307/308 versus 200/304/404; replacement drops original body/business headers |
+| Prefetch | Case-insensitive Purpose/Sec-Purpose/X-Moz; unrelated purpose still converts a fragment |
+| Vary | Absent, other fields, existing mixed-case X-Inertia, multiple lines, wildcard policy |
+| Empty responses | GET/PUT/POST, no Referer, relative/absolute/external/fragment Referer; business headers dropped on replacement |
+| Ordinary requests/helpers | Empty/redirect/404 pass-through except Vary; direct redirect and location helpers |
+
+Four differences are intentional: Java rejects cross-origin back targets; canonicalizes accepted absolute back URLs to path/query; removes the Referer fragment before redirect; and treats `Vary: *` as sufficient rather than appending X-Inertia. Rust forwards its Referer in the early empty-response branch. These contracts document that difference without weakening Java's redirect policy. Java's direct `ProtocolPolicy.redirect` now adds Vary itself, matching Rust even before adapter post-processing; subsequent `after` calls keep the existing Vary field without duplication.
+
+These cases do not prove invalid header/URL handling across the two type systems, forwarded-proxy trust, controller-before-dispatch ordering, actual network header serialization, cache deployment behavior or session transaction semantics. Existing Java adapter/browser tests cover separate boundaries. Time-dependent once TTL is validated separately by the live semantic gate below; further failure combinations remain outside the deterministic fixture set.
+
+## Time-dependent once/TTL semantics
+
+`examples/java_once_ttl_cases.json` supplies nine shared semantic inputs: zero, subsecond, fractional and minute TTL; unlimited reuse; loaded-key suppression; fresh; explicit partial reload; and partial exclusion. Unlike deterministic Page/HTTP exports, Rust reads the real system clock. `java_once_ttl_fixtures` records before/after wall-clock milliseconds, actual Page and callback count for every case. `verify-once-ttl.mjs` validates integral-second expiry inside that measured interval, exact cache key/prop, metadata presence, value delivery and callback count. The main freshness gate runs it after the deterministic exports. No volatile timestamp is checked in or mislabeled as a fixed expected Page. A clock moving backwards fails the gate. Each successful live run writes a unique temporary `summary.json` containing the actual timestamps/Page/trace, input hash and source HEAD/dirty state; its path is printed.
+
+Java `OnceTtlContractTest` consumes the same nine inputs with an injected fixed clock at 1700000000999 ms and explicit expiry expectations. Both clock fractions and TTL fractions are independently truncated to seconds; zero/subsecond TTL can already be expired when delivered. Loaded full visits omit the value and skip its supplier but still return once metadata. Selected partial reloads and fresh re-query. Unlimited TTL has null expiry. Two additional Java-only contracts reject negative TTL and ensure arithmetic overflow fails delivery, invokes no root view and restores reserved session flash. Rust's unsigned Duration/type and overflow domain are not declared identical to Java's.
+
+The real official-client browser flow fixes Date while leaving normal timers/network active: at the original expiry minus 1 ms it sends the once exclusion key and retains the value; at the original expiry it omits the key and receives a newly queried value. Warm server metadata does not extend the official client's existing cache deadline. The existing explicit-refresh browser flow proves selected partial reload bypasses once reuse separately. This is a clock-controlled client-boundary check, not a wall-clock wait or proof of distributed clock synchronization.
+
+Expiry is a client reuse instruction, not a server cache, authorization or consistency boundary. The server receives key names, not cached expiry timestamps; it cannot independently validate an expired client claim. Authorization must run on every visit, and business mutations may need explicit fresh/reload invalidation. Operational browser/server clock skew affects reuse. The timed cases validate current positive epoch times; they do not qualify all clock domains, extreme Rust durations or every nested/deferred TTL combination.
+
 ## Client and runtime qualification
 
 | Component | Current evidence | Not implied |
@@ -42,6 +73,6 @@ Versions are pinned evidence, not recommendations for the newest release. Review
 
 ## Explicit remaining differences and limits
 
-Java's session reservation/abort/merge semantics, bounded executor/deadline/fail-fast cancellation and conflicting dot-path rejection intentionally differ from Rust's current implementation and are documented in the core README/design. Java rescue currently requires deferred loading; Rust exposes rescue more generally. Those policies are not disguised by adjusting expected JSON. Time-dependent once TTL, more failure/combination boundaries, HTTP response policy/headers, real serializer failures and same-session cross-language delivery are not covered by these Page fixtures. Existing targeted Java tests cover several of them separately, without asserting full cross-language parity.
+Java's per-response required-SSR failure policy, session reservation/abort/merge semantics, bounded executor/deadline/fail-fast cancellation and conflicting dot-path rejection intentionally differ from Rust's current implementation and are documented in the core README/design. Java rescue currently requires deferred loading; Rust exposes rescue more generally. Those policies are not disguised by adjusting expected JSON. Additional failure/combination boundaries, additional HTTP failure/invalid-input boundaries, real serializer failures and same-session cross-language delivery are not covered by these Page fixtures. Existing targeted Java tests cover several of them separately, without asserting full cross-language parity.
 
 Java now provides configurable Page URL resolution and shared-key metadata exposure, with three Rust parity cases and six additional core/MVC contracts. Routing, authorization, redirect/version-conflict URLs and shared values retain their existing semantics. Remaining configuration boundaries still require explicit design and acceptance before claiming complete adapter equivalence. Frontend lock files, build receipts and actual browser evidence govern the example runtime; these fixture exports alone do not qualify deployment, identity or distributed sessions.

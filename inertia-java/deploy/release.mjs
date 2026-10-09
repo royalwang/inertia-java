@@ -53,7 +53,8 @@ export function packageRelease(store, root = projectRoot) {
     copy(resolve(root, 'pom.xml'), resolve(staging, `maven/io/inertia/inertia-java/${version}/inertia-java-${version}.pom`))
     for (const module of modules) {
       const target = resolve(staging, `maven/io/inertia/${module}/${version}`)
-      copy(resolve(root, module, `target/${module}-${version}.jar`), resolve(target, `${module}-${version}.jar`))
+      for (const classifier of ["", "-sources", "-javadoc"])
+        copy(resolve(root, module, `target/${module}-${version}${classifier}.jar`), resolve(target, `${module}-${version}${classifier}.jar`))
       copy(resolve(root, module, 'pom.xml'), resolve(target, `${module}-${version}.pom`))
     }
     const canonical = { format: 1, version, buildId: receipt.buildId, files: inventory(staging) }

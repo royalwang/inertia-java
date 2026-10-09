@@ -1,0 +1,89 @@
+[
+  {
+    "name": "zero",
+    "ttlMillis": 0,
+    "headers": {},
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "subsecond",
+    "ttlMillis": 999,
+    "headers": {},
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "fractional",
+    "ttlMillis": 1500,
+    "headers": {},
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "minute",
+    "ttlMillis": 60000,
+    "headers": {},
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "unlimited",
+    "headers": {},
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "loaded",
+    "ttlMillis": 60000,
+    "headers": {
+      "x-inertia": "true",
+      "x-inertia-except-once-props": "ttl-cache"
+    },
+    "calls": 0,
+    "metadata": true,
+    "value": false
+  },
+  {
+    "name": "fresh",
+    "ttlMillis": 60000,
+    "fresh": true,
+    "headers": {
+      "x-inertia": "true",
+      "x-inertia-except-once-props": "ttl-cache"
+    },
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "explicit-partial",
+    "ttlMillis": 60000,
+    "headers": {
+      "x-inertia": "true",
+      "x-inertia-except-once-props": "ttl-cache",
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "catalog"
+    },
+    "calls": 1,
+    "metadata": true,
+    "value": true
+  },
+  {
+    "name": "excluded-partial",
+    "ttlMillis": 60000,
+    "headers": {
+      "x-inertia": "true",
+      "x-inertia-partial-component": "Home",
+      "x-inertia-partial-data": "other"
+    },
+    "calls": 0,
+    "metadata": false,
+    "value": false
+  }
+]
