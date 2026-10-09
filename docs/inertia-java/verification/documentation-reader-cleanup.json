@@ -1,0 +1,82 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-09T14:05:38.956344+00:00",
+  "scope": "Public-reader editorial cleanup plus separate verification of the previously deployed site",
+  "uncommitted": true,
+  "editorial": {
+    "internalBuildDetailsMovedTo": "inertia-java/docs/README.md",
+    "translationRevisionMetadataRetained": true,
+    "translationRevisionHiddenFromReaders": true,
+    "sourceVerificationScriptsHiddenFromReaders": true,
+    "fullTechnicalSourcesRetained": true,
+    "reviewedEnglishAndChinesePages": [
+      "home",
+      "getting-started/first-application",
+      "getting-started/quick-start"
+    ],
+    "canonicalTutorialLinkFix": "Only the two generated API-example downloads are rewritten; tutorial source remains a canonical GitHub URL"
+  },
+  "localVerification": {
+    "checkLog": "/tmp/inertia-docs-editorial-check.log",
+    "buildLog": "/tmp/inertia-docs-editorial-build.log",
+    "siteReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-0WX5pl/summary.json",
+    "englishPages": 70,
+    "chinesePages": 11,
+    "payloadReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-d3-package-mIzQlh/summary.json",
+    "payloadCanonicalFiles": 87,
+    "newDraftPublished": false,
+    "smokeLog": "/tmp/inertia-docs-editorial-smoke-final.log"
+  },
+  "publication": {
+    "repositoryHasPages": true,
+    "deployedCommit": "a483124aee610a312e7a945df4f299e4b6008927",
+    "runId": 37939084658,
+    "url": "https://github.com/royalwang/inertia-java/actions/runs/37939084658",
+    "build": "success",
+    "deploy": "success",
+    "site": "https://royalwang.github.io/inertia-java/",
+    "homepageStatus": {
+      "en": 200,
+      "zh-CN": 200
+    },
+    "publicProbeReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-public-smoke-Ust77O/summary.json",
+    "probeSuccess": true,
+    "probeScope": "Public deployed routes/interactions and canonical source/attribution bytes; generated Javadoc HTML is checked for reachability and representative anchors, not byte identity against a different local JDK build.",
+    "knownPublishedGap": {
+      "url": "https://royalwang.github.io/inertia-java/examples/HelloController.java",
+      "status": 404,
+      "localFixVerified": true,
+      "fixPublished": false
+    },
+    "boundary": "Successful public probe proves its listed journeys only; the separately identified tutorial source-link 404 remains in the deployed version until this draft is published. Generated Javadoc HTML is not asserted byte-identical to a different local JDK build.",
+    "earlyProbeReceipts": [
+      "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-public-smoke-u4veZb/summary.json",
+      "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-public-smoke-Hy6jgC/summary.json"
+    ],
+    "probeReadiness": "Final remote probe awaited Vue hydration before interactions and ran after local clipboard checks completed."
+  },
+  "remaining": [
+    "Publish the reviewed editorial and tutorial source-link changes",
+    "Confirm a maintainer-approved private security reporting channel",
+    "Accept real stable-tag snapshots when an actual stable release exists"
+  ],
+  "inputs": {
+    "docs/inertia-java/08-open-source-documentation-plan.md": "d550e0f82071117af0239e655d13fa2b2bd28029a33f29e38ce4c47aca9288f8",
+    "docs/inertia-java/09-documentation-implementation.md": "4220e5a65150795dbc7ef4818a9824e65019222df891682165815ceba1e2bbd6",
+    "docs/inertia-java/open-source-docs-catalog.json": "0bf696e0dcc2e1dfdec167bc45759d5a38ad5de63bfc28df8769fdd287c561dd",
+    "inertia-java/docs/.vitepress/config.mjs": "7bce6b0141ae056345bd68384420c8e133da04728368ab66e72c31195c032147",
+    "inertia-java/docs/.vitepress/theme/SourceNotes.vue": "42844ce96ab55763ae7b6298a6ff87808e237785a4a75133e9e654e6cf631d89",
+    "inertia-java/docs/.vitepress/theme/TranslationNotice.vue": "d4164634f12df1d8421a922fdc09c653e28ef3087245d41aca07dc7e022b3852",
+    "inertia-java/docs/README.md": "a095c91f759ecee2ebdc5df063859e4cb7a677f742511de0177765a22cbf72ec",
+    "inertia-java/docs/community/security.md": "c3615c7e73dd0da141993e04bce74214daffec31520e8c6342f764fe4ad95bef",
+    "inertia-java/docs/getting-started/first-application.md": "9fcd82a56dc63aab8bcc3382fc4931a2aab8720ee56a68eae65c16b2f46dd0d6",
+    "inertia-java/docs/getting-started/project-structure.md": "a4fd9086a55a63dcd1c332d4cb1dbd43ad627c22e962efe411505c9f15ff606b",
+    "inertia-java/docs/getting-started/quick-start.md": "361f4b1231c4c25913d4d67facdddb97897442210f6ae6c1039fa1d0d36f2c98",
+    "inertia-java/docs/index.md": "e867a2e5eb79f901674327ebb9158ce749eb1a15a441293247df1baf0c4165a0",
+    "inertia-java/docs/reference/javadoc.md": "36f552ef1d505f3fa4bd9009b9287410f4273d7fa9af750674108fbfceef00a5",
+    "inertia-java/docs/scripts/smoke.mjs": "d5e5b307bbd66091af65c87268a2ed5cc352cdc4c97f3fd8b7fbcdd1482797a0",
+    "inertia-java/docs/zh/getting-started/first-application.md": "2aa9d9fd3ab09f1a9cf30dca8ac0845e0f4b10c02fe3f687695921e5a78d688a",
+    "inertia-java/docs/zh/getting-started/quick-start.md": "8e9372aaccff42de0cab8934a210a5638781bed4d5e74390d01e62e00285ab04",
+    "inertia-java/docs/zh/index.md": "78076cb18198e73a27173f36b81554a94bcb7513670ad4d7e2caca71672b9f5f"
+  }
+}

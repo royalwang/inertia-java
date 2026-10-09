@@ -78,4 +78,4 @@ Stop the Node process you started, keep Java running, and reload `/users` with J
 
 Stop the owned Java process with Ctrl-C when finished. For local source changes use [development mode](development.md); for an application outside the checkout use [the first-application tutorial](first-application.md).
 
-The repository also has owned browser/deployment verification commands. Their evidence and supported scenarios are documented in the [project README](https://github.com/royalwang/inertia-java/blob/main/inertia-java/README.md#browser-verification). A manual walkthrough does not replace those release gates.
+For automated browser checks, see [Browser testing](../testing/browser-tests.md).

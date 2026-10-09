@@ -99,7 +99,7 @@ Open [the hello page](http://127.0.0.1:18080/hello). Confirm each boundary:
 5. Inspect a request with `X-Inertia: true`: it returns component `Hello` and Page props as JSON.
 6. Stop the owned Node process: the default response remains usable through CSR with JavaScript enabled.
 
-`npm run docs:first-application` in the documentation directory automates generation, Maven/npm builds and these HTTP/browser boundaries in a unique temporary project. It requires installed local library artifacts and an installed Playwright browser; see the documentation README for the exact preparation commands. It writes a summary rather than treating compilation alone as SSR acceptance.
+To automate these steps, run `npm run docs:first-application` from the documentation directory. See the [documentation README](https://github.com/royalwang/inertia-java/blob/main/inertia-java/docs/README.md) for prerequisites and commands.
 
 ## Adapt it to your application
 

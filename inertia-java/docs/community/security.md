@@ -17,9 +17,9 @@ Do not publish credentials, cookies, personal Page data or a sensitive exploit r
 
 ## Current reporting status
 
-A maintainer-approved private security reporting address or entry has not yet been recorded for this Java module. GitHub's private vulnerability reporting capability must be confirmed enabled before it can be advertised as the project's report channel. The documentation therefore does not invent an email address, a private endpoint or a response SLA.
+A private security reporting channel has not yet been published for this module. Refer to [the security policy](https://github.com/royalwang/inertia-java/blob/main/inertia-java/SECURITY.md) for reporting information.
 
-Until an approved private channel is published, keep sensitive details private. The module `SECURITY.md` records this limitation. This is an explicit open-source launch prerequisite, not a claim that reports submitted elsewhere will reach a monitored security team.
+Until a private reporting channel is available, keep sensitive details private.
 
 ## Prepare a private report
 
@@ -29,4 +29,4 @@ When a verified channel becomes available, include affected source/artifact vers
 
 The library does not replace authentication, authorization, CSRF policy, trusted-proxy configuration, cookie/TLS policy or a secure session backend. SSR receives resolved Page data and must remain a trusted internal service. Review [authentication](../guide/authentication.md), [proxy boundaries](../deployment/proxy-security.md), [root/CSP handling](../ssr/root-template.md) and third-party dependency inventory.
 
-The project currently has snapshot documentation rather than a declared stable support window. A future release policy must identify maintained versions and fixes before promising backports. Public dependency notices and LICENSE/NOTICE do not constitute a security audit or vulnerability-free guarantee.
+A stable security support and backport window has not yet been declared.

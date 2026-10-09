@@ -75,6 +75,13 @@ try {
     await copyBlock(prefix + 'getting-started/first-application', 'sh', './mvnw install\nnode docs/scripts/create-first-application.mjs /tmp/my-inertia-app\n')
   }
   check.evidence.phases.push({ name: 'canonical-code-and-clipboard', copies })
+  for (const prefix of ['', 'zh/']) {
+    await page.goto(url + prefix + 'getting-started/first-application')
+    const source = page.getByRole('link', { name: 'HelloController.java', exact: true })
+    assert.match(await source.getAttribute('href'), /^https:\/\/github\.com\/royalwang\/inertia-java\/blob\/(?:main|[a-f0-9]{40})\/inertia-java\/docs\/examples\/first-application\/HelloController\.java$/)
+    assert.equal(await source.getAttribute('download'), null)
+  }
+  check.evidence.phases.push({ name: 'tutorial-source-links', languages: ['en', 'zh-CN'], canonicalRepositoryPath: true })
   const available = catalog.pages.filter(item => item.status !== 'planned')
   for (const item of available) {
     const route = item.path === 'index.md' ? '' : item.path.replace(/\.md$/, '')

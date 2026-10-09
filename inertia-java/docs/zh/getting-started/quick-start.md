@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: getting-started/quick-start
   source: getting-started/quick-start.md
-  sourceRevision: f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1
+  sourceRevision: 361f4b1231c4c25913d4d67facdddb97897442210f6ae6c1039fa1d0d36f2c98
 sources:
 - inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java
 - inertia-java/examples/spring-react/frontend/package.json
@@ -81,4 +81,4 @@ curl -i -H 'X-Inertia: true' -H "X-Inertia-Version: $BUILD_ID" http://127.0.0.1:
 
 只停止自己启动的 Node，保持 Java 运行，启用 JavaScript 后重载 `/users`。默认页面返回 CSR shell，由 React 挂载；禁用 JavaScript 时没有首屏内容。这是正常降级，不能称为 SSR 成功。
 
-完成后用 Ctrl-C 停止自己启动的 Java。源码编辑见[开发模式（英文）](../../getting-started/development.md)，仓库外应用见[第一个应用](first-application.md)。仓库的浏览器/部署验证工具及覆盖范围见 [README（英文）](https://github.com/royalwang/inertia-java/blob/main/inertia-java/README.md#browser-verification)。手动教程不能替代发布门槛。
+完成后用 Ctrl-C 停止自己启动的 Java。源码编辑见[开发模式（英文）](../../getting-started/development.md)，仓库外应用见[第一个应用](first-application.md)。自动化浏览器检查见[浏览器测试（英文）](../../testing/browser-tests.md)。

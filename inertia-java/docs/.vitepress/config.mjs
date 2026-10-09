@@ -96,7 +96,7 @@ export default defineConfig({
             href = href.replace(/\/(blob|tree)\/main\//, '/$1/' + sourceRef + '/')
             child.attrSet('href', href)
           }
-          if (href?.endsWith('.java') && /(?:^|\/)examples\//.test(href)) {
+          if (['CoreApiExample.java', 'SpringApiExample.java'].some(name => href === 'examples/' + name || href?.endsWith('/examples/' + name))) {
             child.attrSet('href', base + 'examples/' + href.split('/').at(-1))
             child.attrSet('download', '')
           }

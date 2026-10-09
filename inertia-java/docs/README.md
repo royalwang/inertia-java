@@ -1,6 +1,6 @@
 # Inertia Java documentation
 
-This directory contains the English public documentation, canonical API examples and a private VitePress toolchain. The current documentation describes `0.1.0-SNAPSHOT`. A public deployment has not yet been verified.
+This directory contains the English public documentation, canonical API examples and a private VitePress toolchain. The current documentation describes `0.1.0-SNAPSHOT`. The documentation is published at [royalwang.github.io/inertia-java](https://royalwang.github.io/inertia-java/).
 
 ## Read the library
 
@@ -51,9 +51,17 @@ Add the page to the [catalog](../../docs/inertia-java/open-source-docs-catalog.j
 
 `docs:check` prepares actual Javadoc, runs markdownlint and Markdown-parser-based catalog/link/evidence checks, and checks public type maps, 19 core/Boot configuration fields and 11 timer names. Every generated member anchor is checked during preparation. Missing Maven classifiers fail preparation. All six runtime libraries now enforce full doclint and warnings-as-errors; source contracts describe public parameters, ownership and failures. `docs:build` keeps VitePress dead-link checking enabled. `docs:smoke` checks rendered behavior under the configured base. Pure prose uses the documentation workflow; executable-example/tool changes also run its Maven/browser job. Java runtime changes retain their separate aggregate gate.
 
-The [open-source documentation plan](../../docs/inertia-java/08-open-source-documentation-plan.md) tracks the full 69-page expansion, reference/operations/community work and priority Chinese translations. All 70 catalog pages now have readable English content: the 69 planned new pages plus the retained API guide. D3 adds deployment, reference, testing, troubleshooting and community. Eleven priority Chinese pages are available under `zh/`; English remains canonical. Actual release-tag snapshot acceptance, verified private security reporting and public hosting remain open. A written page count does not establish those launch requirements.
+The [open-source documentation plan](../../docs/inertia-java/08-open-source-documentation-plan.md) tracks the full 69-page expansion, reference/operations/community work and priority Chinese translations. All 70 catalog pages now have readable English content: the 69 planned new pages plus the retained API guide. D3 adds deployment, reference, testing, troubleshooting and community. Eleven priority Chinese pages are available under `zh/`; English remains canonical. Actual release-tag snapshot acceptance and verified private security reporting remain open. A written page count does not establish those launch requirements.
 
 The manual Pages workflow is restricted to the canonical repository’s main branch, builds/tests the chosen `/inertia-java/` base and deploys a separate static artifact. It requires GitHub Pages configured for Actions and an authenticated maintainer to initiate it; its presence is not deployment evidence.
+
+## Maintain generated Javadoc
+
+The site preparation step reads actual classifiers, copies their HTML/resources/attribution into the generated public tree and records the input hashes. Generated files remain outside Git. If an actual classifier references an absent optional DejaVu font stylesheet, site preparation removes only that import and uses the stylesheet’s existing system-font fallbacks. Generated HTML also receives a data favicon to avoid an implicit missing favicon request. The API manifest records input/output hashes for these site-only transformations; classifier archives themselves remain unchanged. A complete API-enabled site must fail if a required classifier is absent; it must not silently serve an older cached tree as current documentation.
+
+Preparation verifies every generated type page and member anchor. `docs:check` also checks public types against the handwritten owner maps, all 19 core/Boot configuration fields and all 11 timer names. These checks detect index/map drift; they do not prove complete member prose.
+
+All six runtime libraries enable full Maven doclint with warnings treated as errors, including missing comments and parameter descriptions. The parent build also defaults to this strict policy. Public source contracts describe purpose, inputs, ownership, results and important failure behavior; record component descriptions also document their generated accessors. Passing doclint establishes structural comment coverage, while source review and executable examples establish the described behavior. The dependency-only starter retains its module guide rather than inventing a Java facade.
 
 ## Check external references manually
 

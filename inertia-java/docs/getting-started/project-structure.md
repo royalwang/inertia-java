@@ -43,7 +43,7 @@ The core depends on Jackson 2, rather than on Spring. Your application can use a
 - `scripts/` contains artifact, consumer, dependency-inventory and aggregate verification commands.
 - `target/` directories contain Maven outputs, including source/Javadoc classifiers for reusable modules.
 
-The existing [API guide](../api-guide.md) remains the detailed integration reference while the rest of the public library is written. Generated Javadoc is a symbol index; it complements usage/lifecycle documentation.
+The [API guide](../api-guide.md) provides detailed integration examples. Generated Javadoc is a symbol index; it complements usage/lifecycle documentation.
 
 ## Organize your own application
 

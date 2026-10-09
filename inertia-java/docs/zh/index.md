@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: home
   source: index.md
-  sourceRevision: eb119d600730720277e4501d6e3ebbe720a83068fcff21d53a9b6b61a0b2c992
+  sourceRevision: e867a2e5eb79f901674327ebb9158ce749eb1a15a441293247df1baf0c4165a0
 sources:
 - inertia-java/pom.xml
 - inertia-java/README.md
@@ -19,7 +19,7 @@ verification:
 
 使用 Java 路由、React 页面和可选的 Node 服务端渲染构建 Inertia 应用。Inertia Java 提供不依赖 Web 框架的协议核心、Servlet Spring MVC 集成，以及经过验证的 Spring Boot + React 示例。
 
-本文档对应仓库中的 **`0.1.0-SNAPSHOT`**。当前模块可以本地构建，也可从打包后的 Maven 子目录消费；没有将其宣称为已在 Maven Central 发布的正式版本。文档站可以本地构建，公开部署尚未验收。
+本文档对应开发版本 **`0.1.0-SNAPSHOT`**。环境要求和构建步骤见[安装指南](getting-started/installation.md)。
 
 ## 从任务开始
 
@@ -45,12 +45,8 @@ verification:
 
 应用负责路由、认证授权、业务数据、组件注册、root view 和部署策略。Inertia 请求头不能证明用户身份，optional/deferred 也不能代替权限校验。
 
-## 翻译范围与维护
+## 文档语言
 
-英文是规范正文。当前中文覆盖 11 个优先页面，英文目录共 70 页；这不是完整双语覆盖。未翻译的侧栏链接带有“英文”标记，并进入真实英文页面，不生成中文占位页。
+英文是规范正文。中文文档覆盖入门流程和部分应用指南，其他内容可阅读英文版本。尚未翻译的页面在中文侧栏中标有“英文”。
 
-每篇译文记录对应 page ID、`0.1.0-SNAPSHOT` 和英文文件的 SHA-256 修订值。英文正文变化会使翻译检查失败，需要重新逐项审校；不能只更新 hash 而不阅读差异。页面上方可以返回对应英文正文。
-
-六个运行库的公开源码契约说明已补齐，并通过包含缺失注释检查的严格 doclint。真实 release tag 的版本快照及公开发布验收仍在推进。安全私密报告渠道尚待维护者确认，见[安全报告状态（英文）](../community/security.md)。既有 API guide 和 Java 示例路径继续保留。
-
-Java 自有代码、示例与文档使用 Apache-2.0，版权声明为 `Copyright (c) 2026 royalwang`。完整条款见 [LICENSE](https://github.com/royalwang/inertia-java/blob/main/inertia-java/LICENSE) 和 [NOTICE](https://github.com/royalwang/inertia-java/blob/main/inertia-java/NOTICE)。
+Inertia Java 使用 [Apache-2.0 许可证（英文）](../community/license.md)。

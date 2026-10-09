@@ -1,6 +1,6 @@
 # Inertia Java 开源文档库规划
 
-日期：2026-10-09。代码基线：`86d5c3e`。状态：实施中；D0–D2已有本地可验收交付；D3的27篇正文与实际Javadoc站点入口已落地，D4的11篇优先中文与修订检查已落地；六个运行库公开成员说明与严格doclint已完成本地验收；真实版本快照与公开托管尚未完成。具体状态见第10节。
+日期：2026-10-09。代码基线：`86d5c3e`。状态：实施中；D0–D2已有本地可验收交付；D3的27篇正文与实际Javadoc站点入口已落地，D4的11篇优先中文与修订检查已落地；六个运行库公开成员说明与严格doclint已完成本地验收；公开Pages已部署；真实版本快照与私密安全报告渠道尚待确认。具体状态见第10节。
 
 目标是让外部开发者完成“理解产品 → 跑通示例 → 接入自己的 Spring 应用 → 使用高级能力 → 测试和部署 → 参与贡献”，不依赖阅读实施流水账或 Rust 源码。
 
@@ -174,7 +174,7 @@ npm --prefix inertia-java/docs run docs:smoke
 
 ### 托管与权限
 
-仓库已重定向至 `royalwang/inertia-java`。维护者已确认使用 GitHub Pages 仓库根路径：`https://royalwang.github.io/inertia-java/`，VitePress base 为 `/inertia-java/`。该地址是已确认的布局，尚不是部署成功证据；部署前仍需核实 Pages 源及现有内容。当前本机 GitHub CLI 未登录。之后经GitHub连接器读取仓库元数据，确认`has_pages=false`且连接器仅有pull权限；未取得Pages管理权限，private-reporting状态仍未核实。需要独立域名时再配置 DNS 与 base。
+仓库已重定向至 `royalwang/inertia-java`。维护者已确认使用 GitHub Pages 仓库根路径：`https://royalwang.github.io/inertia-java/`，VitePress base 为 `/inertia-java/`。初期读取元数据时`has_pages=false`；后续维护者完成配置并手动发布，发布run 37939084658的build/deploy均success，当前元数据为`has_pages=true`，英文/中文首页均HTTP200。当前连接器仍仅有pull权限，private-reporting状态未核实。需要独立域名时再配置 DNS 与 base。
 
 Pull request 只构建/归档站点预览，不持有部署写权限；可信主分支/正式tag才允许部署。workflow中 Actions 固定commit、docs依赖锁定、Pages deployment串行化，失败保留旧站；按站点需要给 `pages:write`/`id-token:write`，不修改Java库现有CI权限。D0验证文档预览；公开 Pages 部署属于后续实施动作，本轮不更改远端设置。
 
@@ -215,6 +215,6 @@ D1是可上手预览，D3才可称完整首版开源文档库。每页完成需�
 - 文档工具清单：独立npm CycloneDX/lock核对、实际许可证文件与review项已落地，覆盖300个锁路径/291个组件；五项拒绝合同和本地站点验收通过。清单收集不是静态捆绑归属批准；README的44个专题迁移对应、原锚点及历史原文保留已完成；外链检查和只读手动workflow已落地，当前24个外部HTTP目的地可达，远程fragment/内容时效性不在该检查范围。
 - 站点交互：中英教程从canonical POM/Java/TSX原生导入完整源码；两种语言五种代码的实际键盘复制/可见焦点、搜索Enter/Ctrl-K/Escape和关闭焦点恢复已补验。见 [交互验收](verification/documentation-site-interactions.json)。
 - 未创建空正文，未将 D3/D4全部标记完成；真实tag版本快照和正式托管继续推进；公开API契约随源码维护并由严格检查保护。
-- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages尚未配置或发布，私密安全渠道仍待确认。
+- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages已部署，私密安全渠道仍待确认；后续编辑尚未提交或重新部署。
 
 命令、验收边界及证据见 [文档实施台账](09-documentation-implementation.md)。

@@ -198,8 +198,20 @@ runner目录修复已在 `a6721ee` 推送。GitHub随后通过actionlint、Javad
 
 两份GitHub站点/教程证据artifact已生成，机器记录保留ID、GitHub报告的digest和到期时间。本机取得的临时下载引用返回403，未宣称已下载审查ZIP内容或自行验证artifact digest。各历史失败保留，不回写为成功。验收输入SHA与明确边界见 [documentation-remote-ci.json](verification/documentation-remote-ci.json)。此次没有触发手动Pages发布、真实tag快照或外链workflow；站点CI通过不代表公开部署成功。
 
+## 对外正文精简与首次公开部署核实
+
+根据维护者反馈，公开指南以读者操作为主：中英文首页去掉翻译修订机制、检查门槛、实施进度与发布待办；翻译提示只保留语言入口与英文回退。SHA-256修订继续保留在frontmatter和目录中供维护检查，不在页首显示。页尾保留相关源码链接，移除验证脚本清单和验收说明。
+
+Javadoc站点构建细节、字体补丁、清单哈希和doclint门槛移入不进入站点路由的文档README。入门教程移除发布门槛旁白，保留运行步骤、自动化入口和版本限制；安全页保留尚无私密渠道的真实用户限制，去掉内部launch prerequisite说明。同步审校首页和两篇入门中文及英文修订。
+
+检查还发现原Java下载重写规则将教程HelloController源码链接改成不存在的顶层下载文件。已将重写限定为实际生成的CoreApiExample/SpringApiExample，教程保留GitHub canonical源文件地址，并增加中英文浏览器链接检查。线上旧地址实测404，当前本地修复尚未提交或部署。
+
+与此同时，维护者已启用Pages并手动运行[发布workflow 37939084658](https://github.com/royalwang/inertia-java/actions/runs/37939084658)，其build/deploy均success，发布commit为a483124。当前仓库has_pages=true，公开英文/中文首页均HTTP200；此前has_pages=false的采集记录保持历史原样。本轮文字与链接修订仍为未提交工作区内容，不将旧线上站点当成本轮新稿。
+
+本轮check/build及本地81篇浏览器检查通过，Java payload的87个canonical文档文件逐字节一致，工具仍排除。已对先前发布的真实Pages地址单独执行逐页、搜索、中英切换、代码复制、移动导航和Javadoc锚点检查；该检查通过其列出的路径，但没有覆盖上述教程错误下载地址，后者已单独确认404并在本地修正。Javadoc HTML不与不同JDK的本地生成字节比较；源码下载/版权文本继续逐字节核对。公开probe等待页面hydration后操作，并与本地剪贴板检查串行执行。完整范围和早期失败保留于 [documentation-reader-cleanup.json](verification/documentation-reader-cleanup.json)。
+
 ## 后续阶段
 
 D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已完成本地验收；D4优先中文路径和revision对应已落地，版本快照工具已实现本地合同，真实tag快照仍待验收。当前英文目录没有planned占位页。
 
-远端文档与Java验证Actions已通过；尚未执行公开 Pages 配置、域名修改或网站部署。目录与正文已随首次推送交付；后续修复状态以对应Git提交与远端验收记录为准。D3公开托管与实际维护联系渠道需要按当时仓库配置核实，不能预设已有站点或安全邮箱。
+远端文档与Java验证Actions已通过，公开Pages已有首次成功部署。本轮正文精简和教程链接修订尚未提交/推送或重新部署。真实tag快照待实际稳定版本发布时验收，私密安全报告渠道仍需维护者确认。

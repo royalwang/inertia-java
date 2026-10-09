@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: getting-started/first-application
   source: getting-started/first-application.md
-  sourceRevision: 4267648c236e455daf3be2fd3940e2fa66c54e1b8caf0da42b01acc863783205
+  sourceRevision: 9fcd82a56dc63aab8bcc3382fc4931a2aab8720ee56a68eae65c16b2f46dd0d6
 sources:
 - inertia-java/docs/examples/first-application/pom.xml
 - inertia-java/docs/examples/first-application/HelloController.java
@@ -104,7 +104,7 @@ java -jar target/first-inertia-app-1.0.0-SNAPSHOT.jar --server.address=127.0.0.1
 5. 检查带 `X-Inertia: true` 和当前构建版本的请求，返回 `Hello` 组件及 JSON Page props。
 6. 停止自己启动的 Node，默认响应仍能在 JavaScript 启用时通过 CSR 使用。
 
-完成后用 Ctrl-C 停止自己启动的进程。文档目录的 `npm run docs:first-application` 在独立临时项目中自动执行生成、Maven/npm 构建和上述 HTTP/浏览器检查。它需要已安装本地库及 Playwright 浏览器，准备命令见[文档 README](https://github.com/royalwang/inertia-java/blob/main/inertia-java/docs/README.md)。工具记录 summary，不以编译成功冒充 SSR 验收。
+完成后用 Ctrl-C 停止自己启动的进程。要自动执行这些步骤，可在文档目录运行 `npm run docs:first-application`；环境要求和命令见[文档 README](https://github.com/royalwang/inertia-java/blob/main/inertia-java/docs/README.md)。
 
 ## 改造成业务应用
 

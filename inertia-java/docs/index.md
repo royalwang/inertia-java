@@ -14,7 +14,7 @@ verification:
 
 Build an Inertia application with Java routes, React pages and optional Node server rendering. Inertia Java supplies a framework-independent protocol core, Servlet Spring MVC integration and a verified Spring Boot + React example.
 
-This documentation describes **`0.1.0-SNAPSHOT` from this repository**. The modules can be built locally or consumed from a packaged Maven subtree. They are not currently advertised as available on Maven Central. The documentation site can be built locally; a public deployment has not yet been verified.
+This documentation covers the development version **`0.1.0-SNAPSHOT`**. See [Installation](getting-started/installation.md) for requirements and build instructions.
 
 ## Start here
 
@@ -42,8 +42,8 @@ This documentation describes **`0.1.0-SNAPSHOT` from this repository**. The modu
 
 The library handles the Inertia transport and rendering contract. Your application supplies routing, authorization, business data, a component registry, a root view and deployment policy. Inertia headers do not establish a user's identity.
 
-## Documentation scope
+## Documentation languages
 
-The available navigation contains written pages only. All 70 English catalog pages are written, including deployment, reference, testing, troubleshooting and community. Generated Javadoc is available for all seven modules. The [priority Chinese documentation](zh/index.md) covers 11 selected journeys with English revision tracking; remaining pages explicitly link to English. Public source contracts and strict doclint now cover all six runtime libraries. Version snapshots and launch prerequisites remain tracked in the [open-source documentation plan](https://github.com/royalwang/inertia-java/blob/main/docs/inertia-java/08-open-source-documentation-plan.md). Existing API-guide and source-example paths remain available during the migration.
+English is the canonical documentation. The [Chinese documentation](zh/index.md) covers getting started and selected application guides. Pages without a Chinese translation link to the English version and are marked accordingly in the Chinese sidebar.
 
-Original Java code, examples and documentation use Apache-2.0. Copyright (c) 2026 royalwang. See [LICENSE](https://github.com/royalwang/inertia-java/blob/main/inertia-java/LICENSE) and [NOTICE](https://github.com/royalwang/inertia-java/blob/main/inertia-java/NOTICE).
+Inertia Java is licensed under [Apache-2.0](community/license.md).

@@ -1187,7 +1187,7 @@
       "path": "zh/index.md",
       "title": "Inertia Java 中文文档",
       "status": "reviewed",
-      "sourceRevision": "eb119d600730720277e4501d6e3ebbe720a83068fcff21d53a9b6b61a0b2c992"
+      "sourceRevision": "e867a2e5eb79f901674327ebb9158ce749eb1a15a441293247df1baf0c4165a0"
     },
     {
       "id": "getting-started/overview",
@@ -1211,7 +1211,7 @@
       "path": "zh/getting-started/quick-start.md",
       "title": "运行 React 示例",
       "status": "reviewed",
-      "sourceRevision": "f2a206117d50f988c7207f2f4dced3f8dda53243c2d9ad235ef369a5c761ceb1"
+      "sourceRevision": "361f4b1231c4c25913d4d67facdddb97897442210f6ae6c1039fa1d0d36f2c98"
     },
     {
       "id": "getting-started/first-application",
@@ -1219,7 +1219,7 @@
       "path": "zh/getting-started/first-application.md",
       "title": "创建第一个 Spring 应用",
       "status": "reviewed",
-      "sourceRevision": "4267648c236e455daf3be2fd3940e2fa66c54e1b8caf0da42b01acc863783205"
+      "sourceRevision": "9fcd82a56dc63aab8bcc3382fc4931a2aab8720ee56a68eae65c16b2f46dd0d6"
     },
     {
       "id": "concepts/request-lifecycle",
