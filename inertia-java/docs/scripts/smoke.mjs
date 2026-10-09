@@ -88,6 +88,7 @@ try {
     const response = await page.goto(url + route)
     assert.equal(response.status(), 200, item.path)
     await page.locator('.vp-doc h1').waitFor()
+    assert.equal(await page.locator('.source-notes').count(), 0, 'Unexpected source inventory: ' + item.path)
     if (item.id !== 'home') assert.ok(await page.locator(`a[href="${base + route}"]`).count() > 0, 'Missing navigation: ' + item.path)
   }
   check.evidence.phases.push({ name: 'direct-page-loads', pages: available.length })

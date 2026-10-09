@@ -223,3 +223,11 @@ D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已�
 fe7c26e已与origin/main一致；该次远端文档运行37941891079的site job已success，examples仍在执行。当前浏览器中的GitHub发布页显示Sign in且无Run workflow按钮，不能通过该会话触发更新。既有公开站仍为a483124；没有将源码推送等同重新部署。
 
 安全政策文字整理通过docs:check、严格docs:build和docs:smoke（81篇路由及交互）；此变更不改变Java运行行为。验收日志分别位于本机/tmp/inertia-security-editorial-check.log、/tmp/inertia-security-editorial-build.log和/tmp/inertia-security-editorial-smoke.log，均为工程记录，不进入公开学习步骤。
+
+## 页底源码清单移除与新版公开部署
+
+维护者指出逐页追加的Source code/相关源码路径清单不符合面向用户的文档体验。已移除SourceNotes组件及doc-after挂载，frontmatter中的源码关系继续用于维护检查；保留正文中的语义链接和默认编辑/更新时间/上下篇导航。历史版本浏览器检查改用默认View tagged source链接核对不可变commit，避免依赖已删除的展示块。现有逐页浏览器回归增加源码清单不得出现的检查。
+
+同时核实[发布运行37944965858](https://github.com/royalwang/inertia-java/actions/runs/37944965858)已成功部署fd6ab5a，其文档CI与Java完整验证均success。真实Pages中文首页已移除旧维护说明，中英文教程源码链接均保留canonical仓库路径；公开站81篇路由/搜索/代码复制/下载/Javadoc与新增教程链接检查通过，本机结果为inertia-docs-public-smoke-IVv8fV/summary.json。本节页底组件移除发生在该部署之后，尚需再次发布才在公开站生效。
+
+页底移除通过docs:check、严格docs:build、81篇docs:smoke及空release registry下docs:smoke-versions；299份生成HTML（含Javadoc）均无source-notes展示块。已在实际预览页确认默认页脚和上下篇导航，截图保留于本机/tmp/inertia-docs-clean-footer.jpg。空registry验收不冒充真实tag版本导航。

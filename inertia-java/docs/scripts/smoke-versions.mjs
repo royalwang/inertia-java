@@ -36,7 +36,7 @@ try {
     assert.equal(manifest.status, 200)
     const snapshot = await manifest.json()
     assert.equal(snapshot.commit, entry.commit); assert.equal(snapshot.tag, entry.tag)
-    const source = await page.locator('.source-notes a').first().getAttribute('href')
+    const source = await page.getByRole('link', { name: 'View tagged source', exact: true }).getAttribute('href')
     assert.ok(source.includes('/blob/' + entry.commit + '/'), 'Historical page must link to immutable source')
     await page.setViewportSize({ width: 390, height: 844 })
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true)
