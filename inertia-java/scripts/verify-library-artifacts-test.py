@@ -15,6 +15,8 @@ modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-w
 with tempfile.TemporaryDirectory(prefix='inertia-artifact-contracts-') as directory:
     fixture = pathlib.Path(directory)
     shutil.copy2(root / 'pom.xml', fixture / 'pom.xml')
+    for name in ['LICENSE', 'NOTICE']:
+        shutil.copy2(root / name, fixture / name)
     (fixture / 'scripts').mkdir()
     shutil.copy2(root / 'scripts/verify-library-artifacts.py', fixture / 'scripts/verify-library-artifacts.py')
     for module in modules:

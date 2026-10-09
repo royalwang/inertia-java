@@ -47,6 +47,7 @@ export function packageRelease(store, root = projectRoot) {
     copy(resolve(root, 'deploy/runtime.mjs'), resolve(staging, 'runtime.mjs'))
     copy(resolve(root, 'README.md'), resolve(staging, 'README.md'))
     copy(resolve(root, 'LICENSE'), resolve(staging, 'LICENSE'))
+    copy(resolve(root, 'NOTICE'), resolve(staging, 'NOTICE'))
     copyTree(resolve(root, 'docs'), resolve(staging, 'docs'))
     copy(resolve(root, 'deploy/README.md'), resolve(staging, 'RUNBOOK.md'))
     copyTree(resolve(root, 'deploy/systemd'), resolve(staging, 'operations/systemd'))

@@ -20,6 +20,8 @@ assert pom.findtext('m:scm/m:connection', namespaces=ns) == 'scm:git:https://git
 assert pom.findtext('m:licenses/m:license/m:name', namespaces=ns) == 'Apache License, Version 2.0'
 license_bytes = (root / 'LICENSE').read_bytes()
 assert b'Apache License' in license_bytes and b'END OF TERMS AND CONDITIONS' in license_bytes
+notice_bytes = (root / 'NOTICE').read_bytes()
+assert b'Copyright (c) 2026 royalwang' in notice_bytes
 modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
 artifacts = []
 for module in modules:
@@ -42,6 +44,8 @@ for module in modules:
             assert all(not n.startswith('/') and '..' not in pathlib.PurePosixPath(n).parts for n in names)
             license_path = 'resources/LICENSE' if classifier == '-javadoc' else 'META-INF/LICENSE'
             assert archive.read(license_path) == license_bytes, f'{module}{classifier}: missing/changed license'
+            notice_path = 'resources/NOTICE' if classifier == '-javadoc' else 'META-INF/NOTICE'
+            assert archive.read(notice_path) == notice_bytes, f'{module}{classifier}: missing/changed copyright notice'
             assert not any(n.startswith(('node_modules/', 'frontend/', 'BOOT-INF/')) for n in names), f'{path}: runtime example leaked into library'
             if classifier == '-sources':
                 archived = {n: archive.read(n) for n in names if n.endswith('.java')}

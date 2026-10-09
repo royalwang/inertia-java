@@ -408,7 +408,7 @@ Run `python3 scripts/verify-library-artifacts.py /absolute/path/report.json` aft
 
 Javadoc fails on syntax/link/doclint errors while missing-comment warnings are excluded: artifact generation proves API-page availability, not comprehensive prose documentation. The starter's HTML is maintained module documentation, not generated API coverage. Plugins are pinned: [Maven Source 3.3.1 lifecycle goal](https://maven.apache.org/plugins-archives/maven-source-plugin-3.3.1/usage.html), [Maven Javadoc 3.7.0 jar goal](https://maven.apache.org/plugins-archives/maven-javadoc-plugin-3.7.0/jar-mojo.html).
 
-This is artifact staging, not public publication. The repository's Rust manifest declares MIT, but no license text/attribution review for the Java distribution has been completed. No developer identity, copyright holder or licensing approval is fabricated in the POM. Release-version/tag policy, legal attribution, namespace ownership, signing and repository credentials remain publication gates; SHA256 payload integrity is not publisher authentication.
+This is artifact staging, not public publication. Java project materials use Apache-2.0 with the copyright notice `Copyright (c) 2026 royalwang`, as recorded in [LICENSE](LICENSE) and [NOTICE](NOTICE). The repository's Rust manifest declares MIT. Third-party attribution review remains separate. Release-version/tag policy, legal attribution, namespace ownership, signing and repository credentials remain publication gates; SHA256 payload integrity is not publisher authentication.
 
 
 ### Required SSR pages
@@ -498,4 +498,6 @@ For a stable evidence location, set `INERTIA_CONSUMER_OUTPUT=/absolute/new-or-em
 
 ## License
 
-Original project code, documentation and examples under `inertia-java/` are licensed under the [Apache License, Version 2.0](LICENSE). Third-party dependencies retain their own licenses and notices. This declaration does not change the Rust package's existing license metadata. Maven modules inherit the parent license declaration; binary/source jars, Javadoc jars and the deployment payload carry the license text.
+Original project code, documentation and examples under `inertia-java/` are licensed under the [Apache License, Version 2.0](LICENSE). Third-party dependencies retain their own licenses and notices. This declaration does not change the Rust package's existing license metadata. Maven modules inherit the parent license declaration; binary/source jars, Javadoc jars and the deployment payload carry the license text and [copyright notice](NOTICE).
+
+Copyright (c) 2026 royalwang

@@ -78,3 +78,6 @@ CI入口补充：workflow已加入独立消费与API指南验证，并归档summ
 
 
 用户已明确Java采用Apache-2.0。`inertia-java/LICENSE`、parent POM及frontend metadata已落地；21 binary/source/Javadoc jar及Boot jar和release payload实际携带正文，逐字节验证通过。Maven291项、独立消费、发布SSR/CSR及新依赖清单均通过，见第五篇最新Apache-2.0记录。十个owned声明已识别为Apache-2.0，剩31项为第三方review；不再以缺自有许可证/版权主体回答作为实施阻塞。
+
+
+用户已明确版权声明为 `Copyright (c) 2026 royalwang`，现已写入 `inertia-java/NOTICE` 与 README。Apache-2.0 正文保持原样；21 个 binary/source/Javadoc jar、Boot jar及部署bundle均携带逐字节匹配的NOTICE。Maven clean verify通过，291项零failures/errors/skipped；六项隔离制品校验通过。制品报告：`/tmp/inertia-java-copyright-artifacts.json`；构建日志：`/tmp/inertia-java-copyright-build.log`。此次声明仅适用于自有Java材料，第三方依赖保留原有声明。

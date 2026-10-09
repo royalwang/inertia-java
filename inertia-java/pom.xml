@@ -62,7 +62,7 @@
       <resource><directory>${project.basedir}/src/main/resources</directory></resource>
       <resource>
         <directory>${inertia.license-directory}</directory><targetPath>META-INF</targetPath>
-        <includes><include>LICENSE</include></includes>
+        <includes><include>LICENSE</include><include>NOTICE</include></includes>
       </resource>
     </resources>
     <plugins>
@@ -71,7 +71,7 @@
         <executions><execution><id>javadoc-license</id><phase>process-resources</phase><goals><goal>copy-resources</goal></goals>
           <configuration>
             <outputDirectory>${project.build.directory}/license-javadoc/resources</outputDirectory>
-            <resources><resource><directory>${inertia.license-directory}</directory><includes><include>LICENSE</include></includes></resource></resources>
+            <resources><resource><directory>${inertia.license-directory}</directory><includes><include>LICENSE</include><include>NOTICE</include></includes></resource></resources>
           </configuration>
         </execution></executions>
       </plugin>
