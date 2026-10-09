@@ -214,7 +214,7 @@ D1是可上手预览，D3才可称完整首版开源文档库。每页完成需�
 - 版本工具：已实现真实origin tag源码导出、稳定版本校验、静态归档及SHA-256登记、不可变版本合并与原生版本选择器；本地合同与next站点通过。远端当前没有release tag，registry为空；没有伪造正式版本或真实历史导航验收。
 - 文档工具清单：独立npm CycloneDX/lock核对、实际许可证文件与review项已落地，覆盖300个锁路径/291个组件；五项拒绝合同和本地站点验收通过。清单收集不是静态捆绑归属批准；README的44个专题迁移对应、原锚点及历史原文保留已完成；外链检查和只读手动workflow已落地，当前24个外部HTTP目的地可达，远程fragment/内容时效性不在该检查范围。
 - 站点交互：中英教程从canonical POM/Java/TSX原生导入完整源码；两种语言五种代码的实际键盘复制/可见焦点、搜索Enter/Ctrl-K/Escape和关闭焦点恢复已补验。见 [交互验收](verification/documentation-site-interactions.json)。
-- 未创建空正文，未将 D3/D4全部标记完成；真实tag版本快照和正式托管继续推进；公开API契约随源码维护并由严格检查保护。
-- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages已部署，私密安全渠道仍待确认；后续编辑尚未提交或重新部署。
+- 未创建空正文，未将 D3/D4全部标记完成；真实tag版本快照待实际稳定版本发布时验收；公开API契约随源码维护并由严格检查保护。
+- 本地验收与远端状态分别记录：文档库及CI修复已提交推送；远端site/examples两个job和Java完整验证通过，见 [远端CI验收](verification/documentation-remote-ci.json)。公开Pages已部署，私密安全渠道仍待确认；正文精简与教程链接修订已以fe7c26e提交推送，尚未重新部署；后续安全政策文字清理另行记录于实施台账。
 
 命令、验收边界及证据见 [文档实施台账](09-documentation-implementation.md)。

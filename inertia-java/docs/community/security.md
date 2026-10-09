@@ -1,6 +1,6 @@
 ---
 title: "Reporting security issues"
-description: "Describe supported scopes and a maintainer-configured private reporting channel, without inventing an address."
+description: "Find the current private reporting status and prepare a sanitized security report."
 version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/README.md

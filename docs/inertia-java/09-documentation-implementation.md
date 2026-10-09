@@ -214,4 +214,12 @@ Javadoc站点构建细节、字体补丁、清单哈希和doclint门槛移入不
 
 D3的27篇正文、Javadoc/地图入口和六个运行库公开源码契约已完成本地验收；D4优先中文路径和revision对应已落地，版本快照工具已实现本地合同，真实tag快照仍待验收。当前英文目录没有planned占位页。
 
-远端文档与Java验证Actions已通过，公开Pages已有首次成功部署。本轮正文精简和教程链接修订尚未提交/推送或重新部署。真实tag快照待实际稳定版本发布时验收，私密安全报告渠道仍需维护者确认。
+远端文档与Java验证Actions已通过，公开Pages已有首次成功部署。正文精简和教程链接修订已以fe7c26e提交推送，尚未重新部署。真实tag快照待实际稳定版本发布时验收，私密安全报告渠道仍需维护者确认。
+
+## 公开安全政策文字整理
+
+公开SECURITY.md同步采用读者措辞：保留当前版本、尚无私密报告渠道的真实限制、敏感内容处理和应用安全职责；移除虚构邮箱警告、内部发布前置条件和未约定SLA的开发旁白。维护者确认真实私密渠道的任务仍由本工程台账和规划追踪，不将缺少渠道写成已可报告。站点安全页的description同步按读者任务改写。
+
+fe7c26e已与origin/main一致；该次远端文档运行37941891079的site job已success，examples仍在执行。当前浏览器中的GitHub发布页显示Sign in且无Run workflow按钮，不能通过该会话触发更新。既有公开站仍为a483124；没有将源码推送等同重新部署。
+
+安全政策文字整理通过docs:check、严格docs:build和docs:smoke（81篇路由及交互）；此变更不改变Java运行行为。验收日志分别位于本机/tmp/inertia-security-editorial-check.log、/tmp/inertia-security-editorial-build.log和/tmp/inertia-security-editorial-smoke.log，均为工程记录，不进入公开学习步骤。
