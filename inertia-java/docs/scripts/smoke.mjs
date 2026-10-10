@@ -67,6 +67,29 @@ try {
   await page.keyboard.press('Escape')
   await expect(searchButton).toBeFocused()
   check.evidence.phases.push({ name: 'keyboard-search', enterOpens: true, controlKOpens: true, inputReceivesFocus: true, escapeClosesAndRestoresFocus: true })
+
+  // A Mermaid fence must become a real diagram, including after client navigation
+  // and VitePress theme changes; a successful page load alone cannot prove this.
+  for (const locale of ['', 'zh/']) {
+    await page.goto(url + locale + 'concepts/request-lifecycle')
+    const diagram = page.locator('.vp-doc .mermaid svg')
+    await expect(diagram).toBeVisible()
+    await expect(diagram.locator('.actor').first()).toBeVisible()
+    assert.ok((await diagram.textContent()).includes(locale ? '浏览器' : 'Browser'))
+    assert.equal(await page.locator('.language-mermaid').count(), 0)
+    for (const dark of [true, false]) {
+      const previous = await diagram.innerHTML()
+      await page.evaluate(dark => document.documentElement.classList.toggle('dark', dark), dark)
+      await expect.poll(() => diagram.innerHTML()).not.toBe(previous)
+      await expect(diagram).toBeVisible()
+    }
+    await page.locator('.vp-doc .mermaid').screenshot({ path: resolve(check.output, locale ? 'mermaid-zh.png' : 'mermaid-en.png') })
+    await page.locator('.VPSidebar a[href$="/concepts/protocol"]').first().click()
+    await page.goBack()
+    await expect(diagram).toBeVisible()
+  }
+  check.evidence.phases.push({ name: 'mermaid-diagrams', languages: ['en', 'zh-CN'], svg: true, themeSwitch: true, clientNavigation: true })
+
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(url).origin })
   const copies = []
   const copyBlock = async (route, language, expected) => {

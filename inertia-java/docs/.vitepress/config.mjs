@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import { siteContext } from '../scripts/versions.mjs'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -29,7 +30,8 @@ const { base, version, sourceRef, sourceLabel, snapshot, versionMenu } = context
 const sourceRoot = 'https://github.com/royalwang/inertia-java'
 const editPattern = snapshot ? `${sourceRoot}/blob/${sourceRef}/inertia-java/docs/:path` : `${sourceRoot}/edit/main/inertia-java/docs/:path`
 
-export default defineConfig({
+export default withMermaid(defineConfig({
+  mermaid: { securityLevel: 'strict' },
   title: 'Inertia Java',
   description: 'Build Inertia applications with Java 21 and Spring MVC.',
   lang: 'en-US',
@@ -109,4 +111,4 @@ export default defineConfig({
       })
     },
   },
-})
+}))

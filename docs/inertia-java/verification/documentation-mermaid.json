@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "scope": "Local Mermaid diagram rendering repair; no deployed-site verification.",
+  "cause": "VitePress had no Mermaid renderer; mermaid fences were ordinary highlighted source blocks.",
+  "implementation": {
+    "plugin": "vitepress-plugin-mermaid@2.0.17",
+    "renderer": "mermaid@11.15.0",
+    "securityLevel": "strict",
+    "upstream": "https://github.com/emersonbottero/vitepress-plugin-mermaid"
+  },
+  "verification": {
+    "checkLog": "/tmp/inertia-mermaid-check.log",
+    "buildLog": "/tmp/inertia-mermaid-build.log",
+    "browserReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-WJiIT8/summary.json",
+    "success": true,
+    "browserPhases": 14,
+    "diagramChecks": {
+      "name": "mermaid-diagrams",
+      "languages": [
+        "en",
+        "zh-CN"
+      ],
+      "svg": true,
+      "themeSwitch": true,
+      "clientNavigation": true
+    },
+    "dependencyReceipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-dependencies-ytmbkdzo/summary.json",
+    "chineseScreenshot": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-WJiIT8/mermaid-zh.png"
+  }
+}
