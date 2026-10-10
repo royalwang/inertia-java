@@ -6,6 +6,7 @@ sources:
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaMvcConfigurer.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaHandlerValidator.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/HttpSessionStore.java
+  - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaSessionStoreFactory.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/JakartaValidationBridge.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java
@@ -18,7 +19,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/spring-api
   source: reference/spring-api.md
-  sourceRevision: 44ca84ea97d42b78e7352cf1d2c5e56e6435e140b92a3a4b08ab8126b79febbd
+  sourceRevision: cfd65799716fff11c702c38747cf2c162170d163bbaef194dc98d8f7578d8e75
 ---
 
 # Spring API 地图
@@ -33,6 +34,7 @@ MVC 适配器将同步类型化 `InertiaResponse`/`HttpOutcome` 响应及请求�
 | `InertiaHandlerValidator` | 启动时拒绝模糊或不受支持的 handler 声明 |
 | `InertiaErrorPage` | 应用错误 Page 扩展点 |
 | `HttpSessionStore` | 带 namespace 的会话预留、完成、中止及重定向合并 |
+| `InertiaSessionStoreFactory` | 从可信宿主会话身份创建请求专属的存储句柄 |
 | `ValidationBridge` | 将支持的 binding error 转为校验 bag |
 | `JakartaValidationBridge` | 适配 Jakarta 约束违反，不包含被拒绝值 |
 

@@ -18,6 +18,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc',
            'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
+LEGACY_MODULES = list(MODULES)
+MODULES.insert(3, 'inertia-session-redis')
 JAPICMP_VERSION = '0.26.2'
 NS = {'m': 'http://maven.apache.org/POM/4.0.0'}
 
@@ -108,8 +110,8 @@ def snapshot(output):
 def load_candidate(directory):
     directory = directory.resolve()
     data = json.loads((directory / 'candidate.json').read_text())
-    if data.get('format') != 1 or [m['module'] for m in data['modules']] != MODULES:
-        raise ValueError('Candidate must contain the exact library module manifest')
+    if data.get('format') != 1 or [m['module'] for m in data['modules']] not in [LEGACY_MODULES, MODULES]:
+        raise ValueError('Candidate must contain a reviewed complete library module manifest')
     for module in data['modules']:
         for item in [module['artifact'], *module['classpath']]:
             relative = Path(item['path'])
@@ -128,14 +130,18 @@ def compare(old, new, tool, output):
     if 'version=' + JAPICMP_VERSION not in properties.splitlines():
         raise ValueError('Use the pinned japicmp ' + JAPICMP_VERSION + ' tool')
     before, after = load_candidate(old), load_candidate(new)
+    old_modules = {m['module']: m for m in before['modules']}
+    new_modules = {m['module']: m for m in after['modules']}
+    if old_modules.keys() - new_modules.keys():
+        raise ValueError('A previously published library module was removed')
     output = new_directory(output)
     report = {'format': 1, 'toolVersion': JAPICMP_VERSION, 'toolSha256': digest(tool),
               'oldSource': before['source'], 'newSource': after['source'], 'success': False,
               'scope': 'japicmp binary/source checks; behavior, defaults and protocol require separate tests',
               'modules': []}
     # Fail closed for missing dependency classes; never use --ignore-missing-classes.
-    for a, b in zip(before['modules'], after['modules']):
-        name = a['module']
+    for name, a in old_modules.items():
+        b = new_modules[name]
         args = ['java', '-jar', tool, '--old', old / a['artifact']['path'],
                 '--new', new / b['artifact']['path'], '-a', 'protected',
                 '--only-modified', '--error-on-binary-incompatibility', '--error-on-source-incompatibility',
@@ -145,6 +151,8 @@ def compare(old, new, tool, output):
         with (output / (name + '.log')).open('w') as log:
             result = subprocess.run([str(v) for v in args], text=True, stdout=log, stderr=subprocess.STDOUT)
         report['modules'].append({'module': name, 'exit': result.returncode})
+    for name in sorted(new_modules.keys() - old_modules.keys()):
+        report['modules'].append({'module': name, 'added': True, 'exit': 0})
     report['success'] = all(m['exit'] == 0 for m in report['modules'])
     (output / 'summary.json').write_text(json.dumps(report, indent=2) + '\n')
     print(output / 'summary.json')

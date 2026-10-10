@@ -6,6 +6,7 @@ sources:
   - inertia-java/inertia-core/src/main/java/io/inertia/core/SessionStore.java
   - inertia-java/inertia-core/src/main/java/io/inertia/core/MemorySessionStore.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/HttpSessionStore.java
+  - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaSessionStoreFactory.java
   - inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaContext.java
 verification:
   - inertia-java/inertia-core/src/test/java/io/inertia/core/SessionContractTest.java
@@ -42,3 +43,9 @@ Identity rotation/invalidation must follow the host application's policy. Typed 
 Use the existing memory/servlet implementations and session contract/failure tests as reference behavior. Add actual backend tests for overlapping reservations, complete versus abort races, newly merged effects, token reuse, detached domains and unknown failures. A successful single-node test is not cluster failover or exactly-once browser delivery evidence.
 
 No Redis/database-backed distributed store is provided or qualified by this documentation. Decide storage serialization, retention, access controls and consistency in your application. See [flash/session delivery](../guide/flash-session.md) for the user-visible lifecycle and [custom adapters](custom-adapter.md) for transport finalization order.
+
+## Select a request-owned store
+
+Spring Boot accepts an application `InertiaSessionStoreFactory` bean. The MVC adapter calls `create` once per participating request and retains that exact store for redirect/outcome advice. Version-conflict responses finish before creating the store; error Pages use a sessionless context. Existing configurer constructors retain their `HttpSessionStore` default; plain MVC can use the constructor that accepts the factory.
+
+The factory must obtain identity from trusted host session state and return a nonnull handle. Backend connections belong to the application and are closed at shutdown. The application must arrange invalidation, identity rotation and distributed fencing for its backend; replacing the factory alone does not provide those guarantees. Never choose a global per-application store or a key taken directly from a request header/parameter.

@@ -35,6 +35,7 @@
     <module>inertia-core</module>
     <module>inertia-ssr-http</module>
     <module>inertia-vite</module>
+    <module>inertia-session-redis</module>
     <module>inertia-spring-webmvc</module>
     <module>inertia-spring-boot-autoconfigure</module>
     <module>inertia-spring-boot-starter</module>

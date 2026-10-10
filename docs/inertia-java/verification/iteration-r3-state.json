@@ -1,0 +1,148 @@
+{
+  "format": 1,
+  "date": "2026-10-10",
+  "scope": "R3 standalone state prototype and MVC factory extension; not completed R3 delivery",
+  "statePrototypeVerified": true,
+  "r3Complete": false,
+  "standardJavaTests": {
+    "tests": 300,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "realRedisTests": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "note": "Options test overlaps the standard suite; 13 additional IT cases."
+  },
+  "artifacts": {
+    "modules": 8,
+    "binarySourceJavadocArchives": 24,
+    "verifiedDuringApiSnapshot": true
+  },
+  "apiComparison": {
+    "format": 1,
+    "toolVersion": "0.26.2",
+    "toolSha256": "d1eb211b7132eae1f9ee834270a8d19a9652d1983d3fe75ec564666ebef5c18d",
+    "oldSource": {
+      "head": "643ac7b81833cf21978ef37585e026925116f944",
+      "dirty": true
+    },
+    "newSource": {
+      "head": "cedd83d95af72e57f337d8259c4cb77c59a5060f",
+      "dirty": true
+    },
+    "success": true,
+    "scope": "japicmp binary/source checks; behavior, defaults and protocol require separate tests",
+    "modules": [
+      {
+        "module": "inertia-core",
+        "exit": 0
+      },
+      {
+        "module": "inertia-ssr-http",
+        "exit": 0
+      },
+      {
+        "module": "inertia-vite",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-webmvc",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-boot-autoconfigure",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-boot-starter",
+        "exit": 0
+      },
+      {
+        "module": "inertia-testing",
+        "exit": 0
+      },
+      {
+        "module": "inertia-session-redis",
+        "added": true,
+        "exit": 0
+      }
+    ]
+  },
+  "apiToolContracts": {
+    "success": true,
+    "tests": [
+      {
+        "name": "unchanged",
+        "expectedCompatible": true,
+        "exit": 0
+      },
+      {
+        "name": "additive",
+        "expectedCompatible": true,
+        "exit": 0
+      },
+      {
+        "name": "removed-public",
+        "expectedCompatible": false,
+        "exit": 1
+      },
+      {
+        "name": "removed-protected",
+        "expectedCompatible": false,
+        "exit": 1
+      },
+      {
+        "name": "source-only-throws",
+        "expectedCompatible": false,
+        "exit": 1
+      },
+      {
+        "name": "reviewed-module-addition-and-removal",
+        "success": true
+      },
+      {
+        "name": "changed-baseline-input",
+        "rejected": true
+      }
+    ]
+  },
+  "docs": {
+    "check": true,
+    "scope": "140-page docs check and existing seven supported module API maps, now 72 public types; experimental Redis API is not yet promoted to public site"
+  },
+  "runtime": {
+    "version": "Redis server v=7.2.11 sha=00000000:0 malloc=libc bits=64 build=80a0508904e8e722",
+    "executableSha256": "67555e5eefc3398e28668e4a5d0c280539ed59b45097067a31222d60c305056f"
+  },
+  "sourceArchive": {
+    "url": "https://download.redis.io/releases/redis-7.2.11.tar.gz",
+    "sha256": "2f9886eca68d30114ad6a01da65631f8007d802fd3e6c9fac711251e6390323d"
+  },
+  "inputSha256": {
+    "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionBackend.java": "af73ead9f662573a7e333b2538b5ff8615bfac013d6ea95b9dcac9c8c571e28e",
+    "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionException.java": "b65f339f74a51170cdc70a7798a44c90d33f0a7820321bf04b69e80c2044caf0",
+    "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionOptions.java": "91425b60b3d6449d31d038916485bc197d4d085c1f3ea89c867f2a7c109a2e25",
+    "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionStore.java": "be925e89c3b5a05d7d6f70dda7411f62853db58fef3057d915c79ea5138a038d",
+    "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisLostReplyIT.java": "260b46d7f26a6a14c0ebb3afa7849d03439335247bad677cb5424e8e1557a987",
+    "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisSessionOptionsTest.java": "9c9e045936d3ed269f030ccd14b70d143d06caf38d56a6965ab1d839f851f3d9",
+    "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisSessionStoreIT.java": "397e7cf5b67330430ce68c7b17ecac58d38051e5eba1725c65919e7a3ea7d1a2",
+    "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java": "8f7c68324fec20415c199e54f9a3779b39f9fd8599c64de85bc6ac91f92c4fb2",
+    "inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaMvcConfigurer.java": "6de61a08279ec6b88ba80a610d4f4affef0d23983af372afb6dfb9118ee00ffb",
+    "inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaSessionStoreFactory.java": "05937940969ab7663944c994c90f82a1aee02fb32f713bc8102e83367332e5b6",
+    "inertia-java/scripts/verify-redis.py": "21ececfa84eeb26ad0b536748364a8a2c347f02139e7b141cb69be5cab8f4e50"
+  },
+  "archive": {
+    "path": "iteration-r3-state-receipts.json.gz",
+    "sha256": "569aea8535ccff89431cabfede8211fd57cd7f2ec7e896bf9cd2d3d22a41fd52"
+  },
+  "remaining": [
+    "Persist trusted expected epoch through host session lifecycle; rotation/invalidation hooks and failures.",
+    "Explicit optional Redis Boot selection with unchanged default starter behavior.",
+    "Two independent JVM HTTP/browser flow, process crash/network/restart and identity tests.",
+    "Independent Redis consumer and public bilingual guide/API inventory; final aggregate/default regression."
+  ]
+}

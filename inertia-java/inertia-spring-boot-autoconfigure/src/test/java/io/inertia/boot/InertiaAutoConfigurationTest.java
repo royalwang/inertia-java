@@ -37,6 +37,23 @@ class InertiaAutoConfigurationTest {
   }
 
   @Test
+  void applicationSessionFactoryReplacesOnlyTheDefaultFactory() {
+    io.inertia.spring.InertiaSessionStoreFactory selected = request -> new MemorySessionStore();
+    runner
+        .withBean(io.inertia.spring.InertiaSessionStoreFactory.class, () -> selected)
+        .run(
+            context -> {
+              assertThat(context)
+                  .hasNotFailed()
+                  .hasSingleBean(io.inertia.spring.InertiaSessionStoreFactory.class);
+              assertThat(context.getBean(io.inertia.spring.InertiaSessionStoreFactory.class))
+                  .isSameAs(selected);
+              assertThat(context.getBean("inertiaMvcConfigurer"))
+                  .isInstanceOf(io.inertia.spring.InertiaMvcConfigurer.class);
+            });
+  }
+
+  @Test
   void bindsBudgetsAndBuildsBoundedExecutor() {
     runner
         .withPropertyValues(

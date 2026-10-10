@@ -152,8 +152,6 @@ public class InertiaAutoConfiguration {
    * @param codec Page JSON codec
    * @return MVC adapter configuration
    */
-  @Bean
-  @ConditionalOnMissingBean
   public InertiaMvcConfigurer inertiaMvcConfigurer(
       InertiaConfig config,
       ResponseRenderer renderer,
@@ -167,5 +165,47 @@ public class InertiaAutoConfiguration {
         errorPages.getIfAvailable(),
         properties.sessionNamespace(),
         codec);
+  }
+
+  /**
+   * Creates the default single-node request factory unless an application supplies one.
+   *
+   * @param properties validated session namespace
+   * @return factory attaching each request to HttpSessionStore
+   */
+  @Bean
+  @ConditionalOnMissingBean(InertiaSessionStoreFactory.class)
+  public InertiaSessionStoreFactory inertiaSessionStoreFactory(InertiaProperties properties) {
+    return request -> new HttpSessionStore(request.getSession(), properties.sessionNamespace());
+  }
+
+  /**
+   * Creates MVC integration with the selected trusted session factory.
+   *
+   * @param config application rendering policy
+   * @param renderer shared renderer
+   * @param properties execution and namespace settings
+   * @param errorPages optional safe error Page
+   * @param codec shared Page codec
+   * @param sessionStores selected request-owned store factory
+   * @return MVC adapter preserving the historical bean name
+   */
+  @Bean(name = "inertiaMvcConfigurer")
+  @ConditionalOnMissingBean(InertiaMvcConfigurer.class)
+  public InertiaMvcConfigurer inertiaMvcConfigurerWithSessionFactory(
+      InertiaConfig config,
+      ResponseRenderer renderer,
+      InertiaProperties properties,
+      ObjectProvider<InertiaErrorPage> errorPages,
+      PageCodec codec,
+      InertiaSessionStoreFactory sessionStores) {
+    return new InertiaMvcConfigurer(
+        config,
+        renderer,
+        properties.responseTimeout(),
+        errorPages.getIfAvailable(),
+        properties.sessionNamespace(),
+        codec,
+        sessionStores);
   }
 }

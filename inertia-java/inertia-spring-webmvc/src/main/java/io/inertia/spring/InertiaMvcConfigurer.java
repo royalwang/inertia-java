@@ -46,7 +46,7 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
   private final ResponseRenderer renderer;
   private final Duration deadline;
   private final InertiaErrorPage errorPage;
-  private final String sessionNamespace;
+  private final InertiaSessionStoreFactory sessionStores;
 
   /**
    * Creates the MVC integration with no custom error Page and the default session namespace.
@@ -118,12 +118,43 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
       InertiaErrorPage errorPage,
       String sessionNamespace,
       PageCodec codec) {
+    this(
+        config,
+        renderer,
+        deadline,
+        errorPage,
+        sessionNamespace,
+        codec,
+        request -> new HttpSessionStore(request.getSession(), sessionNamespace));
+  }
+
+  /**
+   * Creates MVC integration with a request-owned session store factory. Existing constructors
+   * retain their single-node HttpSession behavior.
+   *
+   * @param config application rendering policy
+   * @param renderer application-owned renderer
+   * @param deadline Servlet response budget
+   * @param errorPage optional error Page policy
+   * @param sessionNamespace validated application namespace
+   * @param codec shared Page codec
+   * @param sessionStores non-null trusted request-to-store factory
+   */
+  public InertiaMvcConfigurer(
+      InertiaConfig config,
+      ResponseRenderer renderer,
+      Duration deadline,
+      InertiaErrorPage errorPage,
+      String sessionNamespace,
+      PageCodec codec,
+      InertiaSessionStoreFactory sessionStores) {
     this.codec = Objects.requireNonNull(codec);
     this.config = config;
     this.renderer = renderer;
     this.deadline = deadline;
     this.errorPage = errorPage;
-    this.sessionNamespace = SessionStore.requireNamespace(sessionNamespace);
+    SessionStore.requireNamespace(sessionNamespace);
+    this.sessionStores = Objects.requireNonNull(sessionStores);
   }
 
   /**
@@ -165,7 +196,7 @@ public final class InertiaMvcConfigurer implements WebMvcConfigurer {
               return false;
             }
             if (request.getAttribute(CONTEXT) == null) {
-              var session = new HttpSessionStore(request.getSession(), sessionNamespace);
+              var session = Objects.requireNonNull(sessionStores.create(request));
               request.setAttribute(SESSION, session);
               request.setAttribute(
                   CONTEXT, new InertiaContext(snapshot, session, codec, renderer.observer()));

@@ -72,6 +72,18 @@ for name, body, expected, marker in scenarios:
                                 capture_output=True, text=True)
         assert binary.returncode == 0, binary.stdout + binary.stderr
     results.append({'name': name, 'expectedCompatible': expected, 'exit': result.returncode})
+# Reviewed legacy candidate can gain a new module, but removing it must fail.
+legacy = candidate('legacy-seven', 'public String existing() { return "old"; } protected int extension() { return 1; }')
+manifest = json.loads((legacy / 'candidate.json').read_text())
+manifest['modules'] = [m for m in manifest['modules'] if m['module'] != 'inertia-session-redis']
+(legacy / 'candidate.json').write_text(json.dumps(manifest))
+api.compare(legacy, old, args.tool, root / 'new-module-report')
+try:
+    api.compare(old, legacy, args.tool, root / 'removed-module-report')
+    raise AssertionError('A removed library module was accepted')
+except ValueError as error:
+    assert 'module was removed' in str(error)
+results.append({'name': 'reviewed-module-addition-and-removal', 'success': True})
 # Input drift must fail before japicmp can mistake it for an approved baseline.
 (old / 'inertia-core.jar').write_bytes(b'tampered')
 try:

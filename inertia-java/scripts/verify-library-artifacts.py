@@ -25,7 +25,7 @@ license_bytes = (root / 'LICENSE').read_bytes()
 assert b'Apache License' in license_bytes and b'END OF TERMS AND CONDITIONS' in license_bytes
 notice_bytes = (root / 'NOTICE').read_bytes()
 assert b'Copyright (c) 2026 royalwang' in notice_bytes
-modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
+modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-session-redis', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
 artifacts = []
 for module in modules:
     base = root / module

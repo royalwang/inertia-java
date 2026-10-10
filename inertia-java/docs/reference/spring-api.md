@@ -6,6 +6,7 @@ sources:
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaMvcConfigurer.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaHandlerValidator.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/HttpSessionStore.java
+  - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaSessionStoreFactory.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/JakartaValidationBridge.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java
@@ -28,6 +29,7 @@ The MVC adapter integrates synchronous typed `InertiaResponse`/`HttpOutcome` res
 | `InertiaHandlerValidator` | Reject ambiguous/unsupported handler declarations during startup |
 | `InertiaErrorPage` | Application hook for an error Page |
 | `HttpSessionStore` | Namespaced session reservation, completion, abort and redirect merge |
+| `InertiaSessionStoreFactory` | Create one request-owned store handle from trusted host session identity |
 | `ValidationBridge` | Turn supported binding errors into validation bags |
 | `JakartaValidationBridge` | Adapt Jakarta constraint violations without rejected values |
 

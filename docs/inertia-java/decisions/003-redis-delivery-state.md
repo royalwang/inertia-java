@@ -1,6 +1,6 @@
 # ADR 003：Redis delivery 的原子状态与失败边界
 
-日期：2026-10-10。状态：设计采用，待真实实现与双实例验收；不能据本ADR声明Redis功能已经完成。
+日期：2026-10-10。状态：设计采用；独立存储原型及真实Redis合同已落地，宿主生命周期/自动装配/双实例验收仍待完成；不能据本ADR声明Redis功能已经完成。
 
 ## 目标和模块
 
@@ -40,3 +40,13 @@ Redis异步复制/failover可能丢失已确认写入。本模块不宣称跨fai
 6. 可选模块/自动装配的独立Maven消费、默认单节点回归、中英文文档与边界说明。
 
 本机Redis/容器运行方式在验收启动时明确记录，不使用共享或生产实例。容器运行时不可用不能把mock当作Redis完成；继续准备可复现本地启动方式与其真实运行证据。
+
+## 实施补充
+
+首批采用Redis 7.2.11 standalone，Spring Data Redis 3.5.5 / Lettuce 6.6.0.RELEASE由Boot 3.5.7 BOM管理（实际依赖以构建树为准）。本机无容器运行时，采用官方源码固定摘要、本地编译和测试拥有的loopback进程完成真实后端合同；这是运行装配替代，不等同容器/集群资格。源码/二进制摘要记录在工程证据中。
+
+传输显式关闭Lettuce autoReconnect、拒绝断连队列，并使用每命令独立连接及并发上限；后续新操作可以重新连接，未知写入不重放。采用Spring脚本缓存的NOSCRIPT→EVAL路径只处理明确未执行的脚本缺失。CAS比较的是opaque字符串，未引入Lua cjson编码。局部冲突重算有一秒monotonic dispatch预算，已提交命令仍受配置command timeout约束，不宣传一秒端到端完成。
+
+宿主适配必须持久化expected epoch。旧host metadata在domain过期/丢失后不能通过null epoch重建；这是后续MVC/Boot工厂的必测约束。原型尚不能替代宿主身份轮换和失效监听。
+
+核对依据（2026-10-10）：[Spring Data Redis scripting](https://docs.spring.io/spring-data/redis/reference/redis/scripting.html)、[Redis TIME](https://redis.io/docs/latest/commands/time/)、[Lettuce command reliability](https://github.com/redis/lettuce/wiki/Command-execution-reliability)、[Redis source build](https://redis.io/docs/latest/operate/oss_and_stack/install/build-stack/)。资料用于能力选择；锁定版本由本地POM和实际构建验证，不据latest文档声明已升级依赖。

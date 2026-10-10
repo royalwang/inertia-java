@@ -1507,7 +1507,7 @@
       "path": "zh/integrations/custom-session.md",
       "title": "自定义会话存储",
       "status": "reviewed",
-      "sourceRevision": "b3848429839cd4bf0bc453dbba17f776cd8cc25c686553cc0ea6bf5286d7b69e"
+      "sourceRevision": "647c16d89526439139f733a1584ccf383fd6b6a264bc23921759e71645bde8ba"
     },
     {
       "id": "integrations/observability",
@@ -1579,7 +1579,7 @@
       "path": "zh/reference/spring-api.md",
       "title": "Spring API 地图",
       "status": "reviewed",
-      "sourceRevision": "44ca84ea97d42b78e7352cf1d2c5e56e6435e140b92a3a4b08ab8126b79febbd"
+      "sourceRevision": "cfd65799716fff11c702c38747cf2c162170d163bbaef194dc98d8f7578d8e75"
     },
     {
       "id": "reference/ssr-vite-api",

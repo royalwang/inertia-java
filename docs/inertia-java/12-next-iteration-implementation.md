@@ -26,7 +26,15 @@
 
 ## R3：Redis投递状态
 
-[ADR 003](decisions/003-redis-delivery-state.md)已记录采用设计：opaque JSON CAS、epoch/lease、撤销、有限冲突重算、未知写入不重放及真实双JVM验收。当前只有设计，尚无Redis模块或真实后端验收，不能声明多实例功能完成。
+[ADR 003](decisions/003-redis-delivery-state.md)已落地独立状态原型，完整R3仍在实施：
+
+- 新增可选 `inertia-session-redis`，core无Spring/Redis依赖。Spring Data Redis 3.5.5 / Lettuce 6.6.0.RELEASE沿用Boot BOM；原子opaque JSON CAS、revision/epoch、Redis server TIME、lease恢复及晚到token拒绝、撤销tombstone、有界终态/字节/冲突/dispatch预算均已实现。
+- 原有MemorySessionStore合并语义直接复用，真实共同合同覆盖Memory/Servlet/Redis；空数组、大整数、精确decimal、error bags、新写入优先级及失败不半写入通过。
+- 新增MVC `InertiaSessionStoreFactory`，Boot允许应用bean替换，原构造器/API入口保留。实际合同验证每请求一次、版本冲突不创建store、默认行为和替换bean；中英文工厂使用说明同步。
+- 传输禁止自动重连重放和断连排队，使用Spring脚本缓存及每命令独立连接。原始TCP代理使真实CAS执行后丢回复，验证UNKNOWN_WRITE且只提交一次；不是mock未知结果测试。
+- 固定Redis 7.2.11官方源码SHA，本地编译loopback进程。`scripts/verify-redis.py`的现有可执行文件路径与从源码构建路径都实际通过14项测试，0失败/跳过。标准reactor install通过300项测试；七旧模块源码/二进制兼容通过，新模块登记为新增，禁止移除旧模块的工具负例通过；24个binary/source/Javadoc档案通过检查。
+- 140页docs check及72个已支持公开类型地图通过；Redis原型API尚未加入公共站点支持声明。未重新执行全套browser aggregate，不借用R2证据声称新分布式HTTP行为合格。
+- 机器证据见[iteration-r3-state.json](verification/iteration-r3-state.json)，模块边界和复现见[原型说明](../../inertia-java/inertia-session-redis/README.md)。宿主expected epoch持久化、轮换/失效、Redis专用自动装配、双JVM/故障/浏览器及独立消费仍未完成，不能声明R3完成。
 
 ## 后续范围
 

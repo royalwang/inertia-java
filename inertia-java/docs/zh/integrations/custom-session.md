@@ -6,6 +6,7 @@ sources:
   - inertia-java/inertia-core/src/main/java/io/inertia/core/SessionStore.java
   - inertia-java/inertia-core/src/main/java/io/inertia/core/MemorySessionStore.java
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/HttpSessionStore.java
+  - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/InertiaSessionStoreFactory.java
   - inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaContext.java
 verification:
   - inertia-java/inertia-core/src/test/java/io/inertia/core/SessionContractTest.java
@@ -15,7 +16,7 @@ translation:
   locale: zh-CN
   canonicalId: integrations/custom-session
   source: integrations/custom-session.md
-  sourceRevision: b3848429839cd4bf0bc453dbba17f776cd8cc25c686553cc0ea6bf5286d7b69e
+  sourceRevision: 647c16d89526439139f733a1584ccf383fd6b6a264bc23921759e71645bde8ba
 ---
 
 # 自定义会话存储
@@ -47,3 +48,9 @@ context 不会盲目重试未知存储结果。完成失败后，它尝试一次
 以现有 memory/Servlet 实现和会话契约/失败测试为参考。对真实后端增加重叠预留、complete/abort 竞争、新合并效果、token 重用、已脱离域和未知失败测试。单节点成功不能证明集群故障切换或浏览器恰好一次交付。
 
 本文档不提供或证明 Redis/数据库分布式存储适配。存储序列化、保留期、访问控制与一致性由应用选择。用户可见生命周期见 [flash/会话](../guide/flash-session.md)，传输收尾顺序见[自定义适配器](custom-adapter.md)。
+
+## 选择请求专属存储
+
+Spring Boot 接受应用提供的 `InertiaSessionStoreFactory` bean。MVC 适配器对每个参与请求只调用一次 `create`，并在重定向或 outcome advice 中继续使用同一个存储句柄。版本冲突响应会在创建存储之前结束；错误 Page 使用无会话 context。现有 configurer 构造器保留 `HttpSessionStore` 默认行为；普通 MVC 可以使用接收工厂的构造器。
+
+工厂必须从可信宿主会话状态取得身份，并返回非 null 句柄。后端连接由应用持有，在应用关闭时释放。应用必须为所选后端安排会话失效、身份轮换及分布式 fencing；仅替换工厂不会自动获得这些保证。不能为所有用户提供同一个全局存储，也不能直接使用请求头或参数作为存储 key。
