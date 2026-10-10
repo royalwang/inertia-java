@@ -28,7 +28,7 @@
 
 14. [运行资格与容量复测](13-runtime-qualification.md)：R2本地诊断、兼容性、重复测量、过载恢复及原始证据。
 
-15. [再次迭代路线](14-follow-up-roadmap.md)：R3收口、Vue SSR、认证会话、Redis运行能力及按需支持矩阵的工作包与验收出口。
+15. [再次迭代路线](14-follow-up-roadmap.md)：N0/N1完成后的执行路线：认证闭环、双节点与Vue接入、Redis TLS/容量，以及按需支持矩阵；包含实施步骤、估算和验收出口。
 
 16. [多实例本地资格记录](15-multi-instance-qualification.md)：R3状态机、宿主生命周期、隔离Maven消费、双JVM/browser故障链路及支持限制。
 
