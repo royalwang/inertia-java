@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "status": "documentation-library-in-progress",
+  "status": "documentation-library-local-complete",
   "baselineCommit": "86d5c3ed64ed993abba84905aedd827879d610ee",
   "language": {
     "canonical": "en",
@@ -29,9 +29,9 @@
     "candidateVersion": "1.6.4",
     "root": "inertia-java/docs",
     "defaultBase": "/inertia-java/",
-    "deploymentStatus": "published-fb0b870; complete Chinese expansion pending publication",
+    "deploymentStatus": "outside-current-acceptance-scope; historical observations retained",
     "implementedVersion": "1.6.4",
-    "buildStatus": "local-verified-preview",
+    "buildStatus": "local-verified-complete",
     "hostingDecision": "GitHub Pages repository root /inertia-java/ (maintainer confirmed)",
     "javadoc": {
       "version": "0.1.0-SNAPSHOT",
@@ -57,7 +57,7 @@
       "registeredReleases": 0,
       "policy": "Actual origin tag, stable matching Maven/catalog/pages, immutable source commit and verified archive SHA-256; no synthetic published releases"
     },
-    "hostingObserved": "GitHub Pages deployment 37966591198 succeeded at fb0b870; live home/security/tutorial HTTP 200, source footer absent and private-report link present. New full Chinese coverage has not been published."
+    "hostingObserved": "Historical observation only, not refreshed for local completion: GitHub Pages deployment 37966591198 succeeded at fb0b870; live home/security/tutorial HTTP 200, source footer absent and private-report link present. New full Chinese coverage has not been published."
   },
   "sections": [
     {
@@ -1741,5 +1741,13 @@
       "status": "reviewed",
       "sourceRevision": "e4c9be60cb2944e901c684ccff67eea7f4a72916aeaeb4567e86c60288f11d34"
     }
-  ]
+  ],
+  "acceptance": {
+    "scope": "local-only",
+    "maintainerDecisionDate": "2026-10-10",
+    "remotePublicationRequired": false,
+    "remoteCiRequired": false,
+    "realReleaseTagRequired": false,
+    "evidence": "docs/inertia-java/verification/documentation-local-completion.json"
+  }
 }

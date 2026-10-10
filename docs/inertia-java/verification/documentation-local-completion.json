@@ -1,0 +1,253 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-10T01:55:20.216761+00:00",
+  "scope": "D0-D4 documentation delivery completed using local acceptance only, as explicitly requested by the maintainer on 2026-10-10.",
+  "maintainerInstruction": "你可以本地验证，不要验证github发布后的，不要卡在这里",
+  "status": "complete",
+  "source": {
+    "head": "31e0ee11963978dc1f0e09abdf0d1537c39db9b4",
+    "uncommitted": true,
+    "changes": "Engineering acceptance scope and completion records only; no runtime or reader-facing page changes."
+  },
+  "verification": {
+    "check": {
+      "success": true,
+      "log": "/tmp/inertia-local-completion-check.log",
+      "markdownFiles": 141,
+      "englishPages": 70,
+      "reviewedChinesePages": 70,
+      "nodeContracts": 23,
+      "pythonContracts": 10,
+      "publicTypes": 71,
+      "memberAnchors": 496,
+      "configurationFields": 19,
+      "timers": 11
+    },
+    "build": {
+      "success": true,
+      "log": "/tmp/inertia-local-completion-build.log"
+    },
+    "browser": {
+      "success": true,
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-docs-smoke-wBmxfj/summary.json",
+      "phases": [
+        {
+          "name": "bilingual-sitemap",
+          "pages": 140,
+          "exactCatalogManifest": true,
+          "languageCounterparts": true,
+          "canonicalOriginAndConfiguredBase": true
+        },
+        {
+          "name": "keyboard-search",
+          "enterOpens": true,
+          "controlKOpens": true,
+          "inputReceivesFocus": true,
+          "escapeClosesAndRestoresFocus": true
+        },
+        {
+          "name": "canonical-code-and-clipboard",
+          "copies": [
+            {
+              "route": "getting-started/first-application",
+              "language": "xml",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "getting-started/first-application",
+              "language": "java",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "getting-started/first-application",
+              "language": "tsx",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "reference/configuration",
+              "language": "yaml",
+              "canonicalSourceExceptTerminalNewline": false,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "getting-started/first-application",
+              "language": "sh",
+              "canonicalSourceExceptTerminalNewline": false,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "zh/getting-started/first-application",
+              "language": "xml",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "zh/getting-started/first-application",
+              "language": "java",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "zh/getting-started/first-application",
+              "language": "tsx",
+              "canonicalSourceExceptTerminalNewline": true,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "zh/reference/configuration",
+              "language": "yaml",
+              "canonicalSourceExceptTerminalNewline": false,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            },
+            {
+              "route": "zh/getting-started/first-application",
+              "language": "sh",
+              "canonicalSourceExceptTerminalNewline": false,
+              "keyboardCopy": true,
+              "clipboardMatchesRenderedText": true,
+              "visibleFocus": true
+            }
+          ]
+        },
+        {
+          "name": "tutorial-source-links",
+          "languages": [
+            "en",
+            "zh-CN"
+          ],
+          "canonicalRepositoryPath": true
+        },
+        {
+          "name": "direct-page-loads",
+          "pages": 70
+        },
+        {
+          "name": "local-search",
+          "terms": [
+            "flash",
+            "deferred",
+            "requireSsr",
+            "session-namespace"
+          ]
+        },
+        {
+          "name": "application-search-navigation",
+          "journeys": [
+            {
+              "term": "CSRF",
+              "route": "guide/csrf"
+            },
+            {
+              "term": "deep merge",
+              "route": "props/merging"
+            },
+            {
+              "term": "once",
+              "route": "props/once"
+            },
+            {
+              "term": "renderer health",
+              "route": "ssr/health"
+            },
+            {
+              "term": "response-timeout",
+              "route": "reference/configuration"
+            },
+            {
+              "term": "inertia.ssr_http",
+              "route": "reference/metrics"
+            },
+            {
+              "term": "private",
+              "route": "community/security"
+            }
+          ]
+        },
+        {
+          "name": "canonical-source-downloads",
+          "byteIdentical": true
+        },
+        {
+          "name": "generated-javadoc",
+          "modules": 7,
+          "publicTypes": 71,
+          "memberAnchors": 496,
+          "entryAndAttributionBytes": true,
+          "representativeMethodNavigation": true
+        },
+        {
+          "name": "bilingual-rendered-links",
+          "pages": 140,
+          "sameLocaleChineseLinks": true,
+          "actualHeadingAnchors": true
+        },
+        {
+          "name": "complete-chinese-guides",
+          "pages": 70,
+          "perPageEnglishCounterparts": true,
+          "allSidebarLinksChinese": true,
+          "chineseSearchNavigation": [
+            "校验",
+            "预算",
+            "会话",
+            "生命周期",
+            "深度合并",
+            "渲染器健康",
+            "私密"
+          ],
+          "canonicalSourceDownload": true,
+          "javadocEntries": 7,
+          "privateSecurityReportLink": true
+        },
+        {
+          "name": "chinese-mobile-navigation",
+          "horizontalOverflow": false
+        },
+        {
+          "name": "mobile-navigation-and-console",
+          "errors": []
+        }
+      ]
+    },
+    "priorLocalEvidence": [
+      "documentation-full-chinese.json",
+      "documentation-sitemap.json",
+      "documentation-javadoc-complete.json",
+      "documentation-site-interactions.json",
+      "documentation-d2.json",
+      "documentation-version-tooling.json",
+      "documentation-verification-followup.json"
+    ]
+  },
+  "futureReleaseOperations": [
+    "Publish updated GitHub Pages artifact and verify public deployment during release operations.",
+    "Create an actual stable release, register its immutable snapshot, and verify retained-version navigation."
+  ],
+  "boundaries": [
+    "No GitHub CI or deployed-site checks performed for this completion.",
+    "No claim that updated public deployment or real stable-tag navigation was verified.",
+    "Generated Javadoc and upstream resources retain their original language.",
+    "Historical verification records retain their original collection scope and status."
+  ]
+}
