@@ -1,0 +1,31 @@
+{
+  "name": "inertia-java-vue-example",
+  "version": "0.1.0-snapshot.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build.mjs",
+    "typecheck": "vue-tsc --noEmit",
+    "ssr": "node dist/ssr/ssr.js",
+    "test:browser": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@inertiajs/vue3": "3.8.0",
+    "@vue/server-renderer": "3.5.43",
+    "vue": "3.5.43"
+  },
+  "devDependencies": {
+    "@inertiajs/vite": "3.8.0",
+    "@playwright/test": "1.64.0",
+    "@types/node": "26.6.4",
+    "@vitejs/plugin-vue": "6.0.10",
+    "typescript": "5.9.3",
+    "vite": "8.3.3",
+    "vue-tsc": "3.3.12"
+  }
+}

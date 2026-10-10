@@ -1,0 +1,6 @@
+:root { font-family: system-ui, sans-serif; color: #243044; background: #f6f8fc; }
+body { margin: 0; } main { max-width: 56rem; margin: 3rem auto; padding: 2rem; background: white; border-radius: 1rem; }
+nav { display: flex; gap: 1.5rem; margin-top: 2rem; } a { color: #2849b9; margin-right: 1rem; }
+input, button { font: inherit; padding: .6rem .9rem; margin: .5rem; } label { display: inline-block; }
+[role=alert] { color: #a51b35; } [role=status] { color: #11613b; }
+@media (max-width: 600px) { main { margin: 0; padding: 1rem; border-radius: 0; } }

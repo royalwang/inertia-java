@@ -1,10 +1,11 @@
 ---
 title: "支持版本与分发状态"
-description: "了解经过验证的 Java、Boot、React、Node 组合及源码快照的分发方式。"
+description: "了解经过验证的 Java、Boot、React、Vue、Node 组合及源码快照的分发方式。"
 version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/pom.xml
   - inertia-java/examples/spring-react/frontend/package-lock.json
+  - inertia-java/examples/spring-vue/frontend/package-lock.json
   - inertia-java/compatibility/README.md
 verification:
   - inertia-java/scripts/verify.mjs
@@ -13,7 +14,7 @@ translation:
   locale: zh-CN
   canonicalId: getting-started/compatibility
   source: getting-started/compatibility.md
-  sourceRevision: b25ea90281722db0cca3dc09a61f469728a50009613ba2f446d9f50e6371a5bc
+  sourceRevision: e01af170a22c76752c112befef7bcfb666578b6582b1b44610ba54f13309ef94
 ---
 
 # 支持版本与分发状态
@@ -33,7 +34,8 @@ translation:
 | 官方 React/Vite Inertia 包 | 3.8.0，由示例锁定 |
 | React / React DOM | 19.3.0 |
 | Vite | 8.3.3 |
-| TypeScript | 7.0.2 |
+| TypeScript | React 7.0.2；Vue 5.9.3 / vue-tsc 3.3.12 |
+| Vue / Vue server renderer | 3.5.43；@inertiajs/vue3 3.8.0 |
 | Playwright | 1.64.0；CI 使用与之配对的 Chromium |
 
 复现构建时查看 POM 和前端锁文件。文档使用独立的私有锁文件和 VitePress 工具链，这些依赖不属于应用运行时。
@@ -50,7 +52,9 @@ Java 将返回导航限制在当前 origin，将接受的绝对返回 URL 规范
 
 仅 except 的 partial 选择遵循此 Rust 实现：未排除的 optional prop 可能执行。once/TTL 到期表示和 Java scroll DTO 的使用方式也有明确边界。不能直接假定其他 Inertia 适配器行为一致，应先查看矩阵。
 
-当前证据不覆盖 WebFlux、分布式会话实现、所有官方客户端适配器、Windows 进程监督或任意依赖升级。Servlet/session 或 Node 进程边界改变后，需要重新验证。
+[Vue 示例](vue.md)单独验证 Chromium 上的生产构建 SSR/hydration、导航、校验/CSRF/flash、partial/optional/deferred props、scroll/once 及 Node 故障恢复。不由此推导 Vue 开发模式、React 发布启动器或其他客户端/浏览器版本。
+
+可选 standalone Redis 投递见[自定义会话存储](../integrations/custom-session.md)，宿主会话共享需分别配置。当前证据不覆盖 WebFlux、Svelte、Redis TLS/Cluster/Sentinel、Windows 进程监督或任意依赖升级。Servlet/session 或 Node 进程边界改变后，需要重新验证。
 
 ## 分发状态
 

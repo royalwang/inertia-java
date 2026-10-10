@@ -95,7 +95,7 @@ Tests use explicitly synthetic metadata and temporary Git/archive fixtures. They
 
 ## Maintain Chinese translations
 
-The locale menu opens the language home. All 70 canonical articles have reviewed Chinese counterparts; page notices switch to the corresponding article and Chinese navigation/body links retain the locale. Generated Javadoc and upstream resources retain their original language. Chinese search uses standard `Intl.Segmenter` word segmentation through VitePress/MiniSearch’s supported tokenizer option. Both indexing and browser queries use that tokenizer.
+The locale menu opens the language home. All 71 canonical articles have reviewed Chinese counterparts; page notices switch to the corresponding article and Chinese navigation/body links retain the locale. Generated Javadoc and upstream resources retain their original language. Chinese search uses standard `Intl.Segmenter` word segmentation through VitePress/MiniSearch’s supported tokenizer option. Both indexing and browser queries use that tokenizer.
 
 Each translated page retains its canonical page ID and path under `zh/`, library version, source/verification evidence and the SHA-256 of the complete English Markdown file. The catalog records the same revision. `docs:check` rejects stale revisions, altered executable fences or canonical code-import directives, missing canonical inline API/configuration tokens, unreviewed/missing translations and Chinese Markdown outside the manifest. Mermaid labels may be translated; shell/XML/Java fences and imported source paths remain identical to the already verified canonical instructions.
 

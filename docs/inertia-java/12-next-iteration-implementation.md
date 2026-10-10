@@ -1,6 +1,6 @@
 # 下一轮迭代实施台账
 
-日期：2026-10-10。对应[路线图](11-next-iteration-roadmap.md)。整体状态：R1–R3完成本地交付；R4按路线图的采用需求独立排期。
+日期：2026-10-10。对应[路线图](11-next-iteration-roadmap.md)。整体状态：R1–R3及R4首个Vue示例完成本地交付；Svelte/WebFlux实现按原路线条件另行排期。
 
 ## R1：候选与独立消费
 
@@ -41,6 +41,14 @@
 - 隔离Maven消费解析八库及source/Javadoc，在仓库外编译独立应用，再完成双JVM六阶段HTTP/浏览器/故障验证；不借用reactor编译JAR替代独立消费。
 - Rust freshness、140页文档check/build/browser通过；Javadoc地图为八模块、81公开类型、570成员锚点。详细要求审查、支持限制及原始证据见[多实例资格记录](15-multi-instance-qualification.md)和[iteration-r3.json](verification/iteration-r3.json)。
 
+## R4：Vue示例与条件性适配设计
+
+- 新增独立spring-vue业务应用与Vue/Vite/Node入口，复用公共Java库；React/Vue共享构建摘要与资源发布工具，未复制Java协议。
+- 锁定Inertia3.8.0、Vue/server-renderer3.5.43、Vite8.3.3、TypeScript5.9.3；Java21/Boot3.5.7不变。独立Maven消费后执行实际SSR/hydration、navigation、forms/CSRF/flash、partial/optional/deferred、scroll/once及SSR停机恢复；Node registry/version/tamper拒绝通过。
+- 完整aggregate27阶段、305标准Java测试、八库兼容/24制品与142页双语文档14阶段浏览器通过。Vue七阶段和独立依赖清单见[资格记录](16-vue-qualification.md)。
+- [ADR004](decisions/004-webflux-adapter-boundary.md)完成WebFlux返回值、取消、WebSession、Security、错误及提交设计；Svelte单列工作包。两个适配器实现仍以实际采用需求和独立预算为启动条件，没有宣称支持。
+- 原路线要求逐项判断见[完成审查](17-roadmap-completion-audit.md)。
+
 ## 后续范围
 
-R4仍依路线图的采用需求单独排期，Vue、Svelte、WebFlux均未声明合格；后续工作包见[再次迭代路线](14-follow-up-roadmap.md)。公共发布与GitHub部署不作为本地功能交付阻塞项。
+Vue生产构建路径已合格；Svelte/WebFlux实现仍依路线图采用需求单独排期。后续工作包见[再次迭代路线](14-follow-up-roadmap.md)。公共发布与GitHub部署不作为本地功能交付阻塞项。

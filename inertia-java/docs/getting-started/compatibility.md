@@ -1,10 +1,11 @@
 ---
 title: "Supported versions and distribution status"
-description: "Read verified Java/Boot/React/Node/browser combinations and distinguish source snapshots from released artifacts."
+description: "Read verified Java/Boot/React/Vue/Node/browser combinations and distinguish source snapshots from released artifacts."
 version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/pom.xml
   - inertia-java/examples/spring-react/frontend/package-lock.json
+  - inertia-java/examples/spring-vue/frontend/package-lock.json
   - inertia-java/compatibility/README.md
 verification:
   - inertia-java/scripts/verify.mjs
@@ -28,7 +29,8 @@ This page describes the repository's verification baseline, not a promise that e
 | Official React/Vite Inertia packages | 3.8.0, locked by the example |
 | React / React DOM | 19.3.0 |
 | Vite | 8.3.3 |
-| TypeScript | 7.0.2 |
+| TypeScript | React 7.0.2; Vue 5.9.3 / vue-tsc 3.3.12 |
+| Vue / Vue server renderer | 3.5.43; @inertiajs/vue3 3.8.0 |
 | Playwright | 1.64.0, with its paired Chromium in CI |
 
 Read the POMs and frontend lockfile when reproducing a build. The documentation has its own private lockfile and VitePress toolchain; those dependencies are not application runtime dependencies.
@@ -45,7 +47,9 @@ Java restricts back navigation to the current origin, canonicalizes accepted abs
 
 The except-only partial selection rule follows this Rust implementation: non-excluded optional props can execute. Once/TTL expiry representation and Java scroll DTO ergonomics have their own documented boundaries. Consult the matrix before assuming another Inertia adapter's behavior.
 
-The current evidence does not establish WebFlux integration, a distributed session implementation, every official client adapter, Windows process supervision or arbitrary dependency upgrades. The servlet/session and Node process behavior documented here should be requalified when those boundaries change.
+The [Vue example](vue.md) separately covers production-build SSR/hydration, navigation, validation/CSRF/flash, partial/optional/deferred props, scroll/once and Node failure/recovery in Chromium. Vue development mode, the React release launcher and other client/browser versions are not implied.
+
+Optional standalone Redis delivery is described in [custom session stores](../integrations/custom-session.md); host-session sharing is configured separately. The current evidence does not establish WebFlux, Svelte, Redis TLS/Cluster/Sentinel, Windows process supervision or arbitrary dependency upgrades. The servlet/session and Node process behavior documented here should be requalified when those boundaries change.
 
 ## Distribution status
 

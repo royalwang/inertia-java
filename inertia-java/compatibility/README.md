@@ -64,7 +64,8 @@ Expiry is a client reuse instruction, not a server cache, authorization or consi
 | Component | Current evidence | Not implied |
 |---|---|---|
 | React adapter / Inertia core | Locked @inertiajs/react3.8.0 and its locked core; real SSR/CSR navigation, forms, deferred, scroll/once, bigint, history, CSP/root and recovery checks | Other Inertia client versions or future protocol changes |
-| Vue/Svelte | Framework-independent Page protocol only; no runnable adapter SSR example validated | Vue/Svelte hydration or framework runtime compatibility |
+| Vue adapter | Locked @inertiajs/vue3 3.8.0, Vue/server-renderer 3.5.43, Vite 8.3.3, TypeScript 5.9.3; actual production SSR/hydration, forms/CSRF/flash, partial/optional/deferred, scroll/once and Node stop/recovery | Vue development integration, React release launcher, other client/browser versions or Redis host deployment |
+| Svelte | Framework-independent Page protocol only; no runnable adapter SSR example validated | Svelte hydration or runtime compatibility |
 | Java/Spring | Java21.0.1 locally, Boot3.5.7/BOM-managed dependencies, Servlet MVC; local full Maven contracts | Other JDK/Boot branches, WebFlux or servlet containers not exercised |
 | Browser | Chrome154.0.8037.99 locally; paired Chromium156.0.8078.4 in prior local runs; workflow requests paired Chromium | Firefox/WebKit or full browser-version coverage |
 | CI | Java consumes all stored parity cases; Rust freshness gate is a separate maintainer command | Fresh Rust generation in the existing Java CI or proof about unpublished commits |

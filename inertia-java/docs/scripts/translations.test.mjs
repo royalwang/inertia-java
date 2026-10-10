@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 const catalog = JSON.parse(readFileSync(resolve(root, '../../docs/inertia-java/open-source-docs-catalog.json')))
 const read = path => readFileSync(resolve(root, path), 'utf8')
 test('all canonical pages have reviewed translations with matching revisions and executable fences', () => {
-  assert.match(checkTranslations(catalog, read), /70 reviewed Chinese pages/)
+  assert.match(checkTranslations(catalog, read), /71 reviewed Chinese pages/)
 })
 test('an English edit requires translation review', () => {
   assert.throws(() => checkTranslations(catalog, path => read(path) + (path === 'index.md' ? '\nChanged English.\n' : '')), /Stale English revision/)

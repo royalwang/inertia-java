@@ -10,3 +10,5 @@ inertia-java/examples/spring-react/frontend/.inertia/
 inertia-java/docs/.vitepress/cache/
 inertia-java/docs/.vitepress/dist/
 inertia-java/docs/public/
+/inertia-java/examples/spring-vue/frontend/dist/
+/inertia-java/examples/spring-vue/frontend/.inertia/

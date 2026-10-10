@@ -239,6 +239,24 @@ public class GuideSmoke {
         reports = list((output / 'redis-cluster').glob('*/summary.json'))
         assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
         report['redisCluster'] = str(reports[0])
+    if os.environ.get('INERTIA_VERIFY_VUE') == 'true':
+        vue = output / 'vue-consumer'
+        vue.mkdir()
+        shutil.copytree(root / 'examples/spring-vue/src', vue / 'src')
+        pom = vue / 'pom.xml'
+        text = (root / 'examples/spring-vue/pom.xml').read_text()
+        repositories = f'<repositories><repository><id>isolated-inertia-fixture</id><url>{repository.as_uri()}</url><snapshots><enabled>true</enabled><checksumPolicy>fail</checksumPolicy></snapshots></repository></repositories>'
+        text = text.replace('<relativePath>../../pom.xml</relativePath>', '<relativePath/>').replace('<build>', repositories + '<build>')
+        pom.write_text(text)
+        run('vue-consumer-build', [str(root / 'mvnw'), '-B', '-ntp', '-s', str(consumer / 'settings.xml'), '-Dmaven.repo.local=' + str(cache), '-f', str(pom), 'package'], vue)
+        jar = vue / 'target' / f'spring-vue-{version}.jar'
+        assert jar.is_file(), 'Independent Vue consumer executable missing'
+        os.environ['INERTIA_VUE_CONSUMER_JAR'] = str(jar)
+        os.environ['INERTIA_DOCS_OUTPUT'] = str(output / 'vue-browser')
+        run('vue-browser', ['node', str(root / 'examples/spring-vue/frontend/scripts/verify.mjs')])
+        reports = list((output / 'vue-browser').glob('*/summary.json'))
+        assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
+        report['vueBrowser'] = str(reports[0])
     report['success'] = True
 except Exception as error:
     report['failure'] = str(error)

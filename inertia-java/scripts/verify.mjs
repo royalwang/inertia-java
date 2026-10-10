@@ -63,6 +63,12 @@ try {
   await run('npm-ci', 'npm', ['ci'])
   await run('typecheck', 'npm', ['run', 'typecheck'])
   await run('build', 'npm', ['run', 'build'])
+  if (process.env.INERTIA_VERIFY_VUE === 'true') {
+    const vue = resolve(root, 'examples/spring-vue/frontend')
+    await run('vue-npm-ci', 'npm', ['ci'], vue)
+    await run('vue-typecheck', 'npm', ['run', 'typecheck'], vue)
+    await run('vue-build', 'npm', ['run', 'build'], vue)
+  }
   await run('dependency-inventory', 'python3', [resolve(root, 'scripts/dependency-inventory.py'), resolve(output, 'dependencies')], root)
   copyFileSync(resolve(frontend, 'dist/build.json'), resolve(output, 'build.json'))
   receipt = 'build.json'
@@ -81,7 +87,9 @@ try {
   if (process.env.INERTIA_REDIS_SERVER) {
     await run('redis-state', 'python3', [resolve(root, 'scripts/verify-redis.py'), '--redis-server', process.env.INERTIA_REDIS_SERVER, '--output', resolve(output, 'redis-state')], root)
     await run('redis-host-lifecycle', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', '-pl', 'inertia-spring-boot-autoconfigure', '-am', 'test', '-Dtest=RedisHostLifecycleIT', '-Dsurefire.failIfNoSpecifiedTests=false', '-Dinertia.redis.server=' + process.env.INERTIA_REDIS_SERVER], root)
-    await run('redis-independent-consumer', 'python3', [resolve(root, 'scripts/verify-maven-consumer.py')], root, { INERTIA_CONSUMER_OUTPUT: resolve(output, 'redis-consumer') })
+  }
+  if (process.env.INERTIA_REDIS_SERVER || process.env.INERTIA_VERIFY_VUE === 'true') {
+    await run('independent-consumer', 'python3', [resolve(root, 'scripts/verify-maven-consumer.py')], root, { INERTIA_CONSUMER_OUTPUT: resolve(output, 'independent-consumer') })
   }
 } catch (error) {
   failure = error.message

@@ -41,6 +41,7 @@
     <module>inertia-spring-boot-starter</module>
     <module>inertia-testing</module>
     <module>examples/spring-react</module>
+    <module>examples/spring-vue</module>
   </modules>
   <dependencyManagement>
     <dependencies>

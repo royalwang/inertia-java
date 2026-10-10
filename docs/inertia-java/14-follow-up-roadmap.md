@@ -4,7 +4,7 @@
 
 本轮目标：先完成 Redis 多实例交付收口，再让第二种前端真正可用，随后验证认证会话与运行维护。继续保留框架无关 core、薄 MVC 适配层和可选 Redis 模块。功能验收在本地完成，公开发布和 GitHub 部署单列，不作为实现阻塞项。
 
-进展补充：N0已在本路线规划后的收口中完成，直接证据见[多实例资格记录](15-multi-instance-qualification.md)；下文“当前起点”保留规划时快照。
+进展补充：N0与N1已完成，直接证据见[多实例资格记录](15-multi-instance-qualification.md)及[Vue资格记录](16-vue-qualification.md)；下文“当前起点”保留规划时快照。
 
 ## 1. 当前起点
 

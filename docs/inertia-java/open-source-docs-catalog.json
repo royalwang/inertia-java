@@ -274,6 +274,19 @@
       ]
     },
     {
+      "id": "getting-started/vue",
+      "path": "getting-started/vue.md",
+      "title": "Run the Vue example",
+      "section": "getting-started",
+      "phase": "D1",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Build and run Spring MVC with Vue SSR and real forms/scrolling.",
+      "dependsOn": [
+        "getting-started/overview"
+      ]
+    },
+    {
       "id": "getting-started/first-application",
       "path": "getting-started/first-application.md",
       "title": "Create your first Spring application",
@@ -1244,7 +1257,7 @@
       "path": "zh/getting-started/compatibility.md",
       "title": "支持版本与分发状态",
       "status": "reviewed",
-      "sourceRevision": "b25ea90281722db0cca3dc09a61f469728a50009613ba2f446d9f50e6371a5bc"
+      "sourceRevision": "e01af170a22c76752c112befef7bcfb666578b6582b1b44610ba54f13309ef94"
     },
     {
       "id": "concepts/request-lifecycle",
@@ -1741,6 +1754,14 @@
       "title": "Java API 指南",
       "status": "reviewed",
       "sourceRevision": "e4c9be60cb2944e901c684ccff67eea7f4a72916aeaeb4567e86c60288f11d34"
+    },
+    {
+      "id": "getting-started/vue",
+      "locale": "zh-CN",
+      "path": "zh/getting-started/vue.md",
+      "title": "运行 Vue 示例",
+      "status": "reviewed",
+      "sourceRevision": "8c1b3b48a2cfda47446aba375f9067d7e1f0448d41aa2b1acb6ac070bbd091f9"
     }
   ],
   "acceptance": {

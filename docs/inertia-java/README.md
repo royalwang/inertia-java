@@ -1,8 +1,8 @@
 # Inertia Java 服务端适配与 SSR 项目设计
 
-日期：2026-10-10。状态：J0–J7首版及双语文档、下一轮R1–R3本地交付完成；R4按需求独立排期。
+日期：2026-10-10。状态：J0–J7首版及双语文档、下一轮R1–R3本地交付完成；R4首个Vue示例已完成，Svelte/WebFlux实现按需另行排期。
 
-目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已交付八个可复用 Java 模块及完整 React/Node 示例，开发与生产模式均通过实际验收；完成范围和正式发布边界见第八项逐项审查。
+目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React/Vue + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已交付八个可复用 Java 模块及完整 React/Node 示例，开发与生产模式均通过实际验收；完成范围和正式发布边界见第八项逐项审查。
 
 ## 阅读顺序
 
@@ -32,12 +32,16 @@
 
 16. [多实例本地资格记录](15-multi-instance-qualification.md)：R3状态机、宿主生命周期、隔离Maven消费、双JVM/browser故障链路及支持限制。
 
+17. [Vue本地资格记录](16-vue-qualification.md)：独立Vue示例、真实SSR/client链路、隔离消费与支持边界。
+
+18. [原路线要求审查](17-roadmap-completion-audit.md)：逐项要求、直接证据、条件性后续与发布范围。
+
 ## 主要决策
 
 - Java 负责业务路由、鉴权、数据查询、Page 对象、Inertia 协议和根 HTML；JavaScript 运行时负责 React/Vue/Svelte SSR。保持现有 Inertia 客户端，无需另建客户端路由或同用途 REST API。
 - 保留框架无关核心和薄适配层。首个适配器使用 Spring MVC；WebFlux 作为后续独立模块，避免在一个实现中混合阻塞与响应式模型。
 - Java 21 为设计基线，Maven 多模块管理。Spring Boot、Jackson、Node、Inertia 与 Vite 的具体补丁版本在实施启动时锁定，并保存依赖清单与前端 lockfile。本文不宣称任何版本是当前最新版本。
-- 首个示例选择 React + TypeScript。协议核心面向所有官方客户端；Vue/Svelte 的 SSR 示例后续分别验证。
+- 首个示例选择 React + TypeScript。协议核心面向所有官方客户端；Vue SSR已有独立示例与实际交互验收；Svelte仍需独立验证。
 - 先完成 HTML/JSON、重定向、版本、会话、partial 和 SSR/hydration 的完整用户链路，再扩展 merge/once/scroll 等能力。
 - SSR 故障允许回退 CSR，props/权限查询故障不能伪装成 SSR 故障而被吞掉。
 

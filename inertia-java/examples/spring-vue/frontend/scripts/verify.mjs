@@ -1,0 +1,121 @@
+import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
+import { readFileSync, cpSync, mkdtempSync, appendFileSync, rmSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { chromium, expect } from '@playwright/test'
+import { rehearsal, freePort } from '../../../../docs/scripts/processes.mjs'
+
+const frontend = fileURLToPath(new URL('..', import.meta.url))
+const example = resolve(frontend, '..')
+const check = rehearsal('inertia-vue-browser')
+const jar = process.env.INERTIA_VUE_CONSUMER_JAR ?? resolve(example, 'target/spring-vue-0.1.0-SNAPSHOT.jar')
+check.evidence.consumerJarSha256 = createHash('sha256').update(readFileSync(jar)).digest('hex')
+check.evidence.driverSha256 = createHash('sha256').update(readFileSync(fileURLToPath(import.meta.url))).digest('hex')
+check.evidence.node = process.version
+const receipt = JSON.parse(readFileSync(resolve(frontend, 'dist/build.json')))
+check.evidence.buildId = receipt.buildId
+let browser, error, tampered
+try {
+  const ssrPort = await freePort()
+  const startRenderer = () => check.start(process.execPath, ['dist/ssr/ssr.js'], frontend, 'renderer-' + Date.now(), { SSR_PORT: String(ssrPort) })
+  let renderer = startRenderer()
+  const healthy = async () => { try { return (await fetch(`http://127.0.0.1:${ssrPort}/health`)).ok } catch { return false } }
+  await check.wait('renderer', healthy)
+  const application = check.start('java', ['-jar', jar, '--server.address=127.0.0.1', '--server.port=0', '--spring.main.banner-mode=off', '--inertia.frontend=' + frontend, '--inertia.ssr=' + `http://127.0.0.1:${ssrPort}/render`], example, 'java')
+  let port
+  await check.wait('Java application', () => {
+    if (application.closed) throw new Error('Java exited: ' + application.transcript)
+    port = application.transcript.match(/Tomcat started on port (\d+)/)?.[1]
+    return port
+  })
+  const base = `http://127.0.0.1:${port}`
+  const renderRequest = value => fetch(`http://127.0.0.1:${ssrPort}/render`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) }).then(response => response.json())
+  const invalid = await renderRequest({ component: 'Unknown', props: {}, url: '/', version: receipt.buildId })
+  assert.equal(invalid.invalidPage, true)
+  assert.equal(invalid.body, '')
+  const stale = await renderRequest({ component: 'Users', props: {}, url: '/', version: 'different-build' })
+  assert.equal(stale.body, '')
+  assert.equal(stale.buildId, receipt.buildId)
+  check.evidence.phases.push({ name: 'node-page-registry-and-build-mismatch-rejection', success: true })
+  const html = await (await fetch(base + '/users')).text()
+  assert.ok(html.includes('data-server-rendered') && html.includes('Ada'))
+  browser = await chromium.launch({ channel: process.env.INERTIA_BROWSER_CHANNEL ?? 'chromium' })
+  check.evidence.browser = browser.version()
+  const context = await browser.newContext(), page = await context.newPage(), errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  page.on('console', message => { if (['error', 'warning'].includes(message.type())) errors.push(message.text()) })
+  const deferred = page.waitForResponse(response => response.request().headers()['x-inertia-partial-data'] === 'stats')
+  await page.goto(base + '/users')
+  await expect(page.getByTestId('stats')).toHaveText('Total: 1')
+  assert.equal((await (await deferred).json()).props.stats.total, 1)
+  await page.evaluate(() => { window.vueDocument = 'same-document' })
+  await page.getByRole('button', { name: 'Partial reload', exact: true }).click()
+  await expect(page.getByTestId('phase')).toHaveText('Phase: 1')
+  await page.getByRole('button', { name: 'Load optional value', exact: true }).click()
+  await expect(page.getByTestId('optional')).toHaveText('Loaded optional value')
+  check.evidence.phases.push({ name: 'ssr-hydration-deferred-partial-optional', success: true })
+  await page.getByRole('button', { name: 'Save name', exact: true }).click()
+  await expect(page.getByRole('alert')).toHaveText('Please enter a name.')
+  await page.getByLabel('Name', { exact: true }).fill('Vue developer')
+  const post = page.waitForResponse(response => response.request().method() === 'POST' && response.url().endsWith('/users'))
+  await page.getByRole('button', { name: 'Save name', exact: true }).click()
+  assert.equal((await post).status(), 302)
+  await expect(page.getByRole('status')).toHaveText('Saved Vue developer (demo only)')
+  await page.getByRole('link', { name: 'About this app', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'About this app' })).toBeVisible()
+  assert.equal(await page.evaluate(() => window.vueDocument), 'same-document')
+  await page.getByRole('link', { name: 'Back to users' }).click()
+  await expect(page.getByTestId('stats')).toHaveText('Total: 1')
+  await expect(page.getByRole('status')).toHaveCount(0)
+  const csrf = await context.request.post(base + '/users', { data: { name: 'No token' } })
+  assert.equal(csrf.status(), 403)
+  check.evidence.phases.push({ name: 'navigation-validation-csrf-flash-consumption', success: true })
+  await page.goto(base + '/feed?page=2')
+  await expect(page.getByTestId('feed-items').locator('li')).toHaveCount(3)
+  const catalog = await page.getByTestId('catalog').textContent()
+  await page.getByRole('button', { name: 'Load previous', exact: true }).click()
+  await expect(page.getByTestId('feed-items').locator('li')).toHaveCount(6)
+  await page.getByRole('button', { name: 'Load next', exact: true }).click()
+  await expect(page.getByTestId('feed-items').locator('li')).toHaveCount(9)
+  assert.deepEqual(await page.getByTestId('feed-items').locator('li').allTextContents(), Array.from({ length: 9 }, (_, i) => 'Item ' + (i + 1)))
+  await page.getByRole('link', { name: 'About this app', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'About this app' })).toBeVisible()
+  const reused = page.waitForResponse(response => response.url().includes('/feed') && response.request().headers()['x-inertia'] === 'true')
+  await page.getByRole('link', { name: 'Feed', exact: true }).click()
+  const onceResponse = await reused
+  assert.ok(onceResponse.request().headers()['x-inertia-except-once-props'].includes('vue-catalog'))
+  assert.ok(!('catalog' in (await onceResponse.json()).props))
+  await expect(page.getByTestId('catalog')).toHaveText(catalog)
+  await page.getByRole('button', { name: 'Refresh catalog' }).click()
+  await expect(page.getByTestId('catalog')).not.toHaveText(catalog)
+  await page.getByRole('button', { name: 'Reset feed' }).click()
+  await expect(page.getByTestId('feed-items').locator('li')).toHaveCount(3)
+  check.evidence.phases.push({ name: 'scroll-prepend-append-reset-once-reuse-refresh', success: true })
+  await check.stop(renderer)
+  const fallback = await (await fetch(base + '/users')).text()
+  assert.ok(!fallback.includes('data-server-rendered'))
+  await page.goto(base + '/users')
+  await expect(page.getByRole('heading', { name: 'Vue users' })).toBeVisible()
+  await expect(page.getByTestId('stats')).toHaveText('Total: 1')
+  renderer = startRenderer()
+  await check.wait('renderer recovery', healthy)
+  const recovered = await (await fetch(base + '/users')).text()
+  assert.ok(recovered.includes('data-server-rendered') && recovered.includes('Ada'))
+  await page.goto(base + '/users')
+  await expect(page.getByTestId('stats')).toHaveText('Total: 1')
+  check.evidence.phases.push({ name: 'node-stop-csr-and-ssr-recovery', success: true })
+  tampered = mkdtempSync(resolve(frontend, '.inertia/tamper-'))
+  cpSync(resolve(frontend, 'dist'), tampered, { recursive: true })
+  appendFileSync(resolve(tampered, 'ssr/ssr.js'), '\n// deliberate qualification tamper\n')
+  const rejected = check.start(process.execPath, [resolve(tampered, 'ssr/ssr.js')], frontend, 'tampered-renderer', { SSR_PORT: String(await freePort()) })
+  await check.wait('tampered renderer refusal', () => rejected.closed)
+  assert.notEqual(rejected.exitCode, 0)
+  assert.ok(rejected.transcript.includes('SSR build content mismatch'))
+  check.evidence.phases.push({ name: 'node-tampered-bundle-refused-before-listening', success: true })
+  assert.deepEqual(errors, [])
+  await page.screenshot({ path: resolve(check.output, 'vue-users.png'), fullPage: true })
+  check.evidence.phases.push({ name: 'browser-console-and-screenshot', success: true })
+  check.evidence.success = true
+} catch (caught) { error = caught }
+finally { if (browser) await browser.close(); await check.finish(error); if (tampered) rmSync(tampered, { recursive: true, force: true }) }

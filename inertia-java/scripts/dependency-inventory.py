@@ -14,7 +14,10 @@ import urllib.parse
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-FRONTEND = ROOT / 'examples/spring-react/frontend'
+EXAMPLE = os.environ.get('INERTIA_INVENTORY_EXAMPLE', 'spring-react')
+if EXAMPLE not in {'spring-react', 'spring-vue'}:
+    raise ValueError('Unsupported inventory example')
+FRONTEND = ROOT / 'examples' / EXAMPLE / 'frontend'
 
 
 def sha(data):
@@ -64,7 +67,7 @@ def main():
     try:
         result['source'] = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
                             'dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip())}
-        inputs = [ROOT / 'pom.xml', *ROOT.glob('*/pom.xml'), ROOT / 'examples/spring-react/pom.xml',
+        inputs = [ROOT / 'pom.xml', *ROOT.glob('*/pom.xml'), ROOT / 'examples' / EXAMPLE / 'pom.xml',
                   FRONTEND / 'package.json', FRONTEND / 'package-lock.json']
         result['inputs'] = {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in sorted(inputs)}
         run('maven', [str(ROOT / 'mvnw'), '--batch-mode', '--no-transfer-progress',
@@ -82,9 +85,19 @@ def main():
         locked = collections.Counter((v.get('name', k.rsplit('node_modules/', 1)[-1]), v['version']) for k, v in lock.items() if k)
         if locked != collections.Counter(npm_identity(c) for c in all_npm['components']):
             raise ValueError('npm all-platform lock inventory is incomplete')
-        prod_refs = {c['bom-ref'] for c in production['components']}
-        if not prod_refs <= {c['bom-ref'] for c in all_npm['components']}:
+        if not {c['bom-ref'] for c in production['components']} <= {c['bom-ref'] for c in all_npm['components']}:
             raise ValueError('Production npm inventory is not a subset of the locked graph')
+        installed_production = run('npm-installed-production', ['npm', 'ls', '--omit=dev', '--all', '--json'], FRONTEND, True)
+        production_ids = set()
+        def visit_dependencies(node):
+            for name, child in node.get('dependencies', {}).items():
+                if child.get('version'):
+                    production_ids.add((name, child['version']))
+                visit_dependencies(child)
+        visit_dependencies(installed_production)
+        if not production_ids <= {npm_identity(c) for c in all_npm['components']}:
+            raise ValueError('Installed production dependency is missing from the lock inventory')
+        prod_refs = {c['bom-ref'] for c in all_npm['components'] if npm_identity(c) in production_ids}
         components = []
         reviews = []
         def add(component, ecosystem, scopes):
@@ -113,7 +126,7 @@ def main():
             row['licenseFiles'].append({'source': name, 'sha256': digest, 'path': relative})
         def is_license(name):
             return bool(re.match(r'(?i)^(licen[cs]e|notice|copying|copyright)([._-].*)?$', Path(name).name))
-        jars = list((ROOT / 'examples/spring-react/target').glob('spring-react-*.jar'))
+        jars = list((ROOT / 'examples' / EXAMPLE / 'target').glob(EXAMPLE + '-*.jar'))
         if len(jars) != 1: raise ValueError('Build exactly one executable example jar first')
         result['applicationJar'] = {'name': jars[0].name, 'sha256': sha(jars[0].read_bytes())}
         with zipfile.ZipFile(jars[0]) as app:
@@ -142,7 +155,7 @@ def main():
                     reviews.append({'ref': row['ref'], 'reason': 'runtime-archive-has-no-recognized-license-or-notice-file'})
         installed = 0
         for c in all_npm['components']:
-            row = add(c, 'npm', ['lock-all-platforms'] + (['node-production-lock'] if c['bom-ref'] in prod_refs else ['build-dev-lock']))
+            row = add(c, 'npm', ['lock-all-platforms'] + (['node-production-installed'] if c['bom-ref'] in prod_refs else ['build-or-other-platform-lock']))
             matches = [k for k, v in lock.items() if k and (v.get('name', k.rsplit('node_modules/', 1)[-1]), v['version']) == npm_identity(c)]
             row['lockPaths'] = matches
             for key in matches:
@@ -160,10 +173,11 @@ def main():
                             raise ValueError('License source escaped installed package')
                         license_file(row, str(relative), file.read_bytes())
         result.update({'success': True, 'counts': {'mavenGraph': len(maven['components']), 'javaRuntimeJars': len(artifacts),
-                      'npmAllPlatformLock': len(all_npm['components']), 'nodeProductionLock': len(production['components']),
+                      'npmAllPlatformLock': len(all_npm['components']), 'npmProductionSbomReported': len(production['components']), 'nodeProductionInstalled': len(production_ids),
                       'installedNpmPackagesObserved': installed}, 'reviewItems': reviews,
                       'limitations': ['License metadata is a declaration, not legal approval.',
                        'Maven build plugins, JDK, OS, browser and service images are outside the dependency graph.',
+                       'Production scopes use the installed npm ls --omit=dev graph; the separate npm production SBOM can omit direct dependencies and is not used as the runtime closure.',
                        'All-platform lock components may not be installed on this host; text evidence covers observed runtime jars and installed npm packages.',
                        'Bundled/minified code attribution needs distribution review; production npm dependencies alone do not describe client or SSR bundles.',
                        'Owned Java/npm code declares Apache-2.0; attribution/notice review, release version, signatures and namespace remain separate qualifications.']})
