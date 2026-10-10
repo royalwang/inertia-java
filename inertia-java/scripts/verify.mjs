@@ -13,6 +13,7 @@ mkdirSync(output, { recursive: true })
 if (process.platform === 'win32') throw new Error('The aggregate runner currently requires a POSIX host; use the documented Maven/npm commands on Windows.')
 const [major, minor] = process.versions.node.split('.').map(Number)
 if (major < 22 || (major === 22 && minor < 12)) throw new Error('Node >=22.12 is required')
+if (process.env.INERTIA_API_BASELINE && !process.env.INERTIA_API_TOOL) throw new Error('INERTIA_API_TOOL is required with INERTIA_API_BASELINE')
 const stages = []
 const startedAt = new Date().toISOString()
 const source = {
@@ -50,7 +51,13 @@ let receipt = null
 try {
   await run('java-runtime', 'java', ['-version'], root)
   await run('npm-runtime', 'npm', ['--version'])
-  await run('maven', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', 'clean', 'spotless:check', 'verify'], root)
+  await run('maven', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', 'clean', 'spotless:check', process.env.INERTIA_API_BASELINE ? 'install' : 'verify'], root)
+  if (process.env.INERTIA_API_BASELINE) {
+    const candidate = resolve(output, 'api-candidate')
+    await run('api-tool-contracts', 'python3', [resolve(root, 'scripts/api-compatibility-test.py'), '--tool', process.env.INERTIA_API_TOOL], root)
+    await run('api-candidate', 'python3', [resolve(root, 'scripts/api-compatibility.py'), 'snapshot', '--output', candidate], root)
+    await run('api-compatibility', 'python3', [resolve(root, 'scripts/api-compatibility.py'), 'compare', '--old', process.env.INERTIA_API_BASELINE, '--new', candidate, '--tool', process.env.INERTIA_API_TOOL, '--output', resolve(output, 'api-comparison')], root)
+  }
   await run('library-artifacts', 'python3', [resolve(root, 'scripts/verify-library-artifacts.py'), resolve(output, 'library-artifacts.json')], root)
   await run('npm-ci', 'npm', ['ci'])
   await run('typecheck', 'npm', ['run', 'typecheck'])

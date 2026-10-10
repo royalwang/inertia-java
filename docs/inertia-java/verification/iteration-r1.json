@@ -1,0 +1,79 @@
+{
+  "format": 1,
+  "observedAt": "2026-10-10T07:39:35.662218+00:00",
+  "scope": "R1 local candidate delivery and R2 API tooling initial acceptance; full roadmap remains in progress.",
+  "status": {
+    "R1": "local-complete",
+    "R2": "in-progress",
+    "R3": "not-implemented",
+    "R4": "conditional-future"
+  },
+  "source": {
+    "head": "643ac7b81833cf21978ef37585e026925116f944",
+    "dirty": true
+  },
+  "verification": {
+    "maven": {
+      "success": true,
+      "log": "/tmp/inertia-r1-maven.log",
+      "tests": 292,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "command": "./mvnw --batch-mode --no-transfer-progress spotless:apply install"
+    },
+    "artifactRejectionContracts": {
+      "success": true,
+      "count": 6,
+      "log": "/tmp/inertia-r1-artifact-contracts.log"
+    },
+    "externalConsumer": {
+      "success": true,
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-maven-consumer-5xl_krt7/summary.json"
+    },
+    "independentTutorial": {
+      "success": true,
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-first-app-wueBG9/summary.json"
+    },
+    "documentation": {
+      "success": true,
+      "log": "/tmp/inertia-r1-docs-check.log"
+    },
+    "apiCandidate": {
+      "path": "/tmp/inertia-r1-candidate-20261010/candidate.json",
+      "modules": 7,
+      "publicProtectedTypes": 71,
+      "signatureInventory": "inertia-java/compatibility/api-baseline.json"
+    },
+    "apiComparison": {
+      "success": true,
+      "receipt": "/tmp/inertia-r1-api-self-comparison/summary.json",
+      "scope": "Current candidate against itself: actual seven-module tool/classpath smoke, not a previous released version comparison."
+    },
+    "apiToolContracts": {
+      "success": true,
+      "receipt": "/var/folders/8x/3x9597tn1tgf738n84985_m80000gn/T/inertia-api-contracts-z0a82cgz/summary.json",
+      "cases": 6
+    },
+    "aggregateApiStages": {
+      "implemented": true,
+      "syntaxChecked": true,
+      "fullAggregateWithBaselineRun": false
+    }
+  },
+  "remaining": [
+    "R2 protocol freshness, fault diagnosis examples and capacity remeasurement",
+    "R3 Redis design, implementation, automatic configuration and real two-process failure qualification",
+    "R4 remains conditional on adoption needs as specified in the roadmap",
+    "Public namespace and actual publication are separate release operations, not local implementation blockers"
+  ],
+  "inputs": {
+    "inertia-java/pom.xml": "a03f3b9461ee9cf16f301bc6114be8aa4e5426554cb29c49bda0edff34330929",
+    "inertia-java/scripts/verify-library-artifacts.py": "83394d9dec0f5979f4a82728699c354db764f8acc588a052150bc4f3a75e5ca5",
+    "inertia-java/scripts/api-compatibility.py": "40674fa3542325ab37928550bc710cd734affee94e076f5934e97c28f9b17407",
+    "inertia-java/scripts/api-compatibility-test.py": "79786ff74e89715b6076277f2e093a76f4b7af882b2b692c68ced5fa540a2069",
+    "inertia-java/scripts/verify.mjs": "85de983a7e53f048d8102d35924f5c3b1a47abe5dfebc52478059a0a22fecb34",
+    "inertia-java/compatibility/api-baseline.json": "7aa4df0ecc21d8bed6caa8a11b866dcfeb2d2019aa4c94620ecc38a7ee3a72be",
+    "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaAutoConfigurationTest.java": "e46747c5432684c09baffdc2f1cb75216b6cf5f696bcebe3343825ba41dc03cb"
+  }
+}

@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>Inertia Java</name>
   <description>Framework-independent Inertia server adapter with Spring MVC, Vite and HTTP SSR integration.</description>
-  <url>https://github.com/royalwang/inertia-omega/tree/main/inertia-java</url>
+  <url>https://github.com/royalwang/inertia-java/tree/main/inertia-java</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -16,9 +16,9 @@
     </license>
   </licenses>
   <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
-    <connection>scm:git:https://github.com/royalwang/inertia-omega.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/royalwang/inertia-omega.git</developerConnection>
-    <url>https://github.com/royalwang/inertia-omega</url>
+    <connection>scm:git:https://github.com/royalwang/inertia-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/royalwang/inertia-java.git</developerConnection>
+    <url>https://github.com/royalwang/inertia-java</url>
     <tag>HEAD</tag>
   </scm>
   <properties>

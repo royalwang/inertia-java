@@ -2,7 +2,7 @@
 
 Build Inertia v3 applications with Java 21 and Spring MVC. The framework-independent core handles Page data and request effects; optional modules provide Node SSR, Vite assets, Spring Boot wiring and test assertions. The runnable example uses the official React client.
 
-The current version is **0.1.0-SNAPSHOT / next**. Install from source or consume locally built Maven artifacts; public Maven publication and the documentation website have not been verified.
+The current version is **0.1.0-SNAPSHOT / next**. Install from source or consume locally built Maven artifacts; public Maven publication remains a separate release operation. The bilingual documentation site passes local build and browser verification.
 
 ## Documentation
 
@@ -42,7 +42,7 @@ See [project structure](docs/getting-started/project-structure.md) and [ownershi
 
 The [compatibility matrix](docs/getting-started/compatibility.md) distinguishes checked Rust protocol behavior and intentional Java policies. Local acceptance covers SSR/CSR, forms, advanced props, authentication demonstration, history, build integrity and failure recovery. It does not qualify your production environment, business load or distributed session backend. Session reservation is atomic on one node; it does not promise exactly-once delivery to a browser. Cancellation is best effort for underlying work.
 
-Use [browser acceptance](docs/testing/browser-tests.md), [deployment](docs/deployment/build-release.md), [contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md) for the corresponding work. Public deployment, real release-tag documentation snapshots and a confirmed private reporting channel remain open. Historical implementation evidence stays in the [acceptance audit](../docs/inertia-java/07-acceptance-audit.md).
+Use [browser acceptance](docs/testing/browser-tests.md), [deployment](docs/deployment/build-release.md), [contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md) for the corresponding work. Private vulnerability reporting is enabled. Public deployment and real release-tag documentation snapshots are separate release operations. Historical implementation evidence stays in the [acceptance audit](../docs/inertia-java/07-acceptance-audit.md).
 
 <details>
 <summary>Earlier README topic links</summary>

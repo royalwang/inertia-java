@@ -15,8 +15,11 @@ version = pom.findtext('m:version', namespaces=ns)
 assert version and re.fullmatch(r'[A-Za-z0-9_.-]+', version), 'Invalid project version'
 assert pom.findtext('m:name', namespaces=ns)
 assert pom.findtext('m:description', namespaces=ns)
-assert pom.findtext('m:url', namespaces=ns) == 'https://github.com/royalwang/inertia-omega/tree/main/inertia-java'
-assert pom.findtext('m:scm/m:connection', namespaces=ns) == 'scm:git:https://github.com/royalwang/inertia-omega.git'
+assert pom.findtext('m:url', namespaces=ns) == 'https://github.com/royalwang/inertia-java/tree/main/inertia-java'
+assert pom.findtext('m:scm/m:connection', namespaces=ns) == 'scm:git:https://github.com/royalwang/inertia-java.git'
+assert pom.findtext('m:scm/m:developerConnection', namespaces=ns) == 'scm:git:ssh://git@github.com/royalwang/inertia-java.git'
+assert pom.findtext('m:scm/m:url', namespaces=ns) == 'https://github.com/royalwang/inertia-java'
+assert pom.findtext('m:groupId', namespaces=ns) == 'io.inertia', 'Review Maven coordinates before changing the candidate baseline'
 assert pom.findtext('m:licenses/m:license/m:name', namespaces=ns) == 'Apache License, Version 2.0'
 license_bytes = (root / 'LICENSE').read_bytes()
 assert b'Apache License' in license_bytes and b'END OF TERMS AND CONDITIONS' in license_bytes
@@ -31,6 +34,8 @@ for module in modules:
     module_pom = ET.parse(base / 'pom.xml').getroot()
     assert module_pom.findtext('m:artifactId', namespaces=ns) == module
     assert module_pom.findtext('m:parent/m:version', namespaces=ns) == version
+    assert module_pom.findtext('m:parent/m:groupId', namespaces=ns) == 'io.inertia'
+    assert module_pom.findtext('m:parent/m:artifactId', namespaces=ns) == 'inertia-java'
     api_pages = []
     for name, content in sources.items():
         if re.search(rb'(?m)^public\s+(?:(?:final|abstract|sealed|non-sealed)\s+)*(?:class|interface|record|enum|@interface)\s+', content):

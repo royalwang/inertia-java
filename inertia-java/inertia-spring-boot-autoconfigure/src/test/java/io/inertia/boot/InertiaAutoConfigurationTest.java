@@ -16,6 +16,27 @@ class InertiaAutoConfigurationTest {
           .withBean(InertiaConfig.class, () -> InertiaConfig.basic("v1", Set.of("Home")));
 
   @Test
+  void candidateDefaultsRemainStableWhenNoPropertiesAreSet() {
+    runner.run(
+        context -> {
+          assertThat(context).hasNotFailed();
+          var properties = context.getBean(InertiaProperties.class);
+          assertThat(properties.propsTimeout()).isEqualTo(java.time.Duration.ofSeconds(3));
+          assertThat(properties.responseTimeout()).isEqualTo(java.time.Duration.ofSeconds(5));
+          assertThat(properties.propsConcurrency()).isEqualTo(8);
+          assertThat(properties.executorCoreSize()).isEqualTo(8);
+          assertThat(properties.executorMaxSize()).isEqualTo(32);
+          assertThat(properties.executorQueueCapacity()).isEqualTo(256);
+          assertThat(properties.allErrors()).isNull();
+          assertThat(properties.sessionNamespace()).isEqualTo("default");
+          var executor = (ThreadPoolExecutor) context.getBean("inertiaPropsExecutor");
+          assertThat(executor.getCorePoolSize()).isEqualTo(8);
+          assertThat(executor.getMaximumPoolSize()).isEqualTo(32);
+          assertThat(executor.getQueue().remainingCapacity()).isEqualTo(256);
+        });
+  }
+
+  @Test
   void bindsBudgetsAndBuildsBoundedExecutor() {
     runner
         .withPropertyValues(

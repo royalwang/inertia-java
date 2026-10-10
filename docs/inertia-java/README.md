@@ -1,6 +1,6 @@
 # Inertia Java 服务端适配与 SSR 项目设计
 
-日期：2026-10-08。状态：J0–J7 首版实施及本地验收完成。
+日期：2026-10-10。状态：J0–J7首版及双语文档本地交付完成，下一轮迭代路线已规划。
 
 目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已交付七个可复用 Java 模块及完整 React/Node 示例，开发与生产模式均通过实际验收；完成范围和正式发布边界见第八项逐项审查。
 
@@ -21,6 +21,10 @@
 10. [开源文档库规划](08-open-source-documentation-plan.md)：用户路径、70条目录、站点与语言/版本策略、内容与示例规范、CI和D0–D4验收。
 
 11. [开源文档实施台账](09-documentation-implementation.md)：D0/D1正文、工具链、独立教程和本地验收边界。
+
+12. [下一轮迭代路线](11-next-iteration-roadmap.md)：首版消费、兼容性与诊断、多实例Redis会话，以及按需Vue/WebFlux扩展的优先级、实施设计与本地验收。
+
+13. [下一轮实施台账](12-next-iteration-implementation.md)：R1–R3实际变更、验证结果与未完成范围。
 
 ## 主要决策
 
