@@ -6,12 +6,16 @@ translation:
   locale: zh-CN
   canonicalId: reference/configuration
   source: reference/configuration.md
-  sourceRevision: 872de03bf52dab3aee162b2d05ddfb46a634a0f6590dcccb01a63239c6f4063a
+  sourceRevision: dfc50bb617f7ec17dddf7abda5d17c3a58cb117e48a474ee822678c507be4adb
 sources:
-- inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java
-- inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
-- inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaConfig.java
-- inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisProperties.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisAutoConfiguration.java
+  - inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaConfig.java
+  - inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisSessionLifecycleFilter.java
 verification:
 - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java
 - inertia-java/inertia-core/src/test/java/io/inertia/core/ConfigPresentationTest.java
@@ -91,3 +95,26 @@ inertia:
 Node 使用 `SSR_PORT`（13714）和 `SSR_ROOT_ID`（`app`）；`INERTIA_DEV_APP_ORIGIN` 控制示例 Vite 开发 CORS origin。发布 launcher 环境见[进程配置](../deployment/processes.md)。文档工具的 `INERTIA_DOCS_BASE`、`INERTIA_DOCS_OUTPUT`、`INERTIA_BROWSER_CHANNEL` 不属于业务应用配置。
 
 非法预算/名称会使启动失败。缺少 custom bean 或 renderer build 不匹配，应修正相应输入，不能靠放宽超时修复。override tests 区分未设置与显式 false。
+
+## 可选 Redis 配置
+
+`inertia.session.store` 选择 `servlet`（默认）或显式的 `redis`。应用提供的 `InertiaSessionStoreFactory` bean 自行负责自定义选择。选择 Redis 时必须在 classpath 中包含对应模块；存储不可用不会被静默替换。仅选择 Redis 默认装配时，`InertiaRedisProperties` 才绑定以下字段。它们配置投递存储，与 `spring.data.redis.*` 及 Spring Session 宿主设置分开。
+
+| 属性 | 类型 / 默认值 | 约束与作用 |
+| --- | --- | --- |
+| `inertia.session.redis.host` | String / `127.0.0.1` | 非空的 standalone 主机 |
+| `inertia.session.redis.port` | int / `6379` | 1–65535 |
+| `inertia.session.redis.database` | int / `0` | 非负 Redis database |
+| `inertia.session.redis.username` | String / 未设置 | 可选 Redis ACL 用户名 |
+| `inertia.session.redis.password` | String / 未设置 | 可选凭据，不出现在配置 toString 中 |
+| `inertia.session.redis.command-timeout` | Duration / `200ms` | 1ms–5s；连接及命令时限 |
+| `inertia.session.redis.max-commands` | int / `32` | 1–1024 个并发传输操作 |
+| `inertia.session.redis.idle-ttl` | Duration / `30m` | 至少 2ms、最多一天；成功 CAS 后刷新 |
+| `inertia.session.redis.lease` | Duration / `30s` | 正值、短于 idle TTL；大于 response timeout 与 command timeout 之和 |
+| `inertia.session.redis.terminal-retention` | Duration / `5m` | 正值，不长于 idle TTL |
+| `inertia.session.redis.max-bytes` | int / `1048576` | 1024–16777216 个 UTF-8 envelope 字节 |
+| `inertia.session.redis.max-reservations` | int / `16` | 1–1024 个并发预留投递 |
+| `inertia.session.redis.max-terminals` | int / `4096` | 至少等于 max reservations，最多保留 100000 条终态记录 |
+| `inertia.session.redis.max-attempts` | int / `16` | 1–100 次明确未写入的冲突/期限重算；同时受一秒 dispatch 预算约束 |
+
+生命周期过滤器运行在 Spring Session 之后、Security/MVC 之前。使用自定义宿主过滤器时需保持该顺序。后端所有权、未知结果和部署边界见[自定义会话存储](../integrations/custom-session.md)。

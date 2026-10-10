@@ -10,6 +10,10 @@ sources:
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/JakartaValidationBridge.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisProperties.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisSessionLifecycleFilter.java
 verification:
   - inertia-java/inertia-spring-webmvc/src/test/java/io/inertia/spring/InertiaHandlerValidatorTest.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java
@@ -19,7 +23,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/spring-api
   source: reference/spring-api.md
-  sourceRevision: cfd65799716fff11c702c38747cf2c162170d163bbaef194dc98d8f7578d8e75
+  sourceRevision: aa5dcdbff1fba8e6ff3bc077e063b93ab8a727fef316ecef73f7aceb18ebde86
 ---
 
 # Spring API 地图
@@ -53,6 +57,10 @@ MVC 适配器将同步类型化 `InertiaResponse`/`HttpOutcome` 响应及请求�
 | `InertiaMetricsAutoConfiguration` | 前提满足时提供可选 Micrometer 集成 |
 | `MicrometerInertiaObserver` | 将有界事件转换成 timer |
 | `inertia-spring-boot-starter` | 依赖入口及模块指南，没有运行时 facade 类 |
+| `InertiaRedisAutoConfiguration` | 显式选择 standalone Redis 的默认配置及生命周期装配 |
+| `InertiaRedisProperties` | 经过校验的投递端点、时间和容量配置 |
+| `RedisHttpSessionStoreFactory` | 可信宿主身份与持久化 epoch 绑定 |
+| `RedisSessionLifecycleFilter` | 同步宿主轮换/失效前撤销投递状态 |
 
 替换默认值时应明确提供所需配置、observer 或 store。标准覆盖测试包括自定义 bean、显式 false 和可选指标缺席。指标集成需要唯一或 primary registry；不会自动公开管理端点或认证策略。
 

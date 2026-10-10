@@ -24,7 +24,8 @@
     "test:history": "node scripts/verify-history.mjs",
     "test:browser-matrix": "node scripts/verify-browser-matrix.mjs",
     "test:development": "node scripts/verify-development.mjs",
-    "test:capacity": "node scripts/verify-capacity-recovery.mjs"
+    "test:capacity": "node scripts/verify-capacity-recovery.mjs",
+    "test:redis-cluster": "node scripts/verify-redis-cluster.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "3.8.0",

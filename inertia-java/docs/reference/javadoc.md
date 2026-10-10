@@ -1,6 +1,6 @@
 ---
 title: "Generated Javadoc"
-description: "Link versioned generated API output for six runtime modules and the dependency-only starter guide."
+description: "Link versioned generated API output for seven libraries and the dependency-only starter guide."
 version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/pom.xml
@@ -18,7 +18,7 @@ Javadoc describes exact public types, constructors and method signatures for `0.
 
 From `inertia-java/`, build the library artifacts with `./mvnw --batch-mode install`. The build generates one `-javadoc.jar` classifier per published module. Run the documentation preparation/build commands after this Maven build so the site can include the matching generated output.
 
-The API reference covers six libraries with generated symbol indices: core, HTTP SSR, Vite, MVC, Boot auto-configuration and testing. The starter's classifier contains a module guide rather than a generated facade class. Its dependency purpose is documented in [Spring APIs](spring-api.md).
+The API reference covers seven libraries with generated symbol indices: core, HTTP SSR, Vite, Redis delivery, MVC, Boot auto-configuration and testing. The starter's classifier contains a module guide rather than a generated facade class. Its dependency purpose is documented in [Spring APIs](spring-api.md).
 
 ## Module entries
 
@@ -27,6 +27,7 @@ These links open the actual generated HTML from the current Maven classifiers:
 - [Core API](javadoc/0.1.0-SNAPSHOT/inertia-core/index.html)
 - [HTTP SSR API](javadoc/0.1.0-SNAPSHOT/inertia-ssr-http/index.html)
 - [Vite API](javadoc/0.1.0-SNAPSHOT/inertia-vite/index.html)
+- [Redis delivery API](javadoc/0.1.0-SNAPSHOT/inertia-session-redis/index.html)
 - [Spring MVC API](javadoc/0.1.0-SNAPSHOT/inertia-spring-webmvc/index.html)
 - [Boot auto-configuration API](javadoc/0.1.0-SNAPSHOT/inertia-spring-boot-autoconfigure/index.html)
 - [Starter module guide](javadoc/0.1.0-SNAPSHOT/inertia-spring-boot-starter/index.html)

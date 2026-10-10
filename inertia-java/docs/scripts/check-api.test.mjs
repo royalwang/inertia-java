@@ -9,7 +9,7 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 const actual = JSON.parse(readFileSync(resolve(root, 'public/reference/javadoc/0.1.0-SNAPSHOT/api-index.json')))
 const read = path => readFileSync(resolve(root, path), 'utf8')
 test('actual JDK inventory has documented owners, configuration fields and timers', () => {
-  assert.match(checkApi(actual, read), /72 public types/)
+  assert.match(checkApi(actual, read), /81 public types/)
 })
 test('new unmapped public type fails', () => {
   const changed = structuredClone(actual)

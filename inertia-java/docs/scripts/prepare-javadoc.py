@@ -17,7 +17,7 @@ if not version or not all(c.isascii() and (c.isalnum() or c in '._-') for c in v
 catalog = json.loads((java.parent / 'docs/inertia-java/open-source-docs-catalog.json').read_text())
 if catalog['site']['javadoc']['version'] != version:
     raise ValueError('Catalog and Maven Javadoc versions differ')
-modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc',
+modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-session-redis', 'inertia-spring-webmvc',
            'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
 destination = root / 'public/reference/javadoc' / version
 manifest = {'version': version, 'modules': []}

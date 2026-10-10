@@ -41,5 +41,6 @@
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId><scope>test</scope></dependency>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId><scope>test</scope></dependency>
     <dependency><groupId>jakarta.servlet</groupId><artifactId>jakarta.servlet-api</artifactId><scope>provided</scope></dependency>
+    <dependency><groupId>io.inertia</groupId><artifactId>inertia-session-redis</artifactId><version>${project.version}</version><optional>true</optional></dependency>
   </dependencies>
 </project>

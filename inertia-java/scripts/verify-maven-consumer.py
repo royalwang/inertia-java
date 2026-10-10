@@ -66,7 +66,7 @@ try:
 <properties><maven.compiler.release>21</maven.compiler.release><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
 <dependencyManagement><dependencies><dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-dependencies</artifactId><version>3.5.7</version><type>pom</type><scope>import</scope></dependency></dependencies></dependencyManagement>
 <repositories><repository><id>isolated-inertia-fixture</id><url>{repository.as_uri()}</url><releases><checksumPolicy>fail</checksumPolicy></releases><snapshots><enabled>true</enabled><checksumPolicy>fail</checksumPolicy></snapshots></repository></repositories>
-<dependencies><dependency><groupId>io.inertia</groupId><artifactId>inertia-spring-boot-starter</artifactId><version>{version}</version></dependency><dependency><groupId>io.inertia</groupId><artifactId>inertia-testing</artifactId><version>{version}</version></dependency></dependencies>
+<dependencies><dependency><groupId>io.inertia</groupId><artifactId>inertia-session-redis</artifactId><version>{version}</version></dependency><dependency><groupId>io.inertia</groupId><artifactId>inertia-spring-boot-starter</artifactId><version>{version}</version></dependency><dependency><groupId>io.inertia</groupId><artifactId>inertia-testing</artifactId><version>{version}</version></dependency></dependencies>
 <build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.14.1</version></plugin></plugins></build>
 </project>\n''')
     source = consumer / 'src/main/java/consumer/Consumer.java'; source.parent.mkdir(parents=True)
@@ -191,7 +191,7 @@ public class GuideSmoke {
     run('consumer-build', maven + ['compile', 'org.apache.maven.plugins:maven-dependency-plugin:3.8.1:build-classpath', '-Dmdep.outputFile=' + str(consumer / 'classpath.txt')], consumer)
     classpath = (consumer / 'classpath.txt').read_text().strip()
     report['resolvedLibraries'] = []
-    for module in ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']:
+    for module in ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-session-redis', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']:
         path = cache / 'io/inertia' / module / version / f'{module}-{version}.jar'
         assert str(path) in classpath, module + ': dependency missing from private runtime classpath'
         assert path.read_bytes() == (repository / 'io/inertia' / module / version / path.name).read_bytes()
@@ -222,6 +222,23 @@ public class GuideSmoke {
     core.write_bytes(saved)
     shutil.rmtree(cache / 'io/inertia/inertia-core', ignore_errors=True)
     run('restored-consumer', maven + ['-U', 'compile'], consumer)
+    if os.environ.get('INERTIA_REDIS_SERVER'):
+        cluster = output / 'redis-consumer'
+        shutil.copytree(root / 'qualification/redis-cluster', cluster, ignore=shutil.ignore_patterns('target'))
+        pom = cluster / 'pom.xml'
+        text = pom.read_text()
+        repositories = f'<repositories><repository><id>isolated-inertia-fixture</id><url>{repository.as_uri()}</url><snapshots><enabled>true</enabled><checksumPolicy>fail</checksumPolicy></snapshots></repository></repositories>'
+        pom.write_text(text.replace('<build>', repositories + '<build>'))
+        run('redis-consumer-build', [str(root / 'mvnw'), '-B', '-ntp', '-s', str(consumer / 'settings.xml'), '-Dmaven.repo.local=' + str(cache), '-f', str(pom), 'package'], cluster)
+        jar = cluster / 'target' / f'inertia-redis-qualification-{version}.jar'
+        assert jar.is_file(), 'Independent Redis consumer executable missing'
+        # The cluster process consumes this private-cache build, never the reactor fixture jar.
+        os.environ['INERTIA_REDIS_CONSUMER_JAR'] = str(jar)
+        os.environ['INERTIA_REDIS_CLUSTER_OUTPUT'] = str(output / 'redis-cluster')
+        run('redis-cluster', ['node', str(root / 'examples/spring-react/frontend/scripts/verify-redis-cluster.mjs')])
+        reports = list((output / 'redis-cluster').glob('*/summary.json'))
+        assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
+        report['redisCluster'] = str(reports[0])
     report['success'] = True
 except Exception as error:
     report['failure'] = str(error)

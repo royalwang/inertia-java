@@ -1,6 +1,6 @@
 # 下一轮迭代实施台账
 
-日期：2026-10-10。对应[路线图](11-next-iteration-roadmap.md)。整体状态：实施中；按R1→R2→R3推进，R4按路线图的采用需求决定。
+日期：2026-10-10。对应[路线图](11-next-iteration-roadmap.md)。整体状态：R1–R3完成本地交付；R4按路线图的采用需求独立排期。
 
 ## R1：候选与独立消费
 
@@ -26,7 +26,7 @@
 
 ## R3：Redis投递状态
 
-[ADR 003](decisions/003-redis-delivery-state.md)已落地独立状态原型，完整R3仍在实施：
+[ADR 003](decisions/003-redis-delivery-state.md)已完成standalone多实例本地出口。以下先保留状态原型阶段记录，再列最终收口：
 
 - 新增可选 `inertia-session-redis`，core无Spring/Redis依赖。Spring Data Redis 3.5.5 / Lettuce 6.6.0.RELEASE沿用Boot BOM；原子opaque JSON CAS、revision/epoch、Redis server TIME、lease恢复及晚到token拒绝、撤销tombstone、有界终态/字节/冲突/dispatch预算均已实现。
 - 原有MemorySessionStore合并语义直接复用，真实共同合同覆盖Memory/Servlet/Redis；空数组、大整数、精确decimal、error bags、新写入优先级及失败不半写入通过。
@@ -34,8 +34,13 @@
 - 传输禁止自动重连重放和断连排队，使用Spring脚本缓存及每命令独立连接。原始TCP代理使真实CAS执行后丢回复，验证UNKNOWN_WRITE且只提交一次；不是mock未知结果测试。
 - 固定Redis 7.2.11官方源码SHA，本地编译loopback进程。`scripts/verify-redis.py`的现有可执行文件路径与从源码构建路径都实际通过14项测试，0失败/跳过。标准reactor install通过300项测试；七旧模块源码/二进制兼容通过，新模块登记为新增，禁止移除旧模块的工具负例通过；24个binary/source/Javadoc档案通过检查。
 - 140页docs check及72个已支持公开类型地图通过；Redis原型API尚未加入公共站点支持声明。未重新执行全套browser aggregate，不借用R2证据声称新分布式HTTP行为合格。
-- 机器证据见[iteration-r3-state.json](verification/iteration-r3-state.json)，模块边界和复现见[原型说明](../../inertia-java/inertia-session-redis/README.md)。宿主expected epoch持久化、轮换/失效、Redis专用自动装配、双JVM/故障/浏览器及独立消费仍未完成，不能声明R3完成。
+- 原型阶段机器证据见[iteration-r3-state.json](verification/iteration-r3-state.json)，保持其历史未完成范围；模块边界和复现见[模块说明](../../inertia-java/inertia-session-redis/README.md)。
+
+- 最终收口新增expected epoch持久化、revoking协调、原生listener和Spring Session过滤器，显式Redis自动装配及应用factory backoff，默认Servlet行为保持。
+- 305项标准Java测试、14项真实Redis测试、3项宿主IT通过；options用例重复计入标准套件。完整aggregate25阶段通过，六项制品拒绝合同另行通过。
+- 隔离Maven消费解析八库及source/Javadoc，在仓库外编译独立应用，再完成双JVM六阶段HTTP/浏览器/故障验证；不借用reactor编译JAR替代独立消费。
+- Rust freshness、140页文档check/build/browser通过；Javadoc地图为八模块、81公开类型、570成员锚点。详细要求审查、支持限制及原始证据见[多实例资格记录](15-multi-instance-qualification.md)和[iteration-r3.json](verification/iteration-r3.json)。
 
 ## 后续范围
 
-继续实施R3的可选模块、宿主身份生命周期、真实Redis及双实例故障合同、自动装配和双语文档。R4仍依路线图的采用需求单独排期。公共发布与GitHub部署不作为阻塞项；本台账的阶段进展不代表整个路线图完成。
+R4仍依路线图的采用需求单独排期，Vue、Svelte、WebFlux均未声明合格；后续工作包见[再次迭代路线](14-follow-up-roadmap.md)。公共发布与GitHub部署不作为本地功能交付阻塞项。

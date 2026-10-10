@@ -175,6 +175,10 @@ public class InertiaAutoConfiguration {
    */
   @Bean
   @ConditionalOnMissingBean(InertiaSessionStoreFactory.class)
+  @ConditionalOnProperty(
+      name = "inertia.session.store",
+      havingValue = "servlet",
+      matchIfMissing = true)
   public InertiaSessionStoreFactory inertiaSessionStoreFactory(InertiaProperties properties) {
     return request -> new HttpSessionStore(request.getSession(), properties.sessionNamespace());
   }

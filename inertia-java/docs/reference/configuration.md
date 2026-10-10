@@ -5,8 +5,12 @@ version: 0.1.0-SNAPSHOT
 sources:
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisProperties.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisAutoConfiguration.java
   - inertia-java/inertia-core/src/main/java/io/inertia/core/InertiaConfig.java
   - inertia-java/examples/spring-react/src/main/java/io/inertia/example/Application.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisSessionLifecycleFilter.java
 verification:
   - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java
   - inertia-java/inertia-core/src/test/java/io/inertia/core/ConfigPresentationTest.java
@@ -86,3 +90,26 @@ Additional example environment flags are `inertia.ssr-except` (empty exact/trail
 Node uses `SSR_PORT` (13714) and `SSR_ROOT_ID` (`app`). `INERTIA_DEV_APP_ORIGIN` controls the sample Vite development CORS origin. Release-launcher environment is documented in [process setup](../deployment/processes.md); documentation tooling uses `INERTIA_DOCS_BASE`, `INERTIA_DOCS_OUTPUT` and `INERTIA_BROWSER_CHANNEL`. Do not apply those tooling variables to your business application.
 
 Invalid budgets/names fail startup. A missing custom bean or mismatched renderer build needs a corrected configuration, not a wider timeout. The override tests prove that unset and explicit false remain distinct.
+
+## Optional Redis properties
+
+`inertia.session.store` selects `servlet` (default) or explicit `redis`. An application `InertiaSessionStoreFactory` bean owns a custom selection. The Redis module must be on the classpath for Redis selection; unavailable storage is never replaced silently. `InertiaRedisProperties` binds the following fields only when Redis defaults are selected. These configure delivery storage, separate from `spring.data.redis.*` and Spring Session host settings.
+
+| Property | Type / default | Constraint and effect |
+| --- | --- | --- |
+| `inertia.session.redis.host` | String / `127.0.0.1` | Nonblank standalone host |
+| `inertia.session.redis.port` | int / `6379` | 1–65535 |
+| `inertia.session.redis.database` | int / `0` | Nonnegative Redis database |
+| `inertia.session.redis.username` | String / unset | Optional Redis ACL username |
+| `inertia.session.redis.password` | String / unset | Optional credential, excluded from configuration toString |
+| `inertia.session.redis.command-timeout` | Duration / `200ms` | 1ms–5s; connect and command bound |
+| `inertia.session.redis.max-commands` | int / `32` | 1–1024 concurrent transport operations |
+| `inertia.session.redis.idle-ttl` | Duration / `30m` | At least 2ms, at most one day; refreshed on successful CAS |
+| `inertia.session.redis.lease` | Duration / `30s` | Positive, shorter than idle TTL; greater than response timeout plus command timeout |
+| `inertia.session.redis.terminal-retention` | Duration / `5m` | Positive, no longer than idle TTL |
+| `inertia.session.redis.max-bytes` | int / `1048576` | 1024–16777216 UTF-8 envelope bytes |
+| `inertia.session.redis.max-reservations` | int / `16` | 1–1024 concurrent reserved deliveries |
+| `inertia.session.redis.max-terminals` | int / `4096` | At least max reservations, at most 100000 retained terminal records |
+| `inertia.session.redis.max-attempts` | int / `16` | 1–100 explicit no-write conflict/deadline recalculations; one-second dispatch budget also applies |
+
+The lifecycle filter runs after Spring Session and before Security/MVC. Preserve that ordering with a custom host filter. Backend ownership, unknown outcomes and deployment boundaries are described in [custom session stores](../integrations/custom-session.md).

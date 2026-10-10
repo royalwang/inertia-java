@@ -10,6 +10,10 @@ sources:
   - inertia-java/inertia-spring-webmvc/src/main/java/io/inertia/spring/JakartaValidationBridge.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisAutoConfiguration.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisProperties.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisSessionLifecycleFilter.java
 verification:
   - inertia-java/inertia-spring-webmvc/src/test/java/io/inertia/spring/InertiaHandlerValidatorTest.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java
@@ -48,6 +52,10 @@ The final `InertiaExceptionResolver` is package-private and registered by the co
 | `InertiaMetricsAutoConfiguration` | Optional Micrometer integration when its prerequisites exist |
 | `MicrometerInertiaObserver` | Translate bounded events into timers |
 | `inertia-spring-boot-starter` | Dependency entry with a module guide, no runtime facade class |
+| `InertiaRedisAutoConfiguration` | Opt-in standalone Redis defaults and lifecycle wiring |
+| `InertiaRedisProperties` | Validated delivery endpoint, time and capacity settings |
+| `RedisHttpSessionStoreFactory` | Trusted host identity and persisted epoch attachment |
+| `RedisSessionLifecycleFilter` | Revoke delivery before synchronous host rotation/invalidation |
 
 Supply one intentional configuration/observer/store where replacing defaults. The standard override tests cover custom beans, explicit false and absent optional metrics. A single/primary registry is required for unambiguous metrics integration. No management endpoint or authentication policy is exposed automatically.
 

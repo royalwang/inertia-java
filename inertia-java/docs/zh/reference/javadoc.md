@@ -12,7 +12,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/javadoc
   source: reference/javadoc.md
-  sourceRevision: 36f552ef1d505f3fa4bd9009b9287410f4273d7fa9af750674108fbfceef00a5
+  sourceRevision: f699e332f05790564aa0408b1f9b26ba32038798c8bf7397550626beff3a8f35
 ---
 
 # 生成的 Javadoc
@@ -23,7 +23,7 @@ Javadoc 描述 `0.1.0-SNAPSHOT` 的精确公开类型、构造器和方法签名
 
 在 `inertia-java/` 用 `./mvnw --batch-mode install` 构建库制品。每个发布模块产生一个 `-javadoc.jar` 分类包。Maven 构建后运行文档准备/构建命令，站点才能包含匹配的生成输出。
 
-API 参考覆盖六个带符号索引的库：core、HTTP SSR、Vite、MVC、Boot 自动配置和 testing。starter 分类包包含模块指南，而不是生成的 facade 类；依赖用途见 [Spring API](spring-api.md)。
+API 参考覆盖七个带符号索引的库：core、HTTP SSR、Vite、Redis 投递、MVC、Boot 自动配置和 testing。starter 分类包包含模块指南，而不是生成的 facade 类；依赖用途见 [Spring API](spring-api.md)。
 
 ## 模块入口
 
@@ -32,6 +32,7 @@ API 参考覆盖六个带符号索引的库：core、HTTP SSR、Vite、MVC、Boo
 - [Core API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-core/index.html)
 - [HTTP SSR API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-ssr-http/index.html)
 - [Vite API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-vite/index.html)
+- [Redis 投递 API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-session-redis/index.html)
 - [Spring MVC API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-spring-webmvc/index.html)
 - [Boot 自动配置 API](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-spring-boot-autoconfigure/index.html)
 - [Starter 模块指南](../../reference/javadoc/0.1.0-SNAPSHOT/inertia-spring-boot-starter/index.html)

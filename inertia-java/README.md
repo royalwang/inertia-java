@@ -8,7 +8,7 @@ The current version is **0.1.0-SNAPSHOT / next**. Install from source or consume
 
 Start with [the documentation home](docs/index.md), [the React quick start](docs/getting-started/quick-start.md), or [your first independent Spring application](docs/getting-started/first-application.md). The guide library contains 70 English pages and [70 Chinese translations](docs/zh/index.md), with corresponding navigation and page links in both languages.
 
-Use [the API guide](docs/api-guide.md) and [configuration reference](docs/reference/configuration.md) for integration details. Seven generated Javadoc classifiers are linked from the [API documentation page](docs/reference/javadoc.md); all six runtime libraries enforce full doclint and warnings-as-errors. [Authoring commands](docs/README.md) build and verify the separate static site.
+Use [the API guide](docs/api-guide.md) and [configuration reference](docs/reference/configuration.md) for integration details. Eight generated Javadoc classifiers are linked from the [API documentation page](docs/reference/javadoc.md); all seven libraries with generated API symbols enforce full doclint and warnings-as-errors. [Authoring commands](docs/README.md) build and verify the separate static site.
 
 ## Build
 
@@ -30,6 +30,7 @@ The Java build does not run npm. Follow [the quick start](docs/getting-started/q
 | --- | --- |
 | `inertia-core` | Request/Page model, protocol, props, rendering and session SPI |
 | `inertia-ssr-http` | Bounded pooled renderer transport and health sampling |
+| `inertia-session-redis` | Optional standalone atomic delivery with bounded leases and trusted host-session integration |
 | `inertia-vite` | Manifest, asset tags and build identity |
 | `inertia-spring-webmvc` | Typed controllers, validation, request lifecycle and single-node HttpSession |
 | `inertia-spring-boot-autoconfigure` / `inertia-spring-boot-starter` | Conditional default beans and dependency entry |

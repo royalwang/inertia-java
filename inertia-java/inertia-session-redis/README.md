@@ -1,6 +1,6 @@
-# Redis delivery state prototype
+# Redis delivery state
 
-This optional module is under R3 implementation. The standalone atomic state/transport contracts are verified locally; host-session lifecycle wiring, Redis Boot selection, two-JVM HTTP/browser qualification and independent consumer documentation are still pending. Do not treat this prototype as a completed distributed-session integration.
+This optional module provides locally qualified standalone Redis delivery state. Spring Boot integration binds trusted HttpSession identity and persisted epochs, bridges synchronous host rotation/invalidation, and explicitly selects Redis without changing the default Servlet store. Real Redis contracts, native host/network-restart tests and an isolated Maven consumer with two JVMs and actual browser SSR/form interaction have passed. See the [integration guide](../docs/integrations/custom-session.md) for adoption and the [qualification consumer](../qualification/redis-cluster/README.md) for local verification. This scope does not qualify Redis Cluster/Sentinel, TLS, failover durability or exactly-once browser receipt.
 
 `RedisSessionBackend` owns a dedicated Spring Data Redis/Lettuce transport. Commands use dedicated connections, a bounded semaphore and explicit command/connect timeouts. Automatic reconnect, disconnected queuing and mutation replay are disabled. Spring's script-cache `NOSCRIPT` fallback is allowed because Redis explicitly reports that the script did not execute. The backend is application-scoped and must be closed on shutdown.
 

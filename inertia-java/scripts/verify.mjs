@@ -59,6 +59,7 @@ try {
     await run('api-compatibility', 'python3', [resolve(root, 'scripts/api-compatibility.py'), 'compare', '--old', process.env.INERTIA_API_BASELINE, '--new', candidate, '--tool', process.env.INERTIA_API_TOOL, '--output', resolve(output, 'api-comparison')], root)
   }
   await run('library-artifacts', 'python3', [resolve(root, 'scripts/verify-library-artifacts.py'), resolve(output, 'library-artifacts.json')], root)
+  await run('artifact-contracts', 'python3', [resolve(root, 'scripts/verify-library-artifacts-test.py')], root)
   await run('npm-ci', 'npm', ['ci'])
   await run('typecheck', 'npm', ['run', 'typecheck'])
   await run('build', 'npm', ['run', 'build'])
@@ -77,6 +78,11 @@ try {
     })
   }
   await run('deployment', process.execPath, [resolve(root, 'deploy/verify-release.mjs')], root, { INERTIA_DEPLOY_OUTPUT: resolve(output, 'deployment') })
+  if (process.env.INERTIA_REDIS_SERVER) {
+    await run('redis-state', 'python3', [resolve(root, 'scripts/verify-redis.py'), '--redis-server', process.env.INERTIA_REDIS_SERVER, '--output', resolve(output, 'redis-state')], root)
+    await run('redis-host-lifecycle', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', '-pl', 'inertia-spring-boot-autoconfigure', '-am', 'test', '-Dtest=RedisHostLifecycleIT', '-Dsurefire.failIfNoSpecifiedTests=false', '-Dinertia.redis.server=' + process.env.INERTIA_REDIS_SERVER], root)
+    await run('redis-independent-consumer', 'python3', [resolve(root, 'scripts/verify-maven-consumer.py')], root, { INERTIA_CONSUMER_OUTPUT: resolve(output, 'redis-consumer') })
+  }
 } catch (error) {
   failure = error.message
   process.exitCode = 1

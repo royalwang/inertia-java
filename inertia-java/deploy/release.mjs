@@ -53,7 +53,7 @@ export function packageRelease(store, root = projectRoot) {
     copy(resolve(root, 'deploy/README.md'), resolve(staging, 'RUNBOOK.md'))
     copyTree(resolve(root, 'deploy/systemd'), resolve(staging, 'operations/systemd'))
     publishAssets(resolve(staging, 'frontend/dist'), resolve(staging, 'assets'))
-    const modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
+    const modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-session-redis', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
     copy(resolve(root, 'pom.xml'), resolve(staging, `maven/io/inertia/inertia-java/${version}/inertia-java-${version}.pom`))
     for (const module of modules) {
       const target = resolve(staging, `maven/io/inertia/${module}/${version}`)

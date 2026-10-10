@@ -11,7 +11,7 @@ import zipfile
 root = pathlib.Path(__file__).resolve().parents[1]
 namespace = {'m': 'http://maven.apache.org/POM/4.0.0'}
 version = ET.parse(root / 'pom.xml').getroot().findtext('m:version', namespaces=namespace)
-modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
+modules = ['inertia-core', 'inertia-ssr-http', 'inertia-vite', 'inertia-session-redis', 'inertia-spring-webmvc', 'inertia-spring-boot-autoconfigure', 'inertia-spring-boot-starter', 'inertia-testing']
 with tempfile.TemporaryDirectory(prefix='inertia-artifact-contracts-') as directory:
     fixture = pathlib.Path(directory)
     shutil.copy2(root / 'pom.xml', fixture / 'pom.xml')

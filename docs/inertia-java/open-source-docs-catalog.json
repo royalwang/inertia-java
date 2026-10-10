@@ -36,9 +36,9 @@
     "javadoc": {
       "version": "0.1.0-SNAPSHOT",
       "path": "reference/javadoc/0.1.0-SNAPSHOT/",
-      "modules": 7,
-      "publicTypes": 71,
-      "memberAnchors": 496,
+      "modules": 8,
+      "publicTypes": 81,
+      "memberAnchors": 570,
       "completeMemberProse": true,
       "strictDoclintModules": [
         "inertia-core",
@@ -46,7 +46,8 @@
         "inertia-vite",
         "inertia-spring-webmvc",
         "inertia-spring-boot-autoconfigure",
-        "inertia-testing"
+        "inertia-testing",
+        "inertia-session-redis"
       ],
       "remainingMemberProseModules": []
     },
@@ -1507,7 +1508,7 @@
       "path": "zh/integrations/custom-session.md",
       "title": "自定义会话存储",
       "status": "reviewed",
-      "sourceRevision": "647c16d89526439139f733a1584ccf383fd6b6a264bc23921759e71645bde8ba"
+      "sourceRevision": "c4b336a29848b575a6cc98cb8ce0563a65197970ac18eda25317c903237f1dc3"
     },
     {
       "id": "integrations/observability",
@@ -1563,7 +1564,7 @@
       "path": "zh/reference/configuration.md",
       "title": "配置参考",
       "status": "reviewed",
-      "sourceRevision": "872de03bf52dab3aee162b2d05ddfb46a634a0f6590dcccb01a63239c6f4063a"
+      "sourceRevision": "dfc50bb617f7ec17dddf7abda5d17c3a58cb117e48a474ee822678c507be4adb"
     },
     {
       "id": "reference/core-api",
@@ -1579,7 +1580,7 @@
       "path": "zh/reference/spring-api.md",
       "title": "Spring API 地图",
       "status": "reviewed",
-      "sourceRevision": "cfd65799716fff11c702c38747cf2c162170d163bbaef194dc98d8f7578d8e75"
+      "sourceRevision": "aa5dcdbff1fba8e6ff3bc077e063b93ab8a727fef316ecef73f7aceb18ebde86"
     },
     {
       "id": "reference/ssr-vite-api",
@@ -1619,7 +1620,7 @@
       "path": "zh/reference/javadoc.md",
       "title": "生成的 Javadoc",
       "status": "reviewed",
-      "sourceRevision": "36f552ef1d505f3fa4bd9009b9287410f4273d7fa9af750674108fbfceef00a5"
+      "sourceRevision": "f699e332f05790564aa0408b1f9b26ba32038798c8bf7397550626beff3a8f35"
     },
     {
       "id": "testing/assertable-page",

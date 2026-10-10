@@ -1,6 +1,6 @@
 # ADR 003：Redis delivery 的原子状态与失败边界
 
-日期：2026-10-10。状态：设计采用；独立存储原型及真实Redis合同已落地，宿主生命周期/自动装配/双实例验收仍待完成；不能据本ADR声明Redis功能已经完成。
+日期：2026-10-10。状态：设计采用；standalone 状态、宿主生命周期、自动装配、独立消费及双实例完成本地验收，范围见[多实例资格记录](../15-multi-instance-qualification.md)。不扩展为 TLS、Cluster/Sentinel 或 failover 持久性声明。
 
 ## 目标和模块
 
@@ -47,6 +47,8 @@ Redis异步复制/failover可能丢失已确认写入。本模块不宣称跨fai
 
 传输显式关闭Lettuce autoReconnect、拒绝断连队列，并使用每命令独立连接及并发上限；后续新操作可以重新连接，未知写入不重放。采用Spring脚本缓存的NOSCRIPT→EVAL路径只处理明确未执行的脚本缺失。CAS比较的是opaque字符串，未引入Lua cjson编码。局部冲突重算有一秒monotonic dispatch预算，已提交命令仍受配置command timeout约束，不宣传一秒端到端完成。
 
-宿主适配必须持久化expected epoch。旧host metadata在domain过期/丢失后不能通过null epoch重建；这是后续MVC/Boot工厂的必测约束。原型尚不能替代宿主身份轮换和失效监听。
+宿主适配持久化expected epoch。旧host metadata在domain过期/丢失后不能通过null epoch重建。`RedisHttpSessionStoreFactory`校验可信身份及epoch；`RedisSessionLifecycleFilter`在Spring Session之后、Security/MVC之前拦截同步轮换/失效，先撤销delivery再变更宿主身份，原生listener作为补充。检查锁定Spring Session源码发现其ID轮换不等同原生Servlet ID事件，因此不能仅依赖listener。
+
+撤销失败保留revoking metadata并拒绝宿主变更；后续显式宿主操作在已知读取结果上协调恢复，不重放UNKNOWN_WRITE。复制宿主属性到新ID不能迁移旧reservation。外部直接删除会话仓库、管理端撤销和异步宿主操作需要应用提供等价hook，不从缓存session推断全局身份状态。
 
 核对依据（2026-10-10）：[Spring Data Redis scripting](https://docs.spring.io/spring-data/redis/reference/redis/scripting.html)、[Redis TIME](https://redis.io/docs/latest/commands/time/)、[Lettuce command reliability](https://github.com/redis/lettuce/wiki/Command-execution-reliability)、[Redis source build](https://redis.io/docs/latest/operate/oss_and_stack/install/build-stack/)。资料用于能力选择；锁定版本由本地POM和实际构建验证，不据latest文档声明已升级依赖。
