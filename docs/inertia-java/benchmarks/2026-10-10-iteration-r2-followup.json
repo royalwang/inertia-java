@@ -1,0 +1,253 @@
+{
+  "format": 1,
+  "success": true,
+  "scope": "Repeated same-host closed-loop comparison; descriptive medians, no significance test or production SLO",
+  "receipts": {
+    "baseline": [
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-baseline/run-1Nv50o/summary.json",
+        "sha256": "0efc935bcb965e7d114dd39633b7b9d7d17ae5a2a778ebd2addcccbebad934bd",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            11.5185546875,
+            17.77197265625,
+            16.28173828125
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-baseline/run-HaL6ox/summary.json",
+        "sha256": "3da8ea011d2cffdff5a8664a8d27002ea0a6efbdd4b2af9362902dd9c66c867f",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            19.2421875,
+            19.11376953125,
+            16.8232421875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-baseline/run-orVkSu/summary.json",
+        "sha256": "b004c709af2626291ab0ab9b3fbf0ab31f61e294ce1e1c045a513ba1219e446e",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            24.10888671875,
+            20.197265625,
+            17.2763671875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      }
+    ],
+    "current": [
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-current/run-3DfrT2/summary.json",
+        "sha256": "7825b5d4380eaed79d5c89af63f2c0f4e364e723bfab769bcb26035a6eeed1dc",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            23.85986328125,
+            20.21044921875,
+            17.2978515625
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-current/run-hbDuUF/summary.json",
+        "sha256": "6a41a947a16fdf1f4c6a2dca86a341d3aa45d41ec28cc35724d4ae23239978f1",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            14.51953125,
+            18.2900390625,
+            16.47314453125
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/followup-current/run-zW2C31/summary.json",
+        "sha256": "adb507a5f91f9c2957f35ef1a1affecbe3c3168fabfe944dd685111faca09bb9",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            19.2421875,
+            19.11376953125,
+            16.8232421875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      }
+    ],
+    "application": []
+  },
+  "settings": {
+    "transport": {
+      "profile": "transport",
+      "modes": [
+        "excluded-csr"
+      ],
+      "scenarios": [
+        {
+          "name": "users"
+        }
+      ],
+      "requests": 1024,
+      "slowRequests": 24,
+      "concurrency": [
+        32
+      ],
+      "warmupRequests": 128,
+      "slowWarmupRequests": 2,
+      "clientDeadlineMs": 10000,
+      "ssrDeadlineMs": 1000,
+      "ssrPermits": 16,
+      "route": "/users",
+      "databaseQueries": 0,
+      "userRows": 2
+    },
+    "application": null
+  },
+  "totalMeasuredRequests": 6144,
+  "transportComparison": [
+    {
+      "mode": "excluded-csr",
+      "concurrency": 32,
+      "baselineP95Ms": 27.664209000000028,
+      "currentP95Ms": 26.03129200000012,
+      "baselineP95RangeMs": [
+        21.323499999999967,
+        31.42620799999986
+      ],
+      "currentP95RangeMs": [
+        23.217709000000013,
+        26.660707999999886
+      ],
+      "p95ChangePercent": -5.902633977352845,
+      "throughputChangePercent": 13.936986535201235,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    }
+  ],
+  "transportMeasurements": {
+    "baseline": [
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 1024,
+        "p50Ms": 12.873666999999841,
+        "p95Ms": 27.664209000000028,
+        "p95RangeMs": [
+          21.323499999999967,
+          31.42620799999986
+        ],
+        "p99Ms": 42.018375000000106,
+        "requestsPerSecond": 2125.0618267957425,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          }
+        ]
+      }
+    ],
+    "current": [
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 1024,
+        "p50Ms": 11.6684580000001,
+        "p95Ms": 26.03129200000012,
+        "p95RangeMs": [
+          23.217709000000013,
+          26.660707999999886
+        ],
+        "p99Ms": 32.390625,
+        "requestsPerSecond": 2421.2314074609667,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 1024
+          }
+        ]
+      }
+    ]
+  },
+  "application": [],
+  "limits": [
+    "Warmups: transport=128; bounded phases remain sensitive to JIT/GC/host activity.",
+    "SSR overload changes SSR/CSR mixture; compare ratios as well as latency.",
+    "Heap/RSS/queue are sampled, not a long-duration memory-leak qualification.",
+    "JSON visits are separate from HTML SSR/CSR; no database or browser rendering measured.",
+    "Changes above 10% request investigation, not an automatic claim of regression or improvement."
+  ]
+}

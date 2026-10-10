@@ -10,6 +10,7 @@ sources:
 verification:
   - inertia-java/inertia-core/src/test/java/io/inertia/core/ObservationContractTest.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaMetricsTest.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaDiagnosticsTest.java
   - inertia-java/inertia-spring-webmvc/src/test/java/io/inertia/spring/MvcObservationTest.java
 ---
 
@@ -40,6 +41,50 @@ Micrometer tags are only bounded `outcome`, `reason`, `response` and `status`. R
 - Prop-override diagnostics describe planning, even if a partial visit later excludes the key.
 
 The [existing timer inventory](https://github.com/royalwang/inertia-java/blob/main/inertia-java/README.md#observation-spi) lists names and detailed event semantics. Metrics/observation tests check wiring, privacy and bounded tags. When replacing default beans, maintain observer injection yourself and verify the resulting events under both success and failure.
+
+## Diagnose a failed visit
+
+Start with the failing stage rather than a single aggregate timer:
+
+| Signal | Interpretation and next check |
+| --- | --- |
+| `inertia.props` with `reason=timeout` | A selected provider exceeded its budget; inspect query duration and cancellation. Raising the SSR timeout does not fix it. |
+| `inertia.props` with `reason=overloaded` | Provider execution or its concurrency limit rejected work; inspect active tasks, bounded queue and fan-out before increasing capacity. |
+| `inertia.ssr_http` with `reason=connection` or `reason=timeout` | Renderer connection or response failed; inspect Node health and the transport budget. Optional SSR can return CSR; required SSR fails the render. |
+| `inertia.ssr_http` with `reason=response_limit` | The renderer response exceeded its byte limit; inspect payload size and the endpoint contract. |
+| `inertia.session_merge` or `inertia.session_complete` with `reason=error` | Session storage failed; inspect the backend and transaction outcome. Do not silently switch stores or retry an unknown write. |
+
+A failed provider does not become a successful CSR response. After repairing the cause, verify another visit succeeds and reserved flash/errors remain available under the documented abort contract. Keep response-writing failures separate from render preparation and browser receipt.
+
+## Prometheus examples
+
+Applications may add Spring Boot Actuator and a compatible Prometheus registry through their Boot BOM. Configure endpoint exposure and access in the application; the Inertia starter does not expose management endpoints. See [Boot endpoint configuration](https://docs.spring.io/spring-boot/3.5/reference/actuator/endpoints.html).
+
+With a standard Micrometer Prometheus registry, timer counts and sums use seconds-based names. Inspect your actual scrape before installing queries. These examples describe stage events, not independent requests or a production SLO.
+
+Selected-provider failures per second, grouped by bounded reason:
+
+```promql
+sum by (reason) (
+  rate(inertia_props_seconds_count{reason=~"timeout|overloaded|error"}[5m])
+)
+```
+
+SSR transport outcomes per second:
+
+```promql
+sum by (reason) (rate(inertia_ssr_http_seconds_count[5m]))
+```
+
+Mean successful render preparation time in seconds; the zero-traffic case has no meaningful average:
+
+```promql
+sum(rate(inertia_render_seconds_sum{outcome="success"}[5m]))
+/
+sum(rate(inertia_render_seconds_count{outcome="success"}[5m]))
+```
+
+Do not sum props, SSR and render durations to estimate request time. Histogram quantiles require application-configured histogram buckets and a suitable exporter; the library does not enable histograms or invent p95 values from timer sums. See [Micrometer Prometheus timers](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html).
 
 ## Upstream references
 

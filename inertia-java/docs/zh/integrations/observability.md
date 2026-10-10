@@ -10,12 +10,13 @@ sources:
 verification:
   - inertia-java/inertia-core/src/test/java/io/inertia/core/ObservationContractTest.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaMetricsTest.java
+  - inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaDiagnosticsTest.java
   - inertia-java/inertia-spring-webmvc/src/test/java/io/inertia/spring/MvcObservationTest.java
 translation:
   locale: zh-CN
   canonicalId: integrations/observability
   source: integrations/observability.md
-  sourceRevision: 0fe384f7e0fca7bfb65641973282bf6e7af97ddcdf57a3715aa98ed81c340cdc
+  sourceRevision: 3d827e28bda00a66fb47977f04e634b48070d1eb2587acae1e8aeae8c7e618b2
 ---
 
 # 日志与 Micrometer
@@ -45,6 +46,50 @@ Micrometer 只使用有界 `outcome`、`reason`、`response` 和 `status` 标签
 - Prop 覆盖诊断描述规划，即使后续 partial 访问排除该 key。
 
 [现有 timer 清单](https://github.com/royalwang/inertia-java/blob/main/inertia-java/README.md#observation-spi)列出名称与详细语义。指标/观测测试检查接线、隐私和有界标签。替换默认 bean 后，自行维持 observer 注入，并验证成功与失败事件。
+
+## 定位一次访问失败
+
+先定位失败阶段，再看整体计时：
+
+| 信号 | 含义与下一步 |
+| --- | --- |
+| `inertia.props` 的 `reason=timeout` | 被选中的 provider 超出预算；检查查询时长及取消。提高 SSR 超时不能解决这个问题。 |
+| `inertia.props` 的 `reason=overloaded` | 执行器或单次并发限制拒绝任务；扩容前检查活动任务、有界队列及查询扇出。 |
+| `inertia.ssr_http` 的 `reason=connection` 或 `reason=timeout` | renderer 连接或响应失败；检查 Node 健康和传输预算。可选 SSR 可以回退 CSR，必需 SSR 则使渲染失败。 |
+| `inertia.ssr_http` 的 `reason=response_limit` | renderer 响应超过字节上限；检查负载大小和端点契约。 |
+| `inertia.session_merge` 或 `inertia.session_complete` 的 `reason=error` | session 存储失败；检查后端和事务结果。不得静默切换 store 或重试结果未知的写入。 |
+
+provider 失败不会变成成功的 CSR 响应。修复原因后，验证下一次访问成功，并按已说明的 abort 契约保留预留的 flash/errors。响应写入失败、渲染准备成功与浏览器收到响应应分别判断。
+
+## Prometheus 查询示例
+
+应用可以通过自身 Boot BOM 添加 Spring Boot Actuator 和兼容的 Prometheus registry。端点暴露与访问规则由应用配置，Inertia starter 不暴露管理端点。参见 [Boot 端点配置](https://docs.spring.io/spring-boot/3.5/reference/actuator/endpoints.html)。
+
+使用标准 Micrometer Prometheus registry 时，timer 的计数和总时长使用以秒为单位的名称。安装查询前先核对真实 scrape。以下示例描述阶段事件，不是独立请求数或生产 SLO。
+
+按有界原因分组的 provider 每秒失败次数：
+
+```promql
+sum by (reason) (
+  rate(inertia_props_seconds_count{reason=~"timeout|overloaded|error"}[5m])
+)
+```
+
+SSR 传输结果每秒次数：
+
+```promql
+sum by (reason) (rate(inertia_ssr_http_seconds_count[5m]))
+```
+
+成功渲染准备的平均秒数；没有流量时，平均值没有意义：
+
+```promql
+sum(rate(inertia_render_seconds_sum{outcome="success"}[5m]))
+/
+sum(rate(inertia_render_seconds_count{outcome="success"}[5m]))
+```
+
+不能把 props、SSR 与 render 时长相加作为请求时长。直方图分位数需要应用配置 bucket 并使用合适 exporter；库不会自动开启直方图，也不能从 timer 总时长虚构 p95。参见 [Micrometer Prometheus timers](https://docs.micrometer.io/micrometer/reference/implementations/prometheus.html)。
 
 ## 上游参考
 

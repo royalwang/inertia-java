@@ -1,0 +1,2314 @@
+{
+  "format": 1,
+  "success": true,
+  "scope": "Repeated same-host closed-loop comparison; descriptive medians, no significance test or production SLO",
+  "receipts": {
+    "baseline": [
+      {
+        "path": "/tmp/inertia-r2-capacity/baseline/run-BEoja3/summary.json",
+        "sha256": "ebb31addbe716edb76f36789368a85485a53ed0b884a99c5fe4f237e1a98c36d",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            12.2763671875,
+            9.8828125,
+            9.828125
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/baseline/run-ThtMNt/summary.json",
+        "sha256": "5a4f00860e9024a4d5c5b637e286fa48eafc2ea6ca4621106c3fe759deff975f",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            11.88134765625,
+            10.22119140625,
+            9.95703125
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/baseline/run-vWCbgb/summary.json",
+        "sha256": "b0f5ca290655e13954df9e53342798e364137c2dc471538f53dff6404f27561a",
+        "jarSha256": "b6ed36bd12eff1f50cd2e270439cbb08edc726f8cad18c44c43ffb00def49f98",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            13.8056640625,
+            11.24462890625,
+            10.36669921875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      }
+    ],
+    "current": [
+      {
+        "path": "/tmp/inertia-r2-capacity/current/run-2Kd7xI/summary.json",
+        "sha256": "3a5576f965ed30f48571aa7c30aa9a495bc0bd0ccefa73ef0adcb92902db5142",
+        "jarSha256": "6d97018e968a9761bf8a6d926c4bac29af5cf77f8d4ac17a9b8b25804094250a",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            11.8271484375,
+            10.03564453125,
+            9.8857421875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/current/run-NodivM/summary.json",
+        "sha256": "e699a7463f93af626d120944477b7cb3e190769e930f3875069e48df07828b8e",
+        "jarSha256": "6d97018e968a9761bf8a6d926c4bac29af5cf77f8d4ac17a9b8b25804094250a",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            19.1943359375,
+            12.9384765625,
+            11.021484375
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/current/run-TX4S3C/summary.json",
+        "sha256": "1e749a707fb56eb260530113d2ff45ea9637d46c44bd6cd549dc0e2df8451035",
+        "jarSha256": "6d97018e968a9761bf8a6d926c4bac29af5cf77f8d4ac17a9b8b25804094250a",
+        "driverSha256": null,
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            14.99658203125,
+            11.125,
+            10.29296875
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      }
+    ],
+    "application": [
+      {
+        "path": "/tmp/inertia-r2-capacity/application-final/run-ADBnve/summary.json",
+        "sha256": "00ed8f27aabcdf82fe4e23a9d2073eab7263cd39d9675bd59d92da72809442c3",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            11.046875,
+            18.13525390625,
+            16.37255859375
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/application-final/run-K2i0po/summary.json",
+        "sha256": "7b8b41c93b9a03a5b508393ed0c071ef2bf05786ed71c6afeb29d0a90e7462db",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            15.9189453125,
+            18.517578125,
+            16.56396484375
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      },
+      {
+        "path": "/tmp/inertia-r2-capacity/application-final/run-RdKlBI/summary.json",
+        "sha256": "79978e28453d7f73376cd6c56866d5ac4bd67cbf4303d9f4347d67ceaf5c8db9",
+        "jarSha256": "43bd90770f42cbb8598e8797b130157a88a89212245c471fe8112f681cde4d85",
+        "driverSha256": "275e8b7a60e40355b57050149f58805d4deee74d0eea5d72dda3bf5ea06430cb",
+        "runtime": {
+          "node": "v22.22.2",
+          "platform": "darwin",
+          "release": "25.6.0",
+          "cpu": "Apple M1 Pro",
+          "logicalCpus": 8,
+          "totalMemoryBytes": 17179869184,
+          "initialLoadAverage": [
+            19.142578125,
+            19.09521484375,
+            16.830078125
+          ],
+          "java": "openjdk version \"21.0.1\" 2023-10-17\nOpenJDK Runtime Environment (build 21.0.1+12-29)\nOpenJDK 64-Bit Server VM (build 21.0.1+12-29, mixed mode, sharing)"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "transport": {
+      "profile": "transport",
+      "scenarios": [
+        {
+          "name": "users"
+        }
+      ],
+      "requests": 128,
+      "slowRequests": 8,
+      "concurrency": [
+        1,
+        8,
+        32
+      ],
+      "warmupRequests": 8,
+      "slowWarmupRequests": 2,
+      "clientDeadlineMs": 10000,
+      "ssrDeadlineMs": 1000,
+      "ssrPermits": 16,
+      "route": "/users",
+      "databaseQueries": 0,
+      "userRows": 2
+    },
+    "application": {
+      "profile": "application",
+      "modes": [
+        "ssr",
+        "excluded-csr"
+      ],
+      "scenarios": [
+        {
+          "name": "small-html",
+          "bytes": 64
+        },
+        {
+          "name": "large-html",
+          "bytes": 262144
+        },
+        {
+          "name": "small-json",
+          "bytes": 64,
+          "json": true
+        },
+        {
+          "name": "large-json",
+          "bytes": 262144,
+          "json": true
+        },
+        {
+          "name": "partial",
+          "bytes": 262144,
+          "json": true,
+          "select": "payload"
+        },
+        {
+          "name": "deferred",
+          "bytes": 262144,
+          "json": true,
+          "select": "stats"
+        },
+        {
+          "name": "same-session",
+          "bytes": 64,
+          "session": true
+        }
+      ],
+      "requests": 64,
+      "slowRequests": 24,
+      "concurrency": [
+        1,
+        8,
+        32
+      ],
+      "warmupRequests": 8,
+      "slowWarmupRequests": 2,
+      "clientDeadlineMs": 10000,
+      "ssrDeadlineMs": 1000,
+      "ssrPermits": 16,
+      "route": "/benchmark/page",
+      "databaseQueries": 0,
+      "userRows": 1
+    }
+  },
+  "totalMeasuredRequests": 15120,
+  "transportComparison": [
+    {
+      "mode": "connection-refused",
+      "concurrency": 1,
+      "baselineP95Ms": 7.359582999999475,
+      "currentP95Ms": 5.500958000000537,
+      "baselineP95RangeMs": [
+        5.775540999999066,
+        10.46900000000096
+      ],
+      "currentP95RangeMs": [
+        5.184291999999914,
+        5.620542000000569
+      ],
+      "p95ChangePercent": -25.25448792409938,
+      "throughputChangePercent": 21.719847719651717,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    },
+    {
+      "mode": "connection-refused",
+      "concurrency": 8,
+      "baselineP95Ms": 12.896208000000115,
+      "currentP95Ms": 11.023165999999037,
+      "baselineP95RangeMs": [
+        11.633749999999054,
+        50.74712499999987
+      ],
+      "currentP95RangeMs": [
+        9.38800000000083,
+        11.75866700000006
+      ],
+      "p95ChangePercent": -14.523974799422135,
+      "throughputChangePercent": 20.290738542054477,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    },
+    {
+      "mode": "connection-refused",
+      "concurrency": 32,
+      "baselineP95Ms": 49.47166600000128,
+      "currentP95Ms": 42.72808400000031,
+      "baselineP95RangeMs": [
+        41.44424999999865,
+        51.5552919999991
+      ],
+      "currentP95RangeMs": [
+        35.23424999999952,
+        48.77020900000207
+      ],
+      "p95ChangePercent": -13.631200534060838,
+      "throughputChangePercent": 19.234604580040894,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 1,
+      "baselineP95Ms": 4.399917000000642,
+      "currentP95Ms": 4.972124999999323,
+      "baselineP95RangeMs": [
+        4.131540999999743,
+        5.169499999999971
+      ],
+      "currentP95RangeMs": [
+        4.440833999999995,
+        107.8112919999985
+      ],
+      "p95ChangePercent": 13.004972593769338,
+      "throughputChangePercent": -8.970080349432097,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 8,
+      "baselineP95Ms": 9.083041999998386,
+      "currentP95Ms": 8.363875000000007,
+      "baselineP95RangeMs": [
+        6.146915999999692,
+        9.342458999999508
+      ],
+      "currentP95RangeMs": [
+        6.364249999999629,
+        31.57654199999888
+      ],
+      "p95ChangePercent": -7.917688809525558,
+      "throughputChangePercent": 0.7243443197811894,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": false
+    },
+    {
+      "mode": "excluded-csr",
+      "concurrency": 32,
+      "baselineP95Ms": 32.979707999999846,
+      "currentP95Ms": 46.329375000000255,
+      "baselineP95RangeMs": [
+        30.19116600000052,
+        33.845541999999114
+      ],
+      "currentP95RangeMs": [
+        37.042083000000275,
+        51.726458000001
+      ],
+      "p95ChangePercent": 40.47842691633434,
+      "throughputChangePercent": 14.661485629492454,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": true
+    },
+    {
+      "mode": "ssr",
+      "concurrency": 1,
+      "baselineP95Ms": 9.249041999999918,
+      "currentP95Ms": 7.930709000000206,
+      "baselineP95RangeMs": [
+        7.8937919999998485,
+        12.256541000000198
+      ],
+      "currentP95RangeMs": [
+        7.324749999999767,
+        8.162958000000344
+      ],
+      "p95ChangePercent": -14.253724872259454,
+      "throughputChangePercent": 5.241613972536174,
+      "baselineSsrRatio": 1,
+      "currentSsrRatio": 1,
+      "investigate": true
+    },
+    {
+      "mode": "ssr",
+      "concurrency": 8,
+      "baselineP95Ms": 18.024625000000015,
+      "currentP95Ms": 17.34829099999979,
+      "baselineP95RangeMs": [
+        14.312458000000333,
+        19.620334000000184
+      ],
+      "currentP95RangeMs": [
+        15.86620800000037,
+        33.95908299999974
+      ],
+      "p95ChangePercent": -3.7522777866403567,
+      "throughputChangePercent": -4.625961002946067,
+      "baselineSsrRatio": 1,
+      "currentSsrRatio": 1,
+      "investigate": false
+    },
+    {
+      "mode": "ssr",
+      "concurrency": 32,
+      "baselineP95Ms": 51.173375000000306,
+      "currentP95Ms": 53.73058399999991,
+      "baselineP95RangeMs": [
+        45.33291700000018,
+        63.22804200000019
+      ],
+      "currentP95RangeMs": [
+        52.633000000000266,
+        91.88699999999972
+      ],
+      "p95ChangePercent": 4.997147442394767,
+      "throughputChangePercent": 4.4437976621051645,
+      "baselineSsrRatio": 0.59375,
+      "currentSsrRatio": 0.484375,
+      "investigate": false
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 1,
+      "baselineP95Ms": 1018.1464999999989,
+      "currentP95Ms": 1021.8014590000021,
+      "baselineP95RangeMs": [
+        1017.5415829999984,
+        1026.1375829999997
+      ],
+      "currentP95RangeMs": [
+        1017.9436249999999,
+        1046.8708750000005
+      ],
+      "p95ChangePercent": 0.3589816396759371,
+      "throughputChangePercent": 0.008981823428322322,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": false
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 8,
+      "baselineP95Ms": 1024.617792000001,
+      "currentP95Ms": 1022.9172499999986,
+      "baselineP95RangeMs": [
+        1021.0487919999978,
+        1027.8554590000022
+      ],
+      "currentP95RangeMs": [
+        1017.1934580000016,
+        1072.867999999995
+      ],
+      "p95ChangePercent": -0.16596842386300548,
+      "throughputChangePercent": 0.1798307540258337,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": false
+    },
+    {
+      "mode": "stalled-body",
+      "concurrency": 32,
+      "baselineP95Ms": 1023.5506249999999,
+      "currentP95Ms": 1017.4140829999997,
+      "baselineP95RangeMs": [
+        1019.1480420000007,
+        1033.0119589999995
+      ],
+      "currentP95RangeMs": [
+        1015.6123750000042,
+        1021.4093749999993
+      ],
+      "p95ChangePercent": -0.5995347811936669,
+      "throughputChangePercent": 0.5632775863363415,
+      "baselineSsrRatio": 0,
+      "currentSsrRatio": 0,
+      "investigate": false
+    }
+  ],
+  "transportMeasurements": {
+    "baseline": [
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 4.379625000001397,
+        "p95Ms": 7.359582999999475,
+        "p95RangeMs": [
+          5.775540999999066,
+          10.46900000000096
+        ],
+        "p99Ms": 10.60979099999895,
+        "requestsPerSecond": 212.07426011511419,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          }
+        ]
+      },
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 6.49462499999936,
+        "p95Ms": 12.896208000000115,
+        "p95RangeMs": [
+          11.633749999999054,
+          50.74712499999987
+        ],
+        "p99Ms": 40.59095800000068,
+        "requestsPerSecond": 1005.6775605248014,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          }
+        ]
+      },
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 19.35816700000032,
+        "p95Ms": 49.47166600000128,
+        "p95RangeMs": [
+          41.44424999999865,
+          51.5552919999991
+        ],
+        "p99Ms": 53.43604199999936,
+        "requestsPerSecond": 1269.5510615519815,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 80,
+            "OVERLOADED": 48
+          },
+          {
+            "CONNECTION": 81,
+            "OVERLOADED": 47
+          },
+          {
+            "CONNECTION": 101,
+            "OVERLOADED": 27
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 2.7816670000001977,
+        "p95Ms": 4.399917000000642,
+        "p95RangeMs": [
+          4.131540999999743,
+          5.169499999999971
+        ],
+        "p99Ms": 5.947917000000416,
+        "requestsPerSecond": 345.8567943465925,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 3.7899170000000595,
+        "p95Ms": 9.083041999998386,
+        "p95RangeMs": [
+          6.146915999999692,
+          9.342458999999508
+        ],
+        "p99Ms": 10.16412500000115,
+        "requestsPerSecond": 1781.4572044363142,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 17.54912499999955,
+        "p95Ms": 32.979707999999846,
+        "p95RangeMs": [
+          30.19116600000052,
+          33.845541999999114
+        ],
+        "p99Ms": 36.068333000000166,
+        "requestsPerSecond": 1728.982061811105,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 5.495499999999993,
+        "p95Ms": 9.249041999999918,
+        "p95RangeMs": [
+          7.8937919999998485,
+          12.256541000000198
+        ],
+        "p99Ms": 12.389999999999873,
+        "requestsPerSecond": 167.44083525506028,
+        "ssrRatio": 1,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 9.906500000000051,
+        "p95Ms": 18.024625000000015,
+        "p95RangeMs": [
+          14.312458000000333,
+          19.620334000000184
+        ],
+        "p99Ms": 20.11791600000015,
+        "requestsPerSecond": 738.2200184252796,
+        "ssrRatio": 1,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 20.994666999999936,
+        "p95Ms": 51.173375000000306,
+        "p95RangeMs": [
+          45.33291700000018,
+          63.22804200000019
+        ],
+        "p99Ms": 60.04441599999973,
+        "requestsPerSecond": 1249.2847722678275,
+        "ssrRatio": 0.59375,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 91,
+            "OVERLOADED": 37
+          },
+          {
+            "NONE": 76,
+            "OVERLOADED": 52
+          },
+          {
+            "OVERLOADED": 104,
+            "NONE": 24
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 8,
+        "p50Ms": 1012.1244589999988,
+        "p95Ms": 1018.1464999999989,
+        "p95RangeMs": [
+          1017.5415829999984,
+          1026.1375829999997
+        ],
+        "p99Ms": 1018.1464999999989,
+        "requestsPerSecond": 0.987603218617407,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 8,
+        "p50Ms": 1020.151417000001,
+        "p95Ms": 1024.617792000001,
+        "p95RangeMs": [
+          1021.0487919999978,
+          1027.8554590000022
+        ],
+        "p99Ms": 1024.617792000001,
+        "requestsPerSecond": 7.8018692598033335,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 8,
+        "p50Ms": 1019.5220840000002,
+        "p95Ms": 1023.5506249999999,
+        "p95RangeMs": [
+          1019.1480420000007,
+          1033.0119589999995
+        ],
+        "p99Ms": 1023.5506249999999,
+        "requestsPerSecond": 7.812881167888068,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      }
+    ],
+    "current": [
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 3.6531250000007276,
+        "p95Ms": 5.500958000000537,
+        "p95RangeMs": [
+          5.184291999999914,
+          5.620542000000569
+        ],
+        "p99Ms": 6.69262499999968,
+        "requestsPerSecond": 258.13646646469505,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          }
+        ]
+      },
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 5.736499999999069,
+        "p95Ms": 11.023165999999037,
+        "p95RangeMs": [
+          9.38800000000083,
+          11.75866700000006
+        ],
+        "p99Ms": 12.721541999999317,
+        "requestsPerSecond": 1209.7369649070006,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          },
+          {
+            "CONNECTION": 128
+          }
+        ]
+      },
+      {
+        "mode": "connection-refused",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 14.81408300000112,
+        "p95Ms": 42.72808400000031,
+        "p95RangeMs": [
+          35.23424999999952,
+          48.77020900000207
+        ],
+        "p99Ms": 44.682166999999026,
+        "requestsPerSecond": 1513.7441881832167,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "CONNECTION": 111,
+            "OVERLOADED": 17
+          },
+          {
+            "CONNECTION": 82,
+            "OVERLOADED": 46
+          },
+          {
+            "CONNECTION": 94,
+            "OVERLOADED": 34
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 2.9243339999993623,
+        "p95Ms": 4.972124999999323,
+        "p95RangeMs": [
+          4.440833999999995,
+          107.8112919999985
+        ],
+        "p99Ms": 6.025000000000546,
+        "requestsPerSecond": 314.833161999733,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 3.9778749999995853,
+        "p95Ms": 8.363875000000007,
+        "p95RangeMs": [
+          6.364249999999629,
+          31.57654199999888
+        ],
+        "p99Ms": 9.080374999999549,
+        "requestsPerSecond": 1794.3610885059816,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "excluded-csr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 12.936250000000655,
+        "p95Ms": 46.329375000000255,
+        "p95RangeMs": [
+          37.042083000000275,
+          51.726458000001
+        ],
+        "p99Ms": 54.49629199999981,
+        "requestsPerSecond": 1982.4765183400425,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          },
+          {
+            "EXCLUDED_OR_UNAVAILABLE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 128,
+        "p50Ms": 5.405499999999847,
+        "p95Ms": 7.930709000000206,
+        "p95RangeMs": [
+          7.324749999999767,
+          8.162958000000344
+        ],
+        "p99Ms": 10.259749999999713,
+        "requestsPerSecond": 176.21743747152078,
+        "ssrRatio": 1,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 128,
+        "p50Ms": 10.971042000000125,
+        "p95Ms": 17.34829099999979,
+        "p95RangeMs": [
+          15.86620800000037,
+          33.95908299999974
+        ],
+        "p99Ms": 25.574041999999736,
+        "requestsPerSecond": 704.0702482569849,
+        "ssrRatio": 1,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          },
+          {
+            "NONE": 128
+          }
+        ]
+      },
+      {
+        "mode": "ssr",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 128,
+        "p50Ms": 15.628874999999425,
+        "p95Ms": 53.73058399999991,
+        "p95RangeMs": [
+          52.633000000000266,
+          91.88699999999972
+        ],
+        "p99Ms": 59.530833999999686,
+        "requestsPerSecond": 1304.800459770901,
+        "ssrRatio": 0.484375,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "NONE": 30,
+            "OVERLOADED": 98
+          },
+          {
+            "OVERLOADED": 66,
+            "NONE": 62
+          },
+          {
+            "NONE": 78,
+            "OVERLOADED": 50
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 1,
+        "requestsPerRun": 8,
+        "p50Ms": 1009.7482500000006,
+        "p95Ms": 1021.8014590000021,
+        "p95RangeMs": [
+          1017.9436249999999,
+          1046.8708750000005
+        ],
+        "p99Ms": 1021.8014590000021,
+        "requestsPerSecond": 0.9876919233946757,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 8,
+        "requestsPerRun": 8,
+        "p50Ms": 1017.7469999999994,
+        "p95Ms": 1022.9172499999986,
+        "p95RangeMs": [
+          1017.1934580000016,
+          1072.867999999995
+        ],
+        "p99Ms": 1022.9172499999986,
+        "requestsPerSecond": 7.815899420121348,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      },
+      {
+        "mode": "stalled-body",
+        "scenario": "users",
+        "concurrency": 32,
+        "requestsPerRun": 8,
+        "p50Ms": 1014.6295420000024,
+        "p95Ms": 1017.4140829999997,
+        "p95RangeMs": [
+          1015.6123750000042,
+          1021.4093749999993
+        ],
+        "p99Ms": 1017.4140829999997,
+        "requestsPerSecond": 7.856889376353874,
+        "ssrRatio": 0,
+        "responseKind": "html",
+        "maxSampledHeapUsedBytes": null,
+        "maxSampledQueue": 0,
+        "httpReasons": [
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          },
+          {
+            "TIMEOUT": 8
+          }
+        ]
+      }
+    ]
+  },
+  "application": [
+    {
+      "mode": "excluded-csr",
+      "scenario": "deferred",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 1.13774999999805,
+      "p95Ms": 2.1218750000007276,
+      "p95RangeMs": [
+        1.3389589999969758,
+        2.6582910000033735
+      ],
+      "p99Ms": 3.7749579999981506,
+      "requestsPerSecond": 720.3239260679411,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 104084560,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "deferred",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 2.2395419999993464,
+      "p95Ms": 4.2780840000013995,
+      "p95RangeMs": [
+        3.7762499999989814,
+        6.624583000000712
+      ],
+      "p99Ms": 4.79095800000141,
+      "requestsPerSecond": 3332.9066518463846,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 125056080,
+      "maxSampledQueue": 2,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "deferred",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 5.800124999997934,
+      "p95Ms": 9.619249999999738,
+      "p95RangeMs": [
+        8.754583999998431,
+        12.76441700000214
+      ],
+      "p99Ms": 12.072000000000116,
+      "requestsPerSecond": 4313.455582056301,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 137638992,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-html",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 3.0922909999990225,
+      "p95Ms": 5.124374999999418,
+      "p95RangeMs": [
+        4.105459000000337,
+        9.3001660000009
+      ],
+      "p99Ms": 6.017708999999741,
+      "requestsPerSecond": 297.25250393085025,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 59246360,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-html",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 9.635791000000609,
+      "p95Ms": 17.898917000000438,
+      "p95RangeMs": [
+        15.501000000000204,
+        18.496084000000337
+      ],
+      "p99Ms": 21.5692080000008,
+      "requestsPerSecond": 733.1952283746147,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 41880952,
+      "maxSampledQueue": 2,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-html",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 34.87095799999952,
+      "p95Ms": 63.1401249999999,
+      "p95RangeMs": [
+        49.538166000000274,
+        119.48920899999939
+      ],
+      "p99Ms": 79.20187500000065,
+      "requestsPerSecond": 726.271009729488,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 84724928,
+      "maxSampledQueue": 26,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-json",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 2.223500000000058,
+      "p95Ms": 4.414334000000963,
+      "p95RangeMs": [
+        3.872083999998722,
+        4.690082999999504
+      ],
+      "p99Ms": 6.7971660000002885,
+      "requestsPerSecond": 396.09536614838964,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 65288520,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-json",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 5.83062499999869,
+      "p95Ms": 9.735666000000492,
+      "p95RangeMs": [
+        7.914040999999997,
+        15.866125000000466
+      ],
+      "p99Ms": 11.251916999999594,
+      "requestsPerSecond": 1255.5317699857303,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 97332544,
+      "maxSampledQueue": 2,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "large-json",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 25.431292000001122,
+      "p95Ms": 48.92604200000096,
+      "p95RangeMs": [
+        32.130167000001165,
+        63.500207999999475
+      ],
+      "p99Ms": 56.06379100000049,
+      "requestsPerSecond": 879.4445219531166,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 103417912,
+      "maxSampledQueue": 26,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "partial",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 2.1548750000001746,
+      "p95Ms": 4.168874999999389,
+      "p95RangeMs": [
+        3.997457999999824,
+        4.829374999999345
+      ],
+      "p99Ms": 6.50291599999764,
+      "requestsPerSecond": 388.04988259975505,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 139069496,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "partial",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 6.400125000000116,
+      "p95Ms": 11.950292000001355,
+      "p95RangeMs": [
+        7.655124999997497,
+        20.898791999999958
+      ],
+      "p99Ms": 13.702583000000232,
+      "requestsPerSecond": 1115.6271932315383,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 92312600,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "partial",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 21.765416999998706,
+      "p95Ms": 38.11041699999987,
+      "p95RangeMs": [
+        33.01945800000249,
+        51.561499999999796
+      ],
+      "p99Ms": 46.60029199999917,
+      "requestsPerSecond": 1176.5111389409165,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 109145960,
+      "maxSampledQueue": 17,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "same-session",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 1.2531250000029104,
+      "p95Ms": 2.230999999999767,
+      "p95RangeMs": [
+        2.021375000000262,
+        3.782583000000159
+      ],
+      "p99Ms": 3.1581250000017462,
+      "requestsPerSecond": 762.1130546607999,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 90713960,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "same-session",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 3.7034999999996217,
+      "p95Ms": 6.172167000000627,
+      "p95RangeMs": [
+        5.6252910000002885,
+        9.514040999998542
+      ],
+      "p99Ms": 9.075415999999677,
+      "requestsPerSecond": 1924.0959191880622,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 113782632,
+      "maxSampledQueue": 6,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "same-session",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 13.368916000003082,
+      "p95Ms": 24.619416999998066,
+      "p95RangeMs": [
+        13.18487499999901,
+        29.77166600000055
+      ],
+      "p99Ms": 27.006209000002855,
+      "requestsPerSecond": 1861.4775111265362,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 108645008,
+      "maxSampledQueue": 48,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-html",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 3.193707999998878,
+      "p95Ms": 6.348375000001397,
+      "p95RangeMs": [
+        4.921167000000423,
+        7.402541999999812
+      ],
+      "p99Ms": 8.63104199999907,
+      "requestsPerSecond": 283.1619310657951,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 50571848,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-html",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 4.695666999999958,
+      "p95Ms": 9.241874999999709,
+      "p95RangeMs": [
+        8.752334000000701,
+        11.236500000000888
+      ],
+      "p99Ms": 10.992165999999997,
+      "requestsPerSecond": 1498.5877566551105,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 58960456,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-html",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 17.592375000000175,
+      "p95Ms": 39.35666599999968,
+      "p95RangeMs": [
+        31.568208000000595,
+        47.98358300000109
+      ],
+      "p99Ms": 39.76787500000137,
+      "requestsPerSecond": 1327.3946250887677,
+      "ssrRatio": 0,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 75737672,
+      "maxSampledQueue": 30,
+      "httpReasons": [
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        },
+        {
+          "EXCLUDED_OR_UNAVAILABLE": 64
+        }
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-json",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 1.626124999998865,
+      "p95Ms": 3.1662500000002183,
+      "p95RangeMs": [
+        2.1266670000004524,
+        3.4364999999997963
+      ],
+      "p99Ms": 4.410625000000437,
+      "requestsPerSecond": 538.562252191941,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 76385328,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-json",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 3.4500000000007276,
+      "p95Ms": 8.655459000001429,
+      "p95RangeMs": [
+        6.89087500000096,
+        9.190666999998939
+      ],
+      "p99Ms": 9.470499999999447,
+      "requestsPerSecond": 1936.3915349797096,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 91065392,
+      "maxSampledQueue": 2,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "excluded-csr",
+      "scenario": "small-json",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 11.658499999999549,
+      "p95Ms": 21.639999999999418,
+      "p95RangeMs": [
+        21.2556250000016,
+        22.25404200000048
+      ],
+      "p99Ms": 24.11554199999955,
+      "requestsPerSecond": 1937.6959892448397,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 109939760,
+      "maxSampledQueue": 42,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "deferred",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 1.1043749999989814,
+      "p95Ms": 1.8458330000003116,
+      "p95RangeMs": [
+        1.5351670000000013,
+        2.415666999999303
+      ],
+      "p99Ms": 2.160374999999476,
+      "requestsPerSecond": 879.8324194188582,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 310631864,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "deferred",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 1.853917000000365,
+      "p95Ms": 4.127415999999357,
+      "p95RangeMs": [
+        2.8709170000001905,
+        4.174917000000278
+      ],
+      "p99Ms": 4.6863329999996495,
+      "requestsPerSecond": 3598.554887829962,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 329506232,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "deferred",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 4.3225839999995515,
+      "p95Ms": 8.389083000000028,
+      "p95RangeMs": [
+        7.47754200000054,
+        10.560959000000366
+      ],
+      "p99Ms": 9.301791000001685,
+      "requestsPerSecond": 5123.193593958122,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 342089144,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-html",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 9.630333000000064,
+      "p95Ms": 12.953207999999904,
+      "p95RangeMs": [
+        11.809708999999202,
+        15.303375000000415
+      ],
+      "p99Ms": 25.73070799999914,
+      "requestsPerSecond": 98.47771774454714,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 63659128,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-html",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 29.870208000000275,
+      "p95Ms": 44.15129199999956,
+      "p95RangeMs": [
+        40.903291000000536,
+        80.16933300000073
+      ],
+      "p99Ms": 49.48966699999983,
+      "requestsPerSecond": 257.2508389864298,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 199786704,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-html",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 35.52991600000041,
+      "p95Ms": 100.2236670000002,
+      "p95RangeMs": [
+        81.46891700000015,
+        142.30241600000045
+      ],
+      "p99Ms": 108.62295799999993,
+      "requestsPerSecond": 494.44426203228124,
+      "ssrRatio": 0.390625,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 244797680,
+      "maxSampledQueue": 8,
+      "httpReasons": [
+        {
+          "OVERLOADED": 42,
+          "NONE": 22
+        },
+        {
+          "OVERLOADED": 36,
+          "NONE": 28
+        },
+        {
+          "OVERLOADED": 39,
+          "NONE": 25
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-json",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 2.1420829999997295,
+      "p95Ms": 3.61816699999963,
+      "p95RangeMs": [
+        2.8977080000004207,
+        4.748166999999739
+      ],
+      "p99Ms": 4.46349999999984,
+      "requestsPerSecond": 426.7926871660464,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 152021536,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-json",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 6.355083000000377,
+      "p95Ms": 14.437582999999904,
+      "p95RangeMs": [
+        10.067957999999635,
+        16.742207999999664
+      ],
+      "p99Ms": 20.500458000000435,
+      "requestsPerSecond": 1116.0844103707789,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 293805944,
+      "maxSampledQueue": 1,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "large-json",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 24.97175000000061,
+      "p95Ms": 41.365875000000415,
+      "p95RangeMs": [
+        38.279084000000694,
+        49.81212499999947
+      ],
+      "p99Ms": 47.796792000000096,
+      "requestsPerSecond": 1013.7322386587931,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 224033728,
+      "maxSampledQueue": 6,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "partial",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 2.019583999999668,
+      "p95Ms": 3.758791000000201,
+      "p95RangeMs": [
+        3.6172919999999067,
+        4.932667000000038
+      ],
+      "p99Ms": 5.569749999999658,
+      "requestsPerSecond": 430.3356365815548,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 251296704,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "partial",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 6.0237090000000535,
+      "p95Ms": 11.932416999999987,
+      "p95RangeMs": [
+        11.522041000000172,
+        16.884040999999343
+      ],
+      "p99Ms": 15.312874999999622,
+      "requestsPerSecond": 1119.3271276904588,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 186198376,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "partial",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 19.840041999999812,
+      "p95Ms": 36.42266699999982,
+      "p95RangeMs": [
+        25.733666000000085,
+        49.260332999999264
+      ],
+      "p99Ms": 38.24320799999987,
+      "requestsPerSecond": 1285.4632186793779,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 304340408,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "same-session",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 2.7019580000014685,
+      "p95Ms": 4.2800829999996495,
+      "p95RangeMs": [
+        3.437959000000774,
+        5.197541999999885
+      ],
+      "p99Ms": 7.202625000001717,
+      "requestsPerSecond": 319.3232343202618,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 346283448,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "same-session",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 6.3891660000008414,
+      "p95Ms": 9.776334000000134,
+      "p95RangeMs": [
+        8.449124999999185,
+        17.282000000001062
+      ],
+      "p99Ms": 10.725667000000612,
+      "requestsPerSecond": 1144.5995913421789,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 176982936,
+      "maxSampledQueue": 4,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "same-session",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 22.314374999999927,
+      "p95Ms": 40.393332999999984,
+      "p95RangeMs": [
+        34.09220800000003,
+        57.82416599999851
+      ],
+      "p99Ms": 44.98029200000019,
+      "requestsPerSecond": 1286.6476710561328,
+      "ssrRatio": 0.65625,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 197954456,
+      "maxSampledQueue": 42,
+      "httpReasons": [
+        {
+          "NONE": 61,
+          "OVERLOADED": 3
+        },
+        {
+          "NONE": 40,
+          "OVERLOADED": 24
+        },
+        {
+          "NONE": 42,
+          "OVERLOADED": 22
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-html",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 5.986957999999959,
+      "p95Ms": 8.745957999999973,
+      "p95RangeMs": [
+        6.667084000000159,
+        19.202666000000136
+      ],
+      "p99Ms": 11.868209000000206,
+      "requestsPerSecond": 157.45048305316172,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 52701528,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-html",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 11.951665999999932,
+      "p95Ms": 26.906124999999975,
+      "p95RangeMs": [
+        20.76495799999975,
+        102.88325000000032
+      ],
+      "p99Ms": 29.433958000000075,
+      "requestsPerSecond": 587.2358812574527,
+      "ssrRatio": 1,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 23939568,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        },
+        {
+          "NONE": 64
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-html",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 24.56379199999992,
+      "p95Ms": 74.65174999999999,
+      "p95RangeMs": [
+        49.042459000000235,
+        95.97950000000037
+      ],
+      "p99Ms": 76.44808300000022,
+      "requestsPerSecond": 812.5844754567864,
+      "ssrRatio": 0.859375,
+      "responseKind": "html",
+      "maxSampledHeapUsedBytes": 47008240,
+      "maxSampledQueue": 30,
+      "httpReasons": [
+        {
+          "NONE": 51,
+          "OVERLOADED": 13
+        },
+        {
+          "NONE": 55,
+          "OVERLOADED": 9
+        },
+        {
+          "NONE": 59,
+          "OVERLOADED": 5
+        }
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-json",
+      "concurrency": 1,
+      "requestsPerRun": 64,
+      "p50Ms": 1.426499999999578,
+      "p95Ms": 2.576665999999932,
+      "p95RangeMs": [
+        1.888375000000451,
+        2.825875000000451
+      ],
+      "p99Ms": 4.071792000000642,
+      "requestsPerSecond": 631.4140880578581,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 297618528,
+      "maxSampledQueue": 0,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-json",
+      "concurrency": 8,
+      "requestsPerRun": 64,
+      "p50Ms": 3.490000000000691,
+      "p95Ms": 12.229707999999846,
+      "p95RangeMs": [
+        5.761874999999236,
+        15.053125000000364
+      ],
+      "p99Ms": 12.96466700000019,
+      "requestsPerSecond": 2085.389668744983,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 208852672,
+      "maxSampledQueue": 4,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "mode": "ssr",
+      "scenario": "small-json",
+      "concurrency": 32,
+      "requestsPerRun": 64,
+      "p50Ms": 10.289667000000009,
+      "p95Ms": 17.9565419999999,
+      "p95RangeMs": [
+        12.866541000000325,
+        18.151458000000275
+      ],
+      "p99Ms": 21.240999999999985,
+      "requestsPerSecond": 2467.7077308655876,
+      "ssrRatio": 0,
+      "responseKind": "json",
+      "maxSampledHeapUsedBytes": 131050016,
+      "maxSampledQueue": 28,
+      "httpReasons": [
+        {},
+        {},
+        {}
+      ]
+    }
+  ],
+  "limits": [
+    "Warmups: transport=8; bounded phases remain sensitive to JIT/GC/host activity.",
+    "SSR overload changes SSR/CSR mixture; compare ratios as well as latency.",
+    "Heap/RSS/queue are sampled, not a long-duration memory-leak qualification.",
+    "JSON visits are separate from HTML SSR/CSR; no database or browser rendering measured.",
+    "Changes above 10% request investigation, not an automatic claim of regression or improvement."
+  ]
+}

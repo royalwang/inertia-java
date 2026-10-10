@@ -13,12 +13,21 @@
 - 文档check通过，英文/中文正文修订未变；没有宣称本轮重新验证公开站点。
 - R1本地交付完成，机器证据见[iteration-r1.json](verification/iteration-r1.json)。公开namespace未验证，实际发布留待独立流程。
 
-## R2：公共API变更工具
+## R2：兼容性、诊断与容量
 
-新增 `scripts/api-compatibility.py` 的snapshot/compare入口与工程用法；候选复制完整compile依赖并验证各JAR摘要，归档可移位，不依赖公共旧版本。工具只在显式提供本地jar时运行，Maven元数据校验固定版本。真实编译fixture验证：实现变化与新增方法允许，删除公共方法/受保护方法拒绝，新增checked exception源码不兼容被拒绝且binary-only检查仍允许，篡改baseline拒绝。
+- japicmp 0.26.2 的真实源码/二进制兼容合同及七模块比较已进入完整aggregate。本轮比较R1保存候选与R2新候选，全部通过；不再以同一候选自比较代替历史对照。
+- 新增四项真实resolver/renderer/Micrometer诊断合同，覆盖props超时、executor拒绝、业务provider错误及session merge失败。验证错误分类、flash恢复、恢复后继续服务及标签隐私；未新增另一套SPI。
+- 中英文观测指南同步加入reason排错表与PromQL示例，明确stage计数和timer均值边界，不把未配置的histogram写成p95。
+- 新增默认关闭的示例负载夹具；性能驱动扩展到HTML/JSON、小/大props、partial/deferred及同session并发，采集实际JVM堆和线程队列。
+- 同机交替对照三次，另对CSR并发32进行128次预热、每组1024请求的三次复测。审计总计21,264个测量请求；原始成功摘要压缩归档随仓库保存。初测差异和复测解释见[运行资格记录](13-runtime-qualification.md)，不宣称性能提升或生产SLO。
+- 实际过载验收：2线程/2排队/128MiB堆、32个并发请求，4成功/28明确拒绝；采样队列上限2，负载结束后200且队列/活动线程归零。aggregate再次执行通过。
+- 完整本地aggregate 22阶段通过；297项Java测试0失败/错误/跳过。Rust freshness为37 Page/45 HTTP/9 live TTL；文档check/build及140页/14阶段浏览器验收通过，包括Mermaid。
+- R2本地交付完成，机器证据见[iteration-r2.json](verification/iteration-r2.json)。工程性能记录不进入公共使用正文。
 
-aggregate支持通过 `INERTIA_API_BASELINE` / `INERTIA_API_TOOL` 显式启用合同、当前候选收集与差异门槛；未提供baseline时沿用原运行验证，不伪称完成API差异检查。本轮已验证各组成命令和脚本语法，完整aggregate新增分支将在后续运行验收中执行。当前七模块工具smoke使用同一候选自比较，不冒充真实旧正式版本比较。
+## R3：Redis投递状态
+
+[ADR 003](decisions/003-redis-delivery-state.md)已记录采用设计：opaque JSON CAS、epoch/lease、撤销、有限冲突重算、未知写入不重放及真实双JVM验收。当前只有设计，尚无Redis模块或真实后端验收，不能声明多实例功能完成。
 
 ## 后续范围
 
-R2的API兼容工具、故障诊断与容量复测，R3的Redis原子投递及双实例故障验收尚未完成。公共发布与GitHub部署不作为阻塞项；不会将本台账阶段进展冒充整个路线图完成。
+继续实施R3的可选模块、宿主身份生命周期、真实Redis及双实例故障合同、自动装配和双语文档。R4仍依路线图的采用需求单独排期。公共发布与GitHub部署不作为阻塞项；本台账的阶段进展不代表整个路线图完成。

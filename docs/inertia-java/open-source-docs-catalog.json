@@ -1515,7 +1515,7 @@
       "path": "zh/integrations/observability.md",
       "title": "日志与 Micrometer",
       "status": "reviewed",
-      "sourceRevision": "0fe384f7e0fca7bfb65641973282bf6e7af97ddcdf57a3715aa98ed81c340cdc"
+      "sourceRevision": "3d827e28bda00a66fb47977f04e634b48070d1eb2587acae1e8aeae8c7e618b2"
     },
     {
       "id": "deployment/build-release",

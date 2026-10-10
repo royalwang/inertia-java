@@ -1,0 +1,272 @@
+{
+  "format": 1,
+  "date": "2026-10-10",
+  "scope": "R2 local qualification; R3 not implemented",
+  "success": true,
+  "source": {
+    "head": "b0d008441ce1e5f1805fb18ab03d005377f90b0e",
+    "dirty": true
+  },
+  "javaTests": {
+    "tests": 297,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "aggregate": {
+    "format": 1,
+    "startedAt": "2026-10-10T08:00:55.537Z",
+    "finishedAt": "2026-10-10T08:06:35.364Z",
+    "source": {
+      "head": "b0d008441ce1e5f1805fb18ab03d005377f90b0e",
+      "dirty": true
+    },
+    "node": "v22.22.2",
+    "browserChannel": "chromium",
+    "success": true,
+    "stages": [
+      {
+        "name": "java-runtime",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 38
+      },
+      {
+        "name": "npm-runtime",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 181
+      },
+      {
+        "name": "maven",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 34957
+      },
+      {
+        "name": "api-tool-contracts",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 14539
+      },
+      {
+        "name": "api-candidate",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 17916
+      },
+      {
+        "name": "api-compatibility",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 2927
+      },
+      {
+        "name": "library-artifacts",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 232
+      },
+      {
+        "name": "npm-ci",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 2203
+      },
+      {
+        "name": "typecheck",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 1167
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 4192
+      },
+      {
+        "name": "dependency-inventory",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 5389
+      },
+      {
+        "name": "asset-contracts",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 514
+      },
+      {
+        "name": "capacity-recovery",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 4390
+      },
+      {
+        "name": "development",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 13861
+      },
+      {
+        "name": "browser-matrix",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 148006
+      },
+      {
+        "name": "build-integrity",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 7269
+      },
+      {
+        "name": "ssr-failures",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12716
+      },
+      {
+        "name": "csp",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12945
+      },
+      {
+        "name": "custom-root",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12777
+      },
+      {
+        "name": "history",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 12825
+      },
+      {
+        "name": "release-switch",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 10975
+      },
+      {
+        "name": "deployment",
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 19732
+      }
+    ],
+    "receipt": "build.json"
+  },
+  "apiComparison": {
+    "format": 1,
+    "toolVersion": "0.26.2",
+    "toolSha256": "d1eb211b7132eae1f9ee834270a8d19a9652d1983d3fe75ec564666ebef5c18d",
+    "oldSource": {
+      "head": "643ac7b81833cf21978ef37585e026925116f944",
+      "dirty": true
+    },
+    "newSource": {
+      "head": "b0d008441ce1e5f1805fb18ab03d005377f90b0e",
+      "dirty": true
+    },
+    "success": true,
+    "scope": "japicmp binary/source checks; behavior, defaults and protocol require separate tests",
+    "modules": [
+      {
+        "module": "inertia-core",
+        "exit": 0
+      },
+      {
+        "module": "inertia-ssr-http",
+        "exit": 0
+      },
+      {
+        "module": "inertia-vite",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-webmvc",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-boot-autoconfigure",
+        "exit": 0
+      },
+      {
+        "module": "inertia-spring-boot-starter",
+        "exit": 0
+      },
+      {
+        "module": "inertia-testing",
+        "exit": 0
+      }
+    ]
+  },
+  "rustFreshness": {
+    "page": 37,
+    "http": 45,
+    "liveTtl": 9,
+    "log": "/tmp/inertia-r2-rust-freshness.log"
+  },
+  "docs": {
+    "pages": 140,
+    "phases": 14,
+    "check": true,
+    "build": true,
+    "browser": true
+  },
+  "diagnostics": {
+    "newCases": 4,
+    "scenarios": [
+      "props-timeout",
+      "executor-rejection",
+      "business-provider-failure",
+      "session-merge-failure"
+    ]
+  },
+  "capacity": {
+    "measuredRequests": 21264,
+    "primary": "../benchmarks/2026-10-10-iteration-r2.json",
+    "followup": "../benchmarks/2026-10-10-iteration-r2-followup.json",
+    "pressure": [
+      {
+        "name": "bounded-executor-pressure",
+        "requests": 32,
+        "success": 4,
+        "rejected": 28,
+        "maxSampledQueue": 2,
+        "maxSampledHeapBytes": 42907656,
+        "heapLimitBytes": 134217728
+      },
+      {
+        "name": "post-load-recovery",
+        "healthyStatus": 200,
+        "queue": 0,
+        "activeThreads": 0
+      }
+    ],
+    "classContinuity": {
+      "comparedOwnedClasses": 99,
+      "changedOwnedClasses": [],
+      "removedOwnedClasses": [],
+      "addedOwnedClasses": [
+        "BOOT-INF/classes/io/inertia/example/DemoBenchmark.class"
+      ],
+      "scope": "Existing owned compiled classes compared with R1 candidate; added opt-in benchmark fixture is excluded by default. Archive metadata may differ after rebuilding."
+    },
+    "rawArchive": {
+      "path": "../benchmarks/2026-10-10-iteration-r2-receipts.json.gz",
+      "sha256": "40949f6726194e9604f97213d12f6c7319dfb6dc64912647b721c9f106af4c2b"
+    },
+    "excluded": "Failed initial cookie selection and three exploratory application runs retained in /tmp; not counted in audited 21264 requests."
+  },
+  "limitations": [
+    "No production SLO or significant performance gain established; host load and short phases affect measurements.",
+    "Sampled heap and bounded queues do not qualify a long-duration leak test.",
+    "Public publication and GitHub deployment not checked.",
+    "Redis implementation and real two-JVM failure qualification remain."
+  ]
+}
