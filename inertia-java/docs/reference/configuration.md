@@ -113,3 +113,25 @@ Invalid budgets/names fail startup. A missing custom bean or mismatched renderer
 | `inertia.session.redis.max-attempts` | int / `16` | 1–100 explicit no-write conflict/deadline recalculations; one-second dispatch budget also applies |
 
 The lifecycle filter runs after Spring Session and before Security/MVC. Preserve that ordering with a custom host filter. Backend ownership, unknown outcomes and deployment boundaries are described in [custom session stores](../integrations/custom-session.md).
+
+## Redis TLS
+
+`InertiaRedisTlsProperties` configures the dedicated delivery connection. Enable TLS explicitly and use a hostname present in the server certificate. This does not configure Spring Session's separate host connection.
+
+| Property | Type / default | Constraint and effect |
+| --- | --- | --- |
+| `inertia.session.redis.tls.enabled` | boolean / `false` | Enable JDK TLS 1.2/1.3 with mandatory certificate-chain and hostname verification |
+| `inertia.session.redis.tls.trust-store` | String / unset | Readable local PKCS12 file; unset uses JDK system trust |
+| `inertia.session.redis.tls.trust-store-password` | String / unset | Optional PKCS12 password; excluded from configuration toString |
+
+```properties
+inertia.session.store=redis
+inertia.session.redis.host=redis.example.org
+inertia.session.redis.port=6380
+inertia.session.redis.password=${INERTIA_REDIS_PASSWORD}
+inertia.session.redis.tls.enabled=true
+inertia.session.redis.tls.trust-store=/run/secrets/redis-trust.p12
+inertia.session.redis.tls.trust-store-password=${INERTIA_REDIS_TRUST_PASSWORD}
+```
+
+Mount a trust store containing public trust certificates and inject credentials through the deployment's secret mechanism. Trust material without TLS activation, a password without a trust-store path, and an unreadable file fail startup. Invalid store contents/passwords, untrusted certificates, hostname mismatch and Redis authentication failure reject connection operations; there is no plaintext fallback or verification-disable switch. The command timeout also bounds TLS handshake. TLS preserves command concurrency limits and `UNKNOWN_WRITE` without automatic replay. After certificate/trust changes, recreate the backend or restart the application; this configuration does not implement dynamic reload or client certificates.

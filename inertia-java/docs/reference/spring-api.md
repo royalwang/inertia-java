@@ -54,6 +54,7 @@ The final `InertiaExceptionResolver` is package-private and registered by the co
 | `inertia-spring-boot-starter` | Dependency entry with a module guide, no runtime facade class |
 | `InertiaRedisAutoConfiguration` | Opt-in standalone Redis defaults and lifecycle wiring |
 | `InertiaRedisProperties` | Validated delivery endpoint, time and capacity settings |
+| `InertiaRedisTlsProperties` | Validated delivery TLS selection and PKCS12 trust; host-session TLS remains separate |
 | `RedisHttpSessionStoreFactory` | Trusted host identity and persisted epoch attachment |
 | `RedisSessionLifecycleFilter` | Revoke delivery before synchronous host rotation/invalidation |
 

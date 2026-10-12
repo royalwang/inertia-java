@@ -27,15 +27,16 @@ const configuration = readPage('reference/configuration.md')
 const fields = {
   InertiaConfig: ['version', 'rootId', 'components', 'rootView', 'gateway', 'shared', 'preserveBigIntegers', 'encryptHistory', 'allErrors', 'exposeSharedPropKeys', 'urlResolver'],
   InertiaProperties: ['propsTimeout', 'responseTimeout', 'propsConcurrency', 'executorCoreSize', 'executorMaxSize', 'executorQueueCapacity', 'allErrors', 'sessionNamespace'],
+  InertiaRedisTlsProperties: ['enabled', 'trustStore', 'trustStorePassword'],
   InertiaRedisProperties: ['host', 'port', 'database', 'username', 'password', 'commandTimeout', 'maxCommands', 'idleTtl', 'lease', 'terminalRetention', 'maxBytes', 'maxReservations', 'maxTerminals', 'maxAttempts'],
 }
 for (const [type, expected] of Object.entries(fields)) {
   const members = api.modules.flatMap(module => module.members).filter(member => member.c === type)
-  const nonFields = new Set(['hashCode()', 'toString()', 'equals(Object)', 'withAllErrors(boolean)', 'withUrlResolver(Function<InertiaRequest, String>)', 'withSharedPropKeys(boolean)', 'pageUrl(InertiaRequest)', 'options(String)', 'requireRootId(String)', 'basic(String, Set<String>)'])
+  const nonFields = new Set(['hashCode()', 'toString()', 'equals(Object)', 'withAllErrors(boolean)', 'withUrlResolver(Function<InertiaRequest, String>)', 'withSharedPropKeys(boolean)', 'pageUrl(InertiaRequest)', 'options(String)', 'options()', 'requireRootId(String)', 'basic(String, Set<String>)'])
   const accessors = members.filter(member => !member.l.startsWith(type + '(') && !nonFields.has(member.l)).map(member => member.l.replace(/\(\)$/, ''))
   assert.deepEqual(accessors.sort(), [...expected].sort(), `${type}: review changed configuration fields`)
   for (const field of expected) {
-    const prefix = type === 'InertiaProperties' ? 'inertia.' : type === 'InertiaRedisProperties' ? 'inertia.session.redis.' : ''
+    const prefix = type === 'InertiaProperties' ? 'inertia.' : type === 'InertiaRedisProperties' ? 'inertia.session.redis.' : type === 'InertiaRedisTlsProperties' ? 'inertia.session.redis.tls.' : ''
     const token = prefix ? prefix + field.replace(/[A-Z]/g, letter => '-' + letter.toLowerCase()) : field
     assert.ok(configuration.includes('`' + token + '`'), `Undocumented setting: ${token}`)
   }

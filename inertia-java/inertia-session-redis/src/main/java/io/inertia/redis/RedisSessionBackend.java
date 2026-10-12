@@ -51,6 +51,25 @@ public final class RedisSessionBackend implements AutoCloseable {
    */
   public RedisSessionBackend(
       RedisStandaloneConfiguration endpoint, Duration timeout, int maxCommands) {
+    this(endpoint, timeout, maxCommands, RedisTlsOptions.disabled());
+  }
+
+  /**
+   * Creates a bounded transport with explicit TLS trust and mandatory peer verification.
+   *
+   * @param endpoint standalone endpoint/authentication/database owned by the application
+   * @param timeout positive connect, handshake and command timeout, at most five seconds
+   * @param maxCommands positive concurrent command limit, at most 1024
+   * @param tls immutable trust selection; never supplies reconnect/replay configuration
+   * @throws IllegalArgumentException if transport bounds are invalid
+   * @throws NullPointerException if endpoint or tls is null
+   */
+  public RedisSessionBackend(
+      RedisStandaloneConfiguration endpoint,
+      Duration timeout,
+      int maxCommands,
+      RedisTlsOptions tls) {
+    java.util.Objects.requireNonNull(tls);
     if (timeout == null
         || timeout.toMillis() < 1
         || timeout.compareTo(Duration.ofSeconds(5)) > 0
@@ -62,15 +81,14 @@ public final class RedisSessionBackend implements AutoCloseable {
             .autoReconnect(false)
             .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)
             .requestQueueSize(1)
-            .socketOptions(io.lettuce.core.SocketOptions.builder().connectTimeout(timeout).build())
-            .build();
+            .socketOptions(io.lettuce.core.SocketOptions.builder().connectTimeout(timeout).build());
+    if (tls.enabled()) options.sslOptions(tls.sslOptions(timeout));
+    var configuration =
+        LettuceClientConfiguration.builder().commandTimeout(timeout).clientOptions(options.build());
+    if (tls.enabled()) configuration.useSsl();
     factory =
         new LettuceConnectionFactory(
-            java.util.Objects.requireNonNull(endpoint),
-            LettuceClientConfiguration.builder()
-                .commandTimeout(timeout)
-                .clientOptions(options)
-                .build());
+            java.util.Objects.requireNonNull(endpoint), configuration.build());
     factory.setShareNativeConnection(false);
     factory.afterPropertiesSet();
     factory.start();

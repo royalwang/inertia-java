@@ -1,0 +1,263 @@
+{
+  "format": 1,
+  "status": "N3-in-progress",
+  "recordedAt": "2026-10-12T08:52:53.996818+00:00",
+  "scope": "N3a local acceptance complete; N3b repeated capacity/recovery outstanding; N4 deferred by maintainer on 2026-10-12",
+  "source": {
+    "baseHead": "35269dd9e8f16d831b2de0d991f30a58dcd4787b",
+    "dirty": true,
+    "inputs": [
+      {
+        "path": "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionBackend.java",
+        "sha256": "ad93a144e1cbe8e7054c503a2a90bdae7002f38ce79ba0b8ec38f8281c6aafae"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionException.java",
+        "sha256": "b65f339f74a51170cdc70a7798a44c90d33f0a7820321bf04b69e80c2044caf0"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionOptions.java",
+        "sha256": "91425b60b3d6449d31d038916485bc197d4d085c1f3ea89c867f2a7c109a2e25"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisSessionStore.java",
+        "sha256": "be925e89c3b5a05d7d6f70dda7411f62853db58fef3057d915c79ea5138a038d"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/main/java/io/inertia/redis/RedisTlsOptions.java",
+        "sha256": "46d569652f1877aa951128bb7c774d0a2e913d85bfdd3a4b0ef4d32d3f1a77b3"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisLostReplyIT.java",
+        "sha256": "260b46d7f26a6a14c0ebb3afa7849d03439335247bad677cb5424e8e1557a987"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisSessionOptionsTest.java",
+        "sha256": "9c9e045936d3ed269f030ccd14b70d143d06caf38d56a6965ab1d839f851f3d9"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisSessionStoreIT.java",
+        "sha256": "397e7cf5b67330430ce68c7b17ecac58d38051e5eba1725c65919e7a3ea7d1a2"
+      },
+      {
+        "path": "inertia-java/inertia-session-redis/src/test/java/io/inertia/redis/RedisTlsIT.java",
+        "sha256": "5f85d24032be14eb86476331637f17bfe38fdbd56e6f3458eb7da60c7581becf"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java",
+        "sha256": "24aa17d3121d3ca160ee48ed9afb9d38366ade222b72e2e2e4e9f98c554089f1"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaMetricsAutoConfiguration.java",
+        "sha256": "060fd53d41af8d470b04a8d1834208be7e10a30531e8307ac0134815488bdac8"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java",
+        "sha256": "daa2150f2558b2a9ee278296a16c9f1e40642974d303e2e6963ec667228f0425"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisAutoConfiguration.java",
+        "sha256": "89f3213e2851b9f2b299bb4e51c8c6bbf0ab99ba5336cfc7d670bc56e4e740de"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisProperties.java",
+        "sha256": "a477979bfd6ee8441a9abd6f2562b50f626c6da0a2d775d8308caa464e710e03"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaRedisTlsProperties.java",
+        "sha256": "6aaa5dd2f4924e59897c896146ade1188503c1479c0938547ec92eda4e007658"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/MicrometerInertiaObserver.java",
+        "sha256": "1214611d8ec36f15248b2a38e679cf99972b67bd68a340f94ea3a0a224c28de1"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java",
+        "sha256": "1b151afd301c608941e138c6c041ed36e2fcc686c7062b15d95741562f43e894"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisSessionLifecycleFilter.java",
+        "sha256": "14845f0a5ae21aced1c39e0659d1b5ad36f23d72d2ff39e52932399c808c695a"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaAutoConfigurationTest.java",
+        "sha256": "e3a91ef17be6bd2de2b4016698fca69c7363c22b1700f3519490c5e6396ebb95"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaDiagnosticsTest.java",
+        "sha256": "caa34ad50d2681dc63f2841d04b165447c149076d6de67468e89a4cfdb277274"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaMetricsTest.java",
+        "sha256": "d467a4de3f6cff7b9ad56fa1c3c3569e4fc693c659e6f060c924d70056ce7fb1"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaOverridesTest.java",
+        "sha256": "47454036dc5f45117ffd2f96671c79223b6bb46ee5ae0624dea9433afa2c9cdb"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/InertiaRedisAutoConfigurationTest.java",
+        "sha256": "44ec06be8138fb3b32e0934bebcfd03f637262e17c1ec1b9427e094af47c16cd"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/NonInertiaTransferTest.java",
+        "sha256": "0d8b243192aa8d80cb8fae74d16ffce40102dc8ce5a1fa7138afb4a522b5237c"
+      },
+      {
+        "path": "inertia-java/inertia-spring-boot-autoconfigure/src/test/java/io/inertia/boot/RedisHostLifecycleIT.java",
+        "sha256": "6b4dcef5f14c8acf4fdce821d34e266f4fd1805bf8a7cc38fee54c4c10ce7b13"
+      },
+      {
+        "path": "inertia-java/scripts/verify-maven-consumer.py",
+        "sha256": "04b8d8268a93139570947f2614224663cc0f601f162c825247fbafc34d68a96c"
+      },
+      {
+        "path": "inertia-java/scripts/verify-redis.py",
+        "sha256": "e66421f5d0e6d3eab6819fc90deb4c6b4eb734ef4d3e50c6ae9554be19ffc068"
+      },
+      {
+        "path": "inertia-java/scripts/verify.mjs",
+        "sha256": "09b8cb7cb376081222e39cbc3a1c45493868fd66ed7347e25fd6236d2ebe27ae"
+      }
+    ]
+  },
+  "completedGates": {
+    "standardReactor": {
+      "tests": 312,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "strictJavadoc": true
+    },
+    "redisPlaintext": {
+      "tests": 14,
+      "failures": 0,
+      "skipped": 0
+    },
+    "tls": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "aggregateCommand": true
+    },
+    "bootAutoConfiguration": {
+      "tests": 10,
+      "failures": 0
+    },
+    "apiCompatibility": {
+      "modules": 8,
+      "binary": true,
+      "source": true
+    },
+    "docs": {
+      "check": true,
+      "build": true,
+      "smokePhases": 14,
+      "canonicalPages": 71,
+      "chinesePages": 71
+    },
+    "independentConsumer": {
+      "phases": 10,
+      "success": true,
+      "actualBootTlsHttp": true,
+      "redisFactoryAsserted": true,
+      "candidateBinaryIdentityMatched": 8,
+      "changedRuntimeSourcesMatchSourceArchives": true
+    }
+  },
+  "pending": [
+    "N3b repeated HTTP/Redis capacity measurements and fault recovery guide"
+  ],
+  "runtime": {
+    "version": "Redis server v=7.2.11 sha=00000000:0 malloc=libc bits=64 build=8b6b82deb74814a2",
+    "executableSha256": "a2b3f81114474f522af952d6f63c549929dde4183649256f1e9c9167eeae91c6"
+  },
+  "sourceArchive": {
+    "version": "7.2.11",
+    "sha256": "2f9886eca68d30114ad6a01da65631f8007d802fd3e6c9fac711251e6390323d",
+    "buildTls": true,
+    "openssl": "3.6.3",
+    "containerQualified": false
+  },
+  "receipts": [
+    {
+      "name": "reactor-install",
+      "path": "iteration-n3a-progress-reactor-install.gz",
+      "sha256": "4ed5cb9bebee1a46cd6babfc7ab1aca0f718e82eee24dd3d0c927e69f7ec1230",
+      "uncompressedSha256": "6e47afd8588798f17c80ec21441491b2be0fd0b6fdfc9abe5ea2040fe76bf829"
+    },
+    {
+      "name": "redis-contracts",
+      "path": "iteration-n3a-progress-redis-contracts.gz",
+      "sha256": "8cb7ad767b3aeeb8097ed6bd20d4f5fb913a5a298b16c866ad621273bd249dfa",
+      "uncompressedSha256": "6f23f4e1f0770bbeb4ef7ad813c32b32c26a75407bd219494a59cdff60a6c00d"
+    },
+    {
+      "name": "tls-system-trust",
+      "path": "iteration-n3a-progress-tls-system-trust.gz",
+      "sha256": "d208d7eef5214f4c1df97f4de3e50bf6c23da7a22322e2b72db331f5a02f7855",
+      "uncompressedSha256": "5b10cf486a2d6686e6df21e41b1fa053191e20797b9c3f0ee821aa859cf2c62d"
+    },
+    {
+      "name": "api-candidate",
+      "path": "iteration-n3a-progress-api-candidate.gz",
+      "sha256": "2e1e188513517a6f6631c37b3d1a37396647a6a4448e1173edf1ef536b675e04",
+      "uncompressedSha256": "b30e52ec50270d8aa5236fd99e4df7863683dfd93eeebf9dc0fd43f57a1584b2"
+    },
+    {
+      "name": "api-comparison",
+      "path": "iteration-n3a-progress-api-comparison.gz",
+      "sha256": "2efae27e37c42840bd98e06479499288de01072fec61fc8fb3b6875ca0cf9624",
+      "uncompressedSha256": "94f05364422c219f2d34c6940ed9c23e0143ab3da49365bbb0395f0e99b1d87e"
+    },
+    {
+      "name": "docs-check",
+      "path": "iteration-n3a-progress-docs-check.gz",
+      "sha256": "bdf928f12907c1ca5a4267d29522f2a679b12a6ef70a9bd6252e082829631b3f",
+      "uncompressedSha256": "1f600b4cd3c5ea196353e9a28fe838e596b81b28ff3be441b553ebe6d499307e"
+    },
+    {
+      "name": "docs-build",
+      "path": "iteration-n3a-progress-docs-build.gz",
+      "sha256": "850423946b9d1907fbb8dce19dfa35a9855b70e879db0b55b81877ac374b5b6c",
+      "uncompressedSha256": "5a09562eeb10638bfe7ad98a6cdb5f168d771fe034de8f753fd1513a2ba8e535"
+    },
+    {
+      "name": "docs-smoke",
+      "path": "iteration-n3a-progress-docs-smoke.gz",
+      "sha256": "babbb757b1a36eb187d94b1e9272f5043e0ff9aa79a3e205c96236bcba7b933d",
+      "uncompressedSha256": "9896b5ec4c322b19f8ed14f633baf547ec093366c0ed85be84a71ef706e7688f"
+    },
+    {
+      "name": "final-contracts",
+      "path": "iteration-n3a-progress-final-contracts.gz",
+      "sha256": "b88a7f6f9c0b33fb0257468d5aaf845b2a56f5290a807d957fbfaf6fcc8a124b",
+      "uncompressedSha256": "891e6ad6c63a0e7d743f5e0a03af2911cf92b762a4de592592571817fedbd731"
+    },
+    {
+      "name": "final-contracts-log",
+      "path": "iteration-n3a-progress-final-contracts-log.gz",
+      "sha256": "6e564644837508301da3fffb3f49dcd8c09d668bc965cd62ceaeeab52a238253",
+      "uncompressedSha256": "050fccd6dc771e100a84cc1106e1e538f348b4d5e1405dcab89d0a7775c1cd22"
+    },
+    {
+      "name": "tls-consumer",
+      "path": "iteration-n3a-progress-tls-consumer.gz",
+      "sha256": "45af1b07ba13efda7dd6d53971958dc2fd068b61a35def2495fb2313e2025862",
+      "uncompressedSha256": "e6ea7b0430f253fa4ca14d10c48b8e984fdbfe941509f691f849a93df04936e5"
+    },
+    {
+      "name": "tls-consumer-http",
+      "path": "iteration-n3a-progress-tls-consumer-http.gz",
+      "sha256": "79096f354c06b26a9880c608335bcbe43cdbe3feee6a2aa28e503c6bc69834a5",
+      "uncompressedSha256": "9b8245aa84c4ef9b79bf5c8d423a2178f4d0e15b7b7e98b003167ca008f2821f"
+    }
+  ],
+  "limits": [
+    "No public Maven/GitHub deployment qualification",
+    "No client certificates/dynamic trust reload/Cluster/Sentinel/failover durability",
+    "API candidate built before final test-only system-trust supplement; production sources unchanged",
+    "Earlier progress receipts are historical snapshots; final-contracts and tls-consumer receipts prove final aggregate execution"
+  ]
+}

@@ -24,7 +24,7 @@ translation:
   locale: zh-CN
   canonicalId: integrations/custom-session
   source: integrations/custom-session.md
-  sourceRevision: c4b336a29848b575a6cc98cb8ce0563a65197970ac18eda25317c903237f1dc3
+  sourceRevision: c44ae10f9f3a8b0ad70e19bf4927b0c34de055182ae14d34deca43ce534d00b0
 ---
 
 # 自定义会话存储
@@ -106,10 +106,11 @@ lease 必须长于响应预算和存储命令预算，Boot 会校验该关系。
 | 类型 | 职责 |
 | --- | --- |
 | `RedisSessionBackend` | 应用持有的 Spring Data Redis/Lettuce 传输，在应用关闭时释放 |
+| `RedisTlsOptions` | 不可变 TLS 选择：系统信任或本地 PKCS12 信任库；强制校验证书链和主机名 |
 | `RedisSessionStore` | 绑定 epoch 的请求句柄及原子投递操作 |
 | `RedisSessionOptions` | namespace、idle/lease/retention 与容量上限 |
 | `RedisSessionException` | 不包含业务数据的有界 `Reason` 分类 |
 
 `READ_FAILED` 表示提交变更前读取失败。`UNKNOWN_WRITE` 表示变更结果不确定：不能重放、宣称成功、返回空状态或回退到本地存储。适配器关闭自动重连重放和断连排队。仅明确未写入的 CAS 冲突或过期读取期限允许有界重算。一秒的 dispatch/重算预算不会取消已经提交的命令；已提交命令仍受其配置的 timeout 约束。`STALE_DOMAIN`、`INVALID_TOKEN`、`CAPACITY`、`CONTENTION`、`BUDGET_EXHAUSTED`、`CLOCK_REVERSED` 和 `INVALID_STATE` 表示其他失败关闭条件。不要向最终用户暴露底层存储细节。
 
-支持的存储拓扑为单个 standalone Redis 事务域。部署时需配置 Redis 网络访问、认证及持久化；当前后端构造器使用普通连接。Redis 异步复制、failover 或数据丢失可能丢弃已确认写入。本适配器不保证跨 failover 持久性、浏览器恰好一次收取或跨语言会话共享。上限参数见[配置参考](../reference/configuration.md)，渲染与 HTTP 写入的边界见 [flash/会话](../guide/flash-session.md)。
+支持的存储拓扑为单个 standalone Redis 事务域。部署时需配置 Redis 网络访问、认证及持久化；三个参数的后端构造器保留明文行为。启用 TLS 时，使用四个参数的构造器，传入 `RedisTlsOptions.systemTrust()` 或 `RedisTlsOptions.trustStore(path, passwordChars)`。TLS 使用 JDK TLS 1.2/1.3，强制校验证书链和主机名，失败不回退明文。信任库密码数组会被复制。在应用关闭时释放后端。Boot 应用可使用 [TLS 属性](../reference/configuration.md#redis-tls)。此 TLS 配置不包含客户端证书、动态信任重载、Cluster 或 Sentinel。Redis 异步复制、failover 或数据丢失可能丢弃已确认写入。本适配器不保证跨 failover 持久性、浏览器恰好一次收取或跨语言会话共享。上限参数见[配置参考](../reference/configuration.md)，渲染与 HTTP 写入的边界见 [flash/会话](../guide/flash-session.md)。

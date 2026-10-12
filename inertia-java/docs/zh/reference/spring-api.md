@@ -23,7 +23,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/spring-api
   source: reference/spring-api.md
-  sourceRevision: aa5dcdbff1fba8e6ff3bc077e063b93ab8a727fef316ecef73f7aceb18ebde86
+  sourceRevision: 1cdb36a7fc6fe9003664467cda1741435a6186f590d4fdcd156228ff1d3c6c5c
 ---
 
 # Spring API 地图
@@ -59,6 +59,7 @@ MVC 适配器将同步类型化 `InertiaResponse`/`HttpOutcome` 响应及请求�
 | `inertia-spring-boot-starter` | 依赖入口及模块指南，没有运行时 facade 类 |
 | `InertiaRedisAutoConfiguration` | 显式选择 standalone Redis 的默认配置及生命周期装配 |
 | `InertiaRedisProperties` | 经过校验的投递端点、时间和容量配置 |
+| `InertiaRedisTlsProperties` | 经过校验的投递 TLS 与 PKCS12 信任配置；宿主会话 TLS 单独配置 |
 | `RedisHttpSessionStoreFactory` | 可信宿主身份与持久化 epoch 绑定 |
 | `RedisSessionLifecycleFilter` | 同步宿主轮换/失效前撤销投递状态 |
 

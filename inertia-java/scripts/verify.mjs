@@ -88,6 +88,11 @@ try {
     await run('redis-state', 'python3', [resolve(root, 'scripts/verify-redis.py'), '--redis-server', process.env.INERTIA_REDIS_SERVER, '--output', resolve(output, 'redis-state')], root)
     await run('redis-host-lifecycle', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', '-pl', 'inertia-spring-boot-autoconfigure', '-am', 'test', '-Dtest=RedisHostLifecycleIT', '-Dsurefire.failIfNoSpecifiedTests=false', '-Dinertia.redis.server=' + process.env.INERTIA_REDIS_SERVER], root)
   }
+  if (process.env.INERTIA_REDIS_TLS_SERVER) {
+    await run('redis-tls', 'python3', [resolve(root, 'scripts/verify-redis.py'), '--tls',
+      ...(process.env.INERTIA_VERIFY_TLS_CONSUMER === 'true' ? ['--tls-consumer'] : []),
+      '--redis-server', process.env.INERTIA_REDIS_TLS_SERVER, '--output', resolve(output, 'redis-tls')], root)
+  }
   if (process.env.INERTIA_REDIS_SERVER || process.env.INERTIA_VERIFY_VUE === 'true' || process.env.INERTIA_VERIFY_AUTH === 'true' || process.env.INERTIA_VERIFY_AUTH_REDIS === 'true') {
     await run('independent-consumer', 'python3', [resolve(root, 'scripts/verify-maven-consumer.py')], root, { INERTIA_CONSUMER_OUTPUT: resolve(output, 'independent-consumer') })
   }

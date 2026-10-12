@@ -19,7 +19,11 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 @ConditionalOnClass(RedisSessionBackend.class)
 @ConditionalOnProperty(name = "inertia.session.store", havingValue = "redis")
 @ConditionalOnMissingBean(InertiaSessionStoreFactory.class)
-@EnableConfigurationProperties({InertiaRedisProperties.class, InertiaProperties.class})
+@EnableConfigurationProperties({
+  InertiaRedisProperties.class,
+  InertiaRedisTlsProperties.class,
+  InertiaProperties.class
+})
 public class InertiaRedisAutoConfiguration {
   /** Creates the configuration instance managed by Spring. */
   public InertiaRedisAutoConfiguration() {}
@@ -32,12 +36,36 @@ public class InertiaRedisAutoConfiguration {
    */
   @Bean(destroyMethod = "close")
   @ConditionalOnMissingBean(RedisSessionBackend.class)
+  @ConditionalOnProperty(
+      name = "inertia.session.redis.tls.enabled",
+      havingValue = "false",
+      matchIfMissing = true)
   public RedisSessionBackend inertiaRedisBackend(InertiaRedisProperties properties) {
     var endpoint = new RedisStandaloneConfiguration(properties.host(), properties.port());
     endpoint.setDatabase(properties.database());
     if (properties.username() != null) endpoint.setUsername(properties.username());
     if (properties.password() != null) endpoint.setPassword(properties.password());
     return new RedisSessionBackend(endpoint, properties.commandTimeout(), properties.maxCommands());
+  }
+
+  /**
+   * Creates the TLS delivery transport with full peer verification and no replay.
+   *
+   * @param properties standalone endpoint, credentials and bounds
+   * @param tls explicit TLS trust selection, independent from host-session connections
+   * @return application-scoped TLS backend closed by Spring
+   */
+  @Bean(name = "inertiaRedisBackend", destroyMethod = "close")
+  @ConditionalOnMissingBean(RedisSessionBackend.class)
+  @ConditionalOnProperty(name = "inertia.session.redis.tls.enabled", havingValue = "true")
+  public RedisSessionBackend inertiaRedisTlsBackend(
+      InertiaRedisProperties properties, InertiaRedisTlsProperties tls) {
+    var endpoint = new RedisStandaloneConfiguration(properties.host(), properties.port());
+    endpoint.setDatabase(properties.database());
+    if (properties.username() != null) endpoint.setUsername(properties.username());
+    if (properties.password() != null) endpoint.setPassword(properties.password());
+    return new RedisSessionBackend(
+        endpoint, properties.commandTimeout(), properties.maxCommands(), tls.options());
   }
 
   /**

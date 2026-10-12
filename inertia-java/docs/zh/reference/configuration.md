@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/configuration
   source: reference/configuration.md
-  sourceRevision: dfc50bb617f7ec17dddf7abda5d17c3a58cb117e48a474ee822678c507be4adb
+  sourceRevision: 62bf63188b6bfde7a1c1c2cfc42f9bda425bb7623a76316ce8624166cb0a418f
 sources:
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaProperties.java
   - inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/InertiaAutoConfiguration.java
@@ -118,3 +118,25 @@ Node 使用 `SSR_PORT`（13714）和 `SSR_ROOT_ID`（`app`）；`INERTIA_DEV_APP
 | `inertia.session.redis.max-attempts` | int / `16` | 1–100 次明确未写入的冲突/期限重算；同时受一秒 dispatch 预算约束 |
 
 生命周期过滤器运行在 Spring Session 之后、Security/MVC 之前。使用自定义宿主过滤器时需保持该顺序。后端所有权、未知结果和部署边界见[自定义会话存储](../integrations/custom-session.md)。
+
+## Redis TLS
+
+`InertiaRedisTlsProperties` 配置专用投递连接。显式启用 TLS，并使用服务器证书包含的主机名。这不会配置 Spring Session 独立的宿主连接。
+
+| 属性 | 类型 / 默认值 | 约束与效果 |
+| --- | --- | --- |
+| `inertia.session.redis.tls.enabled` | boolean / `false` | 启用 JDK TLS 1.2/1.3，强制校验证书链和主机名 |
+| `inertia.session.redis.tls.trust-store` | String / 未设置 | 可读的本地 PKCS12 文件；未设置时使用 JDK 系统信任 |
+| `inertia.session.redis.tls.trust-store-password` | String / 未设置 | 可选 PKCS12 密码；不出现在配置 toString 中 |
+
+```properties
+inertia.session.store=redis
+inertia.session.redis.host=redis.example.org
+inertia.session.redis.port=6380
+inertia.session.redis.password=${INERTIA_REDIS_PASSWORD}
+inertia.session.redis.tls.enabled=true
+inertia.session.redis.tls.trust-store=/run/secrets/redis-trust.p12
+inertia.session.redis.tls.trust-store-password=${INERTIA_REDIS_TRUST_PASSWORD}
+```
+
+挂载包含公共信任证书的信任库，并通过部署环境的密钥机制注入凭据。未启用 TLS 却指定信任材料、只提供密码而没有信任库路径、文件不可读，均会使启动失败。信任库内容或密码错误、证书不可信、主机名不匹配、Redis 认证失败会使连接操作失败；不会回退明文，也不提供关闭校验的开关。命令超时也约束 TLS 握手。TLS 保留命令并发上限以及 `UNKNOWN_WRITE` 不自动重放的行为。证书或信任配置变化后，需重建后端或重启应用；此配置未实现动态重载或客户端证书。

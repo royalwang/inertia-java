@@ -65,6 +65,75 @@ class InertiaRedisAutoConfigurationTest {
   }
 
   @Test
+  void tlsSelectionCreatesOneOwnedBackendAndPreservesDefaultBeanName() {
+    runner
+        .withPropertyValues("inertia.session.store=redis", "inertia.session.redis.tls.enabled=true")
+        .run(
+            context -> {
+              assertThat(context).hasNotFailed().hasSingleBean(RedisSessionBackend.class);
+              assertThat(context).hasBean("inertiaRedisBackend");
+              assertThat(context.getBean(InertiaRedisTlsProperties.class).enabled()).isTrue();
+            });
+  }
+
+  @Test
+  void plaintextDefaultCreatesOneOwnedBackend() {
+    runner
+        .withPropertyValues("inertia.session.store=redis")
+        .run(
+            context -> {
+              assertThat(context).hasNotFailed().hasSingleBean(RedisSessionBackend.class);
+              assertThat(context.getBean(InertiaRedisTlsProperties.class).enabled()).isFalse();
+            });
+  }
+
+  @Test
+  void tlsTrustMaterialWithoutActivationOrReadableFileFailsAtStartup() {
+    for (String[] properties :
+        new String[][] {
+          {"inertia.session.redis.tls.trust-store=/missing/trust.p12"},
+          {
+            "inertia.session.redis.tls.enabled=true",
+            "inertia.session.redis.tls.trust-store=/missing/trust.p12"
+          },
+          {
+            "inertia.session.redis.tls.enabled=true",
+            "inertia.session.redis.tls.trust-store-password=secret-fixture"
+          }
+        }) {
+      runner
+          .withPropertyValues("inertia.session.store=redis")
+          .withPropertyValues(properties)
+          .run(
+              context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class);
+              });
+    }
+  }
+
+  @Test
+  void applicationBackendBacksOffBothTlsAndPlaintextCreators() {
+    var backend = mock(RedisSessionBackend.class);
+    runner
+        .withBean(RedisSessionBackend.class, () -> backend)
+        .withPropertyValues("inertia.session.store=redis", "inertia.session.redis.tls.enabled=true")
+        .run(
+            context -> {
+              assertThat(context).hasNotFailed().hasSingleBean(RedisSessionBackend.class);
+              assertThat(context.getBean(RedisSessionBackend.class)).isSameAs(backend);
+            });
+  }
+
+  @Test
+  void tlsPropertiesRedactPathsAndCredentials() {
+    assertThat(
+            new InertiaRedisTlsProperties(true, "/private/trust.p12", "secret-fixture").toString())
+        .doesNotContain("/private", "secret-fixture");
+  }
+
+  @Test
   void explicitRedisWithoutItsModuleFailsInsteadOfFallingBack() {
     runner
         .withClassLoader(new FilteredClassLoader("io.inertia.redis"))
