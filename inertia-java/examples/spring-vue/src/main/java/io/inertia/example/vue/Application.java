@@ -3,20 +3,15 @@ package io.inertia.example.vue;
 import io.inertia.core.*;
 import io.inertia.ssr.HttpSsrGateway;
 import io.inertia.vite.*;
-import jakarta.servlet.http.*;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;
@@ -58,9 +53,12 @@ public class Application {
     return new InertiaConfig(
         build::buildId,
         "app",
-        Set.of("Users", "About", "Feed"),
+        Set.of("Users", "About", "Feed", "Auth/Login", "Auth/Account"),
         view ->
             "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"icon\" href=\"data:,\">"
+                + (environment.getProperty("inertia.demo-auth", Boolean.class, false)
+                    ? "<meta name=\"inertia-demo-auth\" content=\"true\">"
+                    : "")
                 + assets.tags("src/app.ts", view.nonce())
                 + view.head()
                 + "</head><body>"
@@ -89,35 +87,6 @@ public class Application {
             .addResourceLocations(frontend(environment).resolve("dist/client").toUri().toString());
       }
     };
-  }
-
-  @Bean
-  SecurityFilterChain security(HttpSecurity http) throws Exception {
-    var plain = new CsrfTokenRequestAttributeHandler();
-    return http.authorizeHttpRequests(routes -> routes.anyRequest().permitAll())
-        .csrf(
-            csrf ->
-                csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .csrfTokenRequestHandler(
-                        new CsrfTokenRequestHandler() {
-                          @Override
-                          public void handle(
-                              HttpServletRequest request,
-                              HttpServletResponse response,
-                              Supplier<CsrfToken> token) {
-                            plain.handle(request, response, token);
-                            token.get();
-                          }
-
-                          @Override
-                          public String resolveCsrfTokenValue(
-                              HttpServletRequest request, CsrfToken token) {
-                            return plain.resolveCsrfTokenValue(request, token);
-                          }
-                        }))
-        .formLogin(login -> login.disable())
-        .httpBasic(basic -> basic.disable())
-        .build();
   }
 
   @Controller

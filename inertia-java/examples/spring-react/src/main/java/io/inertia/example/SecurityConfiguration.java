@@ -21,7 +21,7 @@ public class SecurityConfiguration {
   SecurityFilterChain security(
       HttpSecurity http,
       io.inertia.core.PageCodec codec,
-      io.inertia.boot.InertiaProperties properties)
+      io.inertia.spring.InertiaSessionStoreFactory stores)
       throws Exception {
     return http.authorizeHttpRequests(routes -> routes.anyRequest().permitAll())
         .csrf(
@@ -31,7 +31,8 @@ public class SecurityConfiguration {
         .exceptionHandling(
             errors ->
                 errors.accessDeniedHandler(
-                    new BrowserCsrfFailureHandler(codec, properties.sessionNamespace())))
+                    new BrowserCsrfFailureHandler(
+                        codec, stores, java.util.Map.of("/users", "/users"))))
         .formLogin(login -> login.disable())
         .httpBasic(basic -> basic.disable())
         .build();

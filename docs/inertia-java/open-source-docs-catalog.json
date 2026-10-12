@@ -1345,7 +1345,7 @@
       "path": "zh/guide/authentication.md",
       "title": "认证与授权",
       "status": "reviewed",
-      "sourceRevision": "a27191ef4b950e144effbd31ff93238730a48c03d4048b83af443dfbcfa05eb8"
+      "sourceRevision": "a590a36511ef843f53f2b7e27a6fb00e58d67f2cb053c8c1e5bcffe26058fcfe"
     },
     {
       "id": "guide/csrf",

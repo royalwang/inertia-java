@@ -1,6 +1,6 @@
 # Inertia Java 服务端适配与 SSR 项目设计
 
-日期：2026-10-10。状态：J0–J7首版及双语文档、下一轮R1–R3本地交付完成；R4首个Vue示例已完成，Svelte/WebFlux实现按需另行排期。
+日期：2026-10-12。状态：J0–J7首版及双语文档、下一轮R1–R3本地交付完成；R4首个Vue示例及N2认证/共享会话本地验收已完成，N3待实施，Svelte/WebFlux实现按需另行排期。
 
 目标是基于当前 Rust 项目的架构，建设可独立复用的 Java Inertia 服务端适配库，并提供 Spring Boot + React/Vue + Vite + Node SSR 的完整示例。初期规划为本文档集；当前已交付八个可复用 Java 模块及完整 React/Node 示例，开发与生产模式均通过实际验收；完成范围和正式发布边界见第八项逐项审查。
 
@@ -35,6 +35,8 @@
 17. [Vue本地资格记录](16-vue-qualification.md)：独立Vue示例、真实SSR/client链路、隔离消费与支持边界。
 
 18. [原路线要求审查](17-roadmap-completion-audit.md)：逐项要求、直接证据、条件性后续与发布范围。
+
+19. [认证与会话实施](18-authentication-implementation.md)：N2 状态合同、身份与交付职责、实际变更及待完成验收。
 
 ## 主要决策
 

@@ -2,6 +2,7 @@ package io.inertia.example;
 
 import io.inertia.core.*;
 import io.inertia.spring.HttpSessionStore;
+import io.inertia.spring.InertiaSessionStoreFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import org.springframework.security.web.csrf.CsrfException;
 final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
   static final String MESSAGE = "Your security token changed. Review your form and submit again.";
   private final PageCodec codec;
-  private final String namespace;
+  private final InertiaSessionStoreFactory stores;
   private final Map<String, String> recovery;
 
   BrowserCsrfFailureHandler(PageCodec codec, String namespace) {
@@ -23,9 +24,15 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
   }
 
   BrowserCsrfFailureHandler(PageCodec codec, String namespace, Map<String, String> recovery) {
+    this(codec, request -> new HttpSessionStore(request.getSession(true), namespace), recovery);
+    SessionStore.requireNamespace(namespace);
+  }
+
+  BrowserCsrfFailureHandler(
+      PageCodec codec, InertiaSessionStoreFactory stores, Map<String, String> recovery) {
     this.recovery = Map.copyOf(recovery);
     this.codec = codec;
-    this.namespace = SessionStore.requireNamespace(namespace);
+    this.stores = java.util.Objects.requireNonNull(stores);
   }
 
   @Override
@@ -46,7 +53,7 @@ final class BrowserCsrfFailureHandler implements AccessDeniedHandler {
       var context =
           new InertiaContext(
               new InertiaRequest("POST", URI.create("http://localhost" + target), Map.of()),
-              new HttpSessionStore(request.getSession(true), namespace),
+              stores.create(request),
               codec);
       context.withErrors(Map.of("_csrf", MESSAGE));
       context.commitRedirect();

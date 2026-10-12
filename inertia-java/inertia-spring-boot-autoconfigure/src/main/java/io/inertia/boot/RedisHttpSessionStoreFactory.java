@@ -16,7 +16,10 @@ import org.springframework.web.util.WebUtils;
  * interfaces when using plain Servlet integration; Boot registers it automatically. Host session
  * sharing is separate from Redis delivery and belongs to the application. A host adapter must
  * propagate its lifecycle events; this class cannot infer remote logout from a cached session.
- * Listener storage failures propagate instead of pretending revocation succeeded.
+ * Request handles also reject a cached host session beyond its reported idle deadline. Shortening
+ * the timeout in another cached request or deleting the repository externally still needs an
+ * application revocation hook; a local snapshot cannot discover those changes. Listener storage
+ * failures propagate instead of pretending revocation succeeded.
  */
 public final class RedisHttpSessionStoreFactory
     implements InertiaSessionStoreFactory, HttpSessionListener, HttpSessionIdListener {
@@ -171,6 +174,13 @@ public final class RedisHttpSessionStoreFactory
     }
 
     private void attached() {
+      // A Spring Session request can retain a detached, locally cached session after its
+      // repository entry expires. Do not let such an in-flight handle extend delivery state.
+      // Host timestamps/intervals are trusted Servlet state, never client-provided deadlines.
+      int idleSeconds = session.getMaxInactiveInterval();
+      if (idleSeconds > 0
+          && System.currentTimeMillis() - session.getLastAccessedTime() >= idleSeconds * 1000L)
+        throw new RedisSessionException(RedisSessionException.Reason.STALE_DOMAIN);
       if (!identity.equals(session.getId()) || !metadata.equals(session.getAttribute(attribute)))
         throw new RedisSessionException(RedisSessionException.Reason.STALE_DOMAIN);
     }

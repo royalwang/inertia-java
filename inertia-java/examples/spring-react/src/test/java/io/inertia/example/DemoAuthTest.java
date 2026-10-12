@@ -28,6 +28,28 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class DemoAuthTest {
   @Autowired MockMvc mvc;
+  @Autowired SelectedStore stores;
+
+  @org.junit.jupiter.api.BeforeEach
+  void resetStoreProbe() {
+    stores.fail = false;
+    stores.calls = 0;
+    stores.last = null;
+  }
+
+  static class SelectedStore implements InertiaSessionStoreFactory {
+    boolean fail;
+    int calls;
+    jakarta.servlet.http.HttpSession last;
+
+    @Override
+    public SessionStore create(jakarta.servlet.http.HttpServletRequest request) {
+      calls++;
+      last = request.getSession();
+      if (fail) throw new IllegalStateException("Delivery unavailable");
+      return new HttpSessionStore(last, "portal");
+    }
+  }
 
   @SpringBootConfiguration
   @EnableAutoConfiguration(
@@ -36,6 +58,11 @@ class DemoAuthTest {
               .UserDetailsServiceAutoConfiguration.class)
   @Import({DemoAuth.class, DemoAuth.Pages.class, SecurityConfiguration.class})
   static class App {
+    @Bean
+    SelectedStore selectedStore() {
+      return new SelectedStore();
+    }
+
     @Bean
     InertiaConfig config() {
       return InertiaConfig.basic("v1", Set.of("Auth/Login", "Auth/Account"));
@@ -65,6 +92,7 @@ class DemoAuthTest {
         .put(InertiaContext.FLASH, new PageCodec().value(Map.of("anonymous", "discard")));
     Cookie before = initial.getResponse().getCookie("XSRF-TOKEN");
     assertNotNull(before);
+    int callsBeforeLogin = stores.calls;
     var login =
         mvc.perform(
                 post("/login")
@@ -76,6 +104,7 @@ class DemoAuthTest {
             .andExpect(status().isSeeOther())
             .andExpect(header().string("Location", "/account"))
             .andReturn();
+    assertTrue(stores.calls > callsBeforeLogin, "Success handler must use selected factory");
     assertTrue(session.isInvalid());
     var authenticated = (MockHttpSession) login.getRequest().getSession(false);
     assertNotNull(authenticated);
@@ -91,6 +120,8 @@ class DemoAuthTest {
             .andExpect(jsonPath("$.encryptHistory").value(true))
             .andExpect(jsonPath("$.flash").doesNotExist())
             .andReturn();
+    mvc.perform(get("/admin").session(authenticated).header("X-Inertia", "true"))
+        .andExpect(status().isForbidden());
     Cookie current = account.getResponse().getCookie("XSRF-TOKEN");
     assertNotNull(current);
     assertNotEquals(before.getValue(), current.getValue());
@@ -120,6 +151,7 @@ class DemoAuthTest {
     var initial = mvc.perform(get("/login")).andReturn();
     var session = (MockHttpSession) initial.getRequest().getSession();
     Cookie token = initial.getResponse().getCookie("XSRF-TOKEN");
+    int callsBeforeFailure = stores.calls;
     mvc.perform(
             post("/login")
                 .session(session)
@@ -129,6 +161,7 @@ class DemoAuthTest {
                 .param("password", "private-wrong-password"))
         .andExpect(status().isSeeOther())
         .andExpect(header().string("Location", "/login"));
+    assertTrue(stores.calls > callsBeforeFailure, "Failure handler must use selected factory");
     var page =
         mvc.perform(
                 get("/login")
@@ -149,5 +182,55 @@ class DemoAuthTest {
         .andExpect(jsonPath("$.props.errors.credentials").doesNotExist());
     mvc.perform(get("/account").session(session).header("X-Inertia", "true"))
         .andExpect(status().isConflict());
+  }
+
+  @Test
+  void deliveryFailureAfterAuthenticationDoesNotLeaveAuthenticatedSession() throws Exception {
+    var initial = mvc.perform(get("/login")).andReturn();
+    var session = (MockHttpSession) initial.getRequest().getSession();
+    Cookie token = initial.getResponse().getCookie("XSRF-TOKEN");
+    stores.fail = true;
+    assertThrows(
+        Exception.class,
+        () ->
+            mvc.perform(
+                post("/login")
+                    .session(session)
+                    .cookie(token)
+                    .header("X-XSRF-TOKEN", token.getValue())
+                    .param("username", "demo")
+                    .param("password", "local-demo-test-password")));
+    assertTrue(session.isInvalid());
+    assertNotNull(stores.last);
+    assertNull(stores.last.getAttribute("SPRING_SECURITY_CONTEXT"));
+    stores.fail = false;
+    mvc.perform(get("/account").session((MockHttpSession) stores.last).header("X-Inertia", "true"))
+        .andExpect(status().isConflict())
+        .andExpect(header().string("X-Inertia-Location", "/login"));
+  }
+
+  @Test
+  void csrfRecoveryUsesSelectedStoreAndStorageFailureDoesNotRedirect() throws Exception {
+    var initial = mvc.perform(get("/login")).andReturn();
+    var session = (MockHttpSession) initial.getRequest().getSession();
+    Cookie token = initial.getResponse().getCookie("XSRF-TOKEN");
+    int before = stores.calls;
+    mvc.perform(
+            post("/login")
+                .session(session)
+                .cookie(token)
+                .header("X-XSRF-TOKEN", "stale")
+                .header("X-Inertia", "true"))
+        .andExpect(status().isSeeOther());
+    assertTrue(stores.calls > before);
+    stores.fail = true;
+    mvc.perform(
+            post("/login")
+                .session(session)
+                .cookie(token)
+                .header("X-XSRF-TOKEN", "stale")
+                .header("X-Inertia", "true"))
+        .andExpect(status().isInternalServerError())
+        .andExpect(header().doesNotExist("Location"));
   }
 }

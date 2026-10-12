@@ -257,6 +257,51 @@ public class GuideSmoke {
         reports = list((output / 'vue-browser').glob('*/summary.json'))
         assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
         report['vueBrowser'] = str(reports[0])
+    if os.environ.get('INERTIA_VERIFY_AUTH') == 'true':
+        report['authenticationBrowsers'] = {}
+        for framework in ['react', 'vue']:
+            application = output / ('auth-' + framework + '-consumer')
+            application.mkdir()
+            shutil.copytree(root / ('examples/spring-' + framework + '/src'), application / 'src')
+            pom = application / 'pom.xml'
+            text = (root / ('examples/spring-' + framework + '/pom.xml')).read_text()
+            repositories = f'<repositories><repository><id>isolated-inertia-fixture</id><url>{repository.as_uri()}</url><snapshots><enabled>true</enabled><checksumPolicy>fail</checksumPolicy></snapshots></repository></repositories>'
+            pom.write_text(text.replace('<relativePath>../../pom.xml</relativePath>', '<relativePath/>').replace('<build>', repositories + '<build>'))
+            run('auth-' + framework + '-consumer-build', [str(root / 'mvnw'), '-B', '-ntp', '-s', str(consumer / 'settings.xml'), '-Dmaven.repo.local=' + str(cache), '-f', str(pom), 'package'], application)
+            jar = application / 'target' / f'spring-{framework}-{version}.jar'
+            assert jar.is_file(), 'Independent authentication consumer executable missing'
+            os.environ['INERTIA_AUTH_CONSUMER_JAR'] = str(jar)
+            os.environ['INERTIA_AUTH_FRAMEWORK'] = framework
+            os.environ['INERTIA_AUTH_CSR'] = 'false'
+            os.environ['INERTIA_DOCS_OUTPUT'] = str(output / ('auth-' + framework + '-browser'))
+            run('auth-' + framework + '-browser', ['node', str(root / 'examples/spring-react/frontend/scripts/verify-auth.mjs')])
+            reports = list((output / ('auth-' + framework + '-browser')).glob('*/summary.json'))
+            assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
+            report['authenticationBrowsers'][framework] = str(reports[0])
+    if os.environ.get('INERTIA_VERIFY_AUTH_REDIS') == 'true':
+        assert os.environ.get('INERTIA_REDIS_SERVER'), 'Real Redis executable required for auth qualification'
+        report['redisAuthenticationBrowsers'] = {}
+        for framework in ['react', 'vue']:
+            application = output / ('auth-redis-' + framework + '-consumer')
+            application.mkdir()
+            shutil.copytree(root / ('examples/spring-' + framework + '/src'), application / 'src')
+            package = 'io.inertia.example' + ('.vue' if framework == 'vue' else '')
+            probe = application / 'src/main/java' / package.replace('.', '/') / 'AuthProbe.java'
+            probe.write_text((root / 'qualification/auth-session/src/main/java/io/inertia/example/AuthProbe.java').read_text().replace('package io.inertia.example;', 'package ' + package + ';'))
+            pom = application / 'pom.xml'
+            text = (root / ('examples/spring-' + framework + '/pom.xml')).read_text()
+            repositories = f'<repositories><repository><id>isolated-inertia-fixture</id><url>{repository.as_uri()}</url><snapshots><enabled>true</enabled><checksumPolicy>fail</checksumPolicy></snapshots></repository></repositories>'
+            pom.write_text(text.replace('<relativePath>../../pom.xml</relativePath>', '<relativePath/>').replace('<build>', repositories + '<build>'))
+            run('auth-redis-' + framework + '-consumer-build', [str(root / 'mvnw'), '-B', '-ntp', '-s', str(consumer / 'settings.xml'), '-Dmaven.repo.local=' + str(cache), '-f', str(pom), '-Predis-session', 'package'], application)
+            jar = application / 'target' / f'spring-{framework}-{version}.jar'
+            assert jar.is_file(), 'Independent Redis authentication consumer executable missing'
+            os.environ['INERTIA_AUTH_CONSUMER_JAR'] = str(jar)
+            os.environ['INERTIA_AUTH_FRAMEWORK'] = framework
+            os.environ['INERTIA_DOCS_OUTPUT'] = str(output / ('auth-redis-' + framework + '-browser'))
+            run('auth-redis-' + framework + '-browser', ['node', str(root / 'examples/spring-react/frontend/scripts/verify-auth-redis.mjs')])
+            reports = list((output / ('auth-redis-' + framework + '-browser')).glob('*/summary.json'))
+            assert len(reports) == 1 and json.loads(reports[0].read_text())['success']
+            report['redisAuthenticationBrowsers'][framework] = str(reports[0])
     report['success'] = True
 except Exception as error:
     report['failure'] = str(error)

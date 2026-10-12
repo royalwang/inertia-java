@@ -12,7 +12,8 @@
     "build": "node scripts/build.mjs",
     "typecheck": "vue-tsc --noEmit",
     "ssr": "node dist/ssr/ssr.js",
-    "test:browser": "node scripts/verify.mjs"
+    "test:browser": "node scripts/verify.mjs",
+    "test:auth": "node scripts/verify-auth.mjs"
   },
   "dependencies": {
     "@inertiajs/vue3": "3.8.0",

@@ -1,7 +1,7 @@
 package io.inertia.example;
 
 import io.inertia.core.*;
-import io.inertia.spring.HttpSessionStore;
+import io.inertia.spring.InertiaSessionStoreFactory;
 import jakarta.servlet.http.*;
 import java.util.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -36,10 +36,26 @@ public class DemoAuth {
 
   @Bean
   SecurityFilterChain demoSecurity(
-      HttpSecurity http, PageCodec codec, io.inertia.boot.InertiaProperties properties)
+      HttpSecurity http,
+      PageCodec codec,
+      InertiaSessionStoreFactory stores,
+      Environment environment)
       throws Exception {
+    String fixation = environment.getProperty("inertia.demo-fixation", "new-session");
+    if (!Set.of("new-session", "change-session-id").contains(fixation))
+      throw new IllegalArgumentException("Unsupported demo session fixation strategy");
+    boolean rotate = fixation.equals("change-session-id");
+    if (rotate && !(stores instanceof io.inertia.boot.RedisHttpSessionStoreFactory))
+      throw new IllegalArgumentException("The rotation demo requires the Redis lifecycle factory");
     return http.authorizeHttpRequests(
-            routes -> routes.requestMatchers("/account").authenticated().anyRequest().permitAll())
+            routes ->
+                routes
+                    .requestMatchers("/admin")
+                    .hasRole("ADMIN")
+                    .requestMatchers("/account")
+                    .authenticated()
+                    .anyRequest()
+                    .permitAll())
         .requestCache(cache -> cache.disable())
         .csrf(
             csrf ->
@@ -61,9 +77,15 @@ public class DemoAuth {
                     .accessDeniedHandler(
                         new BrowserCsrfFailureHandler(
                             codec,
-                            properties.sessionNamespace(),
+                            stores,
                             Map.of("/users", "/users", "/login", "/login", "/logout", "/account"))))
-        .sessionManagement(session -> session.sessionFixation(fixation -> fixation.newSession()))
+        .sessionManagement(
+            session ->
+                session.sessionFixation(
+                    strategy -> {
+                      if (rotate) strategy.changeSessionId();
+                      else strategy.newSession();
+                    }))
         .formLogin(
             login ->
                 login
@@ -72,16 +94,20 @@ public class DemoAuth {
                     .successHandler(
                         (request, response, authentication) -> {
                           // Spring creates a clean session at the identity boundary.
-                          var context =
-                              new InertiaContext(
-                                  new InertiaRequest(
-                                      "POST",
-                                      java.net.URI.create("http://localhost/login"),
-                                      Map.of()),
-                                  new HttpSessionStore(
-                                      request.getSession(), properties.sessionNamespace()),
-                                  codec);
-                          context.clearHistory().commitRedirect();
+                          try {
+                            var context =
+                                new InertiaContext(
+                                    new InertiaRequest(
+                                        "POST",
+                                        java.net.URI.create("http://localhost/login"),
+                                        Map.of()),
+                                    stores.create(request),
+                                    codec);
+                            context.clearHistory().commitRedirect();
+                          } catch (RuntimeException failure) {
+                            rejectAuthentication(request, response);
+                            throw failure;
+                          }
                           redirect(request, response, "/account");
                         })
                     .failureHandler(
@@ -92,8 +118,7 @@ public class DemoAuth {
                                       "POST",
                                       java.net.URI.create("http://localhost/login"),
                                       Map.of()),
-                                  new HttpSessionStore(
-                                      request.getSession(), properties.sessionNamespace()),
+                                  stores.create(request),
                                   codec);
                           context.withErrors(
                               Map.of(
@@ -112,6 +137,18 @@ public class DemoAuth {
                             redirect(request, response, "/login")))
         .httpBasic(basic -> basic.disable())
         .build();
+  }
+
+  private static void rejectAuthentication(
+      HttpServletRequest request, HttpServletResponse response) {
+    // Security saves authentication before invoking the success handler. Remove it even when
+    // delivery storage fails; an error response must not leave a successful login behind.
+    org.springframework.security.core.context.SecurityContextHolder.clearContext();
+    new org.springframework.security.web.context.HttpSessionSecurityContextRepository()
+        .saveContext(
+            org.springframework.security.core.context.SecurityContextHolder.createEmptyContext(),
+            request,
+            response);
   }
 
   private static void redirect(

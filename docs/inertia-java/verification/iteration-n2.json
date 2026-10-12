@@ -1,0 +1,87 @@
+{
+  "format": 1,
+  "date": "2026-10-12",
+  "status": "N2 local qualification complete; whole roadmap remains active for N3 and conditional N4",
+  "sourceHead": "534cfac801f0a014617cbf2f27a2de4000bca75f",
+  "sourceFileSha256": {
+    "docs/inertia-java/14-follow-up-roadmap.md": "4d9958955d8417cb05c05e587d93c2c088418ba8da8b8848e227a87bb324769b",
+    "docs/inertia-java/18-authentication-implementation.md": "c152188a1da4e5615d083d1172ce8279777b131708289aa8e93690f5488e8b02",
+    "docs/inertia-java/README.md": "3c4516ac891031f750f3770952262b7dcc7ea29cd5b05a1c959a3a43c9650fb6",
+    "docs/inertia-java/open-source-docs-catalog.json": "e0d6f8f634f0da4f4e5cabc9e8103f06048ea9585a30f48d6b089524a6fe121f",
+    "inertia-java/docs/guide/authentication.md": "a590a36511ef843f53f2b7e27a6fb00e58d67f2cb053c8c1e5bcffe26058fcfe",
+    "inertia-java/docs/zh/guide/authentication.md": "3113ef2cea2e22193829e2623f6a6aca3d1ab9f3249f583e41a3adcd9b96f79d",
+    "inertia-java/examples/spring-react/frontend/package.json": "7dbb2b73c47874bf578d91e061fedcedb7f43d8669b0bac64fad65e5875df3e5",
+    "inertia-java/examples/spring-react/frontend/scripts/verify-auth-redis.mjs": "bdf6df6ef9af7cef610d0428a443b4a5f0a40cb1ed8d02956e3988ec0a89f070",
+    "inertia-java/examples/spring-react/frontend/scripts/verify-auth.mjs": "ab9c63994663b64150cc3cdf6e6274f8681dc982e62d2680d8c35f882aba1fa8",
+    "inertia-java/examples/spring-react/pom.xml": "2e7f65eaecd95342903b761746e383a40d80263a855d8cb53d75c3c2f275ac77",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/BrowserCsrfFailureHandler.java": "26301c15a7da8d85619019972d7886e882856468050961415517abcd31f7ddf5",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/DemoAuth.java": "459ced909ef59252c186e6332f02e42d6dbf88b3d8a272dcb962b6fe1130afe2",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/SecurityConfiguration.java": "3eb349ee6d07c6589e0f9f483fe2978f9fefd90bdee0312289acc88a408bb03e",
+    "inertia-java/examples/spring-react/src/test/java/io/inertia/example/DemoAuthTest.java": "8d610e1abf45f97750c2308cf04fce658c11fdd7be704b1170b61fc7b78f75f2",
+    "inertia-java/examples/spring-vue/frontend/package.json": "09753666a9ac9041f80acb4ee56052199b0447fab3f04db619e02f5ae0e581ba",
+    "inertia-java/examples/spring-vue/frontend/scripts/verify-auth.mjs": "d3c7ac4237f0f6d58e5c6c4746331f3474aa7d7d4dace92fd072f7be17ea7dae",
+    "inertia-java/examples/spring-vue/frontend/src/app.ts": "ed7b3144feba4aaa1d90c20e3424288e925604b314f0c5ee7f5509547b510b7e",
+    "inertia-java/examples/spring-vue/frontend/src/auth.ts": "e3235bf06ef5e4c1f9ec15c6acfe5c10500b819f3776abaa80697662e4d2b7f8",
+    "inertia-java/examples/spring-vue/frontend/src/pages.ts": "c2835bbf6285d7ed9ac1ed34999565a184fa157078724bb549e66cabd0a2e03c",
+    "inertia-java/examples/spring-vue/frontend/src/pages/Account.vue": "bd6f7836ca888fd43f7c36df2e6eb68046693e5a6d3c066a1710932429af7690",
+    "inertia-java/examples/spring-vue/frontend/src/pages/Login.vue": "3b83e0496a028b314d0b5fb6c794ed062f50647de43bfd9674cd7b3455a85465",
+    "inertia-java/examples/spring-vue/pom.xml": "f66ff640389ca0e15197fb824ec05a1da003e4eba1ce70a7d2b2cdc0eb8f895d",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/Application.java": "ffc0e742b6b3a9a360d947ed5d65f5363ae1f8b1e6917bc0df0b25c0602a87bc",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/BrowserCsrfFailureHandler.java": "a762b482110e8e57705b44eefe3b293078d3dc5e434cf31f9d68616180a663ee",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/DemoAuth.java": "587cbc7e291a7efe71289808a887242499a24739336bf78a2885af87990e3331",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/SecurityConfiguration.java": "ed1b87cefbe7a8e01b415d09fb9588cdde71201af59b12722f6744eeed53d1b2",
+    "inertia-java/inertia-spring-boot-autoconfigure/src/main/java/io/inertia/boot/RedisHttpSessionStoreFactory.java": "1b151afd301c608941e138c6c041ed36e2fcc686c7062b15d95741562f43e894",
+    "inertia-java/qualification/auth-session/README.md": "47b99e1003996b98541828bbee9cdba7aa10c44f4e0f89d11318ee5bb7e5a663",
+    "inertia-java/qualification/auth-session/src/main/java/io/inertia/example/AuthProbe.java": "0fd3703aaa71f41ba5e02519731d599056d5e1d4708235357ec6d606b789dd52",
+    "inertia-java/scripts/verify-maven-consumer.py": "1f75b0031876e83bb7e6a1125125b1673a8d69994460dbd191a055ec7e77b17c",
+    "inertia-java/scripts/verify.mjs": "5a7c07771a5d856ff0f16e7b58bf4cacabbe85f966a1eec6d62fe35aea20a4bb"
+  },
+  "java": {
+    "standard": {
+      "tests": 307,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "realHostIT": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "independentConsumer": {
+    "phases": 15,
+    "redisAuthenticationPhasesPerFramework": 14,
+    "supplementaryPhasesPerFramework": 16,
+    "scope": "Supplementary concurrent-login/logout runs consume the exact independently built JARs; earlier command is not claimed rerun with these added assertions"
+  },
+  "nativeAuthentication": {
+    "ssrPhasesPerFramework": 6,
+    "csrPhasesPerFramework": 5,
+    "scope": "Current native example JARs; exact driver/JAR/build identities are in raw receipts"
+  },
+  "apiCompatibility": {
+    "modules": 8,
+    "success": true,
+    "reportSha256": "9d6fb158cfb510db4c939a6abdb463e822fd112253d55ae325fdb3fa4f9d6f4a"
+  },
+  "documentation": {
+    "check": true,
+    "build": true,
+    "browserPhases": 14,
+    "canonicalPages": 71,
+    "translatedPages": 71
+  },
+  "receipts": {
+    "file": "iteration-n2-receipts.json.gz",
+    "sha256": "b78ecf0d2f9b2aa641cd4409e902038af0cce3f4550c54d06c2ca3bb47f141da",
+    "entries": 16
+  },
+  "limits": [
+    "Standalone TCP; no HA/failover durability or container qualification",
+    "Cached host idle deadline checked; offline deletion or remote timeout shortening requires lifecycle hook",
+    "Already admitted business work and global account revocation remain application-owned",
+    "N3 TLS/capacity and conditional N4 are outstanding; no public release claim"
+  ]
+}

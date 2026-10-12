@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "date": "2026-10-12",
+  "status": "N2 in progress; N3/N4 not qualified",
+  "sourceHead": "534cfac801f0a014617cbf2f27a2de4000bca75f",
+  "sourceFileSha256": {
+    "docs/inertia-java/14-follow-up-roadmap.md": "d583916f61302617d1896e385e1028b81826a6aced1933c126c122d4a002b67f",
+    "docs/inertia-java/18-authentication-implementation.md": "36adcc5f77e8deeb0e8bbbeef0c5e20f5af2b4394c2ff8d799932e5b2bffd25b",
+    "docs/inertia-java/README.md": "52097619cfd7582fa0df58a95c34964a6b5a71319c7c308c83965acd052c54bd",
+    "docs/inertia-java/open-source-docs-catalog.json": "bbf13724f51e053857d8c1faccd03378ceb9616b45544e7ac86cbe409ccab00c",
+    "inertia-java/docs/guide/authentication.md": "e4d264da60e55c8fce6cd6f96ea0af1108c1a7bec13fb8db0faf99db19de026a",
+    "inertia-java/docs/zh/guide/authentication.md": "196fda7346d1784bf79d14690cd2fa03b783f5f184424865d9c0e291af2b4923",
+    "inertia-java/examples/spring-react/frontend/package.json": "7dbb2b73c47874bf578d91e061fedcedb7f43d8669b0bac64fad65e5875df3e5",
+    "inertia-java/examples/spring-react/frontend/scripts/verify-auth.mjs": "6aa1df5c5122e780103606228974d7665f58acd9e993fe16e2695dfa2bd261f1",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/BrowserCsrfFailureHandler.java": "26301c15a7da8d85619019972d7886e882856468050961415517abcd31f7ddf5",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/DemoAuth.java": "deab7844cb2faa83423d488b545b2ed89bf1f1ca45a06f2117d89ffc0d0e60da",
+    "inertia-java/examples/spring-react/src/main/java/io/inertia/example/SecurityConfiguration.java": "3eb349ee6d07c6589e0f9f483fe2978f9fefd90bdee0312289acc88a408bb03e",
+    "inertia-java/examples/spring-react/src/test/java/io/inertia/example/DemoAuthTest.java": "8d610e1abf45f97750c2308cf04fce658c11fdd7be704b1170b61fc7b78f75f2",
+    "inertia-java/examples/spring-vue/frontend/package.json": "09753666a9ac9041f80acb4ee56052199b0447fab3f04db619e02f5ae0e581ba",
+    "inertia-java/examples/spring-vue/frontend/scripts/verify-auth.mjs": "d3c7ac4237f0f6d58e5c6c4746331f3474aa7d7d4dace92fd072f7be17ea7dae",
+    "inertia-java/examples/spring-vue/frontend/src/app.ts": "ed7b3144feba4aaa1d90c20e3424288e925604b314f0c5ee7f5509547b510b7e",
+    "inertia-java/examples/spring-vue/frontend/src/auth.ts": "e3235bf06ef5e4c1f9ec15c6acfe5c10500b819f3776abaa80697662e4d2b7f8",
+    "inertia-java/examples/spring-vue/frontend/src/pages.ts": "c2835bbf6285d7ed9ac1ed34999565a184fa157078724bb549e66cabd0a2e03c",
+    "inertia-java/examples/spring-vue/frontend/src/pages/Account.vue": "bd6f7836ca888fd43f7c36df2e6eb68046693e5a6d3c066a1710932429af7690",
+    "inertia-java/examples/spring-vue/frontend/src/pages/Login.vue": "3b83e0496a028b314d0b5fb6c794ed062f50647de43bfd9674cd7b3455a85465",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/Application.java": "ffc0e742b6b3a9a360d947ed5d65f5363ae1f8b1e6917bc0df0b25c0602a87bc",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/BrowserCsrfFailureHandler.java": "a762b482110e8e57705b44eefe3b293078d3dc5e434cf31f9d68616180a663ee",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/DemoAuth.java": "3a638c5478d4496771449527ff3eb1533fe4cef5b548908b5318a2de83b03629",
+    "inertia-java/examples/spring-vue/src/main/java/io/inertia/example/vue/SecurityConfiguration.java": "ed1b87cefbe7a8e01b415d09fb9588cdde71201af59b12722f6744eeed53d1b2",
+    "inertia-java/scripts/verify-maven-consumer.py": "b17679b6a70745a4bdad0c1e670d521b8e5bec26da675aff738dfd6eb8687585",
+    "inertia-java/scripts/verify.mjs": "866a36f34b50104cda94e4f96433012d1ba937972cb77e0f71e2cdd30a87290a"
+  },
+  "javaPackage": {
+    "success": true,
+    "testTotals": {
+      "tests": 307,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "logSha256": "9b9ee5de09bf6235033b150718768eeeb5d940938691f22cc6bd50677720d949"
+  },
+  "consumer": {
+    "success": true,
+    "phases": 13,
+    "authenticationBrowsers": {
+      "react": "/private/tmp/inertia-n2-auth-consumer-20261012/auth-react-browser/inertia-react-auth-hnBs16/summary.json",
+      "vue": "/private/tmp/inertia-n2-auth-consumer-20261012/auth-vue-browser/inertia-vue-auth-EJpkvn/summary.json"
+    }
+  },
+  "documentation": {
+    "check": true,
+    "build": true,
+    "browserPhases": 14,
+    "canonicalPages": 71,
+    "translatedPages": 71
+  },
+  "receipts": {
+    "file": "iteration-n2-progress-receipts.json.gz",
+    "sha256": "c8c836eb993392c7ea6481e0416f16877bd855c153d599a110520ed7075c42c9",
+    "entries": 7
+  },
+  "remaining": [
+    "Actual authenticated changeSessionId and attribute migration",
+    "Two-JVM Redis authentication, in-flight reservations and network failures",
+    "CSR authentication qualification for changed examples",
+    "Redis TLS, capacity and recovery work packages",
+    "Conditional support-matrix expansion and separate public release"
+  ]
+}

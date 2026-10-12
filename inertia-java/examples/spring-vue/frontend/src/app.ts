@@ -2,6 +2,8 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { createApp, createSSRApp, h } from 'vue'
 import { resolve } from './pages'
 import './style.css'
+import { installDemoAuthSync } from './auth'
+installDemoAuthSync()
 
 void createInertiaApp({ resolve, setup({ el, App, props, plugin }) {
   if (!el) throw new Error('Missing browser root')
