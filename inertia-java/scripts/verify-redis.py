@@ -69,7 +69,7 @@ try:
                          'executableSha256': hashlib.sha256(executable.read_bytes()).hexdigest()}
     report['source'] = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
                         'dirty': bool(subprocess.check_output(['git', 'status', '--porcelain=v1'], cwd=ROOT, text=True).strip())}
-    suites = ['RedisSessionStoreIT', 'RedisLostReplyIT', 'RedisSessionOptionsTest']
+    suites = ['RedisSessionStoreIT', 'RedisLostReplyIT', 'RedisSessionOptionsTest', 'RedisObservationIT']
     if args.tls:
         if not shutil.which('openssl'):
             raise ValueError('TLS certificate fixtures require openssl on PATH')

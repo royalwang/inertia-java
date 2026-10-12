@@ -1,5 +1,5 @@
 import { spawn, execFileSync } from 'node:child_process'
-import { mkdirSync, mkdtempSync, createWriteStream, writeFileSync, copyFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, createWriteStream, writeFileSync, copyFileSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
@@ -14,6 +14,7 @@ if (process.platform === 'win32') throw new Error('The aggregate runner currentl
 const [major, minor] = process.versions.node.split('.').map(Number)
 if (major < 22 || (major === 22 && minor < 12)) throw new Error('Node >=22.12 is required')
 if (process.env.INERTIA_API_BASELINE && !process.env.INERTIA_API_TOOL) throw new Error('INERTIA_API_TOOL is required with INERTIA_API_BASELINE')
+if (process.env.INERTIA_VERIFY_REDIS_CAPACITY === 'true' && (!process.env.INERTIA_REDIS_TLS_SERVER || !process.env.INERTIA_REDIS_TLS_CLI)) throw new Error('Redis capacity requires INERTIA_REDIS_TLS_SERVER and INERTIA_REDIS_TLS_CLI')
 const stages = []
 const startedAt = new Date().toISOString()
 const source = {
@@ -95,6 +96,14 @@ try {
   }
   if (process.env.INERTIA_REDIS_SERVER || process.env.INERTIA_VERIFY_VUE === 'true' || process.env.INERTIA_VERIFY_AUTH === 'true' || process.env.INERTIA_VERIFY_AUTH_REDIS === 'true') {
     await run('independent-consumer', 'python3', [resolve(root, 'scripts/verify-maven-consumer.py')], root, { INERTIA_CONSUMER_OUTPUT: resolve(output, 'independent-consumer') })
+  }
+  if (process.env.INERTIA_VERIFY_REDIS_CAPACITY === 'true') {
+    const fixtures = [...readFileSync(resolve(output, 'redis-tls/maven.log'), 'utf8').matchAll(/^TLS qualification fixture: (.+)$/gm)]
+    if (fixtures.length !== 1) throw new Error('Expected one owned TLS fixture for capacity measurements')
+    await run('redis-capacity-package', resolve(root, 'mvnw'), ['--batch-mode', '--no-transfer-progress', '-pl', 'examples/spring-react', '-am', '-Predis-session', 'package', '-DskipTests'], root)
+    await run('redis-capacity', 'python3', [resolve(root, 'scripts/verify-redis-capacity.py'),
+      '--redis-server', process.env.INERTIA_REDIS_TLS_SERVER, '--redis-cli', process.env.INERTIA_REDIS_TLS_CLI,
+      '--tls-fixture', fixtures[0][1], '--output', resolve(output, 'redis-capacity')], root)
   }
 } catch (error) {
   failure = error.message

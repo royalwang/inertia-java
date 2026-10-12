@@ -14,6 +14,45 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 @ConditionalOnProperty(name = "inertia.benchmark-enabled", havingValue = "true")
 class DemoBenchmark {
+  @org.springframework.context.annotation.Bean
+  static org.springframework.boot.web.servlet.FilterRegistrationBean<
+          org.springframework.web.filter.OncePerRequestFilter>
+      benchmarkRequestTiming() {
+    var filter =
+        new org.springframework.web.filter.OncePerRequestFilter() {
+          @Override
+          protected void doFilterInternal(
+              jakarta.servlet.http.HttpServletRequest request,
+              jakarta.servlet.http.HttpServletResponse response,
+              jakarta.servlet.FilterChain chain)
+              throws jakarta.servlet.ServletException, java.io.IOException {
+            if (!request.getRequestURI().equals("/benchmark/page")) {
+              chain.doFilter(request, response);
+              return;
+            }
+            long started = System.nanoTime();
+            try {
+              chain.doFilter(request, response);
+            } finally {
+              System.getLogger("io.inertia.benchmark")
+                  .log(
+                      System.Logger.Level.INFO,
+                      "{\"benchmarkRequestNanos\":"
+                          + (System.nanoTime() - started)
+                          + ",\"status\":"
+                          + response.getStatus()
+                          + "}");
+            }
+          }
+        };
+    var registration =
+        new org.springframework.boot.web.servlet.FilterRegistrationBean<
+            org.springframework.web.filter.OncePerRequestFilter>(filter);
+    registration.setOrder(Integer.MIN_VALUE + 200);
+    registration.setDispatcherTypes(jakarta.servlet.DispatcherType.REQUEST);
+    return registration;
+  }
+
   private final java.util.concurrent.ThreadPoolExecutor executor;
   private final long queueCapacity;
 

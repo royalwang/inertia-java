@@ -33,12 +33,15 @@ class RedisLostReplyIT {
     var field = RedisSessionBackend.class.getDeclaredField("CAS");
     field.setAccessible(true);
     String sha = ((DefaultRedisScript<?>) field.get(null)).getSha1();
+    var events = new CopyOnWriteArrayList<io.inertia.core.InertiaObserver.Event>();
     try (var proxy = new ReplyDroppingProxy(port, sha);
         var interrupted =
             new RedisSessionBackend(
                 new RedisStandaloneConfiguration("127.0.0.1", proxy.port()),
                 Duration.ofMillis(250),
-                2)) {
+                2,
+                RedisTlsOptions.disabled(),
+                events::add)) {
       var fresh = backend.read(key);
       reason(
           RedisSessionException.Reason.UNKNOWN_WRITE,
@@ -48,6 +51,11 @@ class RedisLostReplyIT {
           backend.read(key).json(),
           "Real Redis did execute the mutation");
       assertEquals(1, proxy.mutations.get(), "No mutation replay or reconnect is allowed");
+      assertEquals(1, events.size());
+      assertEquals(
+          io.inertia.core.InertiaObserver.Operation.REDIS_CAS, events.getFirst().operation());
+      assertEquals(
+          io.inertia.core.InertiaObserver.Reason.REDIS_UNKNOWN_WRITE, events.getFirst().reason());
     }
   }
 

@@ -6,7 +6,7 @@ translation:
   locale: zh-CN
   canonicalId: reference/errors
   source: reference/errors.md
-  sourceRevision: 88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354
+  sourceRevision: dbe6796e8df296094c1cc610bc92b5f39a2492a950042e59ccb255c367ef7371
 sources:
 - inertia-java/inertia-core/src/main/java/io/inertia/core/PropDefinitionException.java
 - inertia-java/inertia-core/src/main/java/io/inertia/core/PropResolutionException.java
@@ -54,7 +54,7 @@ verification:
 
 ## 观测分类
 
-`InertiaObserver.Reason` 包含 `NONE`、`ERROR`、`PROP_DEFINITION`、`PROP_OVERRIDE`、`ERRORS_OVERRIDE`、`TIMEOUT`、`CANCELLED`、`OVERLOADED`、`DISABLED`、`EXCLUDED_OR_UNAVAILABLE`、`TRANSPORT_OR_TIMEOUT`、`TRANSPORT`、`CONNECTION`、`RESPONSE_LIMIT`、`HTTP_STATUS`、`WARMING_UP`、`INVALID_RESPONSE`、`INVALID_JSON`、`BUILD_MISMATCH`、`ROOT_MISMATCH`、`VERSION_MISMATCH` 和 `UNKNOWN`。
+`InertiaObserver.Reason` 包含 `NONE`、`ERROR`、`PROP_DEFINITION`、`PROP_OVERRIDE`、`ERRORS_OVERRIDE`、`TIMEOUT`、`CANCELLED`、`OVERLOADED`、`DISABLED`、`EXCLUDED_OR_UNAVAILABLE`、`TRANSPORT_OR_TIMEOUT`、`TRANSPORT`、`CONNECTION`、`RESPONSE_LIMIT`、`HTTP_STATUS`、`WARMING_UP`、`INVALID_RESPONSE`、`INVALID_JSON`、`BUILD_MISMATCH`、`ROOT_MISMATCH`、`VERSION_MISMATCH`、`REDIS_UNKNOWN_WRITE`、`REDIS_CAPACITY`、`REDIS_CONTENTION`、`REDIS_BUDGET_EXHAUSTED`、`REDIS_STALE_DOMAIN`、`REDIS_INVALID_TOKEN`、`REDIS_INVALID_STATE`、`REDIS_CLOCK_REVERSED` 和 `UNKNOWN`。
 
 transport 事件对 connection/response-limit 的区分，可能比公开 fallback 字符串更细。未知字符串归为 `UNKNOWN`，不能当作渲染成功。session abort 清理失败在适用时保留为原始异常的 suppressed cause。存储结果未知时，需要按后端语义对账，不能盲目重放。
 

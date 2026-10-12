@@ -1,5 +1,9 @@
 package io.inertia.redis;
 
+import static io.inertia.core.InertiaObserver.*;
+
+import io.inertia.core.InertiaObserver;
+import io.inertia.core.Observations;
 import io.lettuce.core.ClientOptions;
 import java.time.Duration;
 import java.util.List;
@@ -20,6 +24,7 @@ public final class RedisSessionBackend implements AutoCloseable {
   private final LettuceConnectionFactory factory;
   private final StringRedisTemplate redis;
   private final Semaphore permits;
+  private final InertiaObserver observer;
   private static final DefaultRedisScript<List> READ =
       new DefaultRedisScript<>(
           """
@@ -69,6 +74,27 @@ public final class RedisSessionBackend implements AutoCloseable {
       Duration timeout,
       int maxCommands,
       RedisTlsOptions tls) {
+    this(endpoint, timeout, maxCommands, tls, InertiaObserver.NOOP);
+  }
+
+  /**
+   * Creates an observed transport without exposing Redis keys, identities or values.
+   *
+   * @param endpoint application-owned standalone endpoint and authentication
+   * @param timeout positive connect, handshake and command timeout, at most five seconds
+   * @param maxCommands positive concurrent command limit, at most 1024
+   * @param tls immutable TLS trust selection
+   * @param observer synchronous bounded event sink; RuntimeException is isolated
+   * @throws IllegalArgumentException if transport bounds are invalid
+   * @throws NullPointerException if endpoint, tls or observer is null
+   */
+  public RedisSessionBackend(
+      RedisStandaloneConfiguration endpoint,
+      Duration timeout,
+      int maxCommands,
+      RedisTlsOptions tls,
+      InertiaObserver observer) {
+    this.observer = java.util.Objects.requireNonNull(observer);
     java.util.Objects.requireNonNull(tls);
     if (timeout == null
         || timeout.toMillis() < 1
@@ -98,22 +124,36 @@ public final class RedisSessionBackend implements AutoCloseable {
   record Read(String json, long now) {}
 
   Read read(String key) {
-    if (!permits.tryAcquire())
+    long started = System.nanoTime();
+    if (!permits.tryAcquire()) {
+      observe(Operation.REDIS_READ, Outcome.FAILURE, Reason.OVERLOADED, started);
       throw new RedisSessionException(RedisSessionException.Reason.CAPACITY);
+    }
+    var outcome = Outcome.FAILURE;
+    var reason = Reason.TRANSPORT;
     try {
       var result = redis.execute(READ, List.of(key));
       if (result == null || result.size() != 2) throw new IllegalStateException();
-      return new Read((String) result.get(0), Long.parseLong((String) result.get(1)));
+      var read = new Read((String) result.get(0), Long.parseLong((String) result.get(1)));
+      outcome = Outcome.SUCCESS;
+      reason = Reason.NONE;
+      return read;
     } catch (RuntimeException failure) {
       throw new RedisSessionException(RedisSessionException.Reason.READ_FAILED);
     } finally {
       permits.release();
+      observe(Operation.REDIS_READ, outcome, reason, started);
     }
   }
 
   long cas(String key, Read before, String after, long deadline, long ttl) {
-    if (!permits.tryAcquire())
+    long started = System.nanoTime();
+    if (!permits.tryAcquire()) {
+      observe(Operation.REDIS_CAS, Outcome.FAILURE, Reason.OVERLOADED, started);
       throw new RedisSessionException(RedisSessionException.Reason.CAPACITY);
+    }
+    var outcome = Outcome.FAILURE;
+    var reason = Reason.REDIS_UNKNOWN_WRITE;
     try {
       var result =
           redis.execute(
@@ -125,12 +165,59 @@ public final class RedisSessionBackend implements AutoCloseable {
               Long.toString(deadline),
               Long.toString(ttl));
       if (result == null) throw new IllegalStateException();
+      outcome = result == 1 ? Outcome.SUCCESS : result == -2 ? Outcome.FAILURE : Outcome.CONFLICT;
+      reason = result == -3 ? Reason.TIMEOUT : result == -2 ? Reason.ERROR : Reason.NONE;
       return result;
     } catch (RuntimeException failure) {
       throw new RedisSessionException(RedisSessionException.Reason.UNKNOWN_WRITE);
     } finally {
       permits.release();
+      observe(Operation.REDIS_CAS, outcome, reason, started);
     }
+  }
+
+  private void observe(Operation operation, Outcome outcome, Reason reason, long started) {
+    if (observer != InertiaObserver.NOOP)
+      Observations.publish(
+          observer,
+          new Event(
+              operation,
+              outcome,
+              reason,
+              System.nanoTime() - started,
+              0,
+              ResponseKind.NONE,
+              "",
+              "",
+              "redis"));
+  }
+
+  void stateFailure(RedisSessionException.Reason failure) {
+    if (observer == InertiaObserver.NOOP) return;
+    var reason =
+        switch (failure) {
+          case READ_FAILED -> Reason.TRANSPORT;
+          case UNKNOWN_WRITE -> Reason.REDIS_UNKNOWN_WRITE;
+          case CAPACITY -> Reason.REDIS_CAPACITY;
+          case CONTENTION -> Reason.REDIS_CONTENTION;
+          case BUDGET_EXHAUSTED -> Reason.REDIS_BUDGET_EXHAUSTED;
+          case STALE_DOMAIN -> Reason.REDIS_STALE_DOMAIN;
+          case INVALID_TOKEN -> Reason.REDIS_INVALID_TOKEN;
+          case INVALID_STATE -> Reason.REDIS_INVALID_STATE;
+          case CLOCK_REVERSED -> Reason.REDIS_CLOCK_REVERSED;
+        };
+    Observations.publish(
+        observer,
+        new Event(
+            Operation.REDIS_STATE_FAILURE,
+            Outcome.FAILURE,
+            reason,
+            0,
+            0,
+            ResponseKind.NONE,
+            "",
+            "",
+            "redis"));
   }
 
   /** Closes the owned Redis connections and Lettuce resources. */

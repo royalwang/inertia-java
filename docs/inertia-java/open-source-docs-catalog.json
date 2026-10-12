@@ -880,6 +880,21 @@
       ]
     },
     {
+      "id": "deployment/redis-operations",
+      "path": "deployment/redis-operations.md",
+      "title": "Redis capacity and recovery",
+      "section": "deployment",
+      "phase": "D3",
+      "priority": "P0",
+      "status": "written",
+      "outcome": "Size delivery bounds, distinguish command and state failures, and recover trusted host identity.",
+      "dependsOn": [
+        "integrations/custom-session",
+        "reference/configuration",
+        "reference/metrics"
+      ]
+    },
+    {
       "id": "reference/configuration",
       "path": "reference/configuration.md",
       "title": "Configuration reference",
@@ -1521,7 +1536,7 @@
       "path": "zh/integrations/custom-session.md",
       "title": "自定义会话存储",
       "status": "reviewed",
-      "sourceRevision": "c44ae10f9f3a8b0ad70e19bf4927b0c34de055182ae14d34deca43ce534d00b0"
+      "sourceRevision": "611a00ad67d77711f16790aa868b944789a3fd6557909109fa4bcd500c5c66a3"
     },
     {
       "id": "integrations/observability",
@@ -1572,6 +1587,14 @@
       "sourceRevision": "c2399dcd0da5887989364ba2603151e6c4fff76c5dd2273d2e94c78a691db805"
     },
     {
+      "id": "deployment/redis-operations",
+      "locale": "zh-CN",
+      "path": "zh/deployment/redis-operations.md",
+      "title": "Redis 容量与恢复",
+      "status": "reviewed",
+      "sourceRevision": "919a56e19a547e7d385ca8495df37f69bf9586eb414e59baea10b45eab272430"
+    },
+    {
       "id": "reference/configuration",
       "locale": "zh-CN",
       "path": "zh/reference/configuration.md",
@@ -1617,7 +1640,7 @@
       "path": "zh/reference/errors.md",
       "title": "错误与 SSR 降级原因",
       "status": "reviewed",
-      "sourceRevision": "88d92bb6d8f98c5b38244a12003662298d63cae0ff14f3c85ebab969716b9354"
+      "sourceRevision": "dbe6796e8df296094c1cc610bc92b5f39a2492a950042e59ccb255c367ef7371"
     },
     {
       "id": "reference/metrics",
@@ -1625,7 +1648,7 @@
       "path": "zh/reference/metrics.md",
       "title": "指标参考",
       "status": "reviewed",
-      "sourceRevision": "b20fc76fb58580fa7edd7620fa9583a9e7b42eeac09c5e9477fa60ab16f27393"
+      "sourceRevision": "6538a465a1d2fa8a69f9b1cfd8e25ef6b2b47499ec180271824e7e141ddcec11"
     },
     {
       "id": "reference/javadoc",

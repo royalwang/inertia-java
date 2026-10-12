@@ -14,6 +14,70 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
 class InertiaRedisAutoConfigurationTest {
+  @Test
+  void selectedObserverReceivesActualDeliveryTransportFailures() throws Exception {
+    var events = new java.util.concurrent.CopyOnWriteArrayList<InertiaObserver.Event>();
+    try (var listener =
+        new java.net.ServerSocket(0, 1, java.net.InetAddress.getLoopbackAddress())) {
+      runner
+          .withBean(InertiaObserver.class, () -> events::add)
+          .withPropertyValues(
+              "inertia.session.store=redis",
+              "inertia.session.redis.port=" + listener.getLocalPort(),
+              "inertia.session.redis.command-timeout=100ms")
+          .run(
+              context -> {
+                assertThat(context).hasNotFailed();
+                org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () ->
+                            context
+                                .getBean(InertiaSessionStoreFactory.class)
+                                .create(new org.springframework.mock.web.MockHttpServletRequest()))
+                    .isInstanceOf(RedisSessionException.class);
+                assertThat(events).hasSize(1);
+                assertThat(events.getFirst().operation())
+                    .isEqualTo(InertiaObserver.Operation.REDIS_READ);
+                assertThat(events.getFirst().reason()).isEqualTo(InertiaObserver.Reason.TRANSPORT);
+              });
+    }
+  }
+
+  @Test
+  void defaultMetricsObserverReceivesRedisFailures() throws Exception {
+    var registry = new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+    try (var listener =
+        new java.net.ServerSocket(0, 1, java.net.InetAddress.getLoopbackAddress())) {
+      runner
+          .withConfiguration(AutoConfigurations.of(InertiaMetricsAutoConfiguration.class))
+          .withBean(io.micrometer.core.instrument.MeterRegistry.class, () -> registry)
+          .withPropertyValues(
+              "inertia.session.store=redis",
+              "inertia.session.redis.port=" + listener.getLocalPort(),
+              "inertia.session.redis.command-timeout=100ms")
+          .run(
+              context -> {
+                assertThat(context).hasNotFailed();
+                assertThat(context.getBean(InertiaObserver.class))
+                    .isInstanceOf(MicrometerInertiaObserver.class);
+                org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () ->
+                            context
+                                .getBean(InertiaSessionStoreFactory.class)
+                                .create(new org.springframework.mock.web.MockHttpServletRequest()))
+                    .isInstanceOf(RedisSessionException.class);
+                assertThat(
+                        registry
+                            .get("inertia.redis_read")
+                            .tag("reason", "transport")
+                            .timer()
+                            .count())
+                    .isEqualTo(1);
+              });
+    } finally {
+      registry.close();
+    }
+  }
+
   final WebApplicationContextRunner runner =
       new WebApplicationContextRunner()
           .withConfiguration(

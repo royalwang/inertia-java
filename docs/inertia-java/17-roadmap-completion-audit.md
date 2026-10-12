@@ -46,3 +46,21 @@
 R1/R2/R3原始记录分别在[实施台账](12-next-iteration-implementation.md)、[运行资格记录](13-runtime-qualification.md)、[多实例资格记录](15-multi-instance-qualification.md)。历史结果只用于对应未改动的范围；本轮新增Vue、公共文档及共享build工具使用当前实际结果，不以React成功推导Vue成功。
 
 最终检查当前源码与归档摘要、候选API比较、实际consumer JAR、浏览器构建身份及文档输出相符；本轮aggregate27阶段和Vue七阶段通过。机器结果与范围见[Vue资格记录](16-vue-qualification.md)。R3库的99个源码/测试/资源文件与其归档逐字节一致，因此保持既有真实Redis/故障资格；本轮不声称重新执行Redis网络/双JVM套件。未交付的条件性生态适配与公开发布继续如实列为后续，不把它们写成已支持。
+
+
+## 2026-10-12 N2/N3 收尾审查
+
+前文为原 R1–R4 完成时快照。新增 N2/N3 使用 [认证实施](18-authentication-implementation.md)、[Redis 实施](19-redis-tls-capacity-implementation.md) 与 [N3 最终机器记录](verification/iteration-n3.json)，不把历史候选当作本轮变更的证据。
+
+| 要求 | 当前实现与证据 | 结论 |
+| --- | --- | --- |
+| N2a 失败反馈、登录、受保护页面、退出、过期 | React/Vue 实际认证及原生宿主资格；N2 历史记录保持，N3 后再次执行各 16 阶段 Redis 认证 | 本地完成 |
+| N2b 双节点身份、轮换、在途 reservation 与故障 | 当前隔离消费八库、两 JVM、真实 Redis；跨节点六阶段及两套认证 16 阶段；外部仓库撤销需应用 hook | 本地完成，边界保留 |
+| N3a 默认明文、TLS trust/hostname/auth 和 UNKNOWN_WRITE | 可信/拒绝/执行后丢回复真实合同；独立 Boot TLS HTTP 及选定 observer 实际 CAS | 本地完成 |
+| N3b 不同域/热点、连接/CAS/容量/TTL/延迟/吞吐/资源 | 相同 JAR/驱动/环境参数，TCP/TLS 各三轮、4,608 请求；成功/拒绝分离，全部原始 JSON 归档 | 本地完成，无生产 SLO |
+| N3b 故障与恢复 | 实际命令 permit、reservation/terminal/bytes、TTL/lease、CLIENT PAUSE 预算、CAS 冲突、读失败/回复丢失、宿主撤销/数据丢失；36 撤载恢复探针 200 | 本地完成，无自动重放 |
+| N3 API、可选装配和默认观察器 | 旧构造器/record 保留；八模块 source/binary 对比、314 标准测试、12 Redis 自动装配、24 档案与独立消费 | 本地完成 |
+| N3 双语官方文档 | 72 + 72 页，新增使用者运维手册与指标；check/build/14 浏览器阶段；工程备注留工程目录 | 本地完成 |
+| N4 新支持组合 | 维护者于 2026-10-12 明确本轮只完成 N2/N3 | 按需暂缓，不冒充完成 |
+
+初次 TLS 首请求失败及磁盘耗尽中断均保留失败记录；补充诊断后的最终统一资格通过，没有隐式重试或跳过。新增容量封装/聚合开关进行了语法、参数拒绝和收据身份篡改拒绝验证；六轮测量使用同一底层 benchmark/helper 直接按序执行，未宣称重新执行整套默认聚合或封装六轮。未改动的协议、SSR、前端功能继续引用对应历史资格；当前改变的 Redis/装配边界已重新执行。

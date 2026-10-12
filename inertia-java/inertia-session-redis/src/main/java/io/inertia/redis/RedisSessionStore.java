@@ -404,7 +404,7 @@ public final class RedisSessionStore implements SessionStore {
     change(state -> null);
   }
 
-  private static void validateJson(JsonNode value) {
+  private void validateJson(JsonNode value) {
     record Node(JsonNode value, int depth) {}
     var pending = new ArrayDeque<Node>();
     pending.push(new Node(value, 0));
@@ -424,18 +424,19 @@ public final class RedisSessionStore implements SessionStore {
     }
   }
 
-  private static long writeDeadline(long budget, long redisTime) {
+  private long writeDeadline(long budget, long redisTime) {
     requireBudget(budget);
     return redisTime
         + Math.max(
             1, java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(budget - System.nanoTime()));
   }
 
-  private static void requireBudget(long deadline) {
+  private void requireBudget(long deadline) {
     if (System.nanoTime() >= deadline) throw fail(RedisSessionException.Reason.BUDGET_EXHAUSTED);
   }
 
-  private static RedisSessionException fail(RedisSessionException.Reason reason) {
+  private RedisSessionException fail(RedisSessionException.Reason reason) {
+    backend.stateFailure(reason);
     return new RedisSessionException(reason);
   }
 }

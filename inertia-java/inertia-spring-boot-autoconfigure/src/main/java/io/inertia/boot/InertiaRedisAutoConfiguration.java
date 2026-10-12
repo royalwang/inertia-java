@@ -1,5 +1,6 @@
 package io.inertia.boot;
 
+import io.inertia.core.InertiaObserver;
 import io.inertia.redis.*;
 import io.inertia.spring.InertiaSessionStoreFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -14,7 +15,9 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
  * default starter's single-node behavior. Uses an owned at-most-once transport independent from an
  * application's general-purpose Redis clients and their retry/reconnect policies.
  */
-@AutoConfiguration(before = InertiaAutoConfiguration.class)
+@AutoConfiguration(
+    before = InertiaAutoConfiguration.class,
+    after = InertiaMetricsAutoConfiguration.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnClass(RedisSessionBackend.class)
 @ConditionalOnProperty(name = "inertia.session.store", havingValue = "redis")
@@ -25,8 +28,29 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
   InertiaProperties.class
 })
 public class InertiaRedisAutoConfiguration {
+  private final org.springframework.beans.factory.ObjectProvider<InertiaObserver> observers;
+
   /** Creates the configuration instance managed by Spring. */
-  public InertiaRedisAutoConfiguration() {}
+  public InertiaRedisAutoConfiguration() {
+    this.observers = null;
+  }
+
+  /**
+   * Creates configuration using the application's optional diagnostic sink.
+   *
+   * @param observers provider of the selected application observer
+   */
+  @org.springframework.beans.factory.annotation.Autowired
+  public InertiaRedisAutoConfiguration(
+      org.springframework.beans.factory.ObjectProvider<InertiaObserver> observers) {
+    this.observers = java.util.Objects.requireNonNull(observers);
+  }
+
+  private InertiaObserver observer() {
+    return observers == null
+        ? InertiaObserver.NOOP
+        : observers.getIfAvailable(() -> InertiaObserver.NOOP);
+  }
 
   /**
    * Creates the dedicated delivery transport, closed at application shutdown.
@@ -45,7 +69,12 @@ public class InertiaRedisAutoConfiguration {
     endpoint.setDatabase(properties.database());
     if (properties.username() != null) endpoint.setUsername(properties.username());
     if (properties.password() != null) endpoint.setPassword(properties.password());
-    return new RedisSessionBackend(endpoint, properties.commandTimeout(), properties.maxCommands());
+    return new RedisSessionBackend(
+        endpoint,
+        properties.commandTimeout(),
+        properties.maxCommands(),
+        RedisTlsOptions.disabled(),
+        observer());
   }
 
   /**
@@ -65,7 +94,7 @@ public class InertiaRedisAutoConfiguration {
     if (properties.username() != null) endpoint.setUsername(properties.username());
     if (properties.password() != null) endpoint.setPassword(properties.password());
     return new RedisSessionBackend(
-        endpoint, properties.commandTimeout(), properties.maxCommands(), tls.options());
+        endpoint, properties.commandTimeout(), properties.maxCommands(), tls.options(), observer());
   }
 
   /**

@@ -35,6 +35,12 @@ public interface InertiaObserver {
     SESSION_ABORT,
     /** Commit of pending redirect effects. */
     SESSION_MERGE,
+    /** One Redis delivery read, including transport capacity rejection. */
+    REDIS_READ,
+    /** One Redis delivery compare-and-set submission or explicit no-write rejection. */
+    REDIS_CAS,
+    /** A rejected Redis state transition; count-only event with zero duration. */
+    REDIS_STATE_FAILURE,
     /** Pre-render asset-version conflict. */
     VERSION_CONFLICT,
     /** Adapter response preparation and transport reporting. */
@@ -81,8 +87,24 @@ public interface InertiaObserver {
     EXCLUDED_OR_UNAVAILABLE,
     /** Transport failure without a more specific reliable category. */
     TRANSPORT_OR_TIMEOUT,
-    /** Renderer transport failed. */
+    /** Renderer or storage transport failed. */
     TRANSPORT,
+    /** A Redis mutation's result is unknown; automatic replay is forbidden. */
+    REDIS_UNKNOWN_WRITE,
+    /** Redis envelope, reservation or terminal capacity was exhausted. */
+    REDIS_CAPACITY,
+    /** Explicit Redis CAS conflicts exhausted the recalculation attempt limit. */
+    REDIS_CONTENTION,
+    /** Redis state dispatch exhausted its monotonic budget. */
+    REDIS_BUDGET_EXHAUSTED,
+    /** Redis delivery domain is expired, revoked or belongs to another epoch. */
+    REDIS_STALE_DOMAIN,
+    /** Redis delivery token is unknown, expired or already terminated. */
+    REDIS_INVALID_TOKEN,
+    /** Redis delivery state violates its schema or value contract. */
+    REDIS_INVALID_STATE,
+    /** Redis server time moved backwards. */
+    REDIS_CLOCK_REVERSED,
     /** Renderer connection failed. */
     CONNECTION,
     /** Renderer response exceeded the byte limit. */

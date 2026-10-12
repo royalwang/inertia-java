@@ -6,7 +6,7 @@ The current version is **0.1.0-SNAPSHOT / next**. Install from source or consume
 
 ## Documentation
 
-Start with [the documentation home](docs/index.md), [the React quick start](docs/getting-started/quick-start.md), [the Vue example](docs/getting-started/vue.md), or [your first independent Spring application](docs/getting-started/first-application.md). The guide library contains 71 English pages and [71 Chinese translations](docs/zh/index.md), with corresponding navigation and page links in both languages.
+Start with [the documentation home](docs/index.md), [the React quick start](docs/getting-started/quick-start.md), [the Vue example](docs/getting-started/vue.md), or [your first independent Spring application](docs/getting-started/first-application.md). The guide library contains 72 English pages and [72 Chinese translations](docs/zh/index.md), with corresponding navigation and page links in both languages.
 
 Use [the API guide](docs/api-guide.md) and [configuration reference](docs/reference/configuration.md) for integration details. Eight generated Javadoc classifiers are linked from the [API documentation page](docs/reference/javadoc.md); all seven libraries with generated API symbols enforce full doclint and warnings-as-errors. [Authoring commands](docs/README.md) build and verify the separate static site.
 

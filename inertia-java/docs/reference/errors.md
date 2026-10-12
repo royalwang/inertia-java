@@ -49,7 +49,7 @@ Ordinary pages can use CSR on these outcomes. Required pages raise a structured 
 
 ## Observation categories
 
-`InertiaObserver.Reason` contains `NONE`, `ERROR`, `PROP_DEFINITION`, `PROP_OVERRIDE`, `ERRORS_OVERRIDE`, `TIMEOUT`, `CANCELLED`, `OVERLOADED`, `DISABLED`, `EXCLUDED_OR_UNAVAILABLE`, `TRANSPORT_OR_TIMEOUT`, `TRANSPORT`, `CONNECTION`, `RESPONSE_LIMIT`, `HTTP_STATUS`, `WARMING_UP`, `INVALID_RESPONSE`, `INVALID_JSON`, `BUILD_MISMATCH`, `ROOT_MISMATCH`, `VERSION_MISMATCH` and `UNKNOWN`.
+`InertiaObserver.Reason` contains `NONE`, `ERROR`, `PROP_DEFINITION`, `PROP_OVERRIDE`, `ERRORS_OVERRIDE`, `TIMEOUT`, `CANCELLED`, `OVERLOADED`, `DISABLED`, `EXCLUDED_OR_UNAVAILABLE`, `TRANSPORT_OR_TIMEOUT`, `TRANSPORT`, `CONNECTION`, `RESPONSE_LIMIT`, `HTTP_STATUS`, `WARMING_UP`, `INVALID_RESPONSE`, `INVALID_JSON`, `BUILD_MISMATCH`, `ROOT_MISMATCH`, `VERSION_MISMATCH`, `REDIS_UNKNOWN_WRITE`, `REDIS_CAPACITY`, `REDIS_CONTENTION`, `REDIS_BUDGET_EXHAUSTED`, `REDIS_STALE_DOMAIN`, `REDIS_INVALID_TOKEN`, `REDIS_INVALID_STATE`, `REDIS_CLOCK_REVERSED` and `UNKNOWN`.
 
 Transport events may distinguish connection/response-limit failures more precisely than the public fallback string. Unknown strings map to `UNKNOWN`, not a successful render. Session abort failures are retained as suppressed causes of the original failure where appropriate. An unknown storage result must be reconciled using the backend's semantics, not blindly replayed.
 

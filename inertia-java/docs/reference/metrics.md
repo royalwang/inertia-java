@@ -32,6 +32,9 @@ Micrometer support is optional. The integration publishes bounded stage timers; 
 | `inertia.session_complete` | Complete a successful delivery |
 | `inertia.session_abort` | Restore an aborted delivery |
 | `inertia.session_merge` | Merge redirect effects |
+| `inertia.redis_read` | One Redis read, including command-capacity rejection |
+| `inertia.redis_cas` | One Redis CAS result, explicit conflict or unknown outcome |
+| `inertia.redis_state_failure` | State refusal count; zero-duration samples, not state-operation latency |
 | `inertia.version_conflict` | Stale version handling |
 | `inertia.response` | Adapter response write |
 
@@ -48,3 +51,11 @@ A successful response write can deliver an application 500; it does not imply bu
 ## Verify instrumentation
 
 Run the metrics auto-configuration tests after changing tags/conditions and the core/MVC/HTTP observation contracts after changing event placement. Start your real exporter separately and inspect sample series for bounded labels. The local tests prove event and registry behavior, not availability of your telemetry backend.
+
+## Redis delivery diagnostics
+
+Boot's built-in Redis backend uses the selected application observer. Manual backends retain no-op defaults; pass an observer to `RedisSessionBackend(endpoint, timeout, maxCommands, tls, observer)` to enable diagnostics. Events use empty request/component identifiers and a fixed `redis` endpoint, without key, identity, token, credential, payload or exception text.
+
+`REDIS_READ` records success or `FAILURE/TRANSPORT`; `REDIS_CAS` records `SUCCESS/NONE` for a write, `CONFLICT/NONE` for a no-write CAS mismatch, `CONFLICT/TIMEOUT` for an expired read deadline, and `FAILURE/REDIS_UNKNOWN_WRITE` when submission outcome is uncertain. `FAILURE/OVERLOADED` on either command means the local concurrency gate rejected it before submission. It is distinct from `REDIS_STATE_FAILURE/REDIS_CAPACITY`, which counts an envelope/reservation/terminal bound. Other state refusals use `REDIS_CONTENTION`, `REDIS_BUDGET_EXHAUSTED`, `REDIS_STALE_DOMAIN`, `REDIS_INVALID_TOKEN`, `REDIS_INVALID_STATE` and `REDIS_CLOCK_REVERSED`.
+
+The `inertia.redis_state_failure` timer's **count** is useful; its duration is always zero. Command timers exclude observer callback time and publish after releasing the command permit. They are not end-to-end state or HTTP latency. Redis connections, memory, TTL and occupancy require separate server sampling. Never infer that an unknown write was not applied, and never enable replay to improve its metric.

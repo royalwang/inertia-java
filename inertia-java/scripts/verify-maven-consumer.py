@@ -85,6 +85,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 @SpringBootConfiguration @EnableAutoConfiguration @Import(Consumer.Pages.class)
 public class Consumer {
+  static final java.util.List<InertiaObserver.Event> events = new java.util.concurrent.CopyOnWriteArrayList<>();
+  @Bean InertiaObserver observer() { return event -> { events.add(event); if (event.operation().name().startsWith("REDIS_")) System.out.println("REDIS_DIAGNOSTIC " + event.operation() + " " + event.outcome() + " " + event.reason()); }; }
   @Bean InertiaConfig inertia() { return InertiaConfig.basic("fixture-v1", Set.of("Home")); }
   @Controller public static class Pages {
     @GetMapping("/page") public InertiaResponse page() { return new InertiaResponse("Home", Props.builder().put("message", "consumer").build()); }
@@ -97,7 +99,7 @@ public class Consumer {
   public static void main(String[] args) throws Exception {
     var tls = io.inertia.redis.RedisTlsOptions.systemTrust();
     var transport = new org.springframework.data.redis.connection.RedisStandaloneConfiguration("localhost", 6380);
-    try (var unused = new io.inertia.redis.RedisSessionBackend(transport, java.time.Duration.ofMillis(200), 1, tls)) {
+    try (var unused = new io.inertia.redis.RedisSessionBackend(transport, java.time.Duration.ofMillis(200), 1, tls, InertiaObserver.NOOP)) {
       if (!tls.toString().contains("enabled=true")) throw new AssertionError("TLS API unavailable");
     }
     if (!new io.inertia.boot.InertiaRedisTlsProperties(true, null, null).enabled())
@@ -126,6 +128,9 @@ public class Consumer {
         if (i == 0 && !page.at("/flash/toast").asText().equals("external")) throw new AssertionError("Flash lost");
         if (i == 1 && page.has("flash")) throw new AssertionError("Flash replayed");
       }
+      if ("redis".equals(app.getEnvironment().getProperty("inertia.session.store")) &&
+          events.stream().noneMatch(e -> e.operation() == InertiaObserver.Operation.REDIS_CAS && e.outcome() == InertiaObserver.Outcome.SUCCESS))
+        throw new AssertionError("Selected application observer missed Redis CAS");
       System.out.println("EXTERNAL_CONSUMER_VERIFIED HTML JSON REDIRECT REQUIRED_SSR_503 SESSION ADVICE");
     }
   }
